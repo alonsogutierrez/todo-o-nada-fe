@@ -4,7 +4,7 @@
 import React, { Component, Fragment } from 'react'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import PageNotFound from '../../component/Pages/PageNotFound'
+import PageNotFound from '../../component/pages/PageNotFound'
 import Footer from '../../layouts/footer/Footer'
 import Headers from '../../layouts/header/Header'
 
