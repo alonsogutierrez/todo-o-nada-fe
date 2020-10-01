@@ -68,7 +68,7 @@ class CheckOut extends Component {
         console.log('Order well saved: ', orderDataSaved)
         this.props.history.push('/SuccessScreen')
       } catch (e) {
-        console.log('Can`t createOrder: ', e.message)
+        console.log('Can`t createOrder: ', e)
       }
     }
   }

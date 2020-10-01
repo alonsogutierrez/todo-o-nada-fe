@@ -85,7 +85,7 @@ function build(previousFileSizes) {
   let compiler = webpack(config)
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
-      console.error('Can`t create Webpack Build: ', err.message)
+      console.error('Can`t create Webpack Build: ', err)
       if (err) {
         return reject(err)
       }
