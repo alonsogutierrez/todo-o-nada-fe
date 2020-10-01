@@ -1,0 +1,2 @@
+const SET_ERRORS_FORM = 'SET_ERRORS_FORM'
+export default SET_ERRORS_FORM

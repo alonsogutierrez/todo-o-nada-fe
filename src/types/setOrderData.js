@@ -1,0 +1,2 @@
+const SET_ORDER_DATA = 'SET_ORDER_DATA'
+export default SET_ORDER_DATA
