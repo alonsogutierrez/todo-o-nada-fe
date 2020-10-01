@@ -12,7 +12,7 @@ import ProductDetail from './RoutesPages/ProductDetailPage'
 import './App.css'
 import './Vendor.js'
 
-import ShoppingCart from './component/shop/ShoppingCart'
+import ShoppingCart from './component/shop/shoppingcart'
 import ShopPage from './component/shop'
 import MyAccount from './component/account/MyAccount'
 import PageNotFound from './component/pages/PageNotFound'
