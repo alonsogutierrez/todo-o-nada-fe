@@ -1,30 +1,30 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export default class ClientAPI {
   bffInstance() {
     const bffInstance = axios.create({
       baseURL: process.env.API_BFF_URL,
-      timeout: process.env.TIMEOUT,
-    })
-    return bffInstance
+      timeout: process.env.TIMEOUT
+    });
+    return bffInstance;
   }
 
   createOrder(data) {
     return new Promise((resolve, reject) => {
-      const client = this.bffInstance()
+      const client = this.bffInstance();
       client
         .request({
           url: '/orders',
           method: 'post',
           timeout: 10000,
-          data,
+          data
         })
-        .then((response) => {
-          resolve(response.data)
+        .then(response => {
+          resolve(response.data);
         })
-        .catch((error) => {
-          reject(error)
-        })
-    })
+        .catch(error => {
+          reject(error);
+        });
+    });
   }
 }
