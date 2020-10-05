@@ -46,25 +46,21 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
   })
 
   const handleInputFirstName = (firstName) => {
-    const regex = /(^[A-Za-z _]*[A-Za-z][A-Za-z _]*$)|(^$)/
-    if (firstName.match(regex)) {
-      setFirstName(firstName)
-      setUserFormData({
-        ...userFormData,
-        first_name: firstName,
-      })
-    }
+    firstName = firstName.replace(/[^a-zA-ZáéíñóúüÁÉÍÑÓÚÜ´'\s]/g, '')
+    setFirstName(firstName)
+    setUserFormData({
+      ...userFormData,
+      first_name: firstName,
+    })
   }
 
   const handleInputLastName = (lastName) => {
-    const regex = /(^[A-Za-z _]*[A-Za-z][A-Za-z _]*$)|(^$)/
-    if (lastName.match(regex)) {
-      setLastName(lastName)
-      setUserFormData({
-        ...userFormData,
-        last_name: lastName,
-      })
-    }
+    lastName = lastName.replace(/[^a-zA-ZáéíñóúüÁÉÍÑÓÚÜ´'\s]/g, '')
+    setLastName(lastName)
+    setUserFormData({
+      ...userFormData,
+      last_name: lastName,
+    })
   }
 
   const handleInputDNI = (dniInput) => {
@@ -253,7 +249,8 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
             <>
               <div className="form-group">
                 <label htmlFor="billing_country" className="">
-                  Región&nbsp;<abbr className="required" title="required"></abbr>
+                  Región&nbsp;
+                  <abbr className="required" title="required"></abbr>
                 </label>
                 <select
                   name="billing_country"
@@ -271,7 +268,8 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
               </div>
               <div className="form-group">
                 <label htmlFor="billing_country" className="">
-                  Comuna&nbsp;<abbr className="required" title="required"></abbr>
+                  Comuna&nbsp;
+                  <abbr className="required" title="required"></abbr>
                 </label>
                 <select
                   name="billing_country"

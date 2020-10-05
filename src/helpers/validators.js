@@ -79,18 +79,21 @@ const validatorUserForm = (userForm) => {
 
 const validateNames = (name) => {
   let message = ''
-  let isValid = true
+  let isValid = false
   if (!name) {
     return {
-      isValid: false,
+      isValid,
       message: 'Ingresa los datos por favor',
     }
   }
 
-  const regex = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g
-  if (!name.match(regex)) {
+  const inputNameFormatted = name.replace(/[^a-zA-ZáéíñóúüÁÉÍÑÓÚÜ´'\s]/g, '')
+  const minLength = 2
+
+  isValid = inputNameFormatted.length > minLength
+  if (isValid) {
     return {
-      isValid: false,
+      isValid: true,
       message: 'Solo letras por favor',
     }
   }
