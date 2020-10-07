@@ -24,6 +24,7 @@ class CheckOut extends Component {
       clientAPI: new ClientAPI(),
       formValues: {},
       errors: {},
+      loading: false,
     }
     this.setFormValues = this.setFormValues.bind(this)
   }
@@ -49,32 +50,38 @@ class CheckOut extends Component {
     return cart
   }
 
-  async onCheckOutSubmit(e) {
+  onCheckOutSubmit(e) {
     e.preventDefault()
-    if (this.handleValidation()) {
-      const { clientAPI, formValues } = this.state
-      const { setOrderData } = this.props
-      const shippingData = {
-        total: 1000,
+    this.setState({ loading: true }, async () => {
+      const formValidation = this.handleValidation()
+      if (formValidation) {
+        const { clientAPI, formValues } = this.state
+        const { setOrderData } = this.props
+        const shippingData = {
+          total: 1000,
+        }
+        const cartItems = localStorage.getItem('LocalCartItems')
+        localStorage.setItem('finalCheckoutCartItems', cartItems)
+        const cartItemsParsed = JSON.parse(cartItems)
+        try {
+          const orderDataToSave = orderCreator(cartItemsParsed, formValues, shippingData)
+          const orderDataSaved = await clientAPI.createOrder(orderDataToSave)
+          setOrderData(orderDataSaved)
+          localStorage.removeItem('LocalCartItems')
+          console.log('Order well saved: ', orderDataSaved)
+          this.props.history.push('/SuccessScreen')
+        } catch (e) {
+          this.setState({ loading: false })
+          console.log('Can`t createOrder: ', e)
+        }
+      } else {
+        this.setState({ loading: false })
       }
-      const cartItems = localStorage.getItem('LocalCartItems')
-      localStorage.setItem('finalCheckoutCartItems', cartItems)
-      const cartItemsParsed = JSON.parse(cartItems)
-      try {
-        const orderDataToSave = orderCreator(cartItemsParsed, formValues, shippingData)
-        const orderDataSaved = await clientAPI.createOrder(orderDataToSave)
-        setOrderData(orderDataSaved)
-        localStorage.removeItem('LocalCartItems')
-        console.log('Order well saved: ', orderDataSaved)
-        this.props.history.push('/SuccessScreen')
-      } catch (e) {
-        console.log('Can`t createOrder: ', e)
-      }
-    }
+    })
   }
 
   handleValidation() {
-    let formValues = this.state.formValues
+    const { formValues } = this.state
     let errors = {}
     let formIsValid = false
 
@@ -92,6 +99,9 @@ class CheckOut extends Component {
   }
 
   render() {
+    const { loading } = this.state
+    const idFinishButton = loading ? 'place_order_disabled' : 'place_order'
+
     return (
       <div className="site-content">
         <div className="inner-intro">
@@ -107,7 +117,23 @@ class CheckOut extends Component {
                   </Row>
                 </Col>
                 <Col lg={6} className="mt-5">
-                  <OrderResume />
+                  <h3 id="order_review_heading">Tu orden</h3>
+                  <div id="order_review" className="checkout-review-order">
+                    <OrderResume />
+                    <div className="form-row place-order">
+                      <button
+                        type="submit"
+                        className="button alt"
+                        name="checkout_place_order"
+                        id={idFinishButton}
+                        value="Place order"
+                        data-value="Place order"
+                        disabled={loading}
+                      >
+                        Finalizar compra
+                      </button>
+                    </div>
+                  </div>
                 </Col>
               </Row>
             </form>

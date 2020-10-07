@@ -33,80 +33,64 @@ const OrderResume = () => {
 
   return (
     <>
-      <h3 id="order_review_heading">Tu orden</h3>
-
-      <div id="order_review" className="checkout-review-order">
-        {cartItems !== null && cartItems.length > 0 ? (
-          <table className="shop_table checkout-review-order-table">
-            <thead>
-              <tr>
-                <th className="product-name">Producto</th>
-                <th className="product-total">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems.map((item, index) => (
-                <tr key={index} className="cart_item">
-                  <td className="product-name">
-                    {item.ProductName}&nbsp;{' '}
-                    <strong className="product-quantity">× {item.Qty}</strong>{' '}
-                  </td>
-                  <td className="product-total">
-                    <span className="woocs_special_price_code">
-                      <span className="Price-amount amount">
-                        <span className="Price-currencySymbol">$</span>{' '}
-                        {formatToCurrency(item.Rate * item.Qty)}{' '}
-                      </span>
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr className="cart-subtotal">
-                <th>Subtotal</th>
-                <td>
+      {cartItems !== null && cartItems.length > 0 ? (
+        <table className="shop_table checkout-review-order-table">
+          <thead>
+            <tr>
+              <th className="product-name">Producto</th>
+              <th className="product-total">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cartItems.map((item, index) => (
+              <tr key={index} className="cart_item">
+                <td className="product-name">
+                  {item.ProductName}&nbsp;{' '}
+                  <strong className="product-quantity">× {item.Qty}</strong>{' '}
+                </td>
+                <td className="product-total">
                   <span className="woocs_special_price_code">
                     <span className="Price-amount amount">
-                      <span className="Price-currencySymbol">$</span>
-                      {formatToCurrency(subTotal)}
+                      <span className="Price-currencySymbol">$</span>{' '}
+                      {formatToCurrency(item.Rate * item.Qty)}{' '}
                     </span>
                   </span>
                 </td>
               </tr>
-              <DispatchOptions setTotalShippingChargeFunc={setTotalShippingChargeFunc} />
-              <tr className="order-total">
-                <th>Total</th>
-                <td>
-                  <strong>
-                    <span className="woocs_special_price_code">
-                      <span className="Price-amount amount">
-                        <span className="Price-currencySymbol">$</span>
-                        {formatToCurrency(calculateTotalOrder())}{' '}
-                      </span>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr className="cart-subtotal">
+              <th>Subtotal</th>
+              <td>
+                <span className="woocs_special_price_code">
+                  <span className="Price-amount amount">
+                    <span className="Price-currencySymbol">$</span>
+                    {formatToCurrency(subTotal)}
+                  </span>
+                </span>
+              </td>
+            </tr>
+            <DispatchOptions setTotalShippingChargeFunc={setTotalShippingChargeFunc} />
+            <tr className="order-total">
+              <th>Total</th>
+              <td>
+                <strong>
+                  <span className="woocs_special_price_code">
+                    <span className="Price-amount amount">
+                      <span className="Price-currencySymbol">$</span>
+                      {formatToCurrency(calculateTotalOrder())}{' '}
                     </span>
-                  </strong>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        ) : (
-          <div>No hay productos encontrados</div>
-        )}
-        <PaymentMethods />
-        <div className="form-row place-order">
-          <button
-            type="submit"
-            className="button alt"
-            name="checkout_place_order"
-            id="place_order"
-            value="Place order"
-            data-value="Place order"
-          >
-            Finalizar compra
-          </button>
-        </div>
-      </div>
+                  </span>
+                </strong>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      ) : (
+        <div>No hay productos encontrados</div>
+      )}
+      <PaymentMethods />
     </>
   )
 }

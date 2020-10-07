@@ -24,7 +24,7 @@
 }
 
 .tp-bullets.custom div.tp-bullet:after {
-  content: "/";
+  content: '/';
   position: absolute;
   right: 0px;
   font-size: 30px;
@@ -48,43 +48,43 @@
 }
 
 .tp-bullets.custom div.tp-bullet:nth-child(1):before {
-  content: "01";
+  content: '01';
 }
 
 .tp-bullets.custom div.tp-bullet:nth-child(2):before {
-  content: "02";
+  content: '02';
 }
 
 .tp-bullets.custom div.tp-bullet:nth-child(3):before {
-  content: "03";
+  content: '03';
 }
 
 .tp-bullets.custom div.tp-bullet:nth-child(4):before {
-  content: "04";
+  content: '04';
 }
 
 .tp-bullets.custom div.tp-bullet:nth-child(5):before {
-  content: "05";
+  content: '05';
 }
 
 .tp-bullets.custom div.tp-bullet:nth-child(6):before {
-  content: "06";
+  content: '06';
 }
 
 .tp-bullets.custom div.tp-bullet:nth-child(7):before {
-  content: "07";
+  content: '07';
 }
 
 .tp-bullets.custom div.tp-bullet:nth-child(8):before {
-  content: "08";
+  content: '08';
 }
 
 .tp-bullets.custom div.tp-bullet:nth-child(9):before {
-  content: "09";
+  content: '09';
 }
 
 .custom.tp-bullets:before {
-  content: " ";
+  content: ' ';
   position: absolute;
   width: 100%;
   height: 100%;
@@ -112,7 +112,7 @@
 
 body,
 html {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 body {
@@ -125,7 +125,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin-top: 0;
   margin-bottom: 15px;
 }
@@ -230,14 +230,14 @@ h6 {
   font-size: 105px !important;
   line-height: normal !important;
   font-weight: 500 !important;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .ciyashop_banner.ciyashop_banner-3 .ciyashop_banner-text-wrap .ciyashop_banner-text h3 {
   font-size: 28px;
   font-weight: 700;
   text-transform: capitalize;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .ciyashop_banner.ciyashop_banner-3 .ciyashop_banner-btn-wrap .ciyashop_banner-btn {
@@ -261,9 +261,9 @@ h6 {
   position: absolute;
   z-index: 10;
   padding: 25px;
-  -webkit-transition: background .5s ease;
-  -o-transition: background .5s ease;
-  transition: background .5s ease;
+  -webkit-transition: background 0.5s ease;
+  -o-transition: background 0.5s ease;
+  transition: background 0.5s ease;
 }
 
 .ciyashop_banner .ciyashop_banner-content-1 {
@@ -286,11 +286,18 @@ h6 {
   top: inherit;
 }
 
-.ciyashop_banner .ciyashop_banner-content.ciyashop_banner-content-vbottom .ciyashop_banner-content-wrapper {
+.ciyashop_banner
+  .ciyashop_banner-content.ciyashop_banner-content-vbottom
+  .ciyashop_banner-content-wrapper {
   justify-content: center;
 }
 
-.ciyashop_banner .ciyashop_banner-content .ciyashop_banner-content-wrapper .ciyashop_banner-content-inner-wrapper .ciyashop_banner-label-wrap .ciyashop_banner-label {
+.ciyashop_banner
+  .ciyashop_banner-content
+  .ciyashop_banner-content-wrapper
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-label-wrap
+  .ciyashop_banner-label {
   font-size: 16px;
   color: #ffffff;
   background-color: #323232;
@@ -302,12 +309,23 @@ h6 {
   display: inline-block;
 }
 
-.ciyashop_banner .ciyashop_banner-content .ciyashop_banner-content-wrapper .ciyashop_banner-content-inner-wrapper .ciyashop_banner-label-wrap .ciyashop_banner-label.ciyashop_banner-lanel-bg-yellow {
+.ciyashop_banner
+  .ciyashop_banner-content
+  .ciyashop_banner-content-wrapper
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-label-wrap
+  .ciyashop_banner-label.ciyashop_banner-lanel-bg-yellow {
   background-color: #fff2d5;
   color: #323232;
 }
 
-.ciyashop_banner .ciyashop_banner-content .ciyashop_banner-content-wrapper .ciyashop_banner-content-inner-wrapper .ciyashop_banner-text-wrap .ciyashop_banner-text h2 {
+.ciyashop_banner
+  .ciyashop_banner-content
+  .ciyashop_banner-content-wrapper
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-text-wrap
+  .ciyashop_banner-text
+  h2 {
   font-size: 32px;
   color: #323232;
   font-weight: 700;
@@ -315,16 +333,25 @@ h6 {
   line-height: normal;
   margin: 0;
   display: inline-block;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
-.ciyashop_banner .ciyashop_banner-content .ciyashop_banner-content-wrapper .ciyashop_banner-content-inner-wrapper .ciyashop_banner-btn-wrap {
+.ciyashop_banner
+  .ciyashop_banner-content
+  .ciyashop_banner-content-wrapper
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-btn-wrap {
   position: relative;
   z-index: 9;
   margin-top: 15px;
 }
 
-.ciyashop_banner .ciyashop_banner-content .ciyashop_banner-content-wrapper .ciyashop_banner-content-inner-wrapper .ciyashop_banner-btn-wrap .ciyashop_banner-btn {
+.ciyashop_banner
+  .ciyashop_banner-content
+  .ciyashop_banner-content-wrapper
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-btn-wrap
+  .ciyashop_banner-btn {
   font-weight: 600;
   border-bottom: 0px solid;
   padding-left: 0;
@@ -334,7 +361,12 @@ h6 {
   font-size: 14px;
 }
 
-.ciyashop_banner .ciyashop_banner-content .ciyashop_banner-content-wrapper .ciyashop_banner-content-inner-wrapper .ciyashop_banner-btn-wrap .ciyashop_banner-btn:hover {
+.ciyashop_banner
+  .ciyashop_banner-content
+  .ciyashop_banner-content-wrapper
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-btn-wrap
+  .ciyashop_banner-btn:hover {
   color: #04d39f;
 }
 
@@ -390,7 +422,7 @@ h6 {
 .section-2 .ciyashop_banner-content-wrapper .ciyashop_banner-label {
   font-size: 28px !important;
   line-height: 38px !important;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-weight: 400 !important;
 }
 
@@ -402,7 +434,7 @@ h6 {
   font-weight: 600;
   line-height: 82px;
   margin-bottom: 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .section-2 .ciyashop_banner-content-wrapper .ciyashop_banner-btn {
@@ -433,14 +465,14 @@ h6 {
 }
 
 .section-3 .ciyashop_button_wrapper a.inline_hover:after {
-  content: "";
+  content: '';
   width: 100%;
   border-bottom: 2px solid;
   position: absolute;
   left: 0;
   bottom: 0;
-  -webkit-transition: .3s ease-in-out;
-  transition: .3s ease-in-out;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 .section-3 .ciyashop_button_wrapper a.inline_hover:hover {
