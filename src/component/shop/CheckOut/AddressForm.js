@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Col, Input } from 'reactstrap'
@@ -16,7 +16,7 @@ const getRegionByCode = (regionCode) => {
   return regionSelected[0]
 }
 
-const AddressForm = ({ setFormValues, errorsForm }) => {
+const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView }) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [dni, setDni] = useState('')
@@ -163,17 +163,72 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
     setErrors(newErrors)
   }
 
+  const firstNameRef = useRef(null)
+  const lastNameRef = useRef(null)
+  const dniRef = useRef(null)
+  const postalCodeRef = useRef(null)
+  const addressRef = useRef(null)
+  const address2Ref = useRef(null)
+  const phoneRef = useRef(null)
+  const emailRef = useRef(null)
+
+  const scrollIntoViewBehavior = {
+    inline: 'end',
+    block: 'center',
+    behavior: 'smooth',
+  }
+
+  const scrollIntoErrorsView = (errorsForm) => {
+    for (const errorType in errorsForm) {
+      if (errorType === 'first_name') {
+        firstNameRef.current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+      if (errorType === 'last_name') {
+        lastNameRef.current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+      if (errorType === 'dni') {
+        dniRef.current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+      if (errorType === 'postal_code') {
+        postalCodeRef.current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+      if (errorType === 'address') {
+        addressRef.current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+      if (errorType === 'num_address') {
+        address2Ref.current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+      if (errorType === 'phone') {
+        phoneRef.current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+      if (errorType === 'email') {
+        emailRef.current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+    }
+  }
+
   useEffect(() => {
     setFormValues(userFormData)
     setErrors(errorsForm)
-  }, [userFormData, errorsForm])
+    if (flagScrollErrorsView) {
+      scrollIntoErrorsView(errorsForm)
+    }
+  }, [userFormData, errorsForm, flagScrollErrorsView])
 
   return (
     <Col sm={12}>
       <div className="billing-fields mt-5">
         <h3>Detalles de compra</h3>
         <div className="billing-fields__field-wrapper">
-          <div className="form-group">
+          <div className="form-group" ref={firstNameRef}>
             <label htmlFor="billing_first_name" className="">
               Nombres&nbsp;
               <abbr className="required" title="required">
@@ -191,7 +246,7 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
             />
             <span className="error">{errors['first_name']}</span>
           </div>
-          <div className="form-group">
+          <div className="form-group" ref={lastNameRef}>
             <label htmlFor="billing_last_name" className="">
               Apellidos&nbsp;
               <abbr className="required" title="required">
@@ -209,7 +264,7 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
             />
             <span className="error">{errors['last_name']}</span>
           </div>
-          <div className="form-group">
+          <div className="form-group" ref={dniRef}>
             <label htmlFor="billing_dni" className="">
               RUT
               <abbr className="required" title="required">
@@ -221,7 +276,7 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
               className="form-control "
               name="billing_dni"
               id="billing_dni"
-              placeholder="Ingresa tu rut"
+              placeholder="Ingresa tu rut, formato: 11222333-4"
               value={dni}
               onChange={(e) => handleInputDNI(e.target.value)}
             />
@@ -288,7 +343,7 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
             </>
           )}
           {country.code !== 'CL' && (
-            <div className="form-group">
+            <div className="form-group" ref={postalCodeRef}>
               <label htmlFor="billing_postal_code_1" className="">
                 Código postal&nbsp;
                 <abbr className="required" title="required">
@@ -307,7 +362,7 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
               <span className="error">{errors['zip_code']}</span>
             </div>
           )}
-          <div className="form-group">
+          <div className="form-group" ref={addressRef}>
             <label htmlFor="billing_address_1" className="">
               Dirección&nbsp;
               <abbr className="required" title="required">
@@ -325,7 +380,7 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
             />
             <span className="error">{errors['address']}</span>
           </div>
-          <div className="form-group">
+          <div className="form-group" ref={address2Ref}>
             <label htmlFor="billing_address_2" className="screen-reader-text">
               Departamento, block, etc.&nbsp;
               <span className="optional">(opcional)</span>
@@ -341,7 +396,7 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
             />
             <span className="error">{errors['num_address']}</span>
           </div>
-          <div className="form-group">
+          <div className="form-group" ref={phoneRef}>
             <label htmlFor="billing_phone" className="">
               Telefono&nbsp;
               <abbr className="required" title="required">
@@ -360,7 +415,7 @@ const AddressForm = ({ setFormValues, errorsForm }) => {
             />
             <span className="error">{errors['phone']}</span>
           </div>
-          <div className="form-group">
+          <div className="form-group" ref={emailRef}>
             <label htmlFor="billing_email" className="">
               Email&nbsp;
               <abbr className="required" title="required">
@@ -394,4 +449,5 @@ export default connect(mapStateToProps, null)(AddressForm)
 AddressForm.propTypes = {
   setFormValues: PropTypes.func,
   errorsForm: PropTypes.object,
+  flagScrollErrorsView: PropTypes.bool,
 }

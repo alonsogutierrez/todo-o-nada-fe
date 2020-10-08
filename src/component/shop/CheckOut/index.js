@@ -25,6 +25,7 @@ class CheckOut extends Component {
       formValues: {},
       errors: {},
       loading: false,
+      flagScrollErrors: false,
     }
     this.setFormValues = this.setFormValues.bind(this)
   }
@@ -76,6 +77,9 @@ class CheckOut extends Component {
         }
       } else {
         this.setState({ loading: false })
+        setTimeout(() => {
+          this.setState({ flagScrollErrors: false })
+        }, 1 * 1000)
       }
     })
   }
@@ -84,6 +88,7 @@ class CheckOut extends Component {
     const { formValues } = this.state
     let errors = {}
     let formIsValid = false
+    setErrorsForm(errors)
 
     const validatorResponse = validators.validatorUserForm(formValues)
 
@@ -91,6 +96,7 @@ class CheckOut extends Component {
       errors = validatorResponse.errors
       const { setErrorsForm } = this.props
       setErrorsForm(errors)
+      this.setState({ flagScrollErrors: true })
       return formIsValid
     }
     this.props.setUserData(formValues)
@@ -99,7 +105,7 @@ class CheckOut extends Component {
   }
 
   render() {
-    const { loading } = this.state
+    const { loading, flagScrollErrors } = this.state
     const idFinishButton = loading ? 'place_order_disabled' : 'place_order'
 
     return (
@@ -113,7 +119,10 @@ class CheckOut extends Component {
               <Row className="mt-5">
                 <Col className="col-lg-6">
                   <Row>
-                    <AddressForm setFormValues={this.setFormValues} />
+                    <AddressForm
+                      setFormValues={this.setFormValues}
+                      flagScrollErrorsView={flagScrollErrors}
+                    />
                   </Row>
                 </Col>
                 <Col lg={6} className="mt-5">
