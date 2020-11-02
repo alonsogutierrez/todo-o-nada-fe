@@ -9,111 +9,62 @@ class Sitebar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      Ord_Hist: false,
-      Prof_act: false,
-      Add_act: false,
-      Saved_card: false
+      Ord_Hist: true,
+      Prof_act: true,
+      Add_act: true,
+      Saved_card: true,
     }
-  }
-
-  SetActiveClass() {
-    this.setState({
-      Ord_Hist: false,
-      Prof_act: false,
-      Add_act: false,
-      Saved_card: false
-    })
-
-    let pathname = document.location.href
-    let pathArray = pathname.split('/')
-    let pageName = pathArray[pathArray.length - 1]
-    if (pageName.toLowerCase() == 'orderhistory') {
-      this.setState({
-        Ord_Hist: true
-      })
-    } else if (
-      pageName.toLowerCase() == 'accountprofile' ||
-      pageName.toLowerCase() == 'accountprofileedit'
-    ) {
-      this.setState({
-        Prof_act: true
-      })
-    } else if (
-      pageName.toLowerCase() == 'address' ||
-      pageName.toLowerCase() == 'addressedit'
-    ) {
-      this.setState({
-        Add_act: true
-      })
-    } else if (
-      pageName.toLowerCase() == 'savedcards' ||
-      pageName.toLowerCase() == 'savedcardsadd'
-    ) {
-      this.setState({
-        Saved_card: true
-      })
-    }
-
-    return true
   }
 
   render() {
+    const { Ord_Hist, Prof_act, Add_act, Saved_card } = this.state
+
     return (
       <Fragment>
-        {this.SetActiveClass() ? (
-          <Col lg={3}>
-            <div className='woocommerce-MyAccount-navigation'>
-              <Nav className='flex-column'>
-                <NavItem>
-                  <Link
-                    to='/Account/OrderHistory'
-                    className={`${
-                      this.state.Ord_Hist == true ? 'active' : ''
-                    } nav-link nav-custo OrderHistory`}
-                  >
-                    {' '}
-                    <i className='fa fa-tachometer'></i> Order History{' '}
-                  </Link>
-                </NavItem>
-                <NavItem>
-                  <Link
-                    to='/Account/AccountProfile'
-                    className={`${
-                      this.state.Prof_act == true ? 'active' : ''
-                    } nav-link nav-custo AccountProfile`}
-                  >
-                    {' '}
-                    <i className='fa fa-user-o'></i> Profile{' '}
-                  </Link>
-                </NavItem>
-                <NavItem>
-                  <Link
-                    to='/Account/Address'
-                    className={`${
-                      this.state.Add_act == true ? 'active' : ''
-                    } nav-link nav-custo Address`}
-                  >
-                    {' '}
-                    <i className='fa fa-map-marker'></i> Address{' '}
-                  </Link>
-                </NavItem>
-                <NavItem>
-                  <Link
-                    to='/Account/SavedCards'
-                    className={`${
-                      this.state.Saved_card == true ? 'active' : ''
-                    } nav-link  nav-custo SavedCards`}
-                  >
-                    {' '}
-                    <i className='fa fa-credit-card'></i> Saved Cards{' '}
-                  </Link>
-                </NavItem>
-              </Nav>
-            </div>
-          </Col>
-        ) : (
-          <div></div>
-        )}
+        <Col lg={3}>
+          <div className="woocommerce-MyAccount-navigation">
+            <Nav className="flex-column">
+              <NavItem>
+                <Link
+                  to="/Account/OrderHistory"
+                  className={`${Ord_Hist == true ? 'active' : ''} nav-link nav-custo OrderHistory`}
+                >
+                  {' '}
+                  <i className="fa fa-tachometer"></i> Order History{' '}
+                </Link>
+              </NavItem>
+              <NavItem>
+                <Link
+                  to="/Account/AccountProfile"
+                  className={`${
+                    Prof_act == true ? 'active' : ''
+                  } nav-link nav-custo AccountProfile`}
+                >
+                  {' '}
+                  <i className="fa fa-user-o"></i> Profile{' '}
+                </Link>
+              </NavItem>
+              <NavItem>
+                <Link
+                  to="/Account/Address"
+                  className={`${Add_act == true ? 'active' : ''} nav-link nav-custo Address`}
+                >
+                  {' '}
+                  <i className="fa fa-map-marker"></i> Address{' '}
+                </Link>
+              </NavItem>
+              <NavItem>
+                <Link
+                  to="/Account/SavedCards"
+                  className={`${Saved_card == true ? 'active' : ''} nav-link  nav-custo SavedCards`}
+                >
+                  {' '}
+                  <i className="fa fa-credit-card"></i> Saved Cards{' '}
+                </Link>
+              </NavItem>
+            </Nav>
+          </div>
+        </Col>
       </Fragment>
     )
   }

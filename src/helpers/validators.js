@@ -1,3 +1,8 @@
+const validateLoginForm = (loginForm) => {
+  console.log('begin validation login form: ', loginForm)
+  return true
+}
+
 const validatorUserForm = (userForm) => {
   let formValues = userForm
   let errors = {}
@@ -258,6 +263,7 @@ const validateEmail = (email) => {
 }
 
 const validators = {
+  validateLoginForm,
   validatorUserForm,
 }
 

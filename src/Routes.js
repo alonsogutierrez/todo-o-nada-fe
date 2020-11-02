@@ -33,6 +33,7 @@ import Invoices from './component/admin/Invoices'
 
 import OrderHistory from './component/account/OrderHistory'
 import AdminDashboard from './component/admin'
+import Login from './component/admin/Login'
 import SavedCardsadd from './component/account/SavedCardsadd'
 import { receiveProducts } from './actions'
 
@@ -66,11 +67,12 @@ const Routes = ({ receiveProducts }) => {
           <Route exact path="/account/orderhistory" component={OrderHistory} />
           <Route exact path="/account/savedcards" component={SavedCards} />
           <Route exact path="/account/AccountProfileedit" component={AccountProfileedit} />
-          <Route exact path="/Account/SavedCards" component={SavedCards} />
-          <Route exact path="/Account/SavedCardsedit" component={SavedCardsedit} />
-          <Route exact path="/Account/SavedCardsadd" component={SavedCardsadd} />
+          <Route exact path="/account/SavedCards" component={SavedCards} />
+          <Route exact path="/account/SavedCardsedit" component={SavedCardsedit} />
+          <Route exact path="/account/SavedCardsadd" component={SavedCardsadd} />
           <Route exact path="/SuccessScreen" component={SuccessScreen} />
           <Route exact path="/admin-panel/Reports" component={Reports} />
+          <Route exact path="/admin/login" component={Login} />
           <Route exact path="/Invoices" component={Invoices} />
           <Route path={`/shop/:category/:id`} component={ProductDetail} />
           <Route component={PageNotFound} />
