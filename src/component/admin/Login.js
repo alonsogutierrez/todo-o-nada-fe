@@ -12,19 +12,21 @@ const Login = (props) => {
   const [modal] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState('')
 
-  const handleLoginValidation = () => {
-    const validatorResponse = validators.validateLoginForm(email, password)
+  const handleLoginValidation = async () => {
+    const validatorResponse = await validators.validateLoginForm(email, password)
     return validatorResponse
   }
 
-  const onLoginSubmit = (e) => {
+  const onLoginSubmit = async (e) => {
     e.preventDefault()
-    const loginValidation = handleLoginValidation()
+    const loginValidation = await handleLoginValidation()
     if (loginValidation) {
       props.history.push('/account/orderhistory')
     } else {
-      console.log('Invalid user or password')
+      const errorsMessage = 'Usuario o contraseña incorrecta'
+      setErrors(errorsMessage)
     }
   }
 
@@ -34,6 +36,16 @@ const Login = (props) => {
 
   const handleInputPassword = (passwordInput) => {
     setPassword(passwordInput)
+  }
+
+  const renderError = () => {
+    const errorStyle = {
+      fontWeight: 'bold',
+      color: 'chocolate'
+    }
+    return (
+      <div style={errorStyle}>{errors}</div>
+    )
   }
 
   return (
@@ -77,6 +89,8 @@ const Login = (props) => {
                 />
               </div>
 
+              { errors !== '' ? renderError() : null }
+
               <div className="form-group">
                 <button className="btn btn-primary mt-1" type="submit">
                   Log in
@@ -86,9 +100,6 @@ const Login = (props) => {
             </form>
           </ModalBody>
         </Modal>
-        <div className="col-12">
-          <div className="mobile-menu" id="mobileMenu" />
-        </div>
       </Row>
     </Container>
   )

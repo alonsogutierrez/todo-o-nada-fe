@@ -1,6 +1,20 @@
-const validateLoginForm = (loginForm) => {
-  console.log('begin validation login form: ', loginForm)
-  return true
+import ClientAPI from '../common/ClientAPI'
+
+const validateLoginForm = async (email, password) => {
+  const clientAPI = new ClientAPI()
+  const data = {
+    email,
+    password,
+  }
+  let isValidLogin = false
+  try {
+    const resp = await clientAPI.loginUser(data)
+    isValidLogin = typeof resp === 'object'
+    return isValidLogin
+  } catch (err) {
+    console.error('invalid login: ', err.message)
+    return isValidLogin
+  }
 }
 
 const validatorUserForm = (userForm) => {

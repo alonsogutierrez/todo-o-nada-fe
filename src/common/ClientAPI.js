@@ -16,7 +16,26 @@ export default class ClientAPI {
         .request({
           url: '/orders',
           method: 'post',
-          timeout: 10000,
+          timeout: 10 * 1000,
+          data,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  loginUser(data) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/users/login',
+          method: 'post',
+          timeout: 10 * 1000,
           data,
         })
         .then((response) => {

@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import classnames from 'classnames'
 import {
   Col,
   Row,
@@ -12,11 +11,6 @@ import {
   DropdownMenu,
   DropdownItem,
   NavItem,
-  TabContent,
-  TabPane,
-  Modal,
-  ModalBody,
-  ModalHeader,
 } from 'reactstrap'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -146,6 +140,8 @@ class HeaderMain extends Component {
     const pathArray = pathnames.split('/')
     const pageName = '/' + pathArray[pathArray.length - 1]
     const searchName = getSearchName(pageName)
+    const isItemsInCart = this.ReadCartItems() === null || this.ReadCartItems().length === 0
+    const urlRedirectShoppingCart = !isItemsInCart ? '#' : '/shopping-cart'
     return (
       <Fragment>
         <div className="header-main header-main-bg-color-default">
@@ -188,37 +184,23 @@ class HeaderMain extends Component {
                         <div className="ciya-tools-wrapper">
                           <ul className="ciya-tools-actions">
                             <li className="ciya-tools-action ciya-tools-cart">
-                              {this.ReadCartItems() == null || this.ReadCartItems().length == 0 ? (
-                                <Link className="cart-link" to="#" onClick={() => this.ShowCart()}>
-                                  <span className="cart-icon">
-                                    <i className="glyph-icon pgsicon-ecommerce-empty-shopping-cart" />
-                                  </span>
-                                  <span className="cart-count count">
-                                    {' '}
-                                    {this.ReadCartItems() == null
-                                      ? 0
-                                      : this.ReadCartItems().length}{' '}
-                                  </span>
-                                </Link>
-                              ) : (
-                                <Link
+                              <Link
                                   className="cart-link"
-                                  to="/shopping-cart"
+                                  to={urlRedirectShoppingCart}
                                   onClick={() => this.ShowCart()}
                                 >
-                                  <span className="cart-icon">
-                                    <i className="glyph-icon pgsicon-ecommerce-empty-shopping-cart" />
-                                  </span>
-                                  <span className="cart-count count">
-                                    {' '}
-                                    {this.ReadCartItems() == null
-                                      ? 0
-                                      : this.ReadCartItems().length}{' '}
-                                  </span>
-                                </Link>
-                              )}
+                                <span className="cart-icon">
+                                  <i className="glyph-icon pgsicon-ecommerce-empty-shopping-cart" />
+                                </span>
+                                <span className="cart-count count">
+                                  {' '}
+                                  {this.ReadCartItems() === null
+                                    ? 0
+                                    : this.ReadCartItems().length}{' '}
+                                </span>
+                              </Link>
 
-                              {this.ReadCartItems() != null && this.ReadCartItems().length > 0 ? (
+                              {this.ReadCartItems() !== null && this.ReadCartItems().length > 0 ? (
                                 <div className="cart-contents" id="DivCartContent">
                                   <div className="widget ciyashop widget-shopping-cart">
                                     <div className="widget-shopping-cart-content">
@@ -410,151 +392,6 @@ class HeaderMain extends Component {
                   </Navbar>
                 </div>
               </Col>
-            </Row>
-            <Row>
-              <Modal
-                isOpen={this.state.modal}
-                toggle={this.toggle}
-                className="modal-login modal-dialog-centered"
-              >
-                <ModalHeader toggle={this.toggle}>
-                  <h4 className="mb-0">Sign in Or Register</h4>
-                </ModalHeader>
-                <ModalBody>
-                  <Nav tabs>
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: this.state.activeTab === '1',
-                        })}
-                        onClick={() => {
-                          this.logintoggle('1')
-                        }}
-                      >
-                        Sign In
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={classnames({
-                          active: this.state.activeTab === '2',
-                        })}
-                        onClick={() => {
-                          this.logintoggle('2')
-                        }}
-                      >
-                        Register
-                      </NavLink>
-                    </NavItem>
-                  </Nav>
-                  <TabContent activeTab={this.state.activeTab}>
-                    <TabPane tabId="1">
-                      <form>
-                        <div className="form-group">
-                          <label>Email address</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter email"
-                          ></input>
-                        </div>
-                        <div className="form-group">
-                          <label>Password </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Password"
-                          ></input>
-                        </div>
-
-                        <div className="form-group">
-                          <Link className="btn btn-primary mt-1">Log in</Link>
-                          <Link className="btn btn-secondary ml-2 mt-1" onClick={this.toggle}>
-                            Cancel
-                          </Link>
-                        </div>
-                        <p className="mb-0">
-                          Don&apos;t have account?{' '}
-                          <Link
-                            to="#"
-                            className={classnames({
-                              active: this.state.activeTab === '2',
-                            })}
-                            onClick={() => {
-                              this.logintoggle('2')
-                            }}
-                          >
-                            {' '}
-                            Register{' '}
-                          </Link>
-                          here
-                        </p>
-                      </form>
-                    </TabPane>
-                    <TabPane tabId="2">
-                      <form>
-                        <div className="form-group">
-                          <label>Name</label>
-                          <input
-                            type="texttext"
-                            className="form-control"
-                            placeholder="Name"
-                          ></input>
-                        </div>
-                        <div className="form-group">
-                          <label>Email address</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter email"
-                          ></input>
-                        </div>
-                        <div className="form-group">
-                          <label>Password </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Password"
-                          ></input>
-                        </div>
-                        <div className="form-group">
-                          <label>Confirm Password </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Confirm Password"
-                          ></input>
-                        </div>
-                        <div className="form-group">
-                          <Link className="btn btn-primary">Register</Link>
-                          <Link className="btn btn-secondary ml-2" onClick={this.toggle}>
-                            Cancel
-                          </Link>
-                        </div>
-                        <p className="mb-0">
-                          Already have account?{' '}
-                          <Link
-                            to="#"
-                            className={classnames({
-                              active: this.state.activeTab === '1',
-                            })}
-                            onClick={() => {
-                              this.logintoggle('1')
-                            }}
-                          >
-                            {' '}
-                            SignIn{' '}
-                          </Link>{' '}
-                          here{' '}
-                        </p>
-                      </form>
-                    </TabPane>
-                  </TabContent>
-                </ModalBody>
-              </Modal>
-              <div className="col-12">
-                <div className="mobile-menu" id="mobileMenu" />
-              </div>
             </Row>
           </div>
         </div>
