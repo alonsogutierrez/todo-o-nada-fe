@@ -28,9 +28,6 @@ import SavedCards from './component/account/SavedCards'
 import SavedCardsedit from './component/account/SavedCardsedit'
 import SuccessScreen from './component/shop/CheckOut/SuccessScreen'
 
-import Reports from './component/admin/Reports'
-import Invoices from './component/admin/Invoices'
-
 import OrderHistory from './component/account/OrderHistory'
 import AdminDashboard from './component/admin'
 import Login from './component/admin/Login'
@@ -71,9 +68,7 @@ const Routes = ({ receiveProducts }) => {
           <Route exact path="/account/SavedCardsedit" component={SavedCardsedit} />
           <Route exact path="/account/SavedCardsadd" component={SavedCardsadd} />
           <Route exact path="/SuccessScreen" component={SuccessScreen} />
-          <Route exact path="/admin-panel/Reports" component={Reports} />
           <Route exact path="/admin/login" component={Login} />
-          <Route exact path="/Invoices" component={Invoices} />
           <Route path={`/shop/:category/:id`} component={ProductDetail} />
           <Route component={PageNotFound} />
         </Switch>

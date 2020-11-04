@@ -23,7 +23,7 @@ const Login = (props) => {
     e.preventDefault()
     const loginValidation = await handleLoginValidation()
     if (loginValidation) {
-      props.history.push('/account/orderhistory')
+      props.history.push('/admin-dashboard/reports')
     } else {
       const errorsMessage = 'Usuario o contraseña incorrecta'
       setErrors(errorsMessage)
@@ -41,11 +41,9 @@ const Login = (props) => {
   const renderError = () => {
     const errorStyle = {
       fontWeight: 'bold',
-      color: 'chocolate'
+      color: 'chocolate',
     }
-    return (
-      <div style={errorStyle}>{errors}</div>
-    )
+    return <div style={errorStyle}>{errors}</div>
   }
 
   return (
@@ -89,7 +87,7 @@ const Login = (props) => {
                 />
               </div>
 
-              { errors !== '' ? renderError() : null }
+              {errors !== '' ? renderError() : null}
 
               <div className="form-group">
                 <button className="btn btn-primary mt-1" type="submit">

@@ -20,16 +20,16 @@ class Reports extends Component {
     const Monthoptions = {
       animationEnabled: true,
       title: {
-        horizontalAlign: 'left'
+        horizontalAlign: 'left',
       },
       axisX: {
         interval: 1,
-        intervalType: 'month'
+        intervalType: 'month',
       },
       axisY: {
         title: 'Sales (in USD)',
         prefix: '$',
-        includeZero: false
+        includeZero: false,
       },
       data: [
         {
@@ -50,24 +50,24 @@ class Reports extends Component {
             { x: new Date(2019, 8), y: 36587 },
             { x: new Date(2019, 9), y: 12479 },
             { x: new Date(2019, 10), y: 36857 },
-            { x: new Date(2019, 11), y: 85478 }
-          ]
-        }
-      ]
+            { x: new Date(2019, 11), y: 85478 },
+          ],
+        },
+      ],
     }
 
     const Weekhoptions = {
       animationEnabled: true,
       title: {
-        horizontalAlign: 'left'
+        horizontalAlign: 'left',
       },
       axisX: {
-        valueFormatString: 'DDD DD MMM'
+        valueFormatString: 'DDD DD MMM',
       },
       axisY: {
         title: 'Sales (in USD)',
         prefix: '$',
-        includeZero: false
+        includeZero: false,
       },
       data: [
         {
@@ -82,25 +82,25 @@ class Reports extends Component {
             { x: new Date(2019, 5, 18), y: 78547 },
             { x: new Date(2019, 5, 19), y: 42400 },
             { x: new Date(2019, 5, 20), y: 35687 },
-            { x: new Date(2019, 5, 21), y: 46584 }
-          ]
-        }
-      ]
+            { x: new Date(2019, 5, 21), y: 46584 },
+          ],
+        },
+      ],
     }
 
     const Yearoptions = {
       animationEnabled: true,
       title: {
-        horizontalAlign: 'left'
+        horizontalAlign: 'left',
       },
       axisX: {
         interval: 1,
-        intervalType: 'year'
+        intervalType: 'year',
       },
       axisY: {
         title: 'Sales (in USD)',
         prefix: '$',
-        includeZero: false
+        includeZero: false,
       },
       data: [
         {
@@ -115,18 +115,18 @@ class Reports extends Component {
             { x: new Date(2016, 0), y: 25984 },
             { x: new Date(2017, 0), y: 68547 },
             { x: new Date(2018, 0), y: 32400 },
-            { x: new Date(2019, 0), y: 25687 }
-          ]
-        }
-      ]
+            { x: new Date(2019, 0), y: 25687 },
+          ],
+        },
+      ],
     }
 
     return (
-      <div className='section-ptb'>
+      <div className="section-ptb">
         <Container>
           <Row>
             <Col lg={12}>
-              <div className='d-sm-flex reports-tab w-100 mb-0'>
+              <div className="d-sm-flex reports-tab w-100 mb-0">
                 <h4>Reports</h4>
               </div>
             </Col>
@@ -150,7 +150,7 @@ class Reports extends Component {
                 </TabPanel>
               </Tabs>
             </div>
-            <div className='reports-table'>
+            <div className="reports-table">
               <Tabs>
                 <TabList>
                   <Tab>Transaction List</Tab>
@@ -160,22 +160,22 @@ class Reports extends Component {
 
                 <TabPanel>
                   <div
-                    className='tab-pane fade show active'
-                    id='transaction-list'
-                    role='tabpanel'
-                    aria-labelledby='transaction-list-tab'
+                    className="tab-pane fade show active"
+                    id="transaction-list"
+                    role="tabpanel"
+                    aria-labelledby="transaction-list-tab"
                   >
-                    <div className='table-responsive'>
-                      <table className='table table-striped mb-0'>
+                    <div className="table-responsive">
+                      <table className="table table-striped mb-0">
                         <thead>
                           <tr>
-                            <th scope='col'>Transaction Id</th>
-                            <th scope='col'>Date</th>
-                            <th scope='col'>Type</th>
-                            <th scope='col'>Account</th>
-                            <th scope='col'>Amount</th>
-                            <th scope='col'>Debit</th>
-                            <th scope='col'>Balance</th>
+                            <th scope="col">Transaction Id</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Account</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Debit</th>
+                            <th scope="col">Balance</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -183,7 +183,7 @@ class Reports extends Component {
                             <tr key={index}>
                               <td>{T.TransactionID}</td>
                               <td>{T.Date}</td>
-                              <td className='text-success'>{T.Type}</td>
+                              <td className="text-success">{T.Type}</td>
                               <td>{T.Account}</td>
                               <td>{T.Amount}</td>
                               <td>{T.Debit}</td>
@@ -197,22 +197,22 @@ class Reports extends Component {
                 </TabPanel>
                 <TabPanel>
                   <div
-                    className='tab-pane fade show active'
-                    id='transaction-list'
-                    role='tabpanel'
-                    aria-labelledby='transaction-list-tab'
+                    className="tab-pane fade show active"
+                    id="transaction-list"
+                    role="tabpanel"
+                    aria-labelledby="transaction-list-tab"
                   >
-                    <div className='table-responsive'>
-                      <table className='table table-striped mb-0'>
+                    <div className="table-responsive">
+                      <table className="table table-striped mb-0">
                         <thead>
                           <tr>
-                            <th scope='col'>Transaction Id</th>
-                            <th scope='col'>Date</th>
-                            <th scope='col'>Account</th>
-                            <th scope='col'>Type</th>
-                            <th scope='col'>Amount</th>
-                            <th scope='col'>Balance</th>
-                            <th scope='col'>Status</th>
+                            <th scope="col">Transaction Id</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Account</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Balance</th>
+                            <th scope="col">Status</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -221,7 +221,7 @@ class Reports extends Component {
                               <td>{T.TransactionID}</td>
                               <td>{T.Date}</td>
                               <td>{T.Account}</td>
-                              <td className='text-success'>{T.Type}</td>
+                              <td className="text-success">{T.Type}</td>
                               <td>{T.Amount}</td>
                               <td>{T.Balance}</td>
                               <td>{T.Status}</td>
@@ -235,21 +235,21 @@ class Reports extends Component {
 
                 <TabPanel>
                   <div
-                    className='tab-pane fade show active'
-                    id='transaction-list'
-                    role='tabpanel'
-                    aria-labelledby='transaction-list-tab'
+                    className="tab-pane fade show active"
+                    id="transaction-list"
+                    role="tabpanel"
+                    aria-labelledby="transaction-list-tab"
                   >
-                    <div className='table-responsive'>
-                      <table className='table table-striped mb-0'>
+                    <div className="table-responsive">
+                      <table className="table table-striped mb-0">
                         <thead>
                           <tr>
-                            <th scope='col'>Item No</th>
-                            <th scope='col'>Date</th>
-                            <th scope='col'>Type</th>
-                            <th scope='col'>Company Name</th>
-                            <th scope='col'>Amount</th>
-                            <th scope='col'>Status</th>
+                            <th scope="col">Item No</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Company Name</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Status</th>
                           </tr>
                         </thead>
                         <tbody>
