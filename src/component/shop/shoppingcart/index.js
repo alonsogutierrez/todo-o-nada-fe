@@ -1,8 +1,11 @@
 /* eslint-disable react/no-string-refs */
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Col, Container, Row, Table } from 'reactstrap'
 import PropTypes from 'prop-types'
+
+import setProductsCart from '../../../actions/setProductsCartData'
 
 class ShopingCart extends Component {
   constructor(props) {
@@ -27,17 +30,18 @@ class ShopingCart extends Component {
   }
 
   setDefaults() {
-    var cart = JSON.parse(localStorage.getItem('LocalCartItems'))
-    if (cart.length == 0) {
-      this.props.history.push(`/`)
-      return
+    const { productsCart, history } = this.props
+    const { TotalShippingCarge } = this.state
+    if (!productsCart.length > 0) {
+      history.push('/')
     }
-    localStorage.setItem('TotalShippingCharge', this.state.TotalShippingCarge)
+    localStorage.setItem('TotalShippingCharge', TotalShippingCarge)
     localStorage.setItem('ShippingType', 1)
     this.forceUpdate()
   }
 
   readCartItems() {
+    const { productsCart } = this.props
     return JSON.parse(localStorage.getItem('LocalCartItems'))
   }
 
@@ -230,12 +234,25 @@ class ShopingCart extends Component {
     )
   }
 }
-export default ShopingCart
+
+const mapStateToProps = (state) => ({
+  productsCart: state.productsCartDataReducer.productsCartData,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  setProductsCart: (productsCart) => {
+    dispatch(setProductsCart(productsCart))
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopingCart)
 
 ShopingCart.defaultProps = {
   history: {},
+  productsCart: [],
 }
 
 ShopingCart.propTypes = {
   history: PropTypes.object,
+  productsCart: PropTypes.array,
 }

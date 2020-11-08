@@ -8,8 +8,8 @@ const validateLoginForm = async (email, password) => {
   }
   let isValidLogin = false
   try {
-    const resp = await clientAPI.loginUser(data)
-    isValidLogin = typeof resp === 'object'
+    const loginResponse = await clientAPI.loginUser(data)
+    isValidLogin = typeof loginResponse === 'object' && loginResponse.user
     return isValidLogin
   } catch (err) {
     console.error('invalid login: ', err.message)

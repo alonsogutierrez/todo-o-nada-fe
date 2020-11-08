@@ -19,21 +19,21 @@ class Header extends React.Component {
       collapsed: true,
       CartHide: true,
       classset: '',
-      getproduct: AllProduct
+      getproduct: AllProduct,
     }
     this.toggleNavbar = this.toggleNavbar.bind(this)
   }
 
   toggleNavbar() {
     this.setState({
-      collapsed: !this.state.collapsed
+      collapsed: !this.state.collapsed,
     })
   }
 
   logintoggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
-        activeTab: tab
+        activeTab: tab,
       })
     }
   }
@@ -57,16 +57,12 @@ class Header extends React.Component {
 
   handleScroll() {
     var scrollTop =
-      (document.documentElement && document.documentElement.scrollTop) ||
-      document.body.scrollTop
+      (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop
 
     if (scrollTop > 100) {
       document
         .getElementById('site-header')
-        .setAttribute(
-          'class',
-          'site-header header-style-menu-center is-sticky'
-        )
+        .setAttribute('class', 'site-header header-style-menu-center is-sticky')
     } else {
       document
         .getElementById('site-header')
@@ -77,11 +73,9 @@ class Header extends React.Component {
   HideCart() {
     var elm = document.getElementById('DivCartContent')
     if (elm !== null) {
-      document
-        .getElementById('DivCartContent')
-        .setAttribute('style', 'display:none')
+      document.getElementById('DivCartContent').setAttribute('style', 'display:none')
       this.setState({
-        CartHide: true
+        CartHide: true,
       })
     }
   }
@@ -95,16 +89,16 @@ class Header extends React.Component {
   onClickClassAdd(pages) {
     if (this.state.classset !== pages) {
       this.setState({
-        classset: pages
+        classset: pages,
       })
     } else {
       if (Object.keys(this.state.classset).length === 0) {
         this.setState({
-          classset: pages
+          classset: pages,
         })
       } else {
         this.setState({
-          classset: ''
+          classset: '',
         })
       }
     }
@@ -113,22 +107,22 @@ class Header extends React.Component {
   render() {
     if (this.state.timeout === true) {
       setTimeout(
-        function() {
+        function () {
           this.setState({ timeout: false })
         }.bind(this),
         2000
       ) // wait 5 seconds, then reset to false
     }
     return (
-      <header className='site-header header-style-menu-center' id='site-header'>
+      <header className="site-header header-style-menu-center" id="site-header">
         {this.state.timeout === false ? (
           <div>
-            <Topbar></Topbar>
-            <HeaderMain></HeaderMain>
+            <Topbar />
+            <HeaderMain />
           </div>
         ) : (
-          <div id='preloader'>
-            <Loader type='Puff' color='#04d39f' height='100' width='100' />
+          <div id="preloader">
+            <Loader type="Puff" color="#04d39f" height="100" width="100" />
           </div>
         )}
       </header>
