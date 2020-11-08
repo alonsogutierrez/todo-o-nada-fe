@@ -167,39 +167,6 @@ const ProductSlider = ({ productsCart, setProductsCart, settings, changeCart, se
                                 </Link>
                               )}
                             </div>
-                            <div className="product-action product-action-wishlist">
-                              {!CheckWishList(product.id) ? (
-                                <Link
-                                  onClick={() =>
-                                    AddToWishList(
-                                      product.id,
-                                      product.name,
-                                      product.pictures[0],
-                                      1,
-                                      product.salePrice,
-                                      'In Stock'
-                                    )
-                                  }
-                                  className="add_to_wishlist"
-                                  data-toggle="tooltip"
-                                  data-original-title="Wishlist"
-                                  data-placement="top"
-                                >
-                                  {' '}
-                                  Agregar a la lista de deseos
-                                </Link>
-                              ) : (
-                                <Link
-                                  to="/wishlist"
-                                  className="add_to_wishlist_fill"
-                                  data-toggle="tooltip"
-                                  data-original-title="Wishlist"
-                                  data-placement="top"
-                                >
-                                  Ver lista de deseos
-                                </Link>
-                              )}
-                            </div>
                           </div>
                         </div>
                       </div>
