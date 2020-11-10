@@ -1,11 +1,8 @@
 /* eslint-disable react/no-string-refs */
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Col, Container, Row, Table } from 'reactstrap'
 import PropTypes from 'prop-types'
-
-import setProductsCart from '../../../actions/setProductsCartData'
 
 class ShopingCart extends Component {
   constructor(props) {
@@ -30,9 +27,10 @@ class ShopingCart extends Component {
   }
 
   setDefaults() {
-    const { productsCart, history } = this.props
+    const { history } = this.props
     const { TotalShippingCarge } = this.state
-    if (!productsCart.length > 0) {
+    const cartItems = this.readCartItems()
+    if (cartItems && !cartItems.length > 0) {
       history.push('/')
     }
     localStorage.setItem('TotalShippingCharge', TotalShippingCarge)
@@ -41,7 +39,6 @@ class ShopingCart extends Component {
   }
 
   readCartItems() {
-    const { productsCart } = this.props
     return JSON.parse(localStorage.getItem('LocalCartItems'))
   }
 
@@ -74,11 +71,12 @@ class ShopingCart extends Component {
   }
 
   render() {
+    const cartItems = this.readCartItems()
     return (
       <div className="site-content">
         <div className="content-wrapper section-ptb">
           <Container>
-            {this.readCartItems() != null && this.readCartItems().length > 0 ? (
+            {cartItems !== null && cartItems.length > 0 ? (
               <Row>
                 <Col xl={8}>
                   <div className="table-responsive">
@@ -97,7 +95,7 @@ class ShopingCart extends Component {
                           <th className="product-subtotal">Total</th>
                         </tr>
 
-                        {this.readCartItems().map((CartItem, index) => (
+                        {cartItems.map((CartItem, index) => (
                           <tr key={index}>
                             <td className="product-remove">
                               <Link
@@ -174,7 +172,7 @@ class ShopingCart extends Component {
                               <span className="woocs_special_price_code">
                                 <span className="Price-amount amount">
                                   <span className="Price-currencySymbol">$</span>{' '}
-                                  {this.readCartItems()
+                                  {cartItems
                                     .reduce((fr, CartItem) => fr + CartItem.Qty * CartItem.Rate, 0)
                                     .toLocaleString(navigator.language, {
                                       minimumFractionDigits: 0,
@@ -192,7 +190,7 @@ class ShopingCart extends Component {
                                     <span className="Price-currencySymbol">$</span>{' '}
                                     {parseFloat(
                                       parseFloat(
-                                        this.readCartItems().reduce(
+                                        cartItems.reduce(
                                           (fr, CartItem) => fr + CartItem.Qty * CartItem.Rate,
                                           0
                                         )
@@ -235,24 +233,12 @@ class ShopingCart extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  productsCart: state.productsCartDataReducer.productsCartData,
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  setProductsCart: (productsCart) => {
-    dispatch(setProductsCart(productsCart))
-  }
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ShopingCart)
+export default ShopingCart
 
 ShopingCart.defaultProps = {
   history: {},
-  productsCart: [],
 }
 
 ShopingCart.propTypes = {
   history: PropTypes.object,
-  productsCart: PropTypes.array,
 }

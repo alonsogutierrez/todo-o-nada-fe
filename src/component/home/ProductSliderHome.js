@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, Container, Row } from 'reactstrap'
 
-import ProductSlider from '../../widgets/ProductSlider'
+import ProductSlider from './ProductSlider'
 
 const sliderConfig = {
   dots: false,
@@ -13,22 +13,22 @@ const sliderConfig = {
     {
       breakpoint: 991,
       settings: {
-        slidesToShow: 3
-      }
+        slidesToShow: 3,
+      },
     },
     {
       breakpoint: 767,
       settings: {
-        slidesToShow: 2
-      }
+        slidesToShow: 2,
+      },
     },
     {
       breakpoint: 575,
       settings: {
-        slidesToShow: 1
-      }
-    }
-  ]
+        slidesToShow: 1,
+      },
+    },
+  ],
 }
 
 const ProductSliderHome = () => (

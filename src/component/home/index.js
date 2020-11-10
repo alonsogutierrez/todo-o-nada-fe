@@ -3,8 +3,8 @@
  */
 import React, { Fragment } from 'react'
 
-import HomSlider from '../../widgets/HomSlider'
-import Instagram from '../../widgets/Instafeed'
+import HomSlider from './HomSlider'
+import Instagram from './Instafeed'
 
 import ProductSliderHome from './ProductSliderHome'
 import Collections from './Collections'

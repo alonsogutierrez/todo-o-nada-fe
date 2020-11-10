@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { Col, Container, Row } from 'reactstrap'
 import productdata from '../../api/product'
 import Pagination from '../../services/Pagination'
-import AdminproductList from '../../widgets/AdminProduct'
+import AdminproductList from './AdminProduct'
 
 class AdminProduct extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class AdminProduct extends Component {
       currentPage: null,
       totalPages: null,
       cp_productList: productdata,
-      IsDeleteProcess: false
+      IsDeleteProcess: false,
     }
   }
   componentDidMount() {
@@ -35,23 +35,17 @@ class AdminProduct extends Component {
         productList: this.state.cp_productList,
         currentProduct: curr_products,
         totalRecords: this.state.cp_productList.length,
-        IsDeleteProcess: true
+        IsDeleteProcess: true,
       })
       this.forceUpdate()
       this.render()
     } else {
-      let serachdata = this.state.cp_productList.filter(productname => {
+      let serachdata = this.state.cp_productList.filter((productname) => {
         if (searchproduct === searchproduct.toLowerCase()) {
-          let product =
-            productname.name
-              .toLowerCase()
-              .indexOf(searchproduct.toLowerCase()) > -1
+          let product = productname.name.toLowerCase().indexOf(searchproduct.toLowerCase()) > -1
           return product
         } else {
-          let product =
-            productname.name
-              .toUpperCase()
-              .indexOf(searchproduct.toUpperCase()) > -1
+          let product = productname.name.toUpperCase().indexOf(searchproduct.toUpperCase()) > -1
           return product
         }
       })
@@ -67,7 +61,7 @@ class AdminProduct extends Component {
         productList: serachdata,
         currentProduct: curr_products,
         totalRecords: searchproduct.length,
-        IsDeleteProcess: false
+        IsDeleteProcess: false,
       })
       this.forceUpdate()
       this.render()
@@ -83,7 +77,7 @@ class AdminProduct extends Component {
     this.setState({
       currentPage: currentPage,
       currentProduct: currentProduct,
-      totalPages: totalPages
+      totalPages: totalPages,
     })
   }
 
@@ -91,10 +85,10 @@ class AdminProduct extends Component {
     if (productdata) {
       let deletedproduct = productdata
       let newproduct = this.state.productList.filter(
-        CurrentProductList => CurrentProductList.id !== deletedproduct.id
+        (CurrentProductList) => CurrentProductList.id !== deletedproduct.id
       )
       let curr_products = newproduct.filter(
-        CurrentProductList => CurrentProductList.id !== deletedproduct.id
+        (CurrentProductList) => CurrentProductList.id !== deletedproduct.id
       )
       curr_products = curr_products.slice(
         (this.state.currentPage - 1) * 12,
@@ -107,29 +101,29 @@ class AdminProduct extends Component {
         currentProduct: curr_products,
         totalRecords: newproduct.length,
         totalPages: tpg,
-        IsDeleteProcess: true
+        IsDeleteProcess: true,
       })
     }
   }
   render() {
     return (
       <div>
-        <div className='section-ptb'>
+        <div className="section-ptb">
           <Container>
             <Row>
               <Col lg={12}>
-                <div className='mb-0'>
+                <div className="mb-0">
                   <h4>Product List</h4>
                 </div>
-                <div className='mb-4'>
+                <div className="mb-4">
                   <form>
-                    <div className='form-group mb-0'>
+                    <div className="form-group mb-0">
                       <input
-                        type='text'
-                        className='form-control'
-                        placeholder='Search product'
+                        type="text"
+                        className="form-control"
+                        placeholder="Search product"
                         value={this.state.productsearch}
-                        onChange={e => {
+                        onChange={(e) => {
                           this.onProductSearch(e.target.value)
                         }}
                       ></input>
@@ -137,9 +131,9 @@ class AdminProduct extends Component {
                   </form>
                 </div>
 
-                <div className='mb-0 mb-md-4'>
+                <div className="mb-0 mb-md-4">
                   {this.state.currentProduct.length > 0 ? (
-                    <Row className='products products-loop grid ciyashop-products-shortcode pgs-product-list'>
+                    <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
                       {this.state.currentProduct.map((product, index) => (
                         <AdminproductList
                           product={product}
@@ -149,22 +143,20 @@ class AdminProduct extends Component {
                       ))}
                     </Row>
                   ) : (
-                    <Row className='products products-loop grid ciyashop-products-shortcode'>
-                      <div className='col-sm-12 text-center  mt-4 mt-md-5'>
+                    <Row className="products products-loop grid ciyashop-products-shortcode">
+                      <div className="col-sm-12 text-center  mt-4 mt-md-5">
                         <img
                           src={require(`../../assets/images/empty-search.jpg`)}
-                          className='img-fluid mb-4'
+                          className="img-fluid mb-4"
                         />
-                        <h3>
-                          Sorry! No products were found matching your selection!{' '}
-                        </h3>
+                        <h3>Sorry! No products were found matching your selection! </h3>
                         <p>Please try to other words.</p>
                       </div>
                     </Row>
                   )}
                 </div>
-                <div className='row mt-md-3'>
-                  <div className='col-12'>
+                <div className="row mt-md-3">
+                  <div className="col-12">
                     {this.state.productList.length > 12 ? (
                       <div>
                         <Pagination

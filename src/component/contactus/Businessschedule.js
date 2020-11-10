@@ -4,9 +4,8 @@
 import React, { Component } from 'react'
 import { Col, Row } from 'reactstrap'
 
-
 class Businessschedule extends Component {
-   render() {
+  render() {
     return (
       <Row>
         <Col md={4} className="mb-4 mb-md-0">
@@ -16,20 +15,24 @@ class Businessschedule extends Component {
                 <div className="ciyashop_info_box-icon-wrap">
                   <div className="ciyashop_info_box-icon-outer">
                     <div className="ciyashop_info_box-icon-inner text-dark">
-                      <i className="fa fa-clock-o" /> </div>
+                      <i className="fa fa-clock-o" />{' '}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="ciyashop_info_box-content">
                 <div className="ciyashop_info_box-content-wrap">
                   <div className="ciyashop_info_box-content-inner">
-                    <h4 className="ciyashop_info_box-title">
-                      Business Hours </h4>
+                    <h4 className="ciyashop_info_box-title">Business Hours </h4>
                     <div className="ciyashop_info_box-description">
                       <p className="mb-1">Our Support team is available from</p>
-                      <p><strong>Monday to Friday</strong> : 10 a.m. – 7 p.m. (GMT +1)<br />
-                        <strong>Saturday</strong> : 9 a.m. – 1 p.m. (GMT +1)<br />
-                        <strong>Sunday</strong> : Closed</p>
+                      <p>
+                        <strong>Monday to Friday</strong> : 10 a.m. – 7 p.m. (GMT +1)
+                        <br />
+                        <strong>Saturday</strong> : 9 a.m. – 1 p.m. (GMT +1)
+                        <br />
+                        <strong>Sunday</strong> : Closed
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -44,15 +47,15 @@ class Businessschedule extends Component {
                 <div className="ciyashop_info_box-icon-wrap">
                   <div className="ciyashop_info_box-icon-outer">
                     <div className="ciyashop_info_box-icon-inner text-dark">
-                      <i className="fa fa-life-ring" /> </div>
+                      <i className="fa fa-life-ring" />{' '}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="ciyashop_info_box-content">
                 <div className="ciyashop_info_box-content-wrap">
                   <div className="ciyashop_info_box-content-inner">
-                    <h4 className="ciyashop_info_box-title">
-                      Our Support Center </h4>
+                    <h4 className="ciyashop_info_box-title">Our Support Center </h4>
                     <div className="ciyashop_info_box-description">
                       <p>We are available 24x7 online.</p>
                     </div>
@@ -69,20 +72,24 @@ class Businessschedule extends Component {
                 <div className="ciyashop_info_box-icon-wrap">
                   <div className="ciyashop_info_box-icon-outer">
                     <div className="ciyashop_info_box-icon-inner text-dark">
-                      <i className="fa fa-info-circle" /> </div>
+                      <i className="fa fa-info-circle" />{' '}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="ciyashop_info_box-content">
                 <div className="ciyashop_info_box-content-wrap">
                   <div className="ciyashop_info_box-content-inner">
-                    <h4 className="ciyashop_info_box-title">
-                      Some Information </h4>
+                    <h4 className="ciyashop_info_box-title">Some Information </h4>
                     <div className="ciyashop_info_box-description">
                       <p className="mb-1">Our Support team is available from</p>
-                      <p><strong>Monday to Friday</strong> : 10 a.m. – 7 p.m. (GMT +1)<br />
-                        <strong>Saturday</strong> : 9 a.m. – 1 p.m. (GMT +1)<br />
-                        <strong>Sunday</strong> : Closed</p>
+                      <p>
+                        <strong>Monday to Friday</strong> : 10 a.m. – 7 p.m. (GMT +1)
+                        <br />
+                        <strong>Saturday</strong> : 9 a.m. – 1 p.m. (GMT +1)
+                        <br />
+                        <strong>Sunday</strong> : Closed
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -90,11 +97,9 @@ class Businessschedule extends Component {
             </div>
           </div>
         </Col>
-        </Row>
+      </Row>
+    )
+  }
+}
 
-      )
-    }
- }
-
- export default Businessschedule
-
+export default Businessschedule

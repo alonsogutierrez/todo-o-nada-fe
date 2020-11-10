@@ -34,8 +34,8 @@ const getSearchName = (pageName) => {
   }
 }
 
-const HeaderMain = ({ productsCart, changeCart }) => {
-  const [productsCartItems, setProductsCartItems] = useState(productsCart)
+const HeaderMain = ({ changeCart }) => {
+  const [productsCartItems, setProductsCartItems] = useState([])
   const [cartHide, setCartHide] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
   const [classset] = useState('')
@@ -45,8 +45,7 @@ const HeaderMain = ({ productsCart, changeCart }) => {
   }
 
   const readCartItems = () => {
-    const itemsInCart = productsCartItems
-    return itemsInCart
+    return productsCartItems === null ? [] : productsCartItems
   }
 
   const showCart = () => {
@@ -127,9 +126,9 @@ const HeaderMain = ({ productsCart, changeCart }) => {
   }
 
   useEffect(() => {
-    setProductsCartItems(productsCart)
+    setProductsCartItems(JSON.parse(localStorage.getItem('LocalCartItems')))
   }, [changeCart])
-  
+
   const pathnames = document.location.href
   const pathArray = pathnames.split('/')
   const pageName = '/' + pathArray[pathArray.length - 1]
@@ -137,7 +136,7 @@ const HeaderMain = ({ productsCart, changeCart }) => {
   const itemsInCart = readCartItems()
   const isItemsInCart = itemsInCart.length > 0
   const urlRedirectShoppingCart = !isItemsInCart ? '#' : '/shopping-cart'
-  
+
   return (
     <Fragment>
       <div className="header-main header-main-bg-color-default">
@@ -188,11 +187,7 @@ const HeaderMain = ({ productsCart, changeCart }) => {
                               <span className="cart-icon">
                                 <i className="glyph-icon pgsicon-ecommerce-empty-shopping-cart" />
                               </span>
-                              <span className="cart-count count">
-                                {' '}
-                                {itemsInCart.length}
-                                {' '}
-                              </span>
+                              <span className="cart-count count"> {itemsInCart.length} </span>
                             </Link>
 
                             {isItemsInCart ? (
@@ -263,16 +258,10 @@ const HeaderMain = ({ productsCart, changeCart }) => {
                                       </span>
                                     </p>
                                     <p className="ciyashop-mini-cart__buttons buttons">
-                                      <Link
-                                        to="/shopping-cart"
-                                        className="button wc-forward"
-                                      >
+                                      <Link to="/shopping-cart" className="button wc-forward">
                                         View cart
                                       </Link>
-                                      <Link
-                                        to="/CheckOut"
-                                        className="button checkout wc-forward"
-                                      >
+                                      <Link to="/CheckOut" className="button checkout wc-forward">
                                         Checkout
                                       </Link>
                                     </p>
@@ -317,9 +306,7 @@ const HeaderMain = ({ productsCart, changeCart }) => {
                       {navLinks.map((navLink, index) => (
                         <li
                           key={index}
-                          className={`nav-item ${
-                            classset === navLink.menu_title ? 'show' : ''
-                          }`}
+                          className={`nav-item ${classset === navLink.menu_title ? 'show' : ''}`}
                         >
                           {navLink.type && navLink.type === 'subMenu' ? (
                             <Fragment>
@@ -332,9 +319,7 @@ const HeaderMain = ({ productsCart, changeCart }) => {
                               </Link>
                               <ul
                                 className={
-                                  classset === navLink.menu_title
-                                    ? 'showcollapsed'
-                                    : 'submenu'
+                                  classset === navLink.menu_title ? 'showcollapsed' : 'submenu'
                                 }
                               >
                                 {navLink.child_routes &&
@@ -381,18 +366,15 @@ const HeaderMain = ({ productsCart, changeCart }) => {
 }
 
 const mapStateToProps = (state) => ({
-  productsCart: state.productsCartDataReducer.productsCartData,
   changeCart: state.changeCartDataReducer.changeCartData,
 })
 
 export default connect(mapStateToProps)(HeaderMain)
 
 HeaderMain.defaultProps = {
-  productsCart: [],
   changeCart: false,
 }
 
 HeaderMain.propTypes = {
-  productsCart: PropTypes.array,
   changeCart: PropTypes.bool,
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, Container, Row } from 'reactstrap'
 
-import ProductSlider from '../../widgets/ProductSlider'
+import ProductSlider from '../home/ProductSlider'
 
 const saleslider = {
   dots: false,

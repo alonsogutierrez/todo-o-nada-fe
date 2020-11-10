@@ -10,7 +10,6 @@ import filters from './filters'
 import errorsForm from './errorsForm'
 import userData from './userData'
 import orderData from './orderData'
-import productsCartData from './productsCartData'
 import changeCartData from './changeCartData'
 
 export const rootReducer = combineReducers({
@@ -19,7 +18,6 @@ export const rootReducer = combineReducers({
   errorsForm,
   userDataReducer: userData,
   orderDataReducer: orderData,
-  productsCartDataReducer: productsCartData,
   changeCartDataReducer: changeCartData,
   ReducersIntl,
 })

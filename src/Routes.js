@@ -17,7 +17,6 @@ import ShopPage from './component/shop'
 import MyAccount from './component/account/MyAccount'
 import PageNotFound from './component/pages/PageNotFound'
 
-import WishList from './component/wishlist/WishList'
 import CheckOut from './component/shop/CheckOut'
 
 import Address from './component/account/Address'
@@ -59,7 +58,6 @@ const Routes = ({ receiveProducts }) => {
           <Route exact path="/niños" component={ShopPage} />
           <Route exact path="/shopping-cart" component={ShoppingCart} />
           <Route exact path="/myaccount" component={MyAccount} />
-          <Route exact path="/wishlist" component={WishList} />
           <Route exact path="/account/address" component={Address} />
           <Route exact path="/account/orderhistory" component={OrderHistory} />
           <Route exact path="/account/savedcards" component={SavedCards} />

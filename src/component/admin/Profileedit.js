@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { Button, Col, Container, Row } from 'reactstrap'
 import Common from '../../api/common'
-import AdminProfileDetail from '../../widgets/AdminProfileDetail'
+import AdminProfileDetail from './AdminProfileDetail'
 import Adminsitebar from './Adminsitebar'
 
 class Profileedit extends Component {
@@ -12,7 +12,7 @@ class Profileedit extends Component {
     super()
     this.state = {
       fieldvalue: Common['0']['profile'],
-      errors: {}
+      errors: {},
     }
   }
 
@@ -111,135 +111,117 @@ class Profileedit extends Component {
 
   render() {
     return (
-      <div className='section-ptb'>
+      <div className="section-ptb">
         <Container>
           <AdminProfileDetail />
           <Row>
             <Adminsitebar />
-            <Col lg={9} className='mt-4 mt-lg-0'>
+            <Col lg={9} className="mt-4 mt-lg-0">
               <Row>
                 <Col lg={12}>
-                  <div className='woocommerce-Address woocommerce-Address-edit'>
-                    <div className='woocommerce-Address-title'>
-                      <h5 className='mb-0'>Profile Information Edit </h5>
+                  <div className="woocommerce-Address woocommerce-Address-edit">
+                    <div className="woocommerce-Address-title">
+                      <h5 className="mb-0">Profile Information Edit </h5>
                     </div>
-                    <div className='woocommerce-Address-info mt-4'>
+                    <div className="woocommerce-Address-info mt-4">
                       <form onSubmit={this.onProfileFormSubmit.bind(this)}>
-                        <div className='form-group'>
+                        <div className="form-group">
                           <label>First name</label>
                           <input
-                            type='text'
-                            className='form-control'
+                            type="text"
+                            className="form-control"
                             value={this.state.fieldvalue.firstname}
                             onChange={this.handleChange.bind(this, 'firstname')}
-                            placeholder='First name'
+                            placeholder="First name"
                           />
-                          <span className='error'>
-                            {this.state.errors['firstname']}
-                          </span>
+                          <span className="error">{this.state.errors['firstname']}</span>
                         </div>
-                        <div className='form-group'>
+                        <div className="form-group">
                           <label>Last name</label>
                           <input
-                            type='text'
-                            className='form-control'
+                            type="text"
+                            className="form-control"
                             value={this.state.fieldvalue.lastname}
                             onChange={this.handleChange.bind(this, 'lastname')}
-                            placeholder='Last name'
+                            placeholder="Last name"
                           ></input>
-                          <span className='error'>
-                            {this.state.errors['lastname']}
-                          </span>
+                          <span className="error">{this.state.errors['lastname']}</span>
                         </div>
-                        <div className='form-group'>
-                          <label className='d-block'>Gender</label>
-                          <div className='custom-control custom-radio custom-control-inline'>
+                        <div className="form-group">
+                          <label className="d-block">Gender</label>
+                          <div className="custom-control custom-radio custom-control-inline">
                             <input
-                              type='radio'
-                              id='male'
-                              name='gender'
-                              className='custom-control-input'
-                              value='Male'
+                              type="radio"
+                              id="male"
+                              name="gender"
+                              className="custom-control-input"
+                              value="Male"
                               onChange={this.handleChange.bind(this, 'gender')}
                               checked={this.state.fieldvalue.gender === 'Male'}
                             ></input>
-                            <label
-                              className='custom-control-label'
-                              htmlFor='male'
-                            >
+                            <label className="custom-control-label" htmlFor="male">
                               Male
                             </label>
                           </div>
-                          <div className='custom-control custom-radio custom-control-inline'>
+                          <div className="custom-control custom-radio custom-control-inline">
                             <input
-                              type='radio'
-                              id='female'
-                              name='gender'
-                              className='custom-control-input'
-                              value='Female'
+                              type="radio"
+                              id="female"
+                              name="gender"
+                              className="custom-control-input"
+                              value="Female"
                               onChange={this.handleChange.bind(this, 'gender')}
-                              checked={
-                                this.state.fieldvalue.gender === 'Female'
-                              }
+                              checked={this.state.fieldvalue.gender === 'Female'}
                             ></input>
-                            <label
-                              className='custom-control-label'
-                              htmlFor='female'
-                            >
+                            <label className="custom-control-label" htmlFor="female">
                               Female
                             </label>
                           </div>
                         </div>
-                        <div className='form-group'>
+                        <div className="form-group">
                           <label>Date of birth</label>
                           <input
-                            type='date'
-                            className='form-control'
-                            placeholder='Date of birth'
+                            type="date"
+                            className="form-control"
+                            placeholder="Date of birth"
                             value={this.state.fieldvalue.dob}
                             onChange={this.handleChange.bind(this, 'dob')}
                           ></input>
                         </div>
-                        <div className='form-group'>
+                        <div className="form-group">
                           <label>Phone</label>
                           <input
-                            type='text'
-                            className='form-control'
-                            placeholder='Phone no'
+                            type="text"
+                            className="form-control"
+                            placeholder="Phone no"
                             value={this.state.fieldvalue.phoneno}
                             onChange={this.handleChange.bind(this, 'phoneno')}
                           ></input>
-                          <span className='error'>
-                            {this.state.errors['phoneno']}
-                          </span>
+                          <span className="error">{this.state.errors['phoneno']}</span>
                         </div>
-                        <div className='form-group'>
+                        <div className="form-group">
                           <label>Email</label>
                           <input
-                            type='Email'
-                            className='form-control'
-                            placeholder='Email'
+                            type="Email"
+                            className="form-control"
+                            placeholder="Email"
                             value={this.state.fieldvalue.email}
                             onChange={this.handleChange.bind(this, 'email')}
                           ></input>
-                          <span className='error'>
-                            {this.state.errors['email']}
-                          </span>
+                          <span className="error">{this.state.errors['email']}</span>
                         </div>
-                        <div className='form-group'>
+                        <div className="form-group">
                           <label>Address</label>
                           <textarea
-                            className='form-control'
-                            rows='3'
-                            placeholder='Address'
+                            className="form-control"
+                            rows="3"
+                            placeholder="Address"
                             value={this.state.fieldvalue.address}
                             onChange={this.handleChange.bind(this, 'address')}
                           ></textarea>
-                          <span className='error'>
-                            {this.state.errors['address']}
-                          </span>
+                          <span className="error">{this.state.errors['address']}</span>
                         </div>
-                        <Button type='submit' className='btn btn-primary'>
+                        <Button type="submit" className="btn btn-primary">
                           Save
                         </Button>
                       </form>

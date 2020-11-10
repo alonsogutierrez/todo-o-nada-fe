@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Instagram from '../../../widgets/Instafeed'
+import Instagram from '../../home/Instafeed'
 
 const InstagramBanner = () => (
   <div className="content-wrapper overflow-hidden">

@@ -12,7 +12,7 @@ function AboutBanner2() {
           <Col lg={5}>
             <img
               // eslint-disable-next-line no-undef
-              src={require(`../assets/images/about-us.jpg`)}
+              src={require(`../../assets/images/about-us.jpg`)}
               className='img-fluid'
             />
           </Col>

@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 
 import ProductDetailSupportInfo from './ProductDetailSupportInfo'
 import PostDetail from '../../templates/post-detail'
-import ProductSlider from '../../widgets/ProductSlider'
+import ProductSlider from '../home/ProductSlider'
 
 const relatedSliderConfig = {
   dots: false,
@@ -24,22 +24,22 @@ const relatedSliderConfig = {
     {
       breakpoint: 991,
       settings: {
-        slidesToShow: 3
-      }
+        slidesToShow: 3,
+      },
     },
     {
       breakpoint: 767,
       settings: {
-        slidesToShow: 2
-      }
+        slidesToShow: 2,
+      },
     },
     {
       breakpoint: 575,
       settings: {
-        slidesToShow: 1
-      }
-    }
-  ]
+        slidesToShow: 1,
+      },
+    },
+  ],
 }
 
 class ProductDetail extends Component {
@@ -49,7 +49,7 @@ class ProductDetail extends Component {
       allProducts: this.props.products,
       productId: parseInt(this.props.match.params.id),
       currentProduct: null,
-      activeTab: '1'
+      activeTab: '1',
     }
     this.toggle = this.toggle.bind(this)
   }
@@ -59,10 +59,10 @@ class ProductDetail extends Component {
     let currentProductId = this.state.productId
     let allProducts = this.state.allProducts
     if (allProducts && allProducts.length > 0) {
-      const product = allProducts.find(product => product.id === currentProductId)
+      const product = allProducts.find((product) => product.id === currentProductId)
       if (product !== undefined) {
         this.setState({
-          currentProduct: product
+          currentProduct: product,
         })
       }
     }
@@ -71,7 +71,7 @@ class ProductDetail extends Component {
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
-        activeTab: tab
+        activeTab: tab,
       })
     }
   }
@@ -159,9 +159,9 @@ class ProductDetail extends Component {
   }
 }
 
-const AppMapStateToProps = state => {
+const AppMapStateToProps = (state) => {
   return {
-    products: state.data.products
+    products: state.data.products,
   }
 }
 
@@ -169,10 +169,10 @@ export default connect(AppMapStateToProps)(withRouter(ProductDetail))
 
 ProductDetail.defaultProps = {
   products: [],
-  match: {}
+  match: {},
 }
 
 ProductDetail.propTypes = {
   products: PropTypes.array,
-  match: PropTypes.object
+  match: PropTypes.object,
 }

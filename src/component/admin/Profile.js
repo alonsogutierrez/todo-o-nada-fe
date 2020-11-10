@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Container, Row } from 'reactstrap'
 import Common1 from '../../api/common'
-import AdminProfileDetail from '../../widgets/AdminProfileDetail'
+import AdminProfileDetail from './AdminProfileDetail'
 import Adminsitebar from './Adminsitebar'
 
 class Profile extends Component {
@@ -15,24 +15,24 @@ class Profile extends Component {
   render() {
     const Profile = Common1['0']['profile']
     return (
-      <div className='section-ptb'>
+      <div className="section-ptb">
         <Container>
           <AdminProfileDetail />
           <Row>
             <Adminsitebar />
 
-            <Col lg={9} className='mt-4 mt-lg-0'>
+            <Col lg={9} className="mt-4 mt-lg-0">
               <Row>
                 <Col lg={12}>
-                  <div className='woocommerce-Address'>
-                    <div className='woocommerce-Address-title'>
-                      <h5 className='mb-0'>Profile Information</h5>
-                      <Link class='edit' to='/admin-panel/Profileedit'>
+                  <div className="woocommerce-Address">
+                    <div className="woocommerce-Address-title">
+                      <h5 className="mb-0">Profile Information</h5>
+                      <Link class="edit" to="/admin-panel/Profileedit">
                         Edit
                       </Link>
                     </div>
-                    <div className='woocommerce-Address-info mt-4'>
-                      <ul className='list-unstyled mb-0'>
+                    <div className="woocommerce-Address-info mt-4">
+                      <ul className="list-unstyled mb-0">
                         <li>
                           <span>First name:</span>
                           <strong>{Profile.firstname}</strong>

@@ -3,10 +3,10 @@
  */
 import React, { Component } from 'react'
 import { Col, Container, Row } from 'reactstrap'
-import AboutBanner2 from '../../widgets/AboutBanner2'
-import BrandLogoSlider2 from '../../widgets/BrandLogoSlider2'
-import InterestingFacts from '../../widgets/InterestingFacts'
-import OurTeam from '../../widgets/OurTeam'
+import AboutBanner2 from './AboutBanner2'
+import BrandLogoSlider2 from './BrandLogoSlider2'
+import InterestingFacts from './InterestingFacts'
+import OurTeam from './OurTeam'
 import PageTitle from '../../widgets/PageTitle'
 
 const ourteam = {

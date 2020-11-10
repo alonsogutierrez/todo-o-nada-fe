@@ -6,62 +6,26 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { ToastContainer, toast } from 'react-toastify'
 
-import sliderProducts from '../api/sliderProducts.json'
-import setProductsCartData from '../actions/setProductsCartData'
-import setChangeCartData from '../actions/setChangeCartData'
+import sliderProducts from '../../api/sliderProducts.json'
+import setChangeCartData from '../../actions/setChangeCartData'
 
-const ProductSlider = ({ productsCart, setProductsCart, settings, changeCart, setChangeCart }) => {
+const ProductSlider = ({ settings, changeCart, setChangeCart }) => {
   function AddToCart(ProductID, ProductName, ProductImage, Qty, Rate, StockStatus) {
-    const thereAreProductsInCart = productsCart.length > 0
-    let productData = {}
-    if (thereAreProductsInCart) {
-      const product = productsCart.find(product => product.productId === ProductID)
-      if (!product) {
-        productData = {
-          ProductID: ProductID,
-          ProductName: ProductName,
-          ProductImage: ProductImage,
-          Qty: Qty,
-          Rate: Rate,
-          StockStatus: StockStatus
-        }
-        productsCart.push(productData)
-        const newProductsCart = productsCart
-        setProductsCart(newProductsCart)
-        setChangeCart(!changeCart)
-        toast.success('Producto agregado al reducer!')
-      } else {
-        toast.error('Producto ya existente en el reducer')
-      }
-    } else {
-      productData = {
-        ProductID: ProductID,
-        ProductName: ProductName,
-        ProductImage: ProductImage,
-        Qty: Qty,
-        Rate: Rate,
-        StockStatus: StockStatus
-      }
-      productsCart.push(productData)
-      const newProductsCart = productsCart
-      setProductsCart(newProductsCart)
-      setChangeCart(!changeCart)
-      toast.success('Producto agregado al reducer!')
-    }
-    var Cart = JSON.parse(localStorage.getItem('LocalCartItems'))
-    if (Cart == null) Cart = new Array()
-    let selectedProduct = Cart.find(product => product.ProductName === ProductName)
-    if (selectedProduct == null) {
-      Cart.push({
-        ProductID: ProductID,
-        ProductName: ProductName,
-        ProductImage: ProductImage,
-        Qty: Qty,
-        Rate: Rate,
-        StockStatus: StockStatus
+    let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
+    if (!cartItems) cartItems = []
+    let selectedProduct = cartItems.find((item) => item.ProductID === ProductID)
+    if (!selectedProduct) {
+      cartItems.push({
+        ProductID,
+        ProductName,
+        ProductImage,
+        Qty,
+        Rate,
+        StockStatus,
       })
       localStorage.removeItem('LocalCartItems')
-      localStorage.setItem('LocalCartItems', JSON.stringify(Cart))
+      localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
+      setChangeCart(!changeCart)
       toast.success('Producto agregado al carro')
     } else {
       toast.warning('Este producto ya esta en tu carro!')
@@ -121,7 +85,7 @@ const ProductSlider = ({ productsCart, setProductsCart, settings, changeCart, se
                             {product.pictures[0] ? (
                               <div className="product-thumbnail-main">
                                 <img
-                                  src={require(`../assets/images/${product.pictures[0]}`)}
+                                  src={require(`../../assets/images/${product.pictures[0]}`)}
                                   className="img-fluid"
                                 />
                               </div>
@@ -129,7 +93,7 @@ const ProductSlider = ({ productsCart, setProductsCart, settings, changeCart, se
                             {product.pictures[1] ? (
                               <div className="product-thumbnail-swap">
                                 <img
-                                  src={require(`../assets/images/${product.pictures[1]}`)}
+                                  src={require(`../../assets/images/${product.pictures[1]}`)}
                                   className="img-fluid"
                                 />
                               </div>
@@ -181,7 +145,7 @@ const ProductSlider = ({ productsCart, setProductsCart, settings, changeCart, se
                               <span className="price-amount amount">
                                 <span className="currency-symbol">$</span>
                                 {product.salePrice.toLocaleString(navigator.language, {
-                                  minimumFractionDigits: 0
+                                  minimumFractionDigits: 0,
                                 })}
                               </span>
                             </ins>
@@ -205,12 +169,10 @@ const ProductSlider = ({ productsCart, setProductsCart, settings, changeCart, se
 }
 
 const mapStateToProps = (state) => ({
-  productsCart: state.productsCartDataReducer.productsCartData,
   changeCart: state.changeCartDataReducer.changeCartData,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setProductsCart: (productsCart) => dispatch(setProductsCartData(productsCart)),
   setChangeCart: (change) => dispatch(setChangeCartData(change)),
 })
 
@@ -219,17 +181,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(ProductSlider)
 ProductSlider.defaultProps = {
   settings: {},
   productSub: '',
-  productsCart: [],
   changeCart: false,
-  setProductsCart: () => {},
   setChangeCart: () => {},
 }
 
 ProductSlider.propTypes = {
   settings: PropTypes.object,
   productSub: PropTypes.string,
-  productsCart: PropTypes.array,
   changeCart: PropTypes.bool,
-  setProductsCart: PropTypes.func,
   setChangeCart: PropTypes.func,
 }
