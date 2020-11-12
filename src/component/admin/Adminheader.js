@@ -18,10 +18,9 @@ import {
   Row,
   UncontrolledDropdown,
 } from 'reactstrap'
-
 import Common from '../../api/common'
 import logo from '../../assets/images/logo.svg'
-import profileImg from '../../assets/images/testimonials/img-02.jpg'
+import profile from '../../assets/images/testimonials/img-02.jpg'
 
 class AdminHeader extends Component {
   constructor(props) {
@@ -34,27 +33,17 @@ class AdminHeader extends Component {
     }
     this.toggle2 = this.toggle2.bind(this)
     this.toggle3 = this.toggle3.bind(this)
-    this.Changeclass = this.Changeclass.bind(this)
   }
-
-  componentDidMount() {
-    window.scrollTo(0, 0)
-  }
-
   toggle2() {
-    const { dropdownOpen } = this.state
     this.setState({
-      dropdownOpen: !dropdownOpen,
+      dropdownOpen: !this.state.dropdownOpen,
     })
   }
-
   toggle3() {
-    const { isOpen } = this.state
     this.setState({
-      isOpen: !isOpen,
+      isOpen: !this.state.isOpen,
     })
   }
-
   Changeclass(val) {
     var removeelems = document.getElementsByClassName('nav-item')
     ;[].forEach.call(removeelems, function (el) {
@@ -74,10 +63,8 @@ class AdminHeader extends Component {
       document.querySelector('.backhome').classList.add('active')
     }
   }
-
   render() {
     const Profile = Common['0']['profile']
-    const { dropdownOpen } = this.state
     return (
       <div className="admin-menu">
         <Container>
@@ -89,14 +76,14 @@ class AdminHeader extends Component {
                 </Link>
 
                 <Dropdown
-                  isOpen={dropdownOpen}
+                  isOpen={this.state.dropdownOpen}
                   toggle={this.toggle2}
                   className="profile-dropdown ml-auto"
                 >
                   <DropdownToggle caret className="btn-white">
                     <img
                       className="img-fluid rounded-circle profile-img"
-                      src={profileImg}
+                      src={profile}
                       alt="profile"
                     />
                     <div className="d-none d-sm-block">
@@ -109,7 +96,7 @@ class AdminHeader extends Component {
                       onClick={() => this.Changeclass('profile')}
                       className="nav-link"
                       tag={Link}
-                      to="/admin-dashboard/profile"
+                      to="/admin-dashboard/Profile"
                     >
                       <i className="fa fa-user-circle-o"></i>Profile
                     </DropdownItem>
@@ -117,7 +104,7 @@ class AdminHeader extends Component {
                       onClick={() => this.Changeclass('profile')}
                       className="nav-link"
                       tag={Link}
-                      to="/admin-dashboard/settings"
+                      to="/admin-dashboard/Settings"
                     >
                       <i className="fa fa-cog"></i>Account settings
                     </DropdownItem>
@@ -138,7 +125,7 @@ class AdminHeader extends Component {
                   <Nav navbar>
                     <NavItem className="active report">
                       <Link
-                        to="/admin-dashboard/reports"
+                        to="/admin-dashboard/Reports"
                         className="nav-link"
                         onClick={() => this.Changeclass('report')}
                       >
@@ -147,7 +134,7 @@ class AdminHeader extends Component {
                     </NavItem>
                     <NavItem className="invoice">
                       <Link
-                        to="/admin-dashboard/invoices"
+                        to="/admin-dashboard/Invoices"
                         className="nav-link"
                         onClick={() => this.Changeclass('invoice')}
                       >
@@ -163,7 +150,7 @@ class AdminHeader extends Component {
                           onClick={() => this.Changeclass('product')}
                           className="nav-link"
                           tag={Link}
-                          to="/admin-dashboard/product"
+                          to="/admin-dashboard/Product"
                         >
                           <i className="fa fa-cart-plus"></i>Products
                         </DropdownItem>
@@ -179,7 +166,7 @@ class AdminHeader extends Component {
                     </UncontrolledDropdown>
                     <NavItem className="profile">
                       <Link
-                        to="/admin-dashboard/profile"
+                        to="/admin-dashboard/Profile"
                         className="nav-link"
                         onClick={() => this.Changeclass('profile')}
                       >
@@ -205,5 +192,4 @@ class AdminHeader extends Component {
     )
   }
 }
-
 export default AdminHeader

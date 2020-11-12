@@ -11,80 +11,75 @@ class Adminsitebar extends Component {
     this.state = {
       Coll_act: false,
       Prof_act: false,
-      Sett_act: false,
+      Sett_act: false
     }
-    this.SetActiveClass = this.SetActiveClass.bind(this)
-    this.isSomeActiveClass = this.isSomeActiveClass.bind(this)
   }
-
   SetActiveClass() {
+    this.setState({
+      Coll_act: false,
+      Prof_act: false,
+      Sett_act: false
+    })
     let pathname = document.location.href
     let pathArray = pathname.split('/')
     let pageName = pathArray[pathArray.length - 1]
-    if (!this.isSomeActiveClass()) {
-      if (pageName.toLowerCase() == 'collaboration') {
-        this.setState({
-          Coll_act: true,
-        })
-      } else if (pageName.toLowerCase() == 'profile' || pageName.toLowerCase() == 'profileedit') {
-        this.setState({
-          Prof_act: true,
-        })
-      } else if (pageName.toLowerCase() == 'settings') {
-        this.setState({
-          Sett_act: true,
-        })
-      }
-      return true
+    if (pageName.toLowerCase() == 'collaboration') {
+      this.setState({
+        Coll_act: true
+      })
+    } else if (
+      pageName.toLowerCase() == 'profile' ||
+      pageName.toLowerCase() == 'profileedit'
+    ) {
+      this.setState({
+        Prof_act: true
+      })
+    } else if (pageName.toLowerCase() == 'settings') {
+      this.setState({
+        Sett_act: true
+      })
     }
-    return false
-  }
 
-  isSomeActiveClass() {
-    const { Prof_act, Coll_act, Sett_act } = this.state
-    if (Prof_act || Coll_act || Sett_act) {
-      return true
-    }
-    return false
+    return true
   }
-
   render() {
-    const { Prof_act, Coll_act, Sett_act } = this.state
     return (
       <Fragment>
         {this.SetActiveClass() ? (
           <Col lg={3}>
-            <div className="woocommerce-MyAccount-navigation">
-              <Nav className="flex-column">
+            <div className='woocommerce-MyAccount-navigation'>
+              <Nav className='flex-column'>
                 <NavItem>
                   <Link
                     className={`${
-                      Prof_act == true ? 'active' : ''
+                      this.state.Prof_act == true ? 'active' : ''
                     } adminprofile nav-link admin-nav`}
-                    to="/admin-panel/Profile"
+                    to='/admin-panel/Profile'
                   >
                     {' '}
-                    <i className="fa fa-user-o"></i> Profile
+                    <i className='fa fa-user-o'></i> Profile
                   </Link>
                 </NavItem>
                 <NavItem>
                   <Link
                     className={`${
-                      Coll_act == true ? 'active' : ''
+                      this.state.Coll_act == true ? 'active' : ''
                     } collaboration nav-link admin-nav`}
-                    to="/admin-panel/Collaboration"
+                    to='/admin-panel/Collaboration'
                   >
                     {' '}
-                    <i className="fa fa-map-marker"></i> Collaboration
+                    <i className='fa fa-map-marker'></i> Collaboration
                   </Link>
                 </NavItem>
                 <NavItem>
                   <Link
-                    className={`${Sett_act == true ? 'active' : ''} account nav-link admin-nav`}
-                    to="/admin-panel/Settings"
+                    className={`${
+                      this.state.Sett_act == true ? 'active' : ''
+                    } account nav-link admin-nav`}
+                    to='/admin-panel/Settings'
                   >
                     {' '}
-                    <i className="fa fa-cogs"></i> Account Settings
+                    <i className='fa fa-cogs'></i> Account Settings
                   </Link>
                 </NavItem>
               </Nav>

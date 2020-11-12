@@ -19,31 +19,28 @@ class AdminProduct extends Component {
       cp_productList: productdata,
       IsDeleteProcess: false,
     }
-    this.onPageChanged = this.onPageChanged.bind(this)
-    this.onProductSearch = this.onProductSearch.bind(this)
-    this.onDeleteProduct = this.onDeleteProduct.bind(this)
   }
-
   componentDidMount() {
     window.scrollTo(0, 0)
   }
-
   onProductSearch(searchproduct) {
     let curr_products
-    const { cp_productList, currentPage } = this.state
     if (searchproduct === '') {
-      curr_products = cp_productList.slice((currentPage - 1) * 12, (currentPage - 1) * 12 + 12)
+      curr_products = this.state.cp_productList.slice(
+        (this.state.currentPage - 1) * 12,
+        (this.state.currentPage - 1) * 12 + 12
+      )
       this.setState({
         productsearch: searchproduct,
-        productList: cp_productList,
+        productList: this.state.cp_productList,
         currentProduct: curr_products,
-        totalRecords: cp_productList.length,
+        totalRecords: this.state.cp_productList.length,
         IsDeleteProcess: true,
       })
       this.forceUpdate()
       this.render()
     } else {
-      let serachdata = cp_productList.filter((productname) => {
+      let serachdata = this.state.cp_productList.filter((productname) => {
         if (searchproduct === searchproduct.toLowerCase()) {
           let product = productname.name.toLowerCase().indexOf(searchproduct.toLowerCase()) > -1
           return product
@@ -108,7 +105,6 @@ class AdminProduct extends Component {
       })
     }
   }
-
   render() {
     return (
       <div>
@@ -190,5 +186,4 @@ class AdminProduct extends Component {
     )
   }
 }
-
 export default AdminProduct
