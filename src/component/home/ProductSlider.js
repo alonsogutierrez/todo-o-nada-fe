@@ -5,6 +5,7 @@ import { Col } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 import sliderProducts from '../../api/sliderProducts.json'
 import setChangeCartData from '../../actions/setChangeCartData'
@@ -128,39 +129,6 @@ const ProductSlider = ({ settings, changeCart, setChangeCart }) => {
                                   rel="nofollow"
                                 >
                                   Ver el carro
-                                </Link>
-                              )}
-                            </div>
-                            <div className="product-action product-action-wishlist">
-                              {!CheckWishList(product.id) ? (
-                                <Link
-                                  onClick={() =>
-                                    AddToWishList(
-                                      product.id,
-                                      product.name,
-                                      product.pictures[0],
-                                      1,
-                                      product.salePrice,
-                                      'In Stock'
-                                    )
-                                  }
-                                  className="add_to_wishlist"
-                                  data-toggle="tooltip"
-                                  data-original-title="Wishlist"
-                                  data-placement="top"
-                                >
-                                  {' '}
-                                  Agregar a la lista de deseos
-                                </Link>
-                              ) : (
-                                <Link
-                                  to="/wishlist"
-                                  className="add_to_wishlist_fill"
-                                  data-toggle="tooltip"
-                                  data-original-title="Wishlist"
-                                  data-placement="top"
-                                >
-                                  Ver lista de deseos
                                 </Link>
                               )}
                             </div>

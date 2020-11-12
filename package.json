@@ -107,7 +107,8 @@
       "web.jsx",
       "jsx",
       "node",
-      "mjs"
+      "mjs",
+      "ts"
     ]
   },
   "babel": {
