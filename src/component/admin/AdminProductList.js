@@ -19,6 +19,9 @@ class AdminProduct extends Component {
       cp_productList: productdata,
       IsDeleteProcess: false,
     }
+    this.onPageChanged = this.onPageChanged.bind(this)
+    this.onProductSearch = this.onProductSearch.bind(this)
+    this.onDeleteProduct = this.onDeleteProduct.bind(this)
   }
   componentDidMount() {
     window.scrollTo(0, 0)
@@ -37,8 +40,6 @@ class AdminProduct extends Component {
         totalRecords: this.state.cp_productList.length,
         IsDeleteProcess: true,
       })
-      this.forceUpdate()
-      this.render()
     } else {
       let serachdata = this.state.cp_productList.filter((productname) => {
         if (searchproduct === searchproduct.toLowerCase()) {
@@ -63,8 +64,6 @@ class AdminProduct extends Component {
         totalRecords: searchproduct.length,
         IsDeleteProcess: false,
       })
-      this.forceUpdate()
-      this.render()
     }
   }
 
