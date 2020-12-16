@@ -5,15 +5,14 @@ import React, { Component } from 'react'
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css'
 import { Col, Container, Row } from 'reactstrap'
-import ExpenseCategoryList from '../../api/ExpenseCategory.json'
 import TransactionList from '../../api/TransactionList.json'
-import TransferList from '../../api/Transfer.json'
 import CanvasJSReact from '../../assets/canvasjs.react'
 var CanvasJSChart = CanvasJSReact.CanvasJSChart
 
 class Reports extends Component {
   componentDidMount() {
     window.scrollTo(0, 0)
+    //TODO: Call todo-o-nada-bff to get Reports API
   }
 
   render() {
@@ -27,7 +26,7 @@ class Reports extends Component {
         intervalType: 'month',
       },
       axisY: {
-        title: 'Sales (in USD)',
+        title: 'Ventas (CLP)',
         prefix: '$',
         includeZero: false,
       },
@@ -65,7 +64,7 @@ class Reports extends Component {
         valueFormatString: 'DDD DD MMM',
       },
       axisY: {
-        title: 'Sales (in USD)',
+        title: 'Ventas (CLP)',
         prefix: '$',
         includeZero: false,
       },
@@ -98,7 +97,7 @@ class Reports extends Component {
         intervalType: 'year',
       },
       axisY: {
-        title: 'Sales (in USD)',
+        title: 'Ventas (CLP)',
         prefix: '$',
         includeZero: false,
       },
@@ -127,7 +126,7 @@ class Reports extends Component {
           <Row>
             <Col lg={12}>
               <div className="d-sm-flex reports-tab w-100 mb-0">
-                <h4>Reports</h4>
+                <h4>Reportes</h4>
               </div>
             </Col>
           </Row>
@@ -135,9 +134,9 @@ class Reports extends Component {
             <div>
               <Tabs>
                 <TabList>
-                  <Tab>Week</Tab>
-                  <Tab>Month</Tab>
-                  <Tab>Year</Tab>
+                  <Tab>Semana</Tab>
+                  <Tab>Mes</Tab>
+                  <Tab>Año</Tab>
                 </TabList>
                 <TabPanel>
                   <CanvasJSChart options={Weekhoptions} />
@@ -153,9 +152,7 @@ class Reports extends Component {
             <div className="reports-table">
               <Tabs>
                 <TabList>
-                  <Tab>Transaction List</Tab>
-                  <Tab>Transfer Report</Tab>
-                  <Tab>Expense Category</Tab>
+                  <Tab>Transacciones</Tab>
                 </TabList>
 
                 <TabPanel>
@@ -169,12 +166,12 @@ class Reports extends Component {
                       <table className="table table-striped mb-0">
                         <thead>
                           <tr>
-                            <th scope="col">Transaction Id</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Account</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Debit</th>
+                            <th scope="col">Nº orden</th>
+                            <th scope="col">Fecha creación</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Cuenta</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Debito</th>
                             <th scope="col">Balance</th>
                           </tr>
                         </thead>
@@ -188,79 +185,6 @@ class Reports extends Component {
                               <td>{T.Amount}</td>
                               <td>{T.Debit}</td>
                               <td>{T.Balance}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </TabPanel>
-                <TabPanel>
-                  <div
-                    className="tab-pane fade show active"
-                    id="transaction-list"
-                    role="tabpanel"
-                    aria-labelledby="transaction-list-tab"
-                  >
-                    <div className="table-responsive">
-                      <table className="table table-striped mb-0">
-                        <thead>
-                          <tr>
-                            <th scope="col">Transaction Id</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Account</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Balance</th>
-                            <th scope="col">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {TransferList.map((T, index) => (
-                            <tr key={index}>
-                              <td>{T.TransactionID}</td>
-                              <td>{T.Date}</td>
-                              <td>{T.Account}</td>
-                              <td className="text-success">{T.Type}</td>
-                              <td>{T.Amount}</td>
-                              <td>{T.Balance}</td>
-                              <td>{T.Status}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </TabPanel>
-
-                <TabPanel>
-                  <div
-                    className="tab-pane fade show active"
-                    id="transaction-list"
-                    role="tabpanel"
-                    aria-labelledby="transaction-list-tab"
-                  >
-                    <div className="table-responsive">
-                      <table className="table table-striped mb-0">
-                        <thead>
-                          <tr>
-                            <th scope="col">Item No</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Company Name</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {ExpenseCategoryList.map((T, index) => (
-                            <tr key={index}>
-                              <td>{T.ItemNo}</td>
-                              <td>{T.Date}</td>
-                              <td>{T.Type}</td>
-                              <td>{T.CompanyName}</td>
-                              <td>{T.Amount}</td>
-                              <td>{T.Status}</td>
                             </tr>
                           ))}
                         </tbody>
