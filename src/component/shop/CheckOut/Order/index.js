@@ -18,8 +18,8 @@ const orderCreator = (cartItems, formValues, shippingData) => {
       sku: product.id, //TODO: Change by sku
       prices: [
         {
-          BasePriceSales: product.salePrice,
-          BasePriceReference: product.price,
+          basePriceSales: product.salePrice,
+          basePriceReference: product.price,
           discount: product.discount,
         },
       ],

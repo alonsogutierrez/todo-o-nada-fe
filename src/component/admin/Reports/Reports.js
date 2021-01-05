@@ -1,7 +1,7 @@
 /**
  *  Report Page
  */
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 import { Col, Container, Row } from 'reactstrap'
 
@@ -12,27 +12,59 @@ import CanvasJSReact from '../../../assets/canvasjs.react'
 import TimeOptions from './TimeOptions'
 import TrasactionList from './TransactionList'
 
+import ClientAPI from '../../../common/ClientAPI'
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart
 
-class Reports extends Component {
-  componentDidMount() {
+const Reports = () => {
+  const [weekSales, setWeekSales] = useState({})
+
+  const getWeekSalesAPI = async () => {
+    const clientAPI = new ClientAPI()
+    try {
+      const weekSalesAPIResponse = await clientAPI.getWeekSales()
+      const dataWeekSalesObject = TimeOptions['week'].data[0]
+      setWeekSales({
+        ...TimeOptions['week'],
+        data: [
+          {
+            ...dataWeekSalesObject,
+            dataPoints: weekSalesAPIResponse
+          }
+        ]
+      })
+    } catch (err) {
+      console.error('Error trying to get week sales')
+    }
+  }
+
+  const getTimeCharts = (weekSales) => {
+    return <TabPanel >
+        <CanvasJSChart options={weekSales} />
+      </TabPanel>
+    // const times = Object.keys(TimeOptions)
+    // return times.map((time, index) => (
+    //   <TabPanel key={index}>
+    //       <CanvasJSChart options={TimeOptions[time]} />
+    //     </TabPanel>)
+    // )
+  }
+
+  const triggerGetWeekSales = async () => {
+    await getWeekSalesAPI()
+  }
+
+  useEffect(async () => {
     window.scrollTo(0, 0)
     //TODO: Call todo-o-nada-bff to get Reports API
+    await triggerGetWeekSales()
     //1º: Get week, month and year sales
     //2º: Get 10 last transactions
-  }
+  }, [])
 
-  getTimeCharts() {
-    const times = Object.keys(TimeOptions)
-    return times.map((time, index) => (
-        <TabPanel key={index}>
-          <CanvasJSChart options={TimeOptions[time]} />
-        </TabPanel>)
-    )
-  }
+  console.log('render and weekSales: ', weekSales)
 
-  render() {
-    return (
+  return (
       <div className="section-ptb">
         <Container>
           <Row>
@@ -47,11 +79,9 @@ class Reports extends Component {
               <Tabs>
                 <TabList>
                   <Tab>Semana</Tab>
-                  <Tab>Mes</Tab>
-                  <Tab>Año</Tab>
                 </TabList>
                 {
-                  this.getTimeCharts()
+                  getTimeCharts(weekSales)
                 }
               </Tabs>
             </div>
@@ -70,6 +100,6 @@ class Reports extends Component {
         </Container>
       </div>
     )
-  }
 }
+
 export default Reports

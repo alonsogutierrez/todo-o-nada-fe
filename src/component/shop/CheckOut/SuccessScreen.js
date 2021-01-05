@@ -59,7 +59,7 @@ class SuccessScreen extends Component {
   //TODO: Create functions to get all prices, TOTAL, SUBTOTAL AND DISPATCH
   getOrderSubTotal(products) {
     const total = products.map((product) => {
-      return product.quantity * product.prices[0].BasePriceSales
+      return product.quantity * product.prices[0].basePriceSales
     })
     return total
   }
@@ -197,7 +197,7 @@ class SuccessScreen extends Component {
                                     <h6 className="mb-0">Precio</h6>
                                     <span>
                                       $
-                                      {product.prices[0].BasePriceSales.toLocaleString(
+                                      {product.prices[0].basePriceSales.toLocaleString(
                                         navigator.language,
                                         {
                                           minimumFractionDigits: 0,
