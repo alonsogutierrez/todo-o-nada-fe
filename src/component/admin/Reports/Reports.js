@@ -29,13 +29,23 @@ const Reports = () => {
         data: [
           {
             ...dataWeekSalesObject,
-            dataPoints: weekSalesAPIResponse
+            dataPoints: getWeekDataOptions(weekSalesAPIResponse)
           }
         ]
       })
     } catch (err) {
       console.error('Error trying to get week sales')
     }
+  }
+
+  const getWeekDataOptions = (weekDateSales) => {
+    const weekDataOptions = []
+    for (let date in weekDateSales) {
+      let weekSale = weekSales[date]
+      weekSale = new Date(weekSales[date].x)
+      weekDataOptions.push(weekSale)
+    }
+    return weekDataOptions
   }
 
   const getTimeCharts = (weekSales) => {
