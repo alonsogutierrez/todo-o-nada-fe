@@ -2,6 +2,8 @@
  *  Report Page
  */
 import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 import { Col, Container, Row } from 'reactstrap'
 
@@ -14,9 +16,11 @@ import TrasactionList from './TransactionList'
 
 import ClientAPI from '../../../common/ClientAPI'
 
+import setChangeWeekSales from '../../../actions/setChangeWeekSales'
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart
 
-const Reports = () => {
+const Reports = ({ changeWeekSales, setChangeWeekSales }) => {
   const [weekSales, setWeekSales] = useState({})
 
   const getWeekSalesAPI = async () => {
@@ -24,7 +28,7 @@ const Reports = () => {
     try {
       const weekSalesAPIResponse = await clientAPI.getWeekSales()
       const dataWeekSalesObject = TimeOptions['week'].data[0]
-      setWeekSales({
+      const timeWeekSales = {
         ...TimeOptions['week'],
         data: [
           {
@@ -32,7 +36,9 @@ const Reports = () => {
             dataPoints: getWeekDataOptions(weekSalesAPIResponse)
           }
         ]
-      })
+      }
+      setChangeWeekSales(!changeWeekSales)
+      setWeekSales(timeWeekSales)
     } catch (err) {
       console.error('Error trying to get week sales')
     }
@@ -41,9 +47,12 @@ const Reports = () => {
   const getWeekDataOptions = (weekDateSales) => {
     const weekDataOptions = []
     for (let date in weekDateSales) {
-      let weekSale = weekSales[date]
-      weekSale = new Date(weekSales[date].x)
-      weekDataOptions.push(weekSale)
+      let weekSale = new Date(weekDateSales[date].x)
+      let objectWeek = {
+        x: weekSale,
+        y: weekDateSales[date].y
+      }
+      weekDataOptions.push(objectWeek)
     }
     return weekDataOptions
   }
@@ -66,13 +75,10 @@ const Reports = () => {
 
   useEffect(async () => {
     window.scrollTo(0, 0)
-    //TODO: Call todo-o-nada-bff to get Reports API
     await triggerGetWeekSales()
     //1º: Get week, month and year sales
     //2º: Get 10 last transactions
-  }, [])
-
-  console.log('render and weekSales: ', weekSales)
+  }, [changeWeekSales])
 
   return (
       <div className="section-ptb">
@@ -88,7 +94,7 @@ const Reports = () => {
             <div>
               <Tabs>
                 <TabList>
-                  <Tab>Semana</Tab>
+                  <Tab onClick={() => triggerGetWeekSales()}>Semana</Tab>
                 </TabList>
                 {
                   getTimeCharts(weekSales)
@@ -112,4 +118,22 @@ const Reports = () => {
     )
 }
 
-export default Reports
+const mapStateToProps = (state) => ({
+  changeWeekSales: state.changeWeekSalesDataReducer.changeWeekSales,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  setChangeWeekSales: (changeWeekSales) => dispatch(setChangeWeekSales(changeWeekSales))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Reports)
+
+Reports.defaultProps = {
+  changeWeekSales: null,
+  setChangeWeekSales: () => {}
+}
+
+Reports.propTypes = {
+  changeWeekSales: PropTypes.bool,
+  setChangeWeekSales: PropTypes.func
+}

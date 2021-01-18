@@ -11,6 +11,7 @@ import errorsForm from './errorsForm'
 import userData from './userData'
 import orderData from './orderData'
 import changeCartData from './changeCartData'
+import changeWeekSalesData from './changeWeekSales'
 
 export const rootReducer = combineReducers({
   data: products,
@@ -19,5 +20,6 @@ export const rootReducer = combineReducers({
   userDataReducer: userData,
   orderDataReducer: orderData,
   changeCartDataReducer: changeCartData,
+  changeWeekSalesDataReducer: changeWeekSalesData,
   ReducersIntl,
 })
