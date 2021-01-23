@@ -1,14 +1,13 @@
 /**
  *  Report Page
  */
-import React, { useEffect, useState } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 import { Col, Container, Row } from 'reactstrap'
 
 import 'react-tabs/style/react-tabs.css'
-
 import CanvasJSReact from '../../../assets/canvasjs.react'
 
 import TimeOptions from './TimeOptions'
@@ -18,49 +17,51 @@ import ClientAPI from '../../../common/ClientAPI'
 
 import setChangeWeekSales from '../../../actions/setChangeWeekSales'
 
-var CanvasJSChart = CanvasJSReact.CanvasJSChart
+const CanvasJSChart = CanvasJSReact.CanvasJSChart
 
-const Reports = ({ changeWeekSales, setChangeWeekSales }) => {
-  const [weekSales, setWeekSales] = useState({})
-
-  const getWeekSalesAPI = async () => {
-    const clientAPI = new ClientAPI()
-    try {
-      const weekSalesAPIResponse = await clientAPI.getWeekSales()
-      const dataWeekSalesObject = TimeOptions['week'].data[0]
-      const timeWeekSales = {
-        ...TimeOptions['week'],
-        data: [
-          {
-            ...dataWeekSalesObject,
-            dataPoints: getWeekDataOptions(weekSalesAPIResponse)
-          }
-        ]
-      }
-      setChangeWeekSales(!changeWeekSales)
-      setWeekSales(timeWeekSales)
-    } catch (err) {
-      console.error('Error trying to get week sales')
+class Reports extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      weekSales: {},
     }
   }
 
-  const getWeekDataOptions = (weekDateSales) => {
+  async getWeekSalesAPI() {
+    const clientAPI = new ClientAPI()
+    const { changeWeekSales, setChangeWeekSales } = this.props
+    try {
+      const weekSalesAPIResponse = await clientAPI.getWeekSales()
+      const weekTimeOptions = TimeOptions['week']
+      weekTimeOptions.data[0].dataPoints = this.getWeekDataOptions(weekSalesAPIResponse)
+      const newWeekSales = weekTimeOptions
+      setChangeWeekSales(!changeWeekSales)
+      this.setState({ weekSales: newWeekSales })
+    } catch (err) {
+      console.error('Error trying to get week sales: ', err.message)
+    }
+  }
+
+  getWeekDataOptions(weekDateSales) {
     const weekDataOptions = []
     for (let date in weekDateSales) {
-      let weekSale = new Date(weekDateSales[date].x)
+      const weekSaleDate = new Date(weekDateSales[date].x)
+      const weekSalesAmount = weekDateSales[date].y
       let objectWeek = {
-        x: weekSale,
-        y: weekDateSales[date].y
+        x: weekSaleDate,
+        y: weekSalesAmount,
       }
       weekDataOptions.push(objectWeek)
     }
     return weekDataOptions
   }
 
-  const getTimeCharts = (weekSales) => {
-    return <TabPanel >
+  getTimeCharts(weekSales) {
+    return (
+      <TabPanel>
         <CanvasJSChart options={weekSales} />
       </TabPanel>
+    )
     // const times = Object.keys(TimeOptions)
     // return times.map((time, index) => (
     //   <TabPanel key={index}>
@@ -69,18 +70,14 @@ const Reports = ({ changeWeekSales, setChangeWeekSales }) => {
     // )
   }
 
-  const triggerGetWeekSales = async () => {
-    await getWeekSalesAPI()
+  componentDidMount() {
+    window.scrollTo(0, 0)
+    this.getWeekSalesAPI()
   }
 
-  useEffect(async () => {
-    window.scrollTo(0, 0)
-    await triggerGetWeekSales()
-    //1º: Get week, month and year sales
-    //2º: Get 10 last transactions
-  }, [changeWeekSales])
-
-  return (
+  render() {
+    const { weekSales } = this.state
+    return (
       <div className="section-ptb">
         <Container>
           <Row>
@@ -94,11 +91,9 @@ const Reports = ({ changeWeekSales, setChangeWeekSales }) => {
             <div>
               <Tabs>
                 <TabList>
-                  <Tab onClick={() => triggerGetWeekSales()}>Semana</Tab>
+                  <Tab>Semana</Tab>
                 </TabList>
-                {
-                  getTimeCharts(weekSales)
-                }
+                {this.getTimeCharts(weekSales)}
               </Tabs>
             </div>
             <div className="reports-table">
@@ -116,6 +111,7 @@ const Reports = ({ changeWeekSales, setChangeWeekSales }) => {
         </Container>
       </div>
     )
+  }
 }
 
 const mapStateToProps = (state) => ({
@@ -123,17 +119,17 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setChangeWeekSales: (changeWeekSales) => dispatch(setChangeWeekSales(changeWeekSales))
+  setChangeWeekSales: (changeWeekSales) => dispatch(setChangeWeekSales(changeWeekSales)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Reports)
 
 Reports.defaultProps = {
-  changeWeekSales: null,
-  setChangeWeekSales: () => {}
+  changeWeekSales: false,
+  setChangeWeekSales: () => {},
 }
 
 Reports.propTypes = {
   changeWeekSales: PropTypes.bool,
-  setChangeWeekSales: PropTypes.func
+  setChangeWeekSales: PropTypes.func,
 }

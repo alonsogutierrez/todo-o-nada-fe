@@ -13,7 +13,7 @@ class Productedit extends Component {
     this.state = {
       AllProduct: productdata,
       ProductId: parseInt(this.props.match.params.id),
-      CurrentProduct: null
+      CurrentProduct: null,
     }
   }
 
@@ -24,7 +24,7 @@ class Productedit extends Component {
       for (let product of allproductdata) {
         if (product.id === CurrentProductId) {
           this.setState({
-            CurrentProduct: product
+            CurrentProduct: product,
           })
         }
       }
@@ -35,8 +35,8 @@ class Productedit extends Component {
     return (
       <div>
         {Productedit !== null ? (
-          <div className='site-content'>
-            <div className='content-wrapper section-ptb'>
+          <div className="site-content">
+            <div className="content-wrapper section-ptb">
               <Container>
                 <ProductEditDetail product={Productedit} />
               </Container>
@@ -50,9 +50,9 @@ class Productedit extends Component {
 export default Productedit
 
 Productedit.defaultProps = {
-  match: {}
+  match: {},
 }
 
 Productedit.propTypes = {
-  match: PropTypes.object
+  match: PropTypes.object,
 }
