@@ -5,7 +5,7 @@ import PaymentMethods from './PaymentMethods'
 
 const calculateSubTotal = (items) => {
   return items
-    .reduce((fr, CartItem) => fr + CartItem.Qty * CartItem.Rate, 0)
+    .reduce((fr, CartItem) => fr + Number(CartItem.Qty) * Number(CartItem.Rate), 0)
     .toLocaleString(navigator.language, {
       minimumFractionDigits: 0,
     })

@@ -64,4 +64,27 @@ export default class ClientAPI {
         })
     })
   }
+
+  downloadSales(startDate, endDate) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/reports/betweenDates',
+          method: 'get',
+          params: {
+            startDate,
+            endDate,
+          },
+          timeout: 40 * 1000,
+          responseType: 'blob',
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }

@@ -58,8 +58,9 @@ class SuccessScreen extends Component {
 
   //TODO: Create functions to get all prices, TOTAL, SUBTOTAL AND DISPATCH
   getOrderSubTotal(products) {
-    const total = products.map((product) => {
-      return product.quantity * product.prices[0].basePriceSales
+    let total = 0
+    products.forEach((product) => {
+      total += product.quantity * product.prices[0].basePriceSales
     })
     return total
   }

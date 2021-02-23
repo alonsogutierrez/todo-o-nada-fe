@@ -12,6 +12,7 @@ import CanvasJSReact from '../../../assets/canvasjs.react'
 
 import TimeOptions from './TimeOptions'
 import TrasactionList from './TransactionList'
+import DownloadSalesByDate from './DownloadSalesByDate'
 
 import ClientAPI from '../../../common/ClientAPI'
 
@@ -45,7 +46,7 @@ class Reports extends Component {
   getWeekDataOptions(weekDateSales) {
     const weekDataOptions = []
     for (let date in weekDateSales) {
-      const weekSaleDate = new Date(weekDateSales[date].x)
+      const weekSaleDate = new Date(weekDateSales[date].x).getUTCDate()
       const weekSalesAmount = weekDateSales[date].y
       let objectWeek = {
         x: weekSaleDate,
@@ -62,12 +63,6 @@ class Reports extends Component {
         <CanvasJSChart options={weekSales} />
       </TabPanel>
     )
-    // const times = Object.keys(TimeOptions)
-    // return times.map((time, index) => (
-    //   <TabPanel key={index}>
-    //       <CanvasJSChart options={TimeOptions[time]} />
-    //     </TabPanel>)
-    // )
   }
 
   componentDidMount() {
@@ -100,10 +95,14 @@ class Reports extends Component {
               <Tabs>
                 <TabList>
                   <Tab>Transacciones</Tab>
+                  <Tab>Descargas</Tab>
                 </TabList>
 
                 <TabPanel>
                   <TrasactionList />
+                </TabPanel>
+                <TabPanel>
+                  <DownloadSalesByDate />
                 </TabPanel>
               </Tabs>
             </div>
