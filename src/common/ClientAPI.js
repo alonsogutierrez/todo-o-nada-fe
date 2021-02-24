@@ -87,4 +87,25 @@ export default class ClientAPI {
         })
     })
   }
+
+  getOrders(paymentType) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/reports/orders',
+          method: 'get',
+          params: {
+            paymentType,
+          },
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }

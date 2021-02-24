@@ -11,7 +11,7 @@ import 'react-tabs/style/react-tabs.css'
 import CanvasJSReact from '../../../assets/canvasjs.react'
 
 import TimeOptions from './TimeOptions'
-import TrasactionList from './TransactionList'
+import Orders from './Orders'
 import DownloadSalesByDate from './DownloadSalesByDate'
 
 import ClientAPI from '../../../common/ClientAPI'
@@ -94,12 +94,16 @@ class Reports extends Component {
             <div className="reports-table">
               <Tabs>
                 <TabList>
-                  <Tab>Transacciones</Tab>
+                  <Tab>Ordenes Pagadas</Tab>
+                  <Tab>Ordenes Creadas</Tab>
                   <Tab>Descargas</Tab>
                 </TabList>
 
                 <TabPanel>
-                  <TrasactionList />
+                  <Orders paymentType="paid" />
+                </TabPanel>
+                <TabPanel>
+                  <Orders paymentType="created" />
                 </TabPanel>
                 <TabPanel>
                   <DownloadSalesByDate />
