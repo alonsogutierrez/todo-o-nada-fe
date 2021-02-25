@@ -15,11 +15,12 @@ const orderCreator = (cartItems, formValues, shippingData) => {
     const productInfo = {
       name: product.name,
       category: product.category,
-      sku: product.id, //TODO: Change by sku
+      sku: product.id, //TODO: Change by real sku
+      itemNumber: 0, //TODO: Change by real itemNumber
       prices: [
         {
-          BasePriceSales: product.salePrice,
-          BasePriceReference: product.price,
+          basePriceSales: product.salePrice,
+          basePriceReference: product.price,
           discount: product.discount,
         },
       ],

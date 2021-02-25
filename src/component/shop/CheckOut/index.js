@@ -88,7 +88,7 @@ class CheckOut extends Component {
     const { formValues } = this.state
     let errors = {}
     let formIsValid = false
-    setErrorsForm(errors)
+    this.props.setErrorsForm(errors)
 
     const validatorResponse = validators.validatorUserForm(formValues)
 

@@ -46,4 +46,66 @@ export default class ClientAPI {
         })
     })
   }
+
+  getWeekSales() {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/reports/week',
+          method: 'get',
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  downloadSales(startDate, endDate) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/reports/betweenDates',
+          method: 'get',
+          params: {
+            startDate,
+            endDate,
+          },
+          timeout: 40 * 1000,
+          responseType: 'blob',
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  getOrders(paymentType) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/reports/orders',
+          method: 'get',
+          params: {
+            paymentType,
+          },
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }

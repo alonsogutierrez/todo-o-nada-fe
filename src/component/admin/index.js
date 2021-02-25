@@ -13,7 +13,7 @@ import Productadd from './Product/Productadd'
 import Productedit from './Product/Productedit'
 import Profile from './Profile'
 import Profileedit from './Profileedit'
-import Reports from './Reports'
+import Reports from './Reports/Reports'
 import Settings from './Settings'
 
 class AdminDashboard extends Component {
