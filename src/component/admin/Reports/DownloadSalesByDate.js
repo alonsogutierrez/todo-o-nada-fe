@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 const DownloadSalesByDate = () => {
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
+  const [errorDatesMessage, setErrorDatesMessage] = useState('')
   const divDatePickersStyles = {
     display: 'inline-flex',
   }
@@ -14,16 +15,20 @@ const DownloadSalesByDate = () => {
     paddingLeft: '10px',
   }
 
-  const handleDownload = async () => {
+  const handleDownload = async (e) => {
+    e.preventDefault()
     if (validateDates(startDate, endDate)) {
+      setErrorDatesMessage('')
       const clientAPI = new ClientAPI()
       try {
         const downloadSalesResponse = await clientAPI.downloadSales(startDate, endDate)
         const file = new Blob([downloadSalesResponse], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8',
         })
-        const excelFileName = `TodoONada_Report_
-        ${format(startDate, 'yyyy-MM-dd')}_${format(endDate, 'yyyy-MM-dd')}.xlsx`
+        const excelFileName = `TodoONada_Report_${format(startDate, 'yyyy-MM-dd')}_${format(
+          endDate,
+          'yyyy-MM-dd'
+        )}.xlsx`
         const fileURL = URL.createObjectURL(file)
         const anchor = document.createElement('a')
         anchor.href = fileURL
@@ -33,6 +38,8 @@ const DownloadSalesByDate = () => {
       } catch (err) {
         console.error('Error trying to download sales: ', err.message)
       }
+    } else {
+      setErrorDatesMessage('Porfavor ingresar fechas válidas: Rango hasta 30 días')
     }
   }
 
@@ -54,7 +61,13 @@ const DownloadSalesByDate = () => {
       </div>
       <div>
         <br></br>
-        <a href="#" className="btn btn-primary mb-2 mr-2" onClick={() => handleDownload()}>
+        <p>
+          <h5>{errorDatesMessage}</h5>
+        </p>
+      </div>
+      <div>
+        <br></br>
+        <a href="#" className="btn btn-primary mb-2 mr-2" onClick={(e) => handleDownload(e)}>
           {' '}
           Descargar{' '}
         </a>
