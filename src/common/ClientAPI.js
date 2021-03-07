@@ -108,4 +108,25 @@ export default class ClientAPI {
         })
     })
   }
+
+  getOrderByOrderNumber(orderNumber) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/orders',
+          method: 'get',
+          params: {
+            orderNumber,
+          },
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }
