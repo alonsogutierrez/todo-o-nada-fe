@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import AdminHeader from './Adminheader'
 import AdminProductList from './AdminProductList'
 import Collaboration from './Collaboration'
-import Invoices from './Invoices'
+import SearchOrders from './SearchOrders'
 import Productadd from './Product/Productadd'
 import Productedit from './Product/Productedit'
 import Profile from './Profile'
@@ -24,7 +24,7 @@ class AdminDashboard extends Component {
         <div>
           <AdminHeader />
           <Route path={`${match.url}/reports`} component={Reports} />
-          <Route path={`${match.url}/invoices`} component={Invoices} />
+          <Route path={`${match.url}/invoices`} component={SearchOrders} />
           <Route path={`${match.url}/profile`} component={Profile} />
           <Route path={`${match.url}/product`} component={AdminProductList} />
           <Route path={`${match.url}/profileedit`} component={Profileedit} />

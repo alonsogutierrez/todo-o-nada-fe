@@ -24,7 +24,7 @@ const orderCreator = (cartItems, formValues, shippingData) => {
           discount: product.discount,
         },
       ],
-      quantity: 1,
+      quantity: Number(item.Qty), //TODO: Change by real qty
     }
     return productInfo
   })
