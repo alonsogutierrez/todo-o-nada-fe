@@ -3,12 +3,18 @@
  */
 import React, { Component } from 'react'
 import { Col, Row } from 'reactstrap'
-import Common from '../../api/common'
+import PropTypes from 'prop-types'
+
 import adminprofile from '../../assets/images/testimonials/img-02.jpg'
 
 class AdminProfileDetail extends Component {
+  constructor(props) {
+    super(props)
+  }
+
   render() {
-    const Profile = Common['0']['profile']
+    const { userData } = this.props
+    const { name, email, phone } = userData
     return (
       <Row>
         <Col lg={12}>
@@ -17,15 +23,15 @@ class AdminProfileDetail extends Component {
               <img className="img-fluid rounded-circle" src={adminprofile} alt="profile" />
             </div>
             <div className="admin-profile-info">
-              <h6 className="mb-0">{Profile.firstname + ' ' + Profile.lastname}</h6>
-              <span className="text-dark">{Profile.email}</span>
+              <h6 className="mb-0">{name}</h6>
+              <span className="text-dark">{email}</span>
             </div>
-            {Profile.phoneno != '' ? (
+            {phone !== '' ? (
               <div className="admin-profile-number ml-auto">
                 <strong className="h2">
                   {' '}
                   <i className="fa fa-phone-square pr-2"></i>
-                  {Profile.phoneno}
+                  {phone}
                 </strong>
               </div>
             ) : null}
@@ -35,4 +41,13 @@ class AdminProfileDetail extends Component {
     )
   }
 }
+
 export default AdminProfileDetail
+
+AdminProfileDetail.defaultProps = {
+  userData: {},
+}
+
+AdminProfileDetail.propTypes = {
+  userData: PropTypes.object,
+}

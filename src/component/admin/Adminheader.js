@@ -120,7 +120,7 @@ const AdminHeader = () => {
                       className="nav-link"
                       onClick={() => changeClass('report')}
                     >
-                      <i className="fa fa-line-chart"></i>Reports
+                      <i className="fa fa-line-chart"></i>Reportes
                     </Link>
                   </NavItem>
                   <NavItem className="invoice">
@@ -129,12 +129,12 @@ const AdminHeader = () => {
                       className="nav-link"
                       onClick={() => changeClass('invoice')}
                     >
-                      <i className="fa fa-inbox"></i>invoices
+                      <i className="fa fa-inbox"></i>Ordenes
                     </Link>
                   </NavItem>
                   <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav caret>
-                      <i className="fa fa-shopping-cart"></i>Products
+                      <i className="fa fa-shopping-cart"></i>Productos
                     </DropdownToggle>
                     <DropdownMenu left>
                       <DropdownItem
@@ -143,7 +143,7 @@ const AdminHeader = () => {
                         tag={Link}
                         to="/admin-dashboard/product"
                       >
-                        <i className="fa fa-cart-plus"></i>Products
+                        <i className="fa fa-cart-plus"></i>Productos
                       </DropdownItem>
                       <DropdownItem
                         onClick={() => changeClass('product')}
@@ -151,7 +151,7 @@ const AdminHeader = () => {
                         tag={Link}
                         to="/admin-dashboard/product-add"
                       >
-                        <i className="fa fa-cart-arrow-down"></i>Add Product
+                        <i className="fa fa-cart-arrow-down"></i>Agregar Producto
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
@@ -161,12 +161,12 @@ const AdminHeader = () => {
                       className="nav-link"
                       onClick={() => changeClass('profile')}
                     >
-                      <i className="fa fa-user-circle-o"></i>Profile
+                      <i className="fa fa-user-circle-o"></i>Perfil
                     </Link>
                   </NavItem>
                   <NavItem className="backhome">
                     <Link to="/" className="nav-link" onClick={() => changeClass('backhome')}>
-                      <i className="fa fa-home"></i>Back to home
+                      <i className="fa fa-home"></i>Volver al home
                     </Link>
                   </NavItem>
                 </Nav>

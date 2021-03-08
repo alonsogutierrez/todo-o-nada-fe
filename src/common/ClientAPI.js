@@ -129,4 +129,25 @@ export default class ClientAPI {
         })
     })
   }
+
+  getProfileInfo(userId) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/users/profile',
+          method: 'get',
+          params: {
+            userId,
+          },
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }
