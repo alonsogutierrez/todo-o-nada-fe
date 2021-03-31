@@ -3,8 +3,7 @@
  */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { Col, Container, Row } from 'reactstrap'
+import { Container, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 
 import AllProduct from '../../api/product'
@@ -14,6 +13,7 @@ import ShopBanner from '../../widgets/shopfilter/ShopBanner'
 import SideFilter from '../../widgets/shopfilter/SideFilter'
 import SocialFilter from '../../widgets/shopfilter/SocialInfo'
 import TopFilter from '../../widgets/shopfilter/TopFilter'
+import SubHeader from './SubHeader'
 
 class ShopPage extends Component {
   constructor(props, context) {
@@ -21,7 +21,7 @@ class ShopPage extends Component {
     this.state = {
       limit: 8,
       hasMoreProduct: true,
-      getproduct: AllProduct
+      getproduct: AllProduct,
     }
     this.onLoadMore = this.onLoadMore.bind(this)
     this.refreshPage = this.refreshPage.bind(this)
@@ -31,7 +31,7 @@ class ShopPage extends Component {
     if (this.state.limit < this.state.getproduct.length) {
       setTimeout(() => {
         this.setState({
-          limit: this.state.limit + 8
+          limit: this.state.limit + 8,
         })
       }, 2500)
     }
@@ -39,7 +39,7 @@ class ShopPage extends Component {
 
   onLoadMore() {
     this.setState({
-      limit: this.state.limit + 8
+      limit: this.state.limit + 8,
     })
   }
 
@@ -57,31 +57,7 @@ class ShopPage extends Component {
 
     return (
       <div className="site-content">
-        <div className="inner-intro">
-          <Container>
-            <Row className="intro-title align-items-center">
-              <Col md={6} className="text-left">
-                <div className="intro-title-inner">
-                  <h1>Compra</h1>
-                </div>
-              </Col>
-              <Col md={6} className="text-right">
-                <ul className="ciyashop_breadcrumbs page-breadcrumb breadcrumbs">
-                  <li className="home">
-                    <span>
-                      <Link className="bread-link bread-home" to="/">
-                        Home
-                      </Link>
-                    </span>
-                  </li>
-                  <li>
-                    <span>Productos</span>
-                  </li>
-                </ul>
-              </Col>
-            </Row>
-          </Container>
-        </div>
+        <SubHeader />
         <div className="content-wrapper section-pt mb-3 mb-md-5">
           <Container>
             <Row>
@@ -141,16 +117,16 @@ class ShopPage extends Component {
   }
 }
 
-const mapDispatchToProps = state => ({
-  products: getFilterProductsdata(state.data, state.filters)
+const mapDispatchToProps = (state) => ({
+  products: getFilterProductsdata(state.data, state.filters),
 })
 
 export default connect(mapDispatchToProps, {})(ShopPage)
 
 ShopPage.defaultProps = {
-  products: []
+  products: [],
 }
 
 ShopPage.propTypes = {
-  products: PropTypes.array
+  products: PropTypes.array,
 }

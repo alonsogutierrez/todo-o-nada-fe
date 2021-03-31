@@ -1,9 +1,9 @@
 // Get Category Unique Data
-export const uniqueCategory = products => {
+export const uniqueCategory = (products) => {
   var uniqueCategorys = []
-  products.map(product => {
+  products.map((product) => {
     if (product.tags.length > 0 && product.tags) {
-      product.tags.map(categorys => {
+      product.tags.map((categorys) => {
         if (categorys && categorys.length > 0) {
           if (uniqueCategorys.indexOf(categorys) === -1) {
             uniqueCategorys.push(categorys)
@@ -16,11 +16,11 @@ export const uniqueCategory = products => {
 }
 
 // Get Size Unique Data
-export const uniqueSizes = products => {
+export const uniqueSizes = (products) => {
   var uniqueSizes = []
-  products.map(product => {
+  products.map((product) => {
     if (product.size.length > 0 && product.size) {
-      product.size.map(sizes => {
+      product.size.map((sizes) => {
         if (sizes && sizes.length > 0) {
           if (uniqueSizes.indexOf(sizes) === -1) {
             uniqueSizes.push(sizes)
@@ -40,20 +40,18 @@ export const getFilterProductsdata = (
   let sizes = size
 
   return data.products
-    .filter(product => {
+    .filter((product) => {
       let categoryMatchValue
-      if (product.tags)
-        categoryMatchValue = product.tags.some(tag => category.includes(tag))
+      if (product.tags) categoryMatchValue = product.tags.some((tag) => category.includes(tag))
       else categoryMatchValue = true
 
       let sizeMatchValue
-      if (product.size)
-        sizeMatchValue = product.size.some(size => sizes.includes(size))
+      if (product.size) sizeMatchValue = product.size.some((size) => sizes.includes(size))
       else sizeMatchValue = true
 
       let colorMatchValue
       if (color && product.colors) {
-        colorMatchValue = product.colors.some(colors => color.includes(colors))
+        colorMatchValue = product.colors.some((colors) => color.includes(colors))
       } else {
         colorMatchValue = false
       }
@@ -61,11 +59,9 @@ export const getFilterProductsdata = (
       let searchMatchValue
       if (product.name) {
         if (search == search.toLowerCase()) {
-          searchMatchValue =
-            product.name.toLowerCase().indexOf(search.toLowerCase()) > -1
+          searchMatchValue = product.name.toLowerCase().indexOf(search.toLowerCase()) > -1
         } else {
-          searchMatchValue =
-            product.name.toUpperCase().indexOf(search.toUpperCase()) > -1
+          searchMatchValue = product.name.toUpperCase().indexOf(search.toUpperCase()) > -1
         }
       } else {
         searchMatchValue = false
@@ -80,19 +76,12 @@ export const getFilterProductsdata = (
         ratingMatchValue = false
       }
 
-      const startPriceMatchValue =
-        typeof value.min !== 'number' || value.min <= product.salePrice
-      const endPriceMatchValue =
-        typeof value.max !== 'number' || product.salePrice <= value.max
+      const startPriceMatchValue = typeof value.min !== 'number' || value.min <= product.salePrice
+      const endPriceMatchValue = typeof value.max !== 'number' || product.salePrice <= value.max
 
       // let filtercheck=JSON.parse(localStorage.state).filters;
 
-      if (
-        category.length > 0 &&
-        color.length > 0 &&
-        size.length > 0 &&
-        ratings.length > 0
-      ) {
+      if (category.length > 0 && color.length > 0 && size.length > 0 && ratings.length > 0) {
         return (
           categoryMatchValue &&
           colorMatchValue &&
@@ -198,36 +187,16 @@ export const getFilterProductsdata = (
         )
       }
       if (color.length > 0) {
-        return (
-          colorMatchValue &&
-          startPriceMatchValue &&
-          endPriceMatchValue &&
-          searchMatchValue
-        )
+        return colorMatchValue && startPriceMatchValue && endPriceMatchValue && searchMatchValue
       }
       if (category.length > 0) {
-        return (
-          categoryMatchValue &&
-          startPriceMatchValue &&
-          endPriceMatchValue &&
-          searchMatchValue
-        )
+        return categoryMatchValue && startPriceMatchValue && endPriceMatchValue && searchMatchValue
       }
       if (size.length > 0) {
-        return (
-          sizeMatchValue &&
-          startPriceMatchValue &&
-          endPriceMatchValue &&
-          searchMatchValue
-        )
+        return sizeMatchValue && startPriceMatchValue && endPriceMatchValue && searchMatchValue
       }
       if (ratings.length > 0) {
-        return (
-          ratingMatchValue &&
-          startPriceMatchValue &&
-          endPriceMatchValue &&
-          searchMatchValue
-        )
+        return ratingMatchValue && startPriceMatchValue && endPriceMatchValue && searchMatchValue
       } else {
         return startPriceMatchValue && endPriceMatchValue && searchMatchValue
       }
@@ -246,11 +215,11 @@ export const getFilterProductsdata = (
 }
 
 // Get Color Unique Data
-export const uniqueColors = products => {
+export const uniqueColors = (products) => {
   var uniqueColors = []
-  products.map(product => {
+  products.map((product) => {
     if (product.colors.length > 0 && product.colors) {
-      product.colors.map(color => {
+      product.colors.map((color) => {
         if (color && color.length > 0) {
           if (uniqueColors.indexOf(color) === -1) {
             uniqueColors.push(color)
@@ -263,10 +232,10 @@ export const uniqueColors = products => {
 }
 
 // Get Min & Max Data in Json
-export const uniqueMinMaxPrice = products => {
+export const uniqueMinMaxPrice = (products) => {
   let minimum = 0,
     maximum = 100000
-  products.forEach(product => {
+  products.forEach((product) => {
     let v = product.salePrice
     if (v < minimum) {
       minimum = v

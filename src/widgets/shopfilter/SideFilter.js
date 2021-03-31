@@ -4,13 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import {
-  categoryValue,
-  colorValue,
-  priceValue,
-  searchValue,
-  sizeValue
-} from '../../actions/filter'
+import { categoryValue, colorValue, priceValue, searchValue, sizeValue } from '../../actions/filter'
 import { uniqueCategory, uniqueColors, uniqueMinMaxPrice, uniqueSizes } from '../../services'
 import { Scrollbars } from 'react-custom-scrollbars'
 import './styles.css'
@@ -22,22 +16,22 @@ class SideFilter extends Component {
       SearchValue: '',
       priceplace: [this.props.prices.min, this.props.prices.max],
       setfistprice: [this.props.prices.min, this.props.prices.max],
-      sidebarmenu: false
+      sidebarmenu: false,
     }
     this.showfilter = this.showfilter.bind(this)
   }
 
   componentDidMount() {
     this.setState({
-      SearchValue: ''
+      SearchValue: '',
     })
     this.props.searchValue('')
-    this.nameInput.focus()
+    //this.nameInput.focus()
   }
 
   showfilter() {
-    this.setState(prevState => ({
-      sidebarmenu: !prevState.sidebarmenu
+    this.setState((prevState) => ({
+      sidebarmenu: !prevState.sidebarmenu,
     }))
   }
 
@@ -72,8 +66,9 @@ class SideFilter extends Component {
   }
 
   SearchTextchange(SearchText) {
+    //TODO: Call to Search API
     this.setState({
-      SearchValue: SearchText.target.value
+      SearchValue: SearchText.target.value,
     })
     this.props.searchValue(SearchText.target.value)
   }
@@ -102,12 +97,12 @@ class SideFilter extends Component {
     const colorsFilterValues = this.props.filters.color
     return (
       <div>
-        <div className="widget">
+        {/* <div className="widget">
           <h4 className="widget-title">Buscar</h4>
           <input
             type="text"
             id="btn-search"
-            ref={input => {
+            ref={(input) => {
               this.nameInput = input
             }}
             className="form-control"
@@ -115,7 +110,7 @@ class SideFilter extends Component {
             onChange={this.SearchTextchange.bind(this)}
             placeholder="Busca un producto"
           />
-        </div>
+        </div> */}
         <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
           <div className="d-flex align-items-center justify-content-between">
             <h4 className="widget-title">Filtrar por color</h4>
@@ -137,7 +132,7 @@ class SideFilter extends Component {
                     <div className="form-check pgs-filter-checkbox" key={index}>
                       <input
                         type="checkbox"
-                        onClick={e => this.onClickColorFilter(e, colorsFilterValues)}
+                        onClick={(e) => this.onClickColorFilter(e, colorsFilterValues)}
                         value={color}
                         defaultChecked={colorsFilterValues.includes(color) ? true : false}
                         className="form-check-input"
@@ -172,7 +167,7 @@ class SideFilter extends Component {
                   <div className="form-check pgs-filter-checkbox" key={index}>
                     <input
                       type="checkbox"
-                      onClick={e => this.onClickCategoryFilter(e, categoryFilterValues)}
+                      onClick={(e) => this.onClickCategoryFilter(e, categoryFilterValues)}
                       value={category}
                       defaultChecked={categoryFilterValues.includes(category) ? true : false}
                       className="form-check-input"
@@ -206,7 +201,7 @@ class SideFilter extends Component {
                   <div key={index} className="form-check pgs-filter-checkbox">
                     <input
                       type="checkbox"
-                      onClick={e => this.onClickSizeFilter(e, sizeFilterValues)}
+                      onClick={(e) => this.onClickSizeFilter(e, sizeFilterValues)}
                       value={size}
                       defaultChecked={sizeFilterValues.includes(size) ? true : false}
                       className="form-check-input"
@@ -226,12 +221,12 @@ class SideFilter extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   categorys: uniqueCategory(state.data.products),
   sizes: uniqueSizes(state.data.products),
   colors: uniqueColors(state.data.products),
   prices: uniqueMinMaxPrice(state.data.products),
-  filters: state.filters
+  filters: state.filters,
 })
 
 export default connect(mapStateToProps, {
@@ -239,7 +234,7 @@ export default connect(mapStateToProps, {
   sizeValue,
   colorValue,
   priceValue,
-  searchValue
+  searchValue,
 })(SideFilter)
 
 SideFilter.defaultProps = {
@@ -252,7 +247,7 @@ SideFilter.defaultProps = {
   colorValue: () => {},
   categoryValue: () => {},
   sizeValue: () => {},
-  priceValue: () => {}
+  priceValue: () => {},
 }
 
 SideFilter.propTypes = {
@@ -265,5 +260,5 @@ SideFilter.propTypes = {
   colorValue: PropTypes.func,
   categoryValue: PropTypes.func,
   sizeValue: PropTypes.func,
-  priceValue: PropTypes.func
+  priceValue: PropTypes.func,
 }

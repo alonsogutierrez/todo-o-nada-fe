@@ -1,23 +1,15 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
-import {
-  Col,
-  Row,
-  Container,
-  Navbar,
-  NavbarToggler,
-  Collapse,
-  Nav,
-  UncontrolledDropdown,
-  DropdownMenu,
-  DropdownItem,
-  NavItem,
-} from 'reactstrap'
-import { Link, NavLink } from 'react-router-dom'
+import { Col, Row, Container, Navbar, NavbarToggler, Collapse, Nav, NavItem } from 'reactstrap'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
+//TODO: Get navLinks from BFF
 import navLinks from '../../../../NavLinks'
+import HeaderNavLinks from './HeaderNavLinks'
 import LogoWrapper from '../LogoWrapper'
+import ShoppingCart from './ShoppingCart'
+import EmptyShoppingCart from './EmptyShoppingCart'
 
 const getSearchName = (pageName) => {
   switch (pageName) {
@@ -58,73 +50,6 @@ const HeaderMain = ({ changeCart }) => {
     }
   }
 
-  const openSubMenuOpen = (id) => {
-    var elm = document.getElementById(id)
-    if (elm !== null) {
-      document.getElementById(id).setAttribute('class', 'dropdown-menu dropdown-menu-right show')
-    }
-  }
-
-  const openSubMenuClose = (id) => {
-    var elm = document.getElementById(id)
-    if (elm !== null) {
-      document.getElementById(id).setAttribute('class', 'dropdown-menu dropdown-menu-right')
-    }
-  }
-
-  const renderHeaderNavLinks = (pageName) => {
-    return navLinks.map((navLink, index) => (
-      <Nav className="ml-auto" navbar key={index}>
-        {navLink.type && navLink.type === 'subMenu' ? (
-          <Fragment>
-            <UncontrolledDropdown
-              nav
-              inNavbar
-              onMouseEnter={() => openSubMenuOpen(`submenu_${index}`)}
-              onMouseLeave={() => openSubMenuClose(`submenu_${index}`)}
-            >
-              <Link
-                aria-haspopup="true"
-                to={navLink.path}
-                className="dropdown-toggle nav-link"
-                aria-expanded="true"
-              >
-                {' '}
-                {navLink.menu_title}
-              </Link>
-              <DropdownMenu right id={`submenu_${index}`}>
-                {navLink.child_routes &&
-                  navLink.child_routes.map((subNavLink, index) => (
-                    <DropdownItem
-                      key={index}
-                      tag={Link}
-                      className={`nav-item  ${
-                        pageName == subNavLink.path ||
-                        (subNavLink.path == '/shop/clothing/29' && pageName == '/29')
-                          ? 'active'
-                          : ''
-                      }`}
-                      to={subNavLink.path}
-                    >
-                      {subNavLink.menu_title}
-                    </DropdownItem>
-                  ))}
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </Fragment>
-        ) : (
-          <Fragment>
-            <NavItem>
-              <NavLink className="nav-link" to={`${navLink.path}`}>
-                {navLink.menu_title}
-              </NavLink>
-            </NavItem>
-          </Fragment>
-        )}
-      </Nav>
-    ))
-  }
-
   useEffect(() => {
     setProductsCartItems(JSON.parse(localStorage.getItem('LocalCartItems')))
   }, [changeCart])
@@ -133,8 +58,8 @@ const HeaderMain = ({ changeCart }) => {
   const pathArray = pathnames.split('/')
   const pageName = '/' + pathArray[pathArray.length - 1]
   const searchName = getSearchName(pageName)
-  const itemsInCart = readCartItems()
-  const isItemsInCart = itemsInCart.length > 0
+  const cartItems = readCartItems()
+  const isItemsInCart = cartItems.length > 0
   const urlRedirectShoppingCart = !isItemsInCart ? '#' : '/shopping-cart'
 
   return (
@@ -160,7 +85,7 @@ const HeaderMain = ({ changeCart }) => {
                                     <Navbar light expand="md" className="front_menu">
                                       <NavbarToggler onClick={() => toggle()} />
                                       <Collapse isOpen={isOpen} navbar>
-                                        {renderHeaderNavLinks(pageName)}
+                                        <HeaderNavLinks navLinks={navLinks} pageName={pageName} />
                                       </Collapse>
                                     </Navbar>
                                   </div>
@@ -187,106 +112,13 @@ const HeaderMain = ({ changeCart }) => {
                               <span className="cart-icon">
                                 <i className="glyph-icon pgsicon-ecommerce-empty-shopping-cart" />
                               </span>
-                              <span className="cart-count count"> {itemsInCart.length} </span>
+                              <span className="cart-count count"> {cartItems.length} </span>
                             </Link>
 
                             {isItemsInCart ? (
-                              <div className="cart-contents" id="DivCartContent">
-                                <div className="widget ciyashop widget-shopping-cart">
-                                  <div className="widget-shopping-cart-content">
-                                    <div className="pgs-product-list-widget-container has-scrollbar">
-                                      <ul className="ciyashop-mini-cart cart-list">
-                                        {itemsInCart.map((CartItem, index) => (
-                                          <li className="ciya-mini-cart-item" key={index}>
-                                            <Link
-                                              onClick={() => this.removeFromCart(index)}
-                                              id={`Product_${CartItem.ProductID}`}
-                                              className="remove remove_from_cart_button"
-                                            >
-                                              ×
-                                            </Link>
-                                            <div className="media">
-                                              <Link to="#">
-                                                <img
-                                                  width={60}
-                                                  height={76}
-                                                  src={require(`../../../../assets/images/${CartItem.ProductImage}`)}
-                                                  className="img-fluid"
-                                                  alt
-                                                />
-                                              </Link>
-                                              <div className="media-body">
-                                                <Link to="#" className="product-title">
-                                                  {CartItem.ProductName}
-                                                </Link>
-                                                <span className="quantity">
-                                                  {CartItem.Qty} ×{' '}
-                                                  <span className="woocs-special_price_code">
-                                                    <span className="ciya-Price-amount amount">
-                                                      <span className="ciya-Price-currencySymbol">
-                                                        $
-                                                      </span>
-                                                      {CartItem.Rate.toLocaleString(
-                                                        navigator.language,
-                                                        {
-                                                          minimumFractionDigits: 0,
-                                                        }
-                                                      )}
-                                                    </span>
-                                                  </span>
-                                                </span>
-                                              </div>
-                                            </div>
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                    <p className="ciyashop-mini-cart__total total">
-                                      <strong>Subtotal:</strong>{' '}
-                                      <span className="woocs_special_price_code">
-                                        <span className="ciyashop-Price-amount amount">
-                                          <span className="ciyashop-Price-currencySymbol">$</span>{' '}
-                                          {itemsInCart
-                                            .reduce(
-                                              (fr, CartItem) => fr + CartItem.Qty * CartItem.Rate,
-                                              0
-                                            )
-                                            .toLocaleString(navigator.language, {
-                                              minimumFractionDigits: 0,
-                                            })}
-                                        </span>
-                                      </span>
-                                    </p>
-                                    <p className="ciyashop-mini-cart__buttons buttons">
-                                      <Link to="/shopping-cart" className="button wc-forward">
-                                        View cart
-                                      </Link>
-                                      <Link to="/CheckOut" className="button checkout wc-forward">
-                                        Checkout
-                                      </Link>
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
+                              <ShoppingCart cartItems={cartItems} />
                             ) : (
-                              <div className="cart-contents" id="DivCartContent">
-                                <div className="widget ciyashop widget-shopping-cart">
-                                  <div className="widget-shopping-cart-content">
-                                    <p className="ciyashop-mini-cart__total total">
-                                      <img
-                                        src={require(`../../../../assets/images/empty-cart.png`)}
-                                        className="img-fluid mr-3"
-                                      />
-                                      <strong>Your cart is currently empty.</strong>{' '}
-                                      <span className="woocs_special_price_code">
-                                        <span className="ciyashop-Price-amount amount">
-                                          <span className="ciyashop-Price-currencySymbol"></span>{' '}
-                                        </span>
-                                      </span>
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
+                              <EmptyShoppingCart />
                             )}
                           </li>
                           <li className="ciya-tools-action ciya-tools-search">
