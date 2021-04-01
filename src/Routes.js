@@ -8,6 +8,7 @@ import HomeRoutePage from './RoutesPages/HomePage'
 import AboutUsPage from './RoutesPages/AboutUsPage'
 import ContactUsPage from './RoutesPages/ContactUsPage'
 import ProductDetail from './RoutesPages/ProductDetailPage'
+import SearchPage from './RoutesPages/SearchPage'
 
 import './App.css'
 import './Vendor.js'
@@ -51,6 +52,7 @@ const Routes = ({ receiveProducts }) => {
           <Route path="/aboutus" component={AboutUsPage} />
           <Route path="/checkout" component={CheckOut} />
           <Route path="/contactus" component={ContactUsPage} />
+          <Route exact path="/search" component={SearchPage} />
           <Route exact path="/todo-o-nada" component={ShopPage} />
           <Route exact path="/irezumi-art" component={ShopPage} />
           <Route exact path="/hombres" component={ShopPage} />

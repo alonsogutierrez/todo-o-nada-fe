@@ -26,7 +26,6 @@ class SideFilter extends Component {
       SearchValue: '',
     })
     this.props.searchValue('')
-    //this.nameInput.focus()
   }
 
   showfilter() {
@@ -97,20 +96,6 @@ class SideFilter extends Component {
     const colorsFilterValues = this.props.filters.color
     return (
       <div>
-        {/* <div className="widget">
-          <h4 className="widget-title">Buscar</h4>
-          <input
-            type="text"
-            id="btn-search"
-            ref={(input) => {
-              this.nameInput = input
-            }}
-            className="form-control"
-            value={this.state.SearchValue}
-            onChange={this.SearchTextchange.bind(this)}
-            placeholder="Busca un producto"
-          />
-        </div> */}
         <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
           <div className="d-flex align-items-center justify-content-between">
             <h4 className="widget-title">Filtrar por color</h4>

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
 import { Container, Row, Col, Input } from 'reactstrap'
+import PropTypes from 'prop-types'
+
 import ClientAPI from '../../../../common/ClientAPI'
 
-const SearchBar = () => {
+const SearchBar = (props) => {
   const [searchText, setSearchText] = useState('')
   const [clientAPI] = useState(new ClientAPI())
   const [errors] = useState({})
@@ -15,6 +18,7 @@ const SearchBar = () => {
   }
 
   const handleSearchValidation = () => {
+    //TODO: Add search input validation logic
     return true
   }
 
@@ -26,6 +30,7 @@ const SearchBar = () => {
       try {
         const searchResult = await clientAPI.getSearch(searchText)
         console.log('searchResult: ', searchResult)
+        props.history.push('/search')
       } catch (err) {
         setLoading(!loading)
         console.log('error en busqueda: ', err.message)
@@ -34,6 +39,7 @@ const SearchBar = () => {
       setLoading(!loading)
       console.log('busqueda invalida')
     }
+    e.preventDefault()
   }
 
   useEffect(() => {
@@ -79,4 +85,12 @@ const SearchBar = () => {
   )
 }
 
-export default SearchBar
+export default withRouter(SearchBar)
+
+SearchBar.defaultProps = {
+  history: {},
+}
+
+SearchBar.propTypes = {
+  history: PropTypes.object,
+}
