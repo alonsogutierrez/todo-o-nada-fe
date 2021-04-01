@@ -150,4 +150,25 @@ export default class ClientAPI {
         })
     })
   }
+
+  getSearch(searchText) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/search',
+          method: 'get',
+          params: {
+            query: searchText,
+          },
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }

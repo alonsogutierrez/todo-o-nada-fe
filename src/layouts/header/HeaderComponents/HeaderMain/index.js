@@ -10,21 +10,7 @@ import HeaderNavLinks from './HeaderNavLinks'
 import LogoWrapper from '../LogoWrapper'
 import ShoppingCart from './ShoppingCart'
 import EmptyShoppingCart from './EmptyShoppingCart'
-
-const getSearchName = (pageName) => {
-  switch (pageName) {
-    case '/todo-o-nada':
-      return '/todo-o-nada'
-    case '/irezumi-art':
-      return '/irezumi-art'
-    case '/hombres':
-      return '/hombres'
-    case '/mujeres':
-      return '/mujeres'
-    default:
-      return '/niños'
-  }
-}
+import SearchBar from './SearchBar'
 
 const HeaderMain = ({ changeCart }) => {
   const [productsCartItems, setProductsCartItems] = useState([])
@@ -57,7 +43,6 @@ const HeaderMain = ({ changeCart }) => {
   const pathnames = document.location.href
   const pathArray = pathnames.split('/')
   const pageName = '/' + pathArray[pathArray.length - 1]
-  const searchName = getSearchName(pageName)
   const cartItems = readCartItems()
   const isItemsInCart = cartItems.length > 0
   const urlRedirectShoppingCart = !isItemsInCart ? '#' : '/shopping-cart'
@@ -82,6 +67,12 @@ const HeaderMain = ({ changeCart }) => {
                               <div className="primary-nav-wrapper">
                                 <nav className="mega-menu">
                                   <div className="menu-list-items">
+                                    <Navbar light expand="md" className="front_menu">
+                                      <NavbarToggler onClick={() => toggle()} />
+                                      <Collapse isOpen={isOpen} navbar>
+                                        <SearchBar />
+                                      </Collapse>
+                                    </Navbar>
                                     <Navbar light expand="md" className="front_menu">
                                       <NavbarToggler onClick={() => toggle()} />
                                       <Collapse isOpen={isOpen} navbar>
@@ -120,11 +111,6 @@ const HeaderMain = ({ changeCart }) => {
                             ) : (
                               <EmptyShoppingCart />
                             )}
-                          </li>
-                          <li className="ciya-tools-action ciya-tools-search">
-                            <Link to={searchName}>
-                              <i className="glyph-icon pgsicon-ecommerce-magnifying-glass" />
-                            </Link>
                           </li>
                         </ul>
                       </div>
