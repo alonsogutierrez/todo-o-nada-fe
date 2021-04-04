@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom'
 import { Col, Form, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 
-import { ratingValue, sortValue } from '../../actions/filter'
-import MyProduct from '../../api/product'
-import { getFilterProductsdata } from '../../services'
+import { ratingValue, sortValue } from '../../../actions/filter'
+import MyProduct from '../../../api/product'
+import { getFilterProductsdata } from '../../../services'
 
 class TopFilter extends Component {
   constructor(props) {
@@ -17,8 +17,8 @@ class TopFilter extends Component {
   }
 
   componentDidMount() {
-    var removeelems = document.getElementsByClassName('gridlist-button');
-    [].forEach.call(removeelems, function(el) {
+    var removeelems = document.getElementsByClassName('gridlist-button')
+    ;[].forEach.call(removeelems, function (el) {
       el.classList.remove('active')
     })
     let layoutstyle = localStorage.getItem('setLayoutStyle')
@@ -38,8 +38,8 @@ class TopFilter extends Component {
   }
   // Grid List View Display
   GridListview() {
-    var removeelems = document.getElementsByClassName('gridlist-button');
-    [].forEach.call(removeelems, function(el) {
+    var removeelems = document.getElementsByClassName('gridlist-button')
+    ;[].forEach.call(removeelems, function (el) {
       el.classList.remove('active')
     })
 
@@ -47,8 +47,8 @@ class TopFilter extends Component {
     document.querySelector('.pgs-product-list').classList.remove('grid')
     document.querySelector('.pgs-product-list').classList.add('list')
     localStorage.setItem('setLayoutStyle', 'col-sm-12')
-    var elems = document.querySelector('.pgs-product-list').childNodes;
-    [].forEach.call(elems, function(el) {
+    var elems = document.querySelector('.pgs-product-list').childNodes
+    ;[].forEach.call(elems, function (el) {
       el.className = ''
       el.classList.add('col-sm-12')
     })
@@ -56,8 +56,8 @@ class TopFilter extends Component {
 
   // Change Col List On Click Grid List
   LayoutTwoView(Size) {
-    var removeelems = document.getElementsByClassName('gridlist-button');
-    [].forEach.call(removeelems, function(el) {
+    var removeelems = document.getElementsByClassName('gridlist-button')
+    ;[].forEach.call(removeelems, function (el) {
       el.classList.remove('active')
     })
 
@@ -71,16 +71,16 @@ class TopFilter extends Component {
     }
 
     if (!document.querySelector('.pgs-product-list').classList.contains('list-view')) {
-      var elems = document.querySelector('.pgs-product-list').childNodes;
-      [].forEach.call(elems, function(el) {
+      var elems = document.querySelector('.pgs-product-list').childNodes
+      ;[].forEach.call(elems, function (el) {
         el.className = ''
         el.classList.add('col-sm-' + Size)
       })
     }
   }
   LayoutViewFour(Size) {
-    var removeelems = document.getElementsByClassName('gridlist-button');
-    [].forEach.call(removeelems, function(el) {
+    var removeelems = document.getElementsByClassName('gridlist-button')
+    ;[].forEach.call(removeelems, function (el) {
       el.classList.remove('active')
     })
     document.querySelector('.pgs-product-list').classList.remove('list')
@@ -89,8 +89,8 @@ class TopFilter extends Component {
       localStorage.setItem('setLayoutStyle', 'col-sm-6 col-xl-3 col-lg-4')
     }
     if (!document.querySelector('.pgs-product-list').classList.contains('list-view')) {
-      var elems = document.querySelector('.pgs-product-list').childNodes;
-      [].forEach.call(elems, function(el) {
+      var elems = document.querySelector('.pgs-product-list').childNodes
+      ;[].forEach.call(elems, function (el) {
         el.className = ''
         el.classList.add('col-sm-6')
         el.classList.add('col-xl-3')
@@ -99,8 +99,8 @@ class TopFilter extends Component {
     }
   }
   LayoutViewThree(Size) {
-    var removeelems = document.getElementsByClassName('gridlist-button');
-    [].forEach.call(removeelems, function(el) {
+    var removeelems = document.getElementsByClassName('gridlist-button')
+    ;[].forEach.call(removeelems, function (el) {
       el.classList.remove('active')
     })
     document.querySelector('.pgs-product-list').classList.remove('list')
@@ -109,8 +109,8 @@ class TopFilter extends Component {
       localStorage.setItem('setLayoutStyle', 'col-sm-6 col-md-4')
     }
     if (!document.querySelector('.pgs-product-list').classList.contains('list-view')) {
-      var elems = document.querySelector('.pgs-product-list').childNodes;
-      [].forEach.call(elems, function(el) {
+      var elems = document.querySelector('.pgs-product-list').childNodes
+      ;[].forEach.call(elems, function (el) {
         el.className = ''
         el.classList.add('col-sm-6')
         el.classList.add('col-md-4')
@@ -171,7 +171,7 @@ class TopFilter extends Component {
             <select
               name="orderby"
               className="orderby select2"
-              onChange={e => this.props.ratingValue(e.target.value)}
+              onChange={(e) => this.props.ratingValue(e.target.value)}
               tabIndex={-1}
               aria-hidden="true"
             >
@@ -189,7 +189,7 @@ class TopFilter extends Component {
             <select
               name="orderby"
               className="orderby select2"
-              onChange={e => this.props.sortValue(e.target.value)}
+              onChange={(e) => this.props.sortValue(e.target.value)}
               tabIndex={-1}
               aria-hidden="true"
             >
@@ -207,9 +207,9 @@ class TopFilter extends Component {
   }
 }
 
-const mapDispatchToProps = state => ({
+const mapDispatchToProps = (state) => ({
   products: getFilterProductsdata(state.data, state.filters),
-  filters: state.filters
+  filters: state.filters,
 })
 
 export default connect(mapDispatchToProps, { sortValue, ratingValue })(TopFilter)
@@ -217,11 +217,11 @@ export default connect(mapDispatchToProps, { sortValue, ratingValue })(TopFilter
 TopFilter.defaultProps = {
   productsLength: 0,
   ratingValue: () => {},
-  sortValue: () => {}
+  sortValue: () => {},
 }
 
 TopFilter.propTypes = {
   productsLength: PropTypes.number,
   ratingValue: PropTypes.func,
-  sortValue: PropTypes.func
+  sortValue: PropTypes.func,
 }

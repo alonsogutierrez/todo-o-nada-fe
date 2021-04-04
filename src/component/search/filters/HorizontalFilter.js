@@ -8,12 +8,11 @@ import { Slider } from 'antd'
 import PropTypes from 'prop-types'
 import "antd/dist/antd.css"
 
-import { categoryValue, colorValue, priceValue, sizeValue } from '../../actions/filter'
-import { uniqueCategory, uniqueColors, uniqueMinMaxPrice, uniqueSizes } from '../../services'
+import { categoryValue, colorValue, priceValue, sizeValue } from '../../../actions/filter'
+import { uniqueCategory, uniqueColors, uniqueMinMaxPrice, uniqueSizes } from '../../../services'
 import './styles.css'
 
 class HorizontalFilter extends Component {
-
     constructor(props) {
         super(props)
         this.state = {

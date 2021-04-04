@@ -9,12 +9,12 @@ import AboutUsPage from './RoutesPages/AboutUsPage'
 import ContactUsPage from './RoutesPages/ContactUsPage'
 import ProductDetail from './RoutesPages/ProductDetailPage'
 import SearchPage from './RoutesPages/SearchPage'
+import CategoryPage from './RoutesPages/CategoryPage'
 
 import './App.css'
 import './Vendor.js'
 
 import ShoppingCart from './component/shop/shoppingcart'
-import ShopPage from './component/shop'
 import MyAccount from './component/account/MyAccount'
 import PageNotFound from './component/pages/PageNotFound'
 
@@ -53,11 +53,7 @@ const Routes = ({ receiveProducts }) => {
           <Route path="/checkout" component={CheckOut} />
           <Route path="/contactus" component={ContactUsPage} />
           <Route exact path="/search" component={SearchPage} />
-          <Route exact path="/todo-o-nada" component={ShopPage} />
-          <Route exact path="/irezumi-art" component={ShopPage} />
-          <Route exact path="/hombres" component={ShopPage} />
-          <Route exact path="/mujeres" component={ShopPage} />
-          <Route exact path="/niños" component={ShopPage} />
+          <Route exact path="/category/:categoryName" component={CategoryPage} />
           <Route exact path="/shopping-cart" component={ShoppingCart} />
           <Route exact path="/myaccount" component={MyAccount} />
           <Route exact path="/account/address" component={Address} />

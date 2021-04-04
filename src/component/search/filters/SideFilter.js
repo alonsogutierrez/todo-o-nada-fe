@@ -4,8 +4,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { categoryValue, colorValue, priceValue, searchValue, sizeValue } from '../../actions/filter'
-import { uniqueCategory, uniqueColors, uniqueMinMaxPrice, uniqueSizes } from '../../services'
+import {
+  categoryValue,
+  colorValue,
+  priceValue,
+  searchValue,
+  sizeValue,
+} from '../../../actions/filter'
+import { uniqueCategory, uniqueColors, uniqueMinMaxPrice, uniqueSizes } from '../../../services'
 import { Scrollbars } from 'react-custom-scrollbars'
 import './styles.css'
 

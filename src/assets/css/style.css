@@ -3492,6 +3492,7 @@ header.site-header .ciya-tools-actions > li {
   line-height: 45px;
   text-align: center;
   position: relative;
+  padding-top: 15px;
 }
 
 header.site-header .ciya-tools-actions > li .glyph-icon {
@@ -4237,7 +4238,7 @@ header.site-header.is-sticky .mega-menu .menu-links > li .drop-down.grid-col-12 
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  display: inline-block;
+  display: block;
   vertical-align: middle;
 }
 

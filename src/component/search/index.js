@@ -3,18 +3,23 @@ import { connect } from 'react-redux'
 import { Container, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 
+import ClientAPI from '../../common/ClientAPI'
 import ProductsAPI from '../../api/product'
 import { getFilterProductsdata } from '../../services'
-import ProductList from '../../widgets/ProductList'
-import ShopBanner from '../../widgets/shopfilter/ShopBanner'
-import SideFilter from '../../widgets/shopfilter/SideFilter'
-import SocialFilter from '../../widgets/shopfilter/SocialInfo'
-import TopFilter from '../../widgets/shopfilter/TopFilter'
+import ProductList from './ProductList'
+
+import SideFilter from './filters/SideFilter'
+import TopFilter from './filters/TopFilter'
+import ShopBanner from './ShopBanner'
+import SocialFilter from './SocialInfo'
 import SubHeader from './SubHeader'
 
-const SearchPage = ({ products }) => {
+const SearchPage = (props) => {
   const [limit, setLimit] = useState(8)
+  const [clientAPI] = useState(new ClientAPI())
   const [productsAPI] = useState(ProductsAPI)
+  const [products, setProducts] = useState(props.products)
+  const [categoryNameSelected, setCategoryNameSelected] = useState('')
 
   const onLoadMore = () => {
     setLimit(limit + 8)
@@ -24,7 +29,22 @@ const SearchPage = ({ products }) => {
     window.location.reload(false)
   }
 
-  useEffect(() => {
+  const isCategoryQuery = () => {
+    const categoryName = props.match.params.categoryName
+    setCategoryNameSelected(categoryName)
+    return categoryName ? true : false
+  }
+
+  useEffect(async () => {
+    if (isCategoryQuery()) {
+      try {
+        const productsByCategory = await clientAPI.getProductsByCategory(categoryNameSelected)
+        //TODO: Map response to set same product structure
+        setProducts(productsByCategory)
+      } catch (err) {
+        console.log('Error trying to get products by category')
+      }
+    }
     if (limit < productsAPI.length) {
       setTimeout(() => {
         setLimit(limit + 8)
@@ -109,8 +129,10 @@ export default connect(mapDispatchToProps, {})(SearchPage)
 
 SearchPage.defaultProps = {
   products: [],
+  match: {},
 }
 
 SearchPage.propTypes = {
   products: PropTypes.array,
+  match: PropTypes.object,
 }

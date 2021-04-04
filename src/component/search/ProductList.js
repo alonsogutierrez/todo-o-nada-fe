@@ -80,7 +80,7 @@ class ProductList extends Component {
                   {product.pictures[0] ? (
                     <div className="product-thumbnail-main">
                       <img
-                        src={require(`../assets/images/${product.pictures[0]}`)}
+                        src={require(`../../assets/images/${product.pictures[0]}`)}
                         className="img-fluid"
                       />
                     </div>
@@ -88,7 +88,7 @@ class ProductList extends Component {
                   {product.pictures[1] ? (
                     <div className="product-thumbnail-swap">
                       <img
-                        src={require(`../assets/images/${product.pictures[1]}`)}
+                        src={require(`../../assets/images/${product.pictures[1]}`)}
                         className="img-fluid"
                       />
                     </div>
