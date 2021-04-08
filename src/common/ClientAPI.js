@@ -171,4 +171,22 @@ export default class ClientAPI {
         })
     })
   }
+
+  getProductsByCategory(category) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: `/search/category/${category}`,
+          method: 'get',
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }

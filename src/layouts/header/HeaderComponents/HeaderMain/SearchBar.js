@@ -35,7 +35,7 @@ const SearchBar = (props) => {
         props.setProducts(searchResult)
         console.log('searchResult: ', searchResult)
         setLoading(false)
-        props.history.push('/search')
+        props.history.push(`/search?query=${searchText}`)
       } catch (err) {
         setLoading(false)
         console.log('error en busqueda: ', err.message)
