@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import ClientAPI from '../../common/ClientAPI'
 import ProductsAPI from '../../api/product'
 import { getFilterProductsdata } from '../../services'
-import ProductList from './ProductList'
+import ProductCard from './ProductCard'
 
 import SideFilter from './filters/SideFilter'
 import TopFilter from './filters/TopFilter'
@@ -108,7 +108,7 @@ class SearchPage extends Component {
                     <div>
                       <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
                         {products.slice(0, limit).map((product, index) => (
-                          <ProductList product={product} key={index} layoutstyle={layoutstyle} />
+                          <ProductCard product={product} key={index} layoutstyle={layoutstyle} />
                         ))}
                       </Row>
                       <div className="text-center">

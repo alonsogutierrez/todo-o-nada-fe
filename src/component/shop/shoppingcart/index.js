@@ -1,8 +1,13 @@
 /* eslint-disable react/no-string-refs */
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Col, Container, Row, Table } from 'reactstrap'
 import PropTypes from 'prop-types'
+import 'react-toastify/dist/ReactToastify.min.css'
+import { toast, ToastContainer } from 'react-toastify'
+
+import setChangeCartData from '../../../actions/setChangeCartData'
 
 class ShopingCart extends Component {
   constructor(props) {
@@ -43,28 +48,36 @@ class ShopingCart extends Component {
   }
 
   removeFromCart(Index) {
-    var UpdatedCart = JSON.parse(localStorage.getItem('LocalCartItems'))
+    const { setChangeCart, changeCart } = this.props
+    let UpdatedCart = this.readCartItems()
     UpdatedCart = UpdatedCart.slice(0, Index).concat(
       UpdatedCart.slice(Index + 1, UpdatedCart.length)
     )
     localStorage.removeItem('LocalCartItems')
     localStorage.setItem('LocalCartItems', JSON.stringify(UpdatedCart))
+    setChangeCart(!changeCart)
+    toast.warning('Producto eliminado del carro')
   }
 
   plusQty(Index) {
-    var UpdatedCart = JSON.parse(localStorage.getItem('LocalCartItems'))
+    const { setChangeCart, changeCart } = this.props
+    let UpdatedCart = this.readCartItems()
     UpdatedCart[Index].Qty = parseInt(UpdatedCart[Index].Qty + 1)
     localStorage.removeItem('LocalCartItems')
     localStorage.setItem('LocalCartItems', JSON.stringify(UpdatedCart))
+    setChangeCart(!changeCart)
+    toast.success('Producto agregado al carro')
   }
 
   minusQty(Index) {
-    var UpdatedCart = JSON.parse(localStorage.getItem('LocalCartItems'))
-
+    const { setChangeCart, changeCart } = this.props
+    let UpdatedCart = this.readCartItems()
     if (UpdatedCart[Index].Qty != 1) {
       UpdatedCart[Index].Qty = parseInt(UpdatedCart[Index].Qty - 1)
       localStorage.removeItem('LocalCartItems')
       localStorage.setItem('LocalCartItems', JSON.stringify(UpdatedCart))
+      setChangeCart(!changeCart)
+      toast.warning('Producto eliminado del carro')
     } else {
       this.removeFromCart(Index)
     }
@@ -73,172 +86,190 @@ class ShopingCart extends Component {
   render() {
     const cartItems = this.readCartItems()
     return (
-      <div className="site-content">
-        <div className="content-wrapper section-ptb">
-          <Container>
-            {cartItems !== null && cartItems.length > 0 ? (
-              <Row>
-                <Col xl={8}>
-                  <div className="table-responsive">
-                    <Table className="cart-table">
-                      <thead>
-                        <tr>
-                          <th clas="product-remove"></th>
-                          <th className="product-thumbnail"></th>
-                          <th className="product-name">
-                            <span className="nobr">Producto</span>
-                          </th>
-                          <th className="product-price">
-                            <span className="nobr">Precio</span>
-                          </th>
-                          <th className="product-stock-status">Cantidad</th>
-                          <th className="product-subtotal">Total</th>
-                        </tr>
-
-                        {cartItems.map((CartItem, index) => (
-                          <tr key={index}>
-                            <td className="product-remove">
-                              <Link
-                                onClick={() => this.removeFromCart(index)}
-                                className="remove"
-                              ></Link>
-                            </td>
-                            <td className="product-thumbnail">
-                              <Link to="#">
-                                <img
-                                  src={require(`../../../assets/images/${CartItem.ProductImage}`)}
-                                  alt="product"
-                                />
-                              </Link>
-                            </td>
-                            <td className="product-name">{CartItem.ProductName}</td>
-                            <td className="product-price">
-                              $
-                              {CartItem.Rate.toLocaleString(navigator.language, {
-                                minimumFractionDigits: 0,
-                              })}
-                            </td>
-                            <td className="product-quantity">
-                              <div className="quantity">
-                                <label
-                                  className="screen-reader-text"
-                                  htmlFor="quantity_5cd96a418e8ad"
-                                >
-                                  Cantidad
-                                </label>
-                                <input
-                                  type="text"
-                                  className="input-text qty text"
-                                  value={CartItem.Qty}
-                                  title="Qty"
-                                />
-                                <div className="quantity-nav">
-                                  <Link
-                                    className="quantity-button quantity-up"
-                                    onClick={() => this.plusQty(index)}
-                                  >
-                                    +
-                                  </Link>
-                                  <Link
-                                    className="quantity-button quantity-down"
-                                    onClick={() => this.minusQty(index)}
-                                  >
-                                    -
-                                  </Link>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="product-subtotal">
-                              $
-                              {(CartItem.Rate * CartItem.Qty).toLocaleString(navigator.language, {
-                                minimumFractionDigits: 0,
-                              })}
-                            </td>
-                          </tr>
-                        ))}
-                      </thead>
-                    </Table>
-                  </div>
-                </Col>
-                <div className="cart-collaterals col-xl-4">
-                  <div className="cart_totals ">
-                    <h2>Resumen</h2>
+      <>
+        <ToastContainer autoClose={1000} draggable={false} />
+        <div className="site-content">
+          <div className="content-wrapper section-ptb">
+            <Container>
+              {cartItems !== null && cartItems.length > 0 ? (
+                <Row>
+                  <Col xl={8}>
                     <div className="table-responsive">
-                      <Table cellspacing="0" className="shop_table shop_table_responsive">
-                        <tbody>
-                          <tr className="cart-subtotal">
-                            <th>Subtotal</th>
-                            <td data-title="Subtotal">
-                              <span className="woocs_special_price_code">
-                                <span className="Price-amount amount">
-                                  <span className="Price-currencySymbol">$</span>{' '}
-                                  {cartItems
-                                    .reduce((fr, CartItem) => fr + CartItem.Qty * CartItem.Rate, 0)
-                                    .toLocaleString(navigator.language, {
-                                      minimumFractionDigits: 0,
-                                    })}{' '}
-                                </span>
-                              </span>
-                            </td>
+                      <Table className="cart-table">
+                        <thead>
+                          <tr>
+                            <th clas="product-remove"></th>
+                            <th className="product-thumbnail"></th>
+                            <th className="product-name">
+                              <span className="nobr">Producto</span>
+                            </th>
+                            <th className="product-price">
+                              <span className="nobr">Precio</span>
+                            </th>
+                            <th className="product-stock-status">Cantidad</th>
+                            <th className="product-subtotal">Total</th>
                           </tr>
-                          <tr className="order-total">
-                            <th>Total</th>
-                            <td data-title="Total">
-                              <strong>
-                                <span className="special_price_code">
-                                  <span className="Price-amount amount">
-                                    <span className="Price-currencySymbol">$</span>{' '}
-                                    {parseFloat(
-                                      parseFloat(
-                                        cartItems.reduce(
-                                          (fr, CartItem) => fr + CartItem.Qty * CartItem.Rate,
-                                          0
-                                        )
-                                      )
-                                    ).toLocaleString(navigator.language, {
-                                      minimumFractionDigits: 2,
-                                    })}{' '}
-                                  </span>
-                                </span>
-                              </strong>
-                            </td>
-                          </tr>
-                        </tbody>
+
+                          {cartItems.map((CartItem, index) => (
+                            <tr key={index}>
+                              <td className="product-remove">
+                                <Link
+                                  onClick={() => this.removeFromCart(index)}
+                                  className="remove"
+                                ></Link>
+                              </td>
+                              <td className="product-thumbnail">
+                                <Link to="#">
+                                  <img
+                                    src={require(`../../../assets/images/${CartItem.ProductImage}`)}
+                                    alt="product"
+                                  />
+                                </Link>
+                              </td>
+                              <td className="product-name">{CartItem.ProductName}</td>
+                              <td className="product-price">
+                                $
+                                {CartItem.Rate.toLocaleString(navigator.language, {
+                                  minimumFractionDigits: 0,
+                                })}
+                              </td>
+                              <td className="product-quantity">
+                                <div className="quantity">
+                                  <label
+                                    className="screen-reader-text"
+                                    htmlFor="quantity_5cd96a418e8ad"
+                                  >
+                                    Cantidad
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="input-text qty text"
+                                    value={CartItem.Qty}
+                                    title="Qty"
+                                  />
+                                  <div className="quantity-nav">
+                                    <Link
+                                      className="quantity-button quantity-up"
+                                      onClick={() => this.plusQty(index)}
+                                    >
+                                      +
+                                    </Link>
+                                    <Link
+                                      className="quantity-button quantity-down"
+                                      onClick={() => this.minusQty(index)}
+                                    >
+                                      -
+                                    </Link>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="product-subtotal">
+                                $
+                                {(CartItem.Rate * CartItem.Qty).toLocaleString(navigator.language, {
+                                  minimumFractionDigits: 0,
+                                })}
+                              </td>
+                            </tr>
+                          ))}
+                        </thead>
                       </Table>
                     </div>
-                    <div className="proceed-to-checkout">
-                      <Link to="CheckOut" className="checkout-button button">
-                        Ir al checkout
-                      </Link>
+                  </Col>
+                  <div className="cart-collaterals col-xl-4">
+                    <div className="cart_totals ">
+                      <h2>Resumen</h2>
+                      <div className="table-responsive">
+                        <Table cellspacing="0" className="shop_table shop_table_responsive">
+                          <tbody>
+                            <tr className="cart-subtotal">
+                              <th>Subtotal</th>
+                              <td data-title="Subtotal">
+                                <span className="woocs_special_price_code">
+                                  <span className="Price-amount amount">
+                                    <span className="Price-currencySymbol">$</span>{' '}
+                                    {cartItems
+                                      .reduce(
+                                        (fr, CartItem) => fr + CartItem.Qty * CartItem.Rate,
+                                        0
+                                      )
+                                      .toLocaleString(navigator.language, {
+                                        minimumFractionDigits: 0,
+                                      })}{' '}
+                                  </span>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr className="order-total">
+                              <th>Total</th>
+                              <td data-title="Total">
+                                <strong>
+                                  <span className="special_price_code">
+                                    <span className="Price-amount amount">
+                                      <span className="Price-currencySymbol">$</span>{' '}
+                                      {parseFloat(
+                                        parseFloat(
+                                          cartItems.reduce(
+                                            (fr, CartItem) => fr + CartItem.Qty * CartItem.Rate,
+                                            0
+                                          )
+                                        )
+                                      ).toLocaleString(navigator.language, {
+                                        minimumFractionDigits: 2,
+                                      })}{' '}
+                                    </span>
+                                  </span>
+                                </strong>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
+                      <div className="proceed-to-checkout">
+                        <Link to="CheckOut" className="checkout-button button">
+                          Ir al checkout
+                        </Link>
+                      </div>
                     </div>
                   </div>
+                </Row>
+              ) : (
+                <div className="wishlist-not-found">
+                  <img
+                    src={require(`../../../assets/images/empty-search.jpg`)}
+                    className="img-fluid mb-4"
+                  />
+                  <h4 className="d-block">Tu carrito de compras esta vacío.</h4>
+                  <a className="btn btn-primary" href="/shop">
+                    Seguir comprando
+                  </a>
                 </div>
-              </Row>
-            ) : (
-              <div className="wishlist-not-found">
-                <img
-                  src={require(`../../../assets/images/empty-search.jpg`)}
-                  className="img-fluid mb-4"
-                />
-                <h4 className="d-block">Tu carrito de compras esta vacío.</h4>
-                <a className="btn btn-primary" href="/shop">
-                  Seguir comprando
-                </a>
-              </div>
-            )}
-          </Container>
+              )}
+            </Container>
+          </div>
         </div>
-      </div>
+      </>
     )
   }
 }
 
-export default ShopingCart
+const mapStateToProps = (state) => ({
+  changeCart: state.changeCartDataReducer.changeCartData,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  setChangeCart: (change) => dispatch(setChangeCartData(change)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopingCart)
 
 ShopingCart.defaultProps = {
   history: {},
+  changeCart: false,
+  setChangeCart: () => {},
 }
 
 ShopingCart.propTypes = {
   history: PropTypes.object,
+  changeCart: PropTypes.bool,
+  setChangeCart: PropTypes.func,
 }
