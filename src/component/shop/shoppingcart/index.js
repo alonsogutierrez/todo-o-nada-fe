@@ -91,7 +91,7 @@ class ShopingCart extends Component {
         <div className="site-content">
           <div className="content-wrapper section-ptb">
             <Container>
-              {cartItems !== null && cartItems.length > 0 ? (
+              {cartItems ? (
                 <Row>
                   <Col xl={8}>
                     <div className="table-responsive">
@@ -110,7 +110,7 @@ class ShopingCart extends Component {
                             <th className="product-subtotal">Total</th>
                           </tr>
 
-                          {cartItems.map((CartItem, index) => (
+                          {cartItems.map((cartItem, index) => (
                             <tr key={index}>
                               <td className="product-remove">
                                 <Link
@@ -121,15 +121,15 @@ class ShopingCart extends Component {
                               <td className="product-thumbnail">
                                 <Link to="#">
                                   <img
-                                    src={require(`../../../assets/images/${CartItem.ProductImage}`)}
+                                    src={require(`../../../assets/images/products/product-01.jpg`)}
                                     alt="product"
                                   />
                                 </Link>
                               </td>
-                              <td className="product-name">{CartItem.ProductName}</td>
+                              <td className="product-name">{cartItem.productName}</td>
                               <td className="product-price">
                                 $
-                                {CartItem.Rate.toLocaleString(navigator.language, {
+                                {cartItem.price.toLocaleString(navigator.language, {
                                   minimumFractionDigits: 0,
                                 })}
                               </td>
@@ -144,7 +144,7 @@ class ShopingCart extends Component {
                                   <input
                                     type="text"
                                     className="input-text qty text"
-                                    value={CartItem.Qty}
+                                    value={cartItem.quantity}
                                     title="Qty"
                                   />
                                   <div className="quantity-nav">
@@ -165,7 +165,9 @@ class ShopingCart extends Component {
                               </td>
                               <td className="product-subtotal">
                                 $
-                                {(CartItem.Rate * CartItem.Qty).toLocaleString(navigator.language, {
+                                {(
+                                  Number(cartItem.price) * Number(cartItem.quantity)
+                                ).toLocaleString(navigator.language, {
                                   minimumFractionDigits: 0,
                                 })}
                               </td>
@@ -189,7 +191,8 @@ class ShopingCart extends Component {
                                     <span className="Price-currencySymbol">$</span>{' '}
                                     {cartItems
                                       .reduce(
-                                        (fr, CartItem) => fr + CartItem.Qty * CartItem.Rate,
+                                        (fr, cartItem) =>
+                                          fr + Number(cartItem.quantity) * Number(cartItem.price),
                                         0
                                       )
                                       .toLocaleString(navigator.language, {
@@ -209,7 +212,9 @@ class ShopingCart extends Component {
                                       {parseFloat(
                                         parseFloat(
                                           cartItems.reduce(
-                                            (fr, CartItem) => fr + CartItem.Qty * CartItem.Rate,
+                                            (fr, cartItem) =>
+                                              fr +
+                                              Number(cartItem.quantity) * Number(cartItem.price),
                                             0
                                           )
                                         )
@@ -239,7 +244,7 @@ class ShopingCart extends Component {
                     className="img-fluid mb-4"
                   />
                   <h4 className="d-block">Tu carrito de compras esta vacío.</h4>
-                  <a className="btn btn-primary" href="/shop">
+                  <a className="btn btn-primary" href="/">
                     Seguir comprando
                   </a>
                 </div>

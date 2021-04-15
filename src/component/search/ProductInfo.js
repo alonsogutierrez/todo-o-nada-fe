@@ -8,18 +8,17 @@ import { toast, ToastContainer } from 'react-toastify'
 import setChangeCartData from '../../actions/setChangeCartData'
 
 const ProductInfo = ({ product, changeCart, setChangeCart }) => {
-  const AddToCart = (ProductID, ProductName, ProductImage, Qty, Rate, StockStatus) => {
+  const AddToCart = (productId, productName, quantity, price, stockStatus) => {
     let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (cartItems === null) cartItems = []
-    let selectedProduct = cartItems.find((product) => product.ProductID === ProductID)
+    let selectedProduct = cartItems.find((product) => product.productId === productId)
     if (!selectedProduct) {
       cartItems.push({
-        ProductID: ProductID,
-        ProductName: ProductName,
-        ProductImage: ProductImage,
-        Qty: Qty,
-        Rate: Rate,
-        StockStatus: StockStatus,
+        productId,
+        productName,
+        quantity,
+        price,
+        stockStatus,
       })
       localStorage.removeItem('LocalCartItems')
       localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
@@ -30,12 +29,12 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
     }
   }
 
-  const CheckCardItem = (ID) => {
+  const CheckCardItem = (prodId) => {
     let checkCart = false
     let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (cartItems && cartItems.length > 0) {
       for (const cartItem of cartItems) {
-        if (cartItem.ProductID === ID) {
+        if (cartItem.productId === prodId) {
           checkCart = true
         }
       }
@@ -91,10 +90,9 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                         AddToCart(
                           product.id,
                           product.name,
-                          product.pictures[0],
-                          1,
-                          product.salePrice,
-                          'In Stock'
+                          product.quantity,
+                          product.price,
+                          product.quantity > 0 ? 'In Stock' : 'No Stock'
                         )
                       }
                       className="button add_to_cart_button"
@@ -112,7 +110,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
             </div>
           </div>
           <div className="product-info">
-            {product.tags ? (
+            {/* {product.tags ? (
               <span className="ciyashop-product-category">
                 {product.tags.map((tag, index) => (
                   <span key={index}>
@@ -121,19 +119,19 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                   </span>
                 ))}
               </span>
-            ) : null}
+            ) : null} */}
             {product.name && (
               <h3 className="product-name">
                 <Link to={`/shop/${product.category}/${product.id}`}>{product.name}</Link>
               </h3>
             )}
             <div className="product-rating-price">
-              {product.salePrice && (
+              {product.price && (
                 <span className="price">
                   <ins>
                     <span className="price-amount amount">
                       <span className="currency-symbol">$</span>
-                      {product.salePrice.toLocaleString(navigator.language, {
+                      {product.price.toLocaleString(navigator.language, {
                         minimumFractionDigits: 0,
                       })}
                     </span>
@@ -151,10 +149,9 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                         AddToCart(
                           product.id,
                           product.name,
-                          product.pictures[0],
-                          1,
-                          product.salePrice,
-                          'In Stock'
+                          product.quantity,
+                          product.price,
+                          product.quantity > 0 ? 'In Stock' : 'No Stock'
                         )
                       }
                       className="button add_to_cart_button"

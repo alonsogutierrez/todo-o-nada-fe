@@ -13,6 +13,7 @@ import orderData from './orderData'
 import changeCartData from './changeCartData'
 import changeWeekSalesData from './changeWeekSales'
 import actualProductsData from './actualProductsData'
+import changeProducts from './changeProducts'
 
 export const rootReducer = combineReducers({
   data: products,
@@ -23,5 +24,6 @@ export const rootReducer = combineReducers({
   changeCartDataReducer: changeCartData,
   changeWeekSalesDataReducer: changeWeekSalesData,
   actualProductsDataReducer: actualProductsData,
+  changeProductsDataReducer: changeProducts,
   ReducersIntl,
 })

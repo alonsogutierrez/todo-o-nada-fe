@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 import ClientAPI from '../../common/ClientAPI'
 import ProductsAPI from '../../api/product'
-import { getFilterProductsdata } from '../../services'
+//import { getFilterProductsdata } from '../../services'
 import ProductCard from './ProductCard'
 
 import SideFilter from './filters/SideFilter'
@@ -53,6 +53,7 @@ class SearchPage extends Component {
   async componentDidMount() {
     const { clientAPI, categoryNameSelected, limit, productsAPI } = this.state
     if (this.isCategoryQuery()) {
+      console.log('category query')
       try {
         const productsByCategory = await clientAPI.getProductsByCategory(categoryNameSelected)
         //TODO: Map response to set same product structure
@@ -74,6 +75,15 @@ class SearchPage extends Component {
 
   render() {
     const { products } = this.props
+    const { actualProductsData } = products
+    let actualProducts = []
+    if (actualProductsData) {
+      const { hits } = actualProductsData
+      if (hits) {
+        actualProducts = hits
+      }
+    }
+
     const { limit } = this.state
     let layoutstyle = localStorage.getItem('setLayoutStyle')
 
@@ -104,10 +114,10 @@ class SearchPage extends Component {
                       </div>
                     </div>
                   </div>
-                  {products.length > 0 ? (
+                  {actualProducts ? (
                     <div>
                       <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
-                        {products.slice(0, limit).map((product, index) => (
+                        {actualProducts.slice(0, limit).map((product, index) => (
                           <ProductCard product={product} key={index} layoutstyle={layoutstyle} />
                         ))}
                       </Row>
@@ -144,11 +154,15 @@ class SearchPage extends Component {
   }
 }
 
-const mapDispatchToProps = (state) => ({
-  products: getFilterProductsdata(state.data, state.filters),
+const mapStateToProps = (state) => ({
+  products: state.actualProductsDataReducer,
+  // products: getFilterProductsdata(
+  //   state.actualProductsDataReducer.actualProductsData,
+  //   state.filters
+  // ),
 })
 
-export default connect(mapDispatchToProps, {})(SearchPage)
+export default connect(mapStateToProps, {})(SearchPage)
 
 SearchPage.defaultProps = {
   products: [],

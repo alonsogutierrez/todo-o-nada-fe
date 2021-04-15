@@ -4,7 +4,7 @@ export default (changeCartData) => (dispatch) => {
   dispatch({
     type: SET_CHANGE_CART_DATA,
     payload: {
-        changeCartData,
+      changeCartData,
     },
   })
 }

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 
 import ClientAPI from '../../../../common/ClientAPI'
 import setActualProductsData from '../../../../actions/setActualProductsData'
+import setChangeProducts from '../../../../actions/setChangeProducts'
 
 const SearchBar = (props) => {
   const [searchText, setSearchText] = useState('')
@@ -33,6 +34,7 @@ const SearchBar = (props) => {
         const searchResult = await clientAPI.getSearch(searchText)
         //TODO: Save product search result into reducer
         props.setProducts(searchResult)
+        props.setChangeProducts(!props.changeProducts)
         console.log('searchResult: ', searchResult)
         setLoading(false)
         props.history.push(`/search?query=${searchText}`)
@@ -93,6 +95,7 @@ const SearchBar = (props) => {
 
 const mapDispatchToProps = (dispatch) => ({
   setProducts: (products) => dispatch(setActualProductsData(products)),
+  setChangeProducts: (changeProducts) => dispatch(setChangeProducts(changeProducts)),
 })
 
 export default connect(null, mapDispatchToProps)(withRouter(SearchBar))
@@ -100,9 +103,13 @@ export default connect(null, mapDispatchToProps)(withRouter(SearchBar))
 SearchBar.defaultProps = {
   history: {},
   setProducts: () => {},
+  changeProducts: false,
+  setChangeProducts: () => {},
 }
 
 SearchBar.propTypes = {
   history: PropTypes.object,
   setProducts: PropTypes.func,
+  changeProducts: PropTypes.bool,
+  setChangeProducts: PropTypes.func,
 }

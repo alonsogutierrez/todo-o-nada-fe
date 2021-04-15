@@ -9,26 +9,36 @@ const ShoppingCart = ({ cartItems }) => {
     return []
   }
 
-  const getItemImage = (item) => {
+  const getItemImage = () => {
     //TODO: Call to CDN to get item image
-    return require(`../../../../assets/images/${item.ProductImage}`)
+    return require('../../../../assets/images/products/product-01.jpg')
   }
 
   const getItemPrice = (item) => {
-    return item.Rate.toLocaleString(navigator.language, {
-      minimumFractionDigits: 0,
-    })
+    let itemPrice = 0
+    if (item.price) {
+      itemPrice = item.price.toLocaleString(navigator.language, {
+        minimumFractionDigits: 0,
+      })
+      return itemPrice
+    }
+    return itemPrice
   }
 
   const getSubTotal = () => {
-    return cartItems
-      .reduce((fr, cartItem) => fr + cartItem.Qty * cartItem.Rate, 0)
+    const subTotal = cartItems
+      .reduce((fr, cartItem) => {
+        let totalPriceItem = 0
+        if (cartItem.quantity && cartItem.price) {
+          totalPriceItem = fr + Number(cartItem.quantity) * Number(cartItem.price)
+        }
+        return totalPriceItem
+      }, 0)
       .toLocaleString(navigator.language, {
         minimumFractionDigits: 0,
       })
+    return subTotal
   }
-
-  console.log('shopping cart itemsInCart: ', cartItems)
 
   return cartItems ? (
     <>
@@ -37,46 +47,42 @@ const ShoppingCart = ({ cartItems }) => {
           <div className="widget-shopping-cart-content">
             <div className="pgs-product-list-widget-container has-scrollbar">
               <ul className="ciyashop-mini-cart cart-list">
-                {cartItems ? (
-                  cartItems.map((cartItem, index) => (
-                    <li className="ciya-mini-cart-item" key={index}>
-                      <Link
-                        onClick={() => removeFromCart(index)}
-                        id={`Product_${cartItem.ProductID}`}
-                        className="remove remove_from_cart_button"
-                      >
-                        ×
+                {cartItems.map((cartItem, index) => (
+                  <li className="ciya-mini-cart-item" key={index}>
+                    <Link
+                      onClick={() => removeFromCart(index)}
+                      id={`Product_${cartItem.productId}`}
+                      className="remove remove_from_cart_button"
+                    >
+                      ×
+                    </Link>
+                    <div className="media">
+                      <Link to="#">
+                        <img
+                          width={60}
+                          height={76}
+                          src={getItemImage()}
+                          className="img-fluid"
+                          alt
+                        />
                       </Link>
-                      <div className="media">
-                        <Link to="#">
-                          <img
-                            width={60}
-                            height={76}
-                            src={getItemImage(cartItem)}
-                            className="img-fluid"
-                            alt
-                          />
+                      <div className="media-body">
+                        <Link to="#" className="product-title">
+                          {cartItem.productName}
                         </Link>
-                        <div className="media-body">
-                          <Link to="#" className="product-title">
-                            {cartItem.ProductName}
-                          </Link>
-                          <span className="quantity">
-                            {cartItem.Qty} ×{' '}
-                            <span className="woocs-special_price_code">
-                              <span className="ciya-Price-amount amount">
-                                <span className="ciya-Price-currencySymbol">$</span>
-                                {getItemPrice(cartItem)}
-                              </span>
+                        <span className="quantity">
+                          {cartItem.quantity} ×{' '}
+                          <span className="woocs-special_price_code">
+                            <span className="ciya-Price-amount amount">
+                              <span className="ciya-Price-currencySymbol">$</span>
+                              {getItemPrice(cartItem)}
                             </span>
                           </span>
-                        </div>
+                        </span>
                       </div>
-                    </li>
-                  ))
-                ) : (
-                  <></>
-                )}
+                    </div>
+                  </li>
+                ))}
               </ul>
             </div>
             <p className="ciyashop-mini-cart__total total">
