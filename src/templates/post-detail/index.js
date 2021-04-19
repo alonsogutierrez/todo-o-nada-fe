@@ -10,21 +10,24 @@ import Slider from 'react-slick'
 import { toast } from 'react-toastify'
 import { Row } from 'reactstrap'
 import 'react-image-lightbox/style.css'
+import './style.css'
 
 const settings = {
   dots: false,
   infinite: true,
   speed: 500,
   slidesToShow: 1,
-  slidesToScroll: 1,
+  slidesToScroll: 1
 }
 const productslider = {
   dots: false,
   infinite: false,
   speed: 500,
   slidesToShow: 5,
-  slidesToScroll: 1,
+  slidesToScroll: 1
 }
+
+const sizes = ['S', 'M', 'L', 'XL']
 
 class PostDetail extends Component {
   constructor(props) {
@@ -34,14 +37,18 @@ class PostDetail extends Component {
       photoIndex: 0,
       isOpen: false,
       qty: 1,
-      newImage: props.product.pictures[0],
+      newImage: props.product.details[0].pictures[0],
+      subProducts: null,
+      colorsAvailable: [],
+      size: 'S',
+      color: ''
     }
   }
 
   changePreviewImage(image) {
     this.setState({
       newImage: image,
-      tabid: 1,
+      tabid: 1
     })
   }
 
@@ -57,7 +64,7 @@ class PostDetail extends Component {
         ProductImage: ProductImage,
         Qty: Qty,
         Rate: Rate,
-        StockStatus: StockStatus,
+        StockStatus: StockStatus
       })
       localStorage.removeItem('LocalCartItems')
       localStorage.setItem('LocalCartItems', JSON.stringify(Cart))
@@ -70,14 +77,14 @@ class PostDetail extends Component {
 
   PlusQty() {
     this.setState({
-      qty: this.state.qty + 1,
+      qty: this.state.qty + 1
     })
   }
 
   MinusQty() {
     if (this.state.qty > 1) {
       this.setState({
-        qty: this.state.qty - 1,
+        qty: this.state.qty - 1
       })
     }
   }
@@ -95,13 +102,99 @@ class PostDetail extends Component {
     return checkcart
   }
 
+  formatNumberToView(num) {
+    return new Intl.NumberFormat('es-CL', {
+      style: 'currency',
+      currency: 'CLP'
+    }).format(num)
+  }
+
+  setAvailableSubProduct(product) {
+    return sizes.map((size) => {
+      return { size, details: product.details.filter((subProduct) => subProduct.size === size) }
+    })
+  }
+
+  setSizesProduct(subProducts) {
+    return (
+      <span className="size">
+        <label>Tamaño:</label>
+        {subProducts.map((available, index) => {
+          if (available.details.length > 0) {
+            return (
+                    <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
+                      <a href="javascript:void(0)" rel="tag" onClick={(event) => this.setState({size: event.target.name})} name={available.size}>
+                        {available.size}
+                      </a>
+                    </span>)
+          }
+          return (
+            <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
+              <a href="javascript:void(0)" rel="tag" className="isDisabled">
+                {available.size}
+              </a>
+            </span>
+          )
+        })}
+      </span>
+    )
+  }
+
+  setColorsProduct(subProducts, size) {
+    const colorsAvailable = subProducts.find((item) => item.size === size)
+    return (
+      <span className="size">
+        <label>Colores:</label>
+        {colorsAvailable.details.map((color, index) => (
+          <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
+            <a href="javascript:void(0)" rel="tag" onClick={(event) => this.setState({color: event.target.name})} name={color.color}>
+              {color.color}
+            </a>
+          </span>
+        ))}
+      </span>
+    )
+  }
+
+  setSKUProduct(subProducts, size = '', color = '') {
+    if (!color) {
+      return (
+        <span className="sku_wrapper">
+         <label>SKU:</label>
+         <span className="sku">{subProducts[0].details[0].sku}</span>
+        </span>
+      )
+    }
+    const sizeDetails = subProducts.filter((subP) => subP.size === size)[0]
+    console.log(sizeDetails)
+    const subProductSelected = sizeDetails.details.find((detail) => detail.color === color)
+
+    if (!subProductSelected) {
+      return (
+        <span className="sku_wrapper">
+         <label>SKU:</label>
+         <span className="sku"></span>
+        </span>
+      )
+    }
+
+    return (
+      <span className="sku_wrapper">
+         <label>SKU:</label>
+         <span className="sku">{subProductSelected.sku}</span>
+        </span>
+    )
+  }
+
   render() {
-    const { photoIndex, isOpen } = this.state
+    const { photoIndex, isOpen, size, color } = this.state
     const qty = this.state.qty
     const { product } = this.props
+    const subProducts = this.setAvailableSubProduct(product)
+
     const images = []
     {
-      product.pictures.map((pic) => images.push(require(`../../assets/images/${pic}`)))
+      product.details[0].pictures.map((pic) => images.push(require(`../../assets/images/${pic}`)))
     }
 
     let rat = []
@@ -116,6 +209,7 @@ class PostDetail extends Component {
       i += 1
     }
 
+
     return (
       <section>
         <div className="product-content-top single-product">
@@ -123,7 +217,8 @@ class PostDetail extends Component {
             <div className="product-top-left col-xl-5 col-md-6">
               <div className="product-top-left-inner">
                 <div className="ciyashop-product-images">
-                  <div className="ciyashop-product-images-wrapper ciyashop-gallery-style-default ciyashop-gallery-thumb_position-bottom ciyashop-gallery-thumb_vh-horizontal">
+                  <div
+                    className="ciyashop-product-images-wrapper ciyashop-gallery-style-default ciyashop-gallery-thumb_position-bottom ciyashop-gallery-thumb_vh-horizontal">
                     <div className="ciyashop-product-gallery ciyashop-product-gallery--with-images slick-carousel">
                       <Slider
                         {...settings}
@@ -131,7 +226,7 @@ class PostDetail extends Component {
                       >
                         <div className="ciyashop-product-gallery__image">
                           <img
-                            src={require(`../../assets/images/${this.state.newImage}`)}
+                            src={require(`../../assets/images/shop/women/a.jpg`)}
                             className="img-fluid"
                           />
                         </div>
@@ -149,7 +244,7 @@ class PostDetail extends Component {
                     </div>
                     <div className="ciyashop-product-thumbnails">
                       <Slider {...productslider} className="ciyashop-product-thumbnails__wrapper">
-                        {product.pictures.map((pictureimage, index) => (
+                        {product.details[0].pictures.map((pictureimage, index) => (
                           <div key={index} className="ciyashop-product-thumbnail__image">
                             <Link onMouseOver={() => this.changePreviewImage(pictureimage)}>
                               <img
@@ -170,18 +265,7 @@ class PostDetail extends Component {
               <div className="product-top-right-inner">
                 <div className="summary entry-summary">
                   <h1 className="product_title entry-title">{product.name}</h1>
-                  <div className="product-rating">
-                    <div className="star-rating">{rat}</div>
-                    <p className="review-link mt-2">
-                      (<span className="count">{rating}</span> estrellas)
-                    </p>
-                  </div>
-                  <p className="price">{`$${(product.salePrice * qty).toLocaleString(
-                    navigator.language,
-                    {
-                      minimumFractionDigits: 0,
-                    }
-                  )}`}</p>
+                  <p className="price">{`${this.formatNumberToView((product.price.BasePriceSales * qty))}`}</p>
                   <div className="product-details__short-description">
                     <div className="pdp-about-details-txt pdp-about-details-equit">
                       {product.description}
@@ -214,7 +298,7 @@ class PostDetail extends Component {
                           this.AddToCart(
                             product.id,
                             product.name,
-                            product.pictures[0],
+                            product.details[0].pictures[0],
                             qty,
                             product.salePrice,
                             'In Stock'
@@ -236,37 +320,15 @@ class PostDetail extends Component {
                     )}
                     <div className="clearfix" />
                   </form>
+                  {/* TODO: aun no es necesario el refactor de product_meta */}
                   <div className="product_meta">
-                    <span className="sku_wrapper">
-                      <label>SKU:</label>
-                      <span className="sku">9624 </span>
-                    </span>
-                    <span className="size">
-                      <label>Tamaño:</label>
-                      {product.size.map((sizes, index) => (
-                        <span key={index} itemProp="size">
-                          <Link to="#" rel="tag">
-                            {sizes}
-                            {index === product.size.length - 1 ? '' : ','}
-                          </Link>
-                        </span>
-                      ))}
-                    </span>
                     <span className="posted_in">
                       <label>Categorías:</label>
-                      {product.category}
+                      {product.category.toString()}
                     </span>
-                    <span className="brands">
-                      <label>Marca:</label>
-                      {product.tags.map((brand, index) => (
-                        <span key={index} itemProp="brand">
-                          <Link to="#" rel="tag">
-                            {brand}
-                            {index === product.tags.length - 1 ? '' : ','}
-                          </Link>
-                        </span>
-                      ))}
-                    </span>
+                    {this.setSizesProduct(subProducts)}
+                    {this.setColorsProduct(subProducts, size)}
+                    {this.setSKUProduct(subProducts, size, color)}
                   </div>
                   <div className="social-profiles">
                     <span className="share-label">Compartir:</span>
@@ -390,12 +452,12 @@ class PostDetail extends Component {
               enableZoom={false}
               onMovePrevRequest={() =>
                 this.setState({
-                  photoIndex: (photoIndex + images.length - 1) % images.length,
+                  photoIndex: (photoIndex + images.length - 1) % images.length
                 })
               }
               onMoveNextRequest={() =>
                 this.setState({
-                  photoIndex: (photoIndex + 1) % images.length,
+                  photoIndex: (photoIndex + 1) % images.length
                 })
               }
             />
@@ -405,12 +467,13 @@ class PostDetail extends Component {
     )
   }
 }
+
 export default PostDetail
 
 PostDetail.defaultProps = {
-  product: {},
+  product: {}
 }
 
 PostDetail.propTypes = {
-  product: PropTypes.object,
+  product: PropTypes.object
 }

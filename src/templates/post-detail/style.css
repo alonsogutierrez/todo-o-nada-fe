@@ -1,0 +1,6 @@
+.isDisabled {
+    color: currentColor !important;
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+    text-decoration: none !important;
+}

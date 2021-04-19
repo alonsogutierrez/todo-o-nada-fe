@@ -8,7 +8,6 @@ import HomeRoutePage from './RoutesPages/HomePage'
 import AboutUsPage from './RoutesPages/AboutUsPage'
 import ContactUsPage from './RoutesPages/ContactUsPage'
 import ProductDetail from './RoutesPages/ProductDetailPage'
-import ProductPDPPage from './RoutesPages/ProductPDPPage'
 
 import './App.css'
 import './Vendor.js'
@@ -69,7 +68,7 @@ const Routes = ({ receiveProducts }) => {
           <Route exact path="/SuccessScreen" component={SuccessScreen} />
           <Route exact path="/admin/login" component={Login} />
           <Route path={`/shop/:category/:id`} component={ProductDetail} />
-          <Route path={`/product/:category/:itemNumber`} component={ProductPDPPage} />
+          <Route path={`/product/:itemNumber`} component={ProductDetail} />
           <Route component={PageNotFound} />
         </Switch>
         <Footer />
