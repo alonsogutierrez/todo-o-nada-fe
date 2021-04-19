@@ -151,6 +151,24 @@ export default class ClientAPI {
     })
   }
 
+  getProductByItemNumber(itemNumber) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: `/product/itemNumber/${itemNumber}`,
+          method: 'get',
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
   getSearch(searchText) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()

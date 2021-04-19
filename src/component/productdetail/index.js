@@ -4,15 +4,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Link } from 'react-router-dom'
-import { Row, Container, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
+import { Link, withRouter } from 'react-router-dom'
+import { Container, Nav, NavItem, NavLink, Row, TabContent, TabPane } from 'reactstrap'
 import classnames from 'classnames'
-import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import ProductDetailSupportInfo from './ProductDetailSupportInfo'
 import PostDetail from '../../templates/post-detail'
 import ProductSlider from '../home/ProductSlider'
+import ClientAPI from '../../common/ClientAPI'
 
 const relatedSliderConfig = {
   dots: false,
@@ -50,11 +50,18 @@ class ProductDetail extends Component {
       productId: parseInt(this.props.match.params.id),
       currentProduct: null,
       activeTab: '1',
+      clientAPI: new ClientAPI()
     }
     this.toggle = this.toggle.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { clientAPI } = this.state
+    const product = await clientAPI.getProductByItemNumber(1)
+    this.setState({
+      currentProduct: product
+    })
+
     window.scrollTo(0, 0)
     let currentProductId = this.state.productId
     let allProducts = this.state.allProducts
@@ -78,6 +85,7 @@ class ProductDetail extends Component {
 
   render() {
     const currentProduct = this.state.currentProduct
+
     return (
       <div>
         {currentProduct !== null ? (
@@ -159,13 +167,13 @@ class ProductDetail extends Component {
   }
 }
 
-const AppMapStateToProps = (state) => {
-  return {
-    products: state.data.products,
-  }
-}
+// const AppMapStateToProps = (state) => {
+//   return {
+//     products: state.data.products,
+//   }
+// }
 
-export default connect(AppMapStateToProps)(withRouter(ProductDetail))
+export default connect(null)(withRouter(ProductDetail))
 
 ProductDetail.defaultProps = {
   products: [],
