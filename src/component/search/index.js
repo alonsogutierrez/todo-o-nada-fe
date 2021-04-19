@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
+import queryString from 'query-string'
 
 import ClientAPI from '../../common/ClientAPI'
 import ProductsAPI from '../../api/product'
@@ -14,6 +15,9 @@ import ShopBanner from './ShopBanner'
 import SocialFilter from './SocialInfo'
 import SubHeader from './SubHeader'
 
+import setActualProductsData from '../../actions/setActualProductsData'
+import setChangeProducts from '../../actions/setChangeProducts'
+
 class SearchPage extends Component {
   constructor(props) {
     super()
@@ -23,6 +27,7 @@ class SearchPage extends Component {
       productsAPI: ProductsAPI,
       products: props.products,
       categoryNameSelected: '',
+      searchText: '',
     }
   }
 
@@ -40,31 +45,55 @@ class SearchPage extends Component {
   isCategoryQuery() {
     const { match } = this.props
     const categoryName = match.params.categoryName
-    this.setState(
-      {
-        categoryNameSelected: categoryName,
-      },
-      () => {
-        return categoryName ? true : false
-      }
-    )
+    return categoryName ? true : false
+  }
+
+  async searchByCategory() {
+    const { match, setProducts, setChangeProducts, changeProducts } = this.props
+    const categoryName = match.params.categoryName
+    try {
+      const { clientAPI } = this.state
+      const productsByCategory = await clientAPI.getProductsByCategory(categoryName)
+      setProducts(productsByCategory)
+      setChangeProducts(!changeProducts)
+    } catch (err) {
+      console.log('Error trying to get products by category')
+    }
+  }
+
+  async searchByText() {
+    const { location, setProducts, setChangeProducts, changeProducts } = this.props
+    const search = queryString.parse(location.search)
+    const { query } = search
+    try {
+      const { clientAPI } = this.state
+      const productsBySearch = await clientAPI.getSearch(query)
+      setProducts(productsBySearch)
+      setChangeProducts(!changeProducts)
+    } catch (err) {
+      console.log('Error trying to get products by search')
+    }
   }
 
   async componentDidMount() {
-    const { clientAPI, categoryNameSelected, limit, productsAPI } = this.state
-    if (this.isCategoryQuery()) {
-      console.log('category query')
-      try {
-        const productsByCategory = await clientAPI.getProductsByCategory(categoryNameSelected)
-        //TODO: Map response to set same product structure
-        this.setState({
-          products: productsByCategory,
-        })
-      } catch (err) {
-        console.log('Error trying to get products by category')
+    const { limit } = this.state
+    const { products } = this.props
+    const { actualProductsData } = products
+    let actualProducts = []
+    if (actualProductsData.hits) {
+      const { hits } = actualProductsData
+      if (hits) {
+        actualProducts = hits
+      }
+    } else {
+      if (this.isCategoryQuery()) {
+        this.searchByCategory()
+      } else {
+        this.searchByText()
       }
     }
-    if (limit < productsAPI.length) {
+
+    if (limit < actualProducts.length) {
       setTimeout(() => {
         this.setState({
           limit: limit + 8,
@@ -77,10 +106,12 @@ class SearchPage extends Component {
     const { products } = this.props
     const { actualProductsData } = products
     let actualProducts = []
+    let totalProducts = 0
     if (actualProductsData) {
-      const { hits } = actualProductsData
-      if (hits) {
+      const { hits, total } = actualProductsData
+      if (hits && total) {
         actualProducts = hits
+        totalProducts = total.value
       }
     }
 
@@ -109,7 +140,7 @@ class SearchPage extends Component {
                     <div className="loop-header">
                       <div className="loop-header-tools">
                         <div className="loop-header-tools-wrapper">
-                          <TopFilter productlength={products.length} />
+                          <TopFilter totalProducts={totalProducts} />
                         </div>
                       </div>
                     </div>
@@ -156,20 +187,29 @@ class SearchPage extends Component {
 
 const mapStateToProps = (state) => ({
   products: state.actualProductsDataReducer,
-  // products: getFilterProductsdata(
-  //   state.actualProductsDataReducer.actualProductsData,
-  //   state.filters
-  // ),
 })
 
-export default connect(mapStateToProps, {})(SearchPage)
+const mapDistpachToProps = (dispatch) => ({
+  setProducts: (products) => dispatch(setActualProductsData(products)),
+  setChangeProducts: (changeProducts) => dispatch(setChangeProducts(changeProducts)),
+})
+
+export default connect(mapStateToProps, mapDistpachToProps)(SearchPage)
 
 SearchPage.defaultProps = {
   products: [],
   match: {},
+  location: {},
+  setProducts: () => {},
+  changeProducts: false,
+  setChangeProducts: () => {},
 }
 
 SearchPage.propTypes = {
   products: PropTypes.array,
   match: PropTypes.object,
+  location: PropTypes.object,
+  setProducts: PropTypes.func,
+  changeProducts: PropTypes.bool,
+  setChangeProducts: PropTypes.func,
 }

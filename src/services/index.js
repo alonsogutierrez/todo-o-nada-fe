@@ -80,10 +80,6 @@ export const getFilterProductsdata = (data, { category, size, color, sortOrder, 
                 ? categories.some((cat) => cat === category.includes(cat))
                 : true
 
-              if (product.tags)
-                categoryMatchValue = product.tags.some((tag) => category.includes(tag))
-              else categoryMatchValue = true
-
               let sizeMatchValue
               if (product.size) sizeMatchValue = product.size.some((size) => sizes.includes(size))
               else sizeMatchValue = true

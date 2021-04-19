@@ -10,7 +10,7 @@ import setChangeCartData from '../../actions/setChangeCartData'
 const ProductInfo = ({ product, changeCart, setChangeCart }) => {
   const AddToCart = (productId, productName, quantity, price, stockStatus) => {
     let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
-    if (cartItems === null) cartItems = []
+    if (!cartItems) cartItems = []
     let selectedProduct = cartItems.find((product) => product.productId === productId)
     if (!selectedProduct) {
       cartItems.push({
@@ -65,7 +65,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                 {product.pictures[0] ? (
                   <div className="product-thumbnail-main">
                     <img
-                      src={require(`../../assets/images/${product.pictures[0]}`)}
+                      src={require(`./../../assets/images/${product.pictures[0]}`).default}
                       className="img-fluid"
                     />
                   </div>
@@ -73,7 +73,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                 {product.pictures[1] ? (
                   <div className="product-thumbnail-swap">
                     <img
-                      src={require(`../../assets/images/${product.pictures[1]}`)}
+                      src={require(`./../../assets/images/${product.pictures[1]}`).default}
                       className="img-fluid"
                     />
                   </div>
@@ -110,16 +110,6 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
             </div>
           </div>
           <div className="product-info">
-            {/* {product.tags ? (
-              <span className="ciyashop-product-category">
-                {product.tags.map((tag, index) => (
-                  <span key={index}>
-                    {tag}
-                    {index === product.tags.length - 1 ? '' : ', '}
-                  </span>
-                ))}
-              </span>
-            ) : null} */}
             {product.name && (
               <h3 className="product-name">
                 <Link to={`/shop/${product.category}/${product.id}`}>{product.name}</Link>

@@ -8,7 +8,6 @@ import { Col, Form, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 
 import { ratingValue, sortValue } from '../../../actions/filter'
-import MyProduct from '../../../api/product'
 import { getFilterProductsdata } from '../../../services'
 
 class TopFilter extends Component {
@@ -119,16 +118,16 @@ class TopFilter extends Component {
   }
 
   render() {
-    const productsLength = this.props.productsLength
+    const totalProducts = this.props.totalProducts
     return (
       <Row>
         <Col>
-          {productsLength > 0 ? (
+          {totalProducts > 0 ? (
             <p className="result-count">
-              Mostrando 1–{productsLength} resultados de {MyProduct.length}
+              Mostrando 1–{totalProducts} resultados de {totalProducts}
             </p>
           ) : (
-            <p className="result-count">Mostrando 0 resultados de {MyProduct.length}</p>
+            <p className="result-count">Mostrando 0 resultados de {totalProducts}</p>
           )}
           <div className="gridlist-toggle-wrap">
             <div className="gridlist-button-wrap">
@@ -207,21 +206,26 @@ class TopFilter extends Component {
   }
 }
 
-const mapDispatchToProps = (state) => ({
+const mapStateToProps = (state) => ({
   products: getFilterProductsdata(state.data, state.filters),
   filters: state.filters,
 })
 
-export default connect(mapDispatchToProps, { sortValue, ratingValue })(TopFilter)
+const mapDispatchToProps = (dispatch) => ({
+  sortValue: (value) => dispatch(sortValue(value)),
+  ratingValue: (value) => dispatch(ratingValue(value)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopFilter)
 
 TopFilter.defaultProps = {
-  productsLength: 0,
+  totalProducts: 0,
   ratingValue: () => {},
   sortValue: () => {},
 }
 
 TopFilter.propTypes = {
-  productsLength: PropTypes.number,
+  totalProducts: PropTypes.number,
   ratingValue: PropTypes.func,
   sortValue: PropTypes.func,
 }

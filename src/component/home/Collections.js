@@ -5,22 +5,22 @@ import { Col, Container, Row } from 'reactstrap'
 const collections = [
   {
     id: 1,
-    imageSrc: require(`../../assets/images/sub-banner-02-1.jpg`),
+    imageSrc: require(`../../assets/images/sub-banner-02-1.jpg`).default,
     name: 'Colección Todo o Nada',
-    link: '/todo-o-nada'
+    link: '/todo-o-nada',
   },
   {
     id: 2,
-    imageSrc: require(`../../assets/images/sub-banner-02-1.jpg`),
+    imageSrc: require(`../../assets/images/sub-banner-02-1.jpg`).default,
     name: 'Colección Irezumi Art',
-    link: '/irezumi-art'
+    link: '/irezumi-art',
   },
   {
     id: 3,
-    imageSrc: require(`../../assets/images/sub-banner-02-1.jpg`),
+    imageSrc: require(`../../assets/images/sub-banner-02-1.jpg`).default,
     name: 'Colección Chicas',
-    link: '/irezumi-art'
-  }
+    link: '/irezumi-art',
+  },
 ]
 
 const Collections = () => (
@@ -28,7 +28,7 @@ const Collections = () => (
     <Row className="margin-top-8 mb-7 pb-3 pb-sm-0">
       <Col sm={12}>
         <Row>
-          {collections.map(collection => (
+          {collections.map((collection) => (
             <div className="col-lg-4" key={collection.id}>
               <div className="ciyashop_banner_wrapper">
                 <div className="ciyashop_banner ciyashop_banner-style-style-1 ciyashop_banner-effect-border banner-2">

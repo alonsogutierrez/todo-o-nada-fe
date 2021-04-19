@@ -11,7 +11,7 @@ const settings = {
   speed: 500,
   arrows: true,
   slidesToShow: 1,
-  slidesToScroll: 1
+  slidesToScroll: 1,
 }
 
 class HomSlider extends Component {
@@ -21,7 +21,10 @@ class HomSlider extends Component {
         <div key={1} className="slide-04-item">
           <div className="slide-inner">
             <div className="slide-image">
-              <img src={require(`../../assets/images/home-04-slider/img-01.jpg`)} alt="slide-1" />
+              <img
+                src={require(`../../assets/images/home-04-slider/img-01.jpg`).default}
+                alt="slide-1"
+              />
             </div>
             <div className="slide-content text-left">
               <div className="container">
@@ -30,7 +33,7 @@ class HomSlider extends Component {
                     <div className="slide-inner bg-white">
                       <img
                         className="mx-auto"
-                        src={require(`../../assets/images/home-04-slider/sale.png`)}
+                        src={require(`../../assets/images/home-04-slider/sale.png`).default}
                         alt="slide-1"
                       />
                       <div className="slide-title">
@@ -51,7 +54,10 @@ class HomSlider extends Component {
         <div key={2} className="slide-04-item">
           <div className="slide-inner">
             <div className="slide-image">
-              <img src={require(`../../assets/images/home-04-slider/img-02.jpg`)} alt="slide-1" />
+              <img
+                src={require(`../../assets/images/home-04-slider/img-02.jpg`).default}
+                alt="slide-1"
+              />
             </div>
             <div className="slide-content text-left">
               <div className="container">
@@ -60,7 +66,7 @@ class HomSlider extends Component {
                     <div className="slide-inner-02 bg-white">
                       <img
                         className="mx-auto slide-sale"
-                        src={require(`../../assets/images/home-04-slider/sale-02.png`)}
+                        src={require(`../../assets/images/home-04-slider/sale-02.png`).default}
                         alt="slide-1"
                       />
                       <div className="slide-subtitle">#Introducing</div>
