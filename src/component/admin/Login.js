@@ -2,7 +2,7 @@
  *  Admin Profile Page
  */
 import React, { useState } from 'react'
-import { Link, NavLink, withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Row, Container, Input, Nav, NavItem, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import PropTypes from 'prop-types'
 
@@ -56,7 +56,7 @@ const Login = (props) => {
           <ModalBody>
             <Nav tabs>
               <NavItem>
-                <NavLink>Login</NavLink>
+                <h2 className="mb-0">Ingresa tus datos</h2>
               </NavItem>
             </Nav>
             <form onSubmit={onLoginSubmit}>

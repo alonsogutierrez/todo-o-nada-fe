@@ -1,126 +1,90 @@
-/**
- * Shop Page Side Bar Filter
- */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import {
-  categoryValue,
-  colorValue,
-  priceValue,
-  searchValue,
-  sizeValue
-} from '../../actions/filter'
-import { uniqueCategory, uniqueColors, uniqueMinMaxPrice, uniqueSizes } from '../../services'
 import { Scrollbars } from 'react-custom-scrollbars'
+
+import { categoryValue, colorValue, priceValue, sizeValue } from '../../../actions/filter'
+import { uniqueCategory, uniqueColors, uniqueSizes } from '../../../services'
+
 import './styles.css'
 
 class SideFilter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      SearchValue: '',
-      priceplace: [this.props.prices.min, this.props.prices.max],
-      setfistprice: [this.props.prices.min, this.props.prices.max],
-      sidebarmenu: false
+      sidebarmenu: false,
     }
     this.showfilter = this.showfilter.bind(this)
   }
 
-  componentDidMount() {
-    this.setState({
-      SearchValue: ''
-    })
-    this.props.searchValue('')
-    this.nameInput.focus()
-  }
+  componentDidMount() {}
 
   showfilter() {
-    this.setState(prevState => ({
-      sidebarmenu: !prevState.sidebarmenu
+    this.setState((prevState) => ({
+      sidebarmenu: !prevState.sidebarmenu,
     }))
   }
 
   onClickColorFilter(event, colors) {
-    var index = colors.indexOf(event.target.value)
+    const { colorValue } = this.props
+    const index = colors.indexOf(event.target.value)
     if (event.target.checked) {
       colors.push(event.target.value)
     } else {
       colors.splice(index, 1)
     }
-    this.props.colorValue(colors)
+    colorValue(colors)
   }
 
   onClickCategoryFilter(event, categorys) {
-    var index = categorys.indexOf(event.target.value)
+    const { categoryValue } = this.props
+    const index = categorys.indexOf(event.target.value)
     if (event.target.checked) {
       categorys.push(event.target.value)
     } else {
       categorys.splice(index, 1)
     }
-    this.props.categoryValue(categorys)
+    categoryValue(categorys)
   }
 
   onClickSizeFilter(event, sizes) {
-    var index = sizes.indexOf(event.target.value)
+    const { sizeValue } = this.props
+    const index = sizes.indexOf(event.target.value)
     if (event.target.checked) {
       sizes.push(event.target.value)
     } else {
       sizes.splice(index, 1)
     }
-    this.props.sizeValue(sizes)
+    sizeValue(sizes)
   }
 
-  SearchTextchange(SearchText) {
-    this.setState({
-      SearchValue: SearchText.target.value
-    })
-    this.props.searchValue(SearchText.target.value)
+  clearColor() {
+    const { colorValue } = this.props
+    colorValue([])
   }
 
-  // Clear Color Filter Code
-  clearcolor() {
-    var colors = []
-    this.props.colorValue(colors)
+  clearCategory() {
+    const { categoryValue } = this.props
+    categoryValue([])
   }
 
-  // Clear Category Filter Code
-  clearcategory() {
-    var categorys = []
-    this.props.categoryValue(categorys)
-  }
-
-  // Clear Size Filter Code
-  clearsize() {
-    var sizes = []
-    this.props.sizeValue(sizes)
+  clearSize() {
+    const { sizeValue } = this.props
+    sizeValue([])
   }
 
   render() {
-    const sizeFilterValues = this.props.filters.size
-    const categoryFilterValues = this.props.filters.category
-    const colorsFilterValues = this.props.filters.color
+    const { filters, colors, categorys, sizes } = this.props
+    const sizeFilterValues = filters.size
+    const categoryFilterValues = filters.category
+    const colorsFilterValues = filters.color
     return (
       <div>
-        <div className="widget">
-          <h4 className="widget-title">Buscar</h4>
-          <input
-            type="text"
-            id="btn-search"
-            ref={input => {
-              this.nameInput = input
-            }}
-            className="form-control"
-            value={this.state.SearchValue}
-            onChange={this.SearchTextchange.bind(this)}
-            placeholder="Busca un producto"
-          />
-        </div>
         <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
           <div className="d-flex align-items-center justify-content-between">
             <h4 className="widget-title">Filtrar por color</h4>
             <p>
-              <a className="price-clear-filter" onClick={() => this.clearcolor()}>
+              <a className="price-clear-filter" onClick={() => this.clearColor()}>
                 Limpiar
               </a>
             </p>
@@ -132,14 +96,14 @@ class SideFilter extends Component {
           >
             <Scrollbars>
               <ul className="pgs-widget-layered-nav-list" tabIndex={0} style={{ right: '-17px' }}>
-                {this.props.colors.map((color, index) => {
+                {colors.map((color, index) => {
                   return (
                     <div className="form-check pgs-filter-checkbox" key={index}>
                       <input
                         type="checkbox"
-                        onClick={e => this.onClickColorFilter(e, colorsFilterValues)}
+                        onClick={(e) => this.onClickColorFilter(e, colorsFilterValues)}
                         value={color}
-                        defaultChecked={colorsFilterValues.includes(color) ? true : false}
+                        defaultChecked={colorsFilterValues.includes(color)}
                         className="form-check-input"
                         id={color}
                       />
@@ -157,7 +121,7 @@ class SideFilter extends Component {
           <div className="d-flex align-items-center justify-content-between">
             <h4 className="widget-title">Filtrar por categoria</h4>
             <p>
-              <a className="price-clear-filter" onClick={() => this.clearcategory()}>
+              <a className="price-clear-filter" onClick={() => this.clearCategory()}>
                 Limpiar
               </a>
             </p>
@@ -167,14 +131,14 @@ class SideFilter extends Component {
             style={{ height: '215px' }}
           >
             <Scrollbars>
-              {this.props.categorys.map((category, index) => {
+              {categorys.map((category, index) => {
                 return (
                   <div className="form-check pgs-filter-checkbox" key={index}>
                     <input
                       type="checkbox"
-                      onClick={e => this.onClickCategoryFilter(e, categoryFilterValues)}
+                      onClick={(e) => this.onClickCategoryFilter(e, categoryFilterValues)}
                       value={category}
-                      defaultChecked={categoryFilterValues.includes(category) ? true : false}
+                      defaultChecked={categoryFilterValues.includes(category)}
                       className="form-check-input"
                       id={category}
                     />
@@ -191,7 +155,7 @@ class SideFilter extends Component {
           <div className="d-flex align-items-center justify-content-between">
             <h4 className="widget-title">Filtrar por tamaño</h4>
             <p>
-              <a className="price-clear-filter" onClick={() => this.clearsize()}>
+              <a className="price-clear-filter" onClick={() => this.clearSize()}>
                 Limpiar
               </a>
             </p>
@@ -201,14 +165,14 @@ class SideFilter extends Component {
             style={{ height: '215px' }}
           >
             <Scrollbars>
-              {this.props.sizes.map((size, index) => {
+              {sizes.map((size, index) => {
                 return (
                   <div key={index} className="form-check pgs-filter-checkbox">
                     <input
                       type="checkbox"
-                      onClick={e => this.onClickSizeFilter(e, sizeFilterValues)}
+                      onClick={(e) => this.onClickSizeFilter(e, sizeFilterValues)}
                       value={size}
-                      defaultChecked={sizeFilterValues.includes(size) ? true : false}
+                      defaultChecked={sizeFilterValues.includes(size)}
                       className="form-check-input"
                       id={size}
                     />
@@ -226,12 +190,11 @@ class SideFilter extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  categorys: uniqueCategory(state.data.products),
-  sizes: uniqueSizes(state.data.products),
-  colors: uniqueColors(state.data.products),
-  prices: uniqueMinMaxPrice(state.data.products),
-  filters: state.filters
+const mapStateToProps = (state) => ({
+  categorys: uniqueCategory(state.actualProductsDataReducer.actualProductsData),
+  sizes: uniqueSizes(state.actualProductsDataReducer.actualProductsData),
+  colors: uniqueColors(state.actualProductsDataReducer.actualProductsData),
+  filters: state.filters,
 })
 
 export default connect(mapStateToProps, {
@@ -239,7 +202,6 @@ export default connect(mapStateToProps, {
   sizeValue,
   colorValue,
   priceValue,
-  searchValue
 })(SideFilter)
 
 SideFilter.defaultProps = {
@@ -248,11 +210,10 @@ SideFilter.defaultProps = {
   categorys: [],
   filters: {},
   colors: [],
-  searchValue: () => {},
   colorValue: () => {},
   categoryValue: () => {},
   sizeValue: () => {},
-  priceValue: () => {}
+  priceValue: () => {},
 }
 
 SideFilter.propTypes = {
@@ -261,9 +222,8 @@ SideFilter.propTypes = {
   categorys: PropTypes.array,
   filters: PropTypes.object,
   colors: PropTypes.array,
-  searchValue: PropTypes.func,
   colorValue: PropTypes.func,
   categoryValue: PropTypes.func,
   sizeValue: PropTypes.func,
-  priceValue: PropTypes.func
+  priceValue: PropTypes.func,
 }

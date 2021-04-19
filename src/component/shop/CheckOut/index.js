@@ -11,6 +11,7 @@ import OrderResume from './OrderResume'
 import setErrorsForm from '../../../actions/setErrorsForm'
 import setUserData from '../../../actions/setUserData'
 import setOrderData from '../../../actions/setOrderData'
+import setChangeCartData from '../../../actions/setChangeCartData'
 
 import orderCreator from './Order'
 
@@ -45,7 +46,7 @@ class CheckOut extends Component {
 
   readCartItems() {
     var cart = JSON.parse(localStorage.getItem('LocalCartItems'))
-    if (cart == null) {
+    if (cart === null) {
       this.props.history.push(`/`)
     }
     return cart
@@ -57,9 +58,9 @@ class CheckOut extends Component {
       const formValidation = this.handleValidation()
       if (formValidation) {
         const { clientAPI, formValues } = this.state
-        const { setOrderData } = this.props
+        const { setOrderData, setChangeCart, changeCart } = this.props
         const shippingData = {
-          total: 1000,
+          total: 1000, //TODO: Change this by real shipping value
         }
         const cartItems = localStorage.getItem('LocalCartItems')
         localStorage.setItem('finalCheckoutCartItems', cartItems)
@@ -70,6 +71,7 @@ class CheckOut extends Component {
           setOrderData(orderDataSaved)
           localStorage.removeItem('LocalCartItems')
           console.log('Order well saved: ', orderDataSaved)
+          setChangeCart(!changeCart)
           this.props.history.push('/SuccessScreen')
         } catch (e) {
           this.setState({ loading: false })
@@ -153,16 +155,23 @@ class CheckOut extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  changeCart: state.changeCartDataReducer.changeCartData,
+})
+
 const mapDispatchToProps = (dispatch) => ({
   setErrorsForm: (errorsForm) => dispatch(setErrorsForm(errorsForm)),
   setUserData: (userData) => dispatch(setUserData(userData)),
   setOrderData: (orderData) => dispatch(setOrderData(orderData)),
+  setChangeCart: (change) => dispatch(setChangeCartData(change)),
 })
 
-export default connect(null, mapDispatchToProps)(CheckOut)
+export default connect(mapStateToProps, mapDispatchToProps)(CheckOut)
 
 CheckOut.defaultProps = {
   history: {},
+  changeCart: false,
+  setChangeCart: () => {},
   setErrorsForm: () => {},
   setUserData: () => {},
   setOrderData: () => {},
@@ -170,6 +179,8 @@ CheckOut.defaultProps = {
 
 CheckOut.propTypes = {
   history: PropTypes.object,
+  changeCart: PropTypes.bool,
+  setChangeCart: PropTypes.func,
   setErrorsForm: PropTypes.func,
   setUserData: PropTypes.func,
   setOrderData: PropTypes.func,
