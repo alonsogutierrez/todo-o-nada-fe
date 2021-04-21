@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 import queryString from 'query-string'
 
 import ClientAPI from '../../common/ClientAPI'
-import ProductsAPI from '../../api/product'
-//import { getFilterProductsdata } from '../../services'
 import ProductCard from './ProductCard'
 
 import SideFilter from './filters/SideFilter'
@@ -18,14 +16,14 @@ import SubHeader from './SubHeader'
 import setActualProductsData from '../../actions/setActualProductsData'
 import setChangeProducts from '../../actions/setChangeProducts'
 
+import { getFilterProductsdata } from '../../services'
+
 class SearchPage extends Component {
-  constructor(props) {
+  constructor() {
     super()
     this.state = {
       limit: 8,
       clientAPI: new ClientAPI(),
-      productsAPI: ProductsAPI,
-      products: props.products,
       categoryNameSelected: '',
       searchText: '',
     }
@@ -49,12 +47,12 @@ class SearchPage extends Component {
   }
 
   async searchByCategory() {
-    const { match, setProducts, setChangeProducts, changeProducts } = this.props
+    const { match, setActualProductsData, setChangeProducts, changeProducts } = this.props
     const categoryName = match.params.categoryName
     try {
       const { clientAPI } = this.state
       const productsByCategory = await clientAPI.getProductsByCategory(categoryName)
-      setProducts(productsByCategory)
+      setActualProductsData(productsByCategory)
       setChangeProducts(!changeProducts)
     } catch (err) {
       console.log('Error trying to get products by category')
@@ -62,25 +60,25 @@ class SearchPage extends Component {
   }
 
   async searchByText() {
-    const { location, setProducts, setChangeProducts, changeProducts } = this.props
+    const { location, setActualProductsData, setChangeProducts, changeProducts } = this.props
     const search = queryString.parse(location.search)
     const { query } = search
     try {
       const { clientAPI } = this.state
       const productsBySearch = await clientAPI.getSearch(query)
-      setProducts(productsBySearch)
+      setActualProductsData(productsBySearch)
       setChangeProducts(!changeProducts)
     } catch (err) {
       console.log('Error trying to get products by search')
     }
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { limit } = this.state
     const { products } = this.props
     const { actualProductsData } = products
     let actualProducts = []
-    if (actualProductsData.hits) {
+    if (actualProductsData && actualProductsData.hits) {
       const { hits } = actualProductsData
       if (hits) {
         actualProducts = hits
@@ -104,11 +102,10 @@ class SearchPage extends Component {
 
   render() {
     const { products } = this.props
-    const { actualProductsData } = products
     let actualProducts = []
     let totalProducts = 0
-    if (actualProductsData) {
-      const { hits, total } = actualProductsData
+    if (products) {
+      const { hits = [], total = { value: 0 } } = products
       if (hits && total) {
         actualProducts = hits
         totalProducts = total.value
@@ -145,7 +142,7 @@ class SearchPage extends Component {
                       </div>
                     </div>
                   </div>
-                  {actualProducts ? (
+                  {actualProducts && actualProducts.length > 0 ? (
                     <div>
                       <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
                         {actualProducts.slice(0, limit).map((product, index) => (
@@ -186,11 +183,16 @@ class SearchPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  products: state.actualProductsDataReducer,
+  products: getFilterProductsdata(
+    state.actualProductsDataReducer.actualProductsData,
+    state.filters
+  ),
+  filters: state.filters,
+  changeProducts: state.changeProductsDataReducer.changeProductsData,
 })
 
 const mapDistpachToProps = (dispatch) => ({
-  setProducts: (products) => dispatch(setActualProductsData(products)),
+  setActualProductsData: (products) => dispatch(setActualProductsData(products)),
   setChangeProducts: (changeProducts) => dispatch(setChangeProducts(changeProducts)),
 })
 
@@ -200,7 +202,7 @@ SearchPage.defaultProps = {
   products: [],
   match: {},
   location: {},
-  setProducts: () => {},
+  setActualProductsData: () => {},
   changeProducts: false,
   setChangeProducts: () => {},
 }
@@ -209,7 +211,7 @@ SearchPage.propTypes = {
   products: PropTypes.array,
   match: PropTypes.object,
   location: PropTypes.object,
-  setProducts: PropTypes.func,
+  setActualProductsData: PropTypes.func,
   changeProducts: PropTypes.bool,
   setChangeProducts: PropTypes.func,
 }

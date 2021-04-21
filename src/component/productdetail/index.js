@@ -50,7 +50,7 @@ class ProductDetail extends Component {
       productId: parseInt(this.props.match.params.id),
       currentProduct: null,
       activeTab: '1',
-      clientAPI: new ClientAPI()
+      clientAPI: new ClientAPI(),
     }
     this.toggle = this.toggle.bind(this)
   }
@@ -59,7 +59,7 @@ class ProductDetail extends Component {
     const { clientAPI } = this.state
     const product = await clientAPI.getProductByItemNumber(1)
     this.setState({
-      currentProduct: product
+      currentProduct: product,
     })
 
     window.scrollTo(0, 0)
