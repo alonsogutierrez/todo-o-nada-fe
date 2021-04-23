@@ -8,7 +8,6 @@ import { Col, Form, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 
 import { ratingValue, sortValue } from '../../../actions/filter'
-import { getFilterProductsdata } from '../../../services'
 
 class TopFilter extends Component {
   constructor(props) {
@@ -207,7 +206,7 @@ class TopFilter extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  products: getFilterProductsdata(state.data, state.filters),
+  products: [], //getFilterProductsdata(state.data, state.filters),
   filters: state.filters,
 })
 
