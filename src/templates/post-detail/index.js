@@ -37,11 +37,13 @@ class PostDetail extends Component {
       photoIndex: 0,
       isOpen: false,
       qty: 1,
-      newImage: props.product.details[0].pictures[0],
+      imagePreview: '',
       subProducts: null,
       colorsAvailable: [],
       size: 'S',
-      color: ''
+      color: '',
+      sku: '',
+      pictures: []
     }
   }
 
@@ -109,7 +111,7 @@ class PostDetail extends Component {
     }).format(num)
   }
 
-  setAvailableSubProduct(product) {
+  configSubProduct(product) {
     return sizes.map((size) => {
       return { size, details: product.details.filter((subProduct) => subProduct.size === size) }
     })
@@ -166,7 +168,6 @@ class PostDetail extends Component {
       )
     }
     const sizeDetails = subProducts.filter((subP) => subP.size === size)[0]
-    console.log(sizeDetails)
     const subProductSelected = sizeDetails.details.find((detail) => detail.color === color)
 
     if (!subProductSelected) {
@@ -186,16 +187,95 @@ class PostDetail extends Component {
     )
   }
 
+  setImages(subProducts, size, color='') {
+    const selectedSize = subProducts.find(product => product.size === size)
+    const defaultProduct = selectedSize.details.find(product => product.color === color)
+    return defaultProduct.pictures.map(picture => picture.image)
+  }
+
+  setFirstSubProductAvailable(subProducts){
+    const productsAvailable = subProducts.filter((sp) => sp.details.length > 0)
+    const productsWithStock = productsAvailable.map(pws => {
+      return pws.details.filter(sp => sp.stock > 0)
+    })
+    console.log(productsWithStock[0][0].pictures[0].image)
+    return { size: productsWithStock[0][0].size ,color: productsWithStock[0][0].color, sku: productsWithStock[0][0].sku}
+  }
+
+  findProductBySku(subProducts, sku) {
+    console.log(subProducts, sku)
+  }
+
+  setCarousel(subProducts, sku){
+    let spSelected = {}
+    let defaultProduct = {}
+    if (!sku) {
+      defaultProduct = this.setFirstSubProductAvailable(subProducts)
+      subProducts.forEach(sp => {
+        const pf = sp.details.find(detail => detail.sku = defaultProduct.sku)
+        if(pf) {
+          spSelected = pf
+        }
+      })
+    } else {
+      subProducts.forEach(sp => {
+        const pf = sp.details.find(detail => detail.sku = sku)
+        if(pf) {
+          spSelected = pf
+        }
+      })
+    }
+    return (
+      <Slider {...productslider} className="ciyashop-product-thumbnails__wrapper">
+        {spSelected.pictures.map((pic, index) => (
+          <div key={index} className="ciyashop-product-thumbnail__image">
+            <Link onMouseOver={() => this.changePreviewImage(pic.image)}>
+              <img
+                src={pic.image}
+                className="img-fluid"
+                id={pic.image}
+                name={pic.image}
+                onClick={(event) => this.setState({ imagePreview: event.target.name}) }
+              />
+            </Link>
+          </div>
+        ))}
+      </Slider>
+    )
+  }
+
+  setImagePreview(imagePreview, images){
+    let image = ''
+    if (!imagePreview) {
+      image = images[0]
+    } else {
+      image = imagePreview
+    }
+    return (
+      <div className="ciyashop-product-gallery__image">
+        <img
+          src={image}
+          className="img-fluid"
+        />
+      </div>
+    )
+  }
+
+  componentDidMount(){
+
+  }
+
   render() {
-    const { photoIndex, isOpen, size, color } = this.state
+    const { photoIndex, isOpen, size, color, sku, imagePreview } = this.state
     const qty = this.state.qty
     const { product } = this.props
-    const subProducts = this.setAvailableSubProduct(product)
-
-    const images = []
-    {
+    const subProducts = this.configSubProduct(product)
+    const defaultProduct = this.setFirstSubProductAvailable(subProducts)
+    const images = this.setImages(subProducts, defaultProduct.size, defaultProduct.color)
+    // this.setState({sku: defaultProduct.sku, color: defaultProduct.color, size: defaultProduct.size})
+    /*{
       product.details[0].pictures.map((pic) => images.push(require(`../../assets/images/${pic}`)))
-    }
+    }*/
 
     let rat = []
     let rating = product.rating
@@ -224,12 +304,7 @@ class PostDetail extends Component {
                         {...settings}
                         className="ciyashop-product-gallery__wrapper popup-gallery"
                       >
-                        <div className="ciyashop-product-gallery__image">
-                          <img
-                            src={require(`../../assets/images/shop/women/a.jpg`)}
-                            className="img-fluid"
-                          />
-                        </div>
+                        {this.setImagePreview(imagePreview, images)}
                       </Slider>
                       <div className="ciyashop-product-gallery_buttons_wrapper">
                         <div
@@ -243,18 +318,7 @@ class PostDetail extends Component {
                       </div>
                     </div>
                     <div className="ciyashop-product-thumbnails">
-                      <Slider {...productslider} className="ciyashop-product-thumbnails__wrapper">
-                        {product.details[0].pictures.map((pictureimage, index) => (
-                          <div key={index} className="ciyashop-product-thumbnail__image">
-                            <Link onMouseOver={() => this.changePreviewImage(pictureimage)}>
-                              <img
-                                src={require(`../../assets/images/${pictureimage}`)}
-                                className="img-fluid"
-                              />
-                            </Link>
-                          </div>
-                        ))}
-                      </Slider>
+                      {this.setCarousel(subProducts, sku)}
                     </div>
                     <div className="clearfix" />
                   </div>
