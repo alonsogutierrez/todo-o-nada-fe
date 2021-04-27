@@ -48,6 +48,7 @@ class ProductDetail extends Component {
     this.state = {
       allProducts: this.props.products,
       productId: parseInt(this.props.match.params.id),
+      itemNumber: parseInt(this.props.match.params.itemNumber),
       currentProduct: null,
       activeTab: '1',
       clientAPI: new ClientAPI()
@@ -56,8 +57,8 @@ class ProductDetail extends Component {
   }
 
   async componentDidMount() {
-    const { clientAPI } = this.state
-    const product = await clientAPI.getProductByItemNumber(1)
+    const { clientAPI, itemNumber } = this.state
+    const product = await clientAPI.getProductByItemNumber(itemNumber)
     this.setState({
       currentProduct: product
     })
