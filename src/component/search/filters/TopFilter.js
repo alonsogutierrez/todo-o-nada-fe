@@ -28,7 +28,11 @@ class TopFilter extends Component {
         document.querySelector('.pgs-product-list').classList.add('list')
       }
     } else {
-      document.querySelector('.grid-3-column').classList.add('active')
+      const querySelector = document.querySelector('.grid-3-column')
+      console.log('querySelector: ', querySelector)
+      if (querySelector) {
+        querySelector.classList.add('active')
+      }
     }
   }
 
