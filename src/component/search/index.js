@@ -19,25 +19,60 @@ import setChangeProducts from '../../actions/setChangeProducts'
 import { getFilterProductsdata } from '../../services'
 
 class SearchPage extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      limit: 8,
+      productsPerPage: 16,
       clientAPI: new ClientAPI(),
       categoryNameSelected: '',
       searchText: '',
+      isEnabledLoadMoreButton: true,
     }
+    this.onLoadMore = this.onLoadMore.bind(this)
+    this.refreshPage = this.refreshPage.bind(this)
   }
 
   onLoadMore() {
-    const { limit } = this.state
-    this.setState({
-      limit: limit + 8,
-    })
+    const { productsPerPage } = this.state
+    const { products } = this.props
+    let totalProducts = 0
+    if (products) {
+      const { total = { value: 0 } } = products
+      if (total) {
+        totalProducts = total.value
+      }
+    }
+    this.setState(
+      {
+        isEnabledLoadMoreButton: productsPerPage + 16 <= totalProducts,
+      },
+      () => {
+        let maxProductsPerPage = 0
+        if (productsPerPage + 16 >= totalProducts) {
+          maxProductsPerPage = totalProducts
+        } else {
+          maxProductsPerPage = productsPerPage + 16
+        }
+        this.setState({ productsPerPage: maxProductsPerPage })
+      }
+    )
   }
 
   refreshPage() {
     window.location.reload(false)
+  }
+
+  isEnabledLoadMoreButton() {
+    const { productsPerPage } = this.state
+    const { products } = this.props
+    let totalProducts = 0
+    if (products) {
+      const { total = { value: 0 } } = products
+      if (total) {
+        totalProducts = total.value
+      }
+    }
+    return productsPerPage <= totalProducts
   }
 
   isCategoryQuery() {
@@ -74,45 +109,24 @@ class SearchPage extends Component {
   }
 
   componentDidMount() {
-    const { limit } = this.state
-    const { products } = this.props
-    const { actualProductsData } = products
-    let actualProducts = []
-    if (actualProductsData && actualProductsData.hits) {
-      const { hits } = actualProductsData
-      if (hits) {
-        actualProducts = hits
-      }
+    if (this.isCategoryQuery()) {
+      this.searchByCategory()
     } else {
-      if (this.isCategoryQuery()) {
-        this.searchByCategory()
-      } else {
-        this.searchByText()
-      }
-    }
-
-    if (limit < actualProducts.length) {
-      setTimeout(() => {
-        this.setState({
-          limit: limit + 8,
-        })
-      }, 2500)
+      this.searchByText()
     }
   }
 
   render() {
     const { products } = this.props
     let actualProducts = []
-    let totalProducts = 0
     if (products) {
-      const { hits = [], total = { value: 0 } } = products
-      if (hits && total) {
+      const { hits = [] } = products
+      if (hits) {
         actualProducts = hits
-        totalProducts = total.value
       }
     }
 
-    const { limit } = this.state
+    const { productsPerPage, isEnabledLoadMoreButton } = this.state
     let layoutstyle = localStorage.getItem('setLayoutStyle')
 
     if (layoutstyle == null) {
@@ -137,7 +151,7 @@ class SearchPage extends Component {
                     <div className="loop-header">
                       <div className="loop-header-tools">
                         <div className="loop-header-tools-wrapper">
-                          <TopFilter totalProducts={totalProducts} />
+                          <TopFilter totalProducts={productsPerPage} />
                         </div>
                       </div>
                     </div>
@@ -145,15 +159,17 @@ class SearchPage extends Component {
                   {actualProducts && actualProducts.length > 0 ? (
                     <div>
                       <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
-                        {actualProducts.slice(0, limit).map((product, index) => (
+                        {actualProducts.slice(0, productsPerPage).map((product, index) => (
                           <ProductCard product={product} key={index} layoutstyle={layoutstyle} />
                         ))}
                       </Row>
-                      <div className="text-center">
-                        <a onClick={this.onLoadMore} className="loadmore-btn">
-                          Cargar más
-                        </a>
-                      </div>
+                      {isEnabledLoadMoreButton && (
+                        <div className="text-center">
+                          <a onClick={this.onLoadMore} className="loadmore-btn">
+                            Cargar más
+                          </a>
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <div>
