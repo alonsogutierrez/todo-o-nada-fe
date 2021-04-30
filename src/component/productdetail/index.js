@@ -59,6 +59,11 @@ class ProductDetail extends Component {
   async componentDidMount() {
     const { clientAPI, itemNumber } = this.state
     const product = await clientAPI.getProductByItemNumber(itemNumber)
+    const { history } = this.props
+    if(!product) {
+      // redirect to page not foun
+      history.push("/pagenotfound")
+    }
     this.setState({
       currentProduct: product
     })
@@ -179,9 +184,11 @@ export default connect(null)(withRouter(ProductDetail))
 ProductDetail.defaultProps = {
   products: [],
   match: {},
+  history: {}
 }
 
 ProductDetail.propTypes = {
   products: PropTypes.array,
   match: PropTypes.object,
+  history: PropTypes.object
 }

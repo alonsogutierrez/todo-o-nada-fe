@@ -67,7 +67,7 @@ const Routes = ({ receiveProducts }) => {
           <Route exact path="/admin/login" component={Login} />
           <Route path={`/shop/:category/:id`} component={ProductDetail} />
           <Route path={`/product/:itemNumber`} component={ProductDetail} />
-          <Route component={PageNotFound} />
+          <Route exact path="/pagenotfound" component={PageNotFound} />
         </Switch>
         <Footer />
       </Router>
