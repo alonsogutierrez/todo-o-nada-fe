@@ -42,9 +42,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
     return checkCart
   }
 
-  const productPrice =
-    product.price.BasePriceSales !== null ? product.price.BasePriceSales : product.price
-
+  const productPrice = product.price.BasePriceSales ? product.price.BasePriceSales : product.price
   return (
     <>
       <ToastContainer autoClose={1000} draggable={false} />
@@ -107,7 +105,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
               </h3>
             )}
             <div className="product-rating-price">
-              {product.price && (
+              {productPrice && (
                 <span className="price">
                   <ins>
                     <span className="price-amount amount">
