@@ -16,6 +16,8 @@ const HeaderMain = ({ changeCart }) => {
   const [productsCartItems, setProductsCartItems] = useState([])
   const [cartHide, setCartHide] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
+  const [isOpenSearchBar, setIsOpenSearchBar] = useState(false)
+  const [width, setWidth] = useState(window.innerWidth)
   const [classset] = useState('')
 
   const toggle = () => {
@@ -36,9 +38,15 @@ const HeaderMain = ({ changeCart }) => {
     }
   }
 
+  const updateDimensions = () => {
+    setWidth(window.innerWidth)
+  }
+
   useEffect(() => {
     setProductsCartItems(JSON.parse(localStorage.getItem('LocalCartItems')))
-  }, [changeCart])
+    window.addEventListener('resize', updateDimensions)
+    return () => window.removeEventListener('resize', updateDimensions)
+  }, [changeCart, isOpen])
 
   const pathnames = document.location.href
   const pathArray = pathnames.split('/')
@@ -53,43 +61,35 @@ const HeaderMain = ({ changeCart }) => {
         <div className="container-fluid">
           <Row>
             <Col lg={12}>
-              <Row>
-                <Col lg={2}>
+              <div className="row align-items-center justify-content-md-center">
+                <Col xl={2} lg={2} className="col-6">
                   <LogoWrapper />
                 </Col>
-                <Col lg={8}>
-                  <div className="col" id="mainMenu">
-                    <div className="header-nav header-nav-bg-color-default">
-                      <div className="header-nav-wrapper">
-                        <Container>
-                          <Row>
-                            <div className="col-12">
-                              <div className="primary-nav">
-                                <div className="primary-nav-wrapper">
-                                  <nav className="mega-menu">
-                                    <div className="menu-list-items">
-                                      <Navbar light expand="md" className="front_menu">
-                                        <NavbarToggler onClick={() => toggle()} />
-                                        <Collapse isOpen={isOpen} navbar>
-                                          <SearchBar />
-                                        </Collapse>
-                                      </Navbar>
-                                    </div>
-                                  </nav>
-                                </div>
-                              </div>
-                            </div>
-                          </Row>
-                        </Container>
-                      </div>
+                <div className="col" id="mainMenu">
+                  <div className="header-nav header-nav-bg-color-default">
+                    <div className="header-nav-wrapper">
+                      <Container>
+                        <Row>
+                          <SearchBar />
+                        </Row>
+                      </Container>
                     </div>
                   </div>
-                </Col>
-                <Col lg={2}>
+                </div>
+                <Col xl={2} lg={2} className="col-6">
                   <div className="header-nav-right-wrapper">
                     <div className="ciya-tools">
                       <div className="ciya-tools-wrapper">
                         <ul className="ciya-tools-actions">
+                          {width < 992 && (
+                            <li className="ciya-tools-action ciya-tools-search">
+                              <i
+                                style={{ cursor: 'pointer' }}
+                                className="glyph-icon pgsicon-ecommerce-magnifying-glass"
+                                onClick={() => setIsOpenSearchBar(!isOpenSearchBar)}
+                              />
+                            </li>
+                          )}
                           <li className="ciya-tools-action ciya-tools-cart">
                             <Link
                               className="cart-link"
@@ -113,95 +113,105 @@ const HeaderMain = ({ changeCart }) => {
                     </div>
                   </div>
                 </Col>
-              </Row>
-              <Row>
-                <Col lg={12}>
-                  <div className="col" id="mainMenu">
-                    <div className="header-nav header-nav-bg-color-default">
-                      <div className="header-nav-wrapper">
-                        <Container>
-                          <Row>
-                            <div className="col-12">
-                              <div className="primary-nav">
-                                <div className="primary-nav-wrapper">
-                                  <nav className="mega-menu">
-                                    <div className="menu-list-items">
-                                      <Navbar light expand="md" className="front_menu">
-                                        <NavbarToggler onClick={() => toggle()} />
-                                        <Collapse isOpen={isOpen} navbar>
-                                          <HeaderNavLinks navLinks={navLinks} pageName={pageName} />
-                                        </Collapse>
-                                      </Navbar>
-                                    </div>
-                                  </nav>
+                <Navbar color="faded" light>
+                  <NavbarToggler onClick={toggle} className="mr-2" />
+                  {isOpen && (
+                    <Nav className="ml-auto" navbar>
+                      {navLinks.map((navLink, index) => (
+                        <li
+                          key={index}
+                          className={`nav-item ${classset === navLink.menu_title ? 'show' : ''}`}
+                        >
+                          {navLink.type && navLink.type === 'subMenu' ? (
+                            <>
+                              <Link
+                                href="#"
+                                className="nav-link"
+                                onClick={() => this.onClickClassAdd(navLink.menu_title)}
+                              >
+                                {navLink.menu_title}
+                              </Link>
+                              <ul
+                                className={
+                                  classset === navLink.menu_title ? 'showcollapsed' : 'submenu'
+                                }
+                              >
+                                {navLink.child_routes &&
+                                  navLink.child_routes.map((subNavLink, index) => (
+                                    <li
+                                      key={index}
+                                      className={`nav-item  ${
+                                        pageName == subNavLink.path ? 'active' : ''
+                                      }`}
+                                      toggle={false}
+                                    >
+                                      <Link
+                                        className="nav-link"
+                                        onClick={() => this.closeNavbar()}
+                                        to={subNavLink.path}
+                                      >
+                                        {subNavLink.menu_title}
+                                      </Link>
+                                    </li>
+                                  ))}
+                              </ul>
+                            </>
+                          ) : (
+                            <>
+                              <NavItem>
+                                <Link to={navLink.path} className="nav-admin-link">
+                                  {navLink.menu_title}
+                                </Link>
+                              </NavItem>
+                            </>
+                          )}
+                        </li>
+                      ))}
+                    </Nav>
+                  )}
+                </Navbar>
+              </div>
+              {isOpenSearchBar && width < 992 && (
+                <Row style={{ marginBottom: '5px', marginTop: '-10px' }}>
+                  <SearchBar />
+                </Row>
+              )}
+              {width >= 992 && (
+                <Row>
+                  <Col lg={12}>
+                    <div className="col" id="mainMenu">
+                      <div className="header-nav header-nav-bg-color-default">
+                        <div className="header-nav-wrapper">
+                          <Container>
+                            <Row>
+                              <div className="col-12">
+                                <div className="primary-nav">
+                                  <div className="primary-nav-wrapper">
+                                    <nav className="mega-menu">
+                                      <div className="menu-list-items">
+                                        <Navbar light expand="md" className="front_menu">
+                                          <NavbarToggler onClick={() => toggle()} />
+                                          <Collapse isOpen={isOpen} navbar>
+                                            <HeaderNavLinks
+                                              navLinks={navLinks}
+                                              pageName={pageName}
+                                            />
+                                          </Collapse>
+                                        </Navbar>
+                                      </div>
+                                    </nav>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </Row>
-                        </Container>
+                            </Row>
+                          </Container>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Col>
-              </Row>
+                  </Col>
+                </Row>
+              )}
             </Col>
-            <Navbar color="faded" light>
-              <NavbarToggler onClick={toggle} className="mr-2" />
-              <Collapse isOpen={!isOpen} navbar>
-                <Nav className="ml-auto" navbar>
-                  {navLinks.map((navLink, index) => (
-                    <li
-                      key={index}
-                      className={`nav-item ${classset === navLink.menu_title ? 'show' : ''}`}
-                    >
-                      {navLink.type && navLink.type === 'subMenu' ? (
-                        <Fragment>
-                          <Link
-                            href="#"
-                            className="nav-link"
-                            onClick={() => this.onClickClassAdd(navLink.menu_title)}
-                          >
-                            {navLink.menu_title}
-                          </Link>
-                          <ul
-                            className={
-                              classset === navLink.menu_title ? 'showcollapsed' : 'submenu'
-                            }
-                          >
-                            {navLink.child_routes &&
-                              navLink.child_routes.map((subNavLink, index) => (
-                                <li
-                                  key={index}
-                                  className={`nav-item  ${
-                                    pageName == subNavLink.path ? 'active' : ''
-                                  }`}
-                                  toggle={false}
-                                >
-                                  <Link
-                                    className="nav-link"
-                                    onClick={() => this.closeNavbar()}
-                                    to={subNavLink.path}
-                                  >
-                                    {subNavLink.menu_title}
-                                  </Link>
-                                </li>
-                              ))}
-                          </ul>
-                        </Fragment>
-                      ) : (
-                        <Fragment>
-                          <NavItem>
-                            <Link to={navLink.path} className="nav-admin-link">
-                              {navLink.menu_title}
-                            </Link>
-                          </NavItem>
-                        </Fragment>
-                      )}
-                    </li>
-                  ))}
-                </Nav>
-              </Collapse>
-            </Navbar>
           </Row>
         </div>
       </div>

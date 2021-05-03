@@ -51,7 +51,7 @@ class ProductDetail extends Component {
       itemNumber: parseInt(this.props.match.params.itemNumber),
       currentProduct: null,
       activeTab: '1',
-      clientAPI: new ClientAPI()
+      clientAPI: new ClientAPI(),
     }
     this.toggle = this.toggle.bind(this)
   }
@@ -65,7 +65,7 @@ class ProductDetail extends Component {
       history.push("/pagenotfound")
     }
     this.setState({
-      currentProduct: product
+      currentProduct: product,
     })
 
     window.scrollTo(0, 0)

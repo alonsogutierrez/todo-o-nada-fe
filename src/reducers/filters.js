@@ -8,7 +8,7 @@ const initState = {
 }
 
 export default (state = initState, action) => {
-  switch (action.tipe) {
+  switch (action.type) {
     case 'GET_CATEGORY_VALUE':
       return {
         ...state,
