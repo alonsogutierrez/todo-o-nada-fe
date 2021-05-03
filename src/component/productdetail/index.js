@@ -48,6 +48,7 @@ class ProductDetail extends Component {
     this.state = {
       allProducts: this.props.products,
       productId: parseInt(this.props.match.params.id),
+      itemNumber: parseInt(this.props.match.params.itemNumber),
       currentProduct: null,
       activeTab: '1',
       clientAPI: new ClientAPI(),
@@ -56,8 +57,13 @@ class ProductDetail extends Component {
   }
 
   async componentDidMount() {
-    const { clientAPI } = this.state
-    const product = await clientAPI.getProductByItemNumber(1)
+    const { clientAPI, itemNumber } = this.state
+    const product = await clientAPI.getProductByItemNumber(itemNumber)
+    const { history } = this.props
+    if(!product) {
+      // redirect to page not foun
+      history.push("/pagenotfound")
+    }
     this.setState({
       currentProduct: product,
     })
@@ -178,9 +184,11 @@ export default connect(null)(withRouter(ProductDetail))
 ProductDetail.defaultProps = {
   products: [],
   match: {},
+  history: {}
 }
 
 ProductDetail.propTypes = {
   products: PropTypes.array,
   match: PropTypes.object,
+  history: PropTypes.object
 }
