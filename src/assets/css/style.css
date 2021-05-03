@@ -3492,7 +3492,7 @@ header.site-header .ciya-tools-actions > li {
   line-height: 45px;
   text-align: center;
   position: relative;
-  padding-top: 15px;
+  padding-top: 0px;
 }
 
 header.site-header .ciya-tools-actions > li .glyph-icon {

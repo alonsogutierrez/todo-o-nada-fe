@@ -4,7 +4,10 @@ import PropTypes from 'prop-types'
 import { Scrollbars } from 'react-custom-scrollbars'
 
 import { categoryValue, colorValue, priceValue, sizeValue } from '../../../actions/filter'
-import { uniqueCategory, uniqueColors, uniqueSizes } from '../../../services'
+import setActualProductsData from '../../../actions/setActualProductsData'
+import setChangeProducts from '../../../actions/setChangeProducts'
+
+import { uniqueCategory, uniqueColors, uniqueSizes, getFilterProductsdata } from '../../../services'
 
 import './styles.css'
 
@@ -26,7 +29,7 @@ class SideFilter extends Component {
   }
 
   onClickColorFilter(event, colors) {
-    const { colorValue } = this.props
+    const { colorValue, setChangeProducts, changeProducts } = this.props
     const index = colors.indexOf(event.target.value)
     if (event.target.checked) {
       colors.push(event.target.value)
@@ -34,10 +37,11 @@ class SideFilter extends Component {
       colors.splice(index, 1)
     }
     colorValue(colors)
+    setChangeProducts(!changeProducts)
   }
 
   onClickCategoryFilter(event, categorys) {
-    const { categoryValue } = this.props
+    const { categoryValue, setChangeProducts, changeProducts } = this.props
     const index = categorys.indexOf(event.target.value)
     if (event.target.checked) {
       categorys.push(event.target.value)
@@ -45,10 +49,11 @@ class SideFilter extends Component {
       categorys.splice(index, 1)
     }
     categoryValue(categorys)
+    setChangeProducts(!changeProducts)
   }
 
   onClickSizeFilter(event, sizes) {
-    const { sizeValue } = this.props
+    const { sizeValue, setChangeProducts, changeProducts } = this.props
     const index = sizes.indexOf(event.target.value)
     if (event.target.checked) {
       sizes.push(event.target.value)
@@ -56,21 +61,25 @@ class SideFilter extends Component {
       sizes.splice(index, 1)
     }
     sizeValue(sizes)
+    setChangeProducts(!changeProducts)
   }
 
   clearColor() {
-    const { colorValue } = this.props
+    const { colorValue, setChangeProducts, changeProducts } = this.props
     colorValue([])
+    setChangeProducts(!changeProducts)
   }
 
   clearCategory() {
-    const { categoryValue } = this.props
+    const { categoryValue, setChangeProducts, changeProducts } = this.props
     categoryValue([])
+    setChangeProducts(!changeProducts)
   }
 
   clearSize() {
-    const { sizeValue } = this.props
+    const { sizeValue, setChangeProducts, changeProducts } = this.props
     sizeValue([])
+    setChangeProducts(!changeProducts)
   }
 
   render() {
@@ -103,7 +112,7 @@ class SideFilter extends Component {
                         type="checkbox"
                         onClick={(e) => this.onClickColorFilter(e, colorsFilterValues)}
                         value={color}
-                        defaultChecked={colorsFilterValues.includes(color)}
+                        checked={colorsFilterValues.includes(color)}
                         className="form-check-input"
                         id={color}
                       />
@@ -138,7 +147,7 @@ class SideFilter extends Component {
                       type="checkbox"
                       onClick={(e) => this.onClickCategoryFilter(e, categoryFilterValues)}
                       value={category}
-                      defaultChecked={categoryFilterValues.includes(category)}
+                      checked={categoryFilterValues.includes(category)}
                       className="form-check-input"
                       id={category}
                     />
@@ -172,7 +181,7 @@ class SideFilter extends Component {
                       type="checkbox"
                       onClick={(e) => this.onClickSizeFilter(e, sizeFilterValues)}
                       value={size}
-                      defaultChecked={sizeFilterValues.includes(size)}
+                      checked={sizeFilterValues.includes(size)}
                       className="form-check-input"
                       id={size}
                     />
@@ -191,6 +200,11 @@ class SideFilter extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  actualProductsData: getFilterProductsdata(
+    state.actualProductsDataReducer.actualProductsData,
+    state.filters
+  ),
+  changeProducts: state.changeProductsDataReducer.changeProductsData,
   categorys: uniqueCategory(state.actualProductsDataReducer.actualProductsData),
   sizes: uniqueSizes(state.actualProductsDataReducer.actualProductsData),
   colors: uniqueColors(state.actualProductsDataReducer.actualProductsData),
@@ -202,6 +216,8 @@ export default connect(mapStateToProps, {
   sizeValue,
   colorValue,
   priceValue,
+  setActualProductsData,
+  setChangeProducts,
 })(SideFilter)
 
 SideFilter.defaultProps = {
@@ -214,6 +230,10 @@ SideFilter.defaultProps = {
   categoryValue: () => {},
   sizeValue: () => {},
   priceValue: () => {},
+  actualProductsData: {},
+  setActualProductsData: () => {},
+  setChangeProducts: () => {},
+  changeProducts: false,
 }
 
 SideFilter.propTypes = {
@@ -226,4 +246,8 @@ SideFilter.propTypes = {
   categoryValue: PropTypes.func,
   sizeValue: PropTypes.func,
   priceValue: PropTypes.func,
+  actualProductsData: PropTypes.object,
+  setActualProductsData: PropTypes.func,
+  setChangeProducts: PropTypes.func,
+  changeProducts: PropTypes.bool,
 }

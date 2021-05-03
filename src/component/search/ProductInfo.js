@@ -42,18 +42,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
     return checkCart
   }
 
-  let rat = []
-  let rating = product.rating
-  let i = 1
-  while (i <= 5) {
-    if (i <= rating) {
-      rat.push(<i className="fa fa-star" />)
-    } else {
-      rat.push(<i className="fa fa-star-o" />)
-    }
-    i += 1
-  }
-
+  const productPrice = product.price.BasePriceSales ? product.price.BasePriceSales : product.price
   return (
     <>
       <ToastContainer autoClose={1000} draggable={false} />
@@ -61,7 +50,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
         <div className="product-inner element-hovered">
           <div className="product-thumbnail">
             <div className="product-thumbnail-inner">
-              <Link to={`/shop/${product.category}/${product.id}`}>
+              <Link to={`/product/${product.itemNumber}`}>
                 {product.pictures[0] ? (
                   <div className="product-thumbnail-main">
                     <img
@@ -90,8 +79,8 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                         AddToCart(
                           product.id,
                           product.name,
-                          product.quantity,
-                          product.price,
+                          1,
+                          productPrice,
                           product.quantity > 0 ? 'In Stock' : 'No Stock'
                         )
                       }
@@ -112,23 +101,22 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
           <div className="product-info">
             {product.name && (
               <h3 className="product-name">
-                <Link to={`/shop/${product.category}/${product.id}`}>{product.name}</Link>
+                <Link to={`/product/${product.itemNumber}`}>{product.name}</Link>
               </h3>
             )}
             <div className="product-rating-price">
-              {product.price && (
+              {productPrice && (
                 <span className="price">
                   <ins>
                     <span className="price-amount amount">
                       <span className="currency-symbol">$</span>
-                      {product.price.toLocaleString(navigator.language, {
+                      {productPrice.toLocaleString(navigator.language, {
                         minimumFractionDigits: 0,
                       })}
                     </span>
                   </ins>
                 </span>
               )}
-              <div className="product-rating">{rat}</div>
             </div>
             <div className="product-actions product-actions-list">
               <div className="product-actions-inner">
@@ -139,8 +127,8 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                         AddToCart(
                           product.id,
                           product.name,
-                          product.quantity,
-                          product.price,
+                          1, //product.quantity,
+                          productPrice,
                           product.quantity > 0 ? 'In Stock' : 'No Stock'
                         )
                       }
