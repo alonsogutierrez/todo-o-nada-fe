@@ -6,6 +6,7 @@ import ImageUploader from 'react-images-upload'
 import { Link } from 'react-router-dom'
 import Slider from 'react-slick'
 import { Container, FormGroup, Input, Label, Row } from 'reactstrap'
+import { Formik } from 'formik'
 
 const settings = {
   dots: false,
@@ -29,9 +30,9 @@ const productdata = {
     'product-single.jpg',
     'product-single.jpg'
   ],
-  size: ['M', 'L', 'XXL', 'S'],
-  colors: ['Black', 'Red', 'Blue', 'Green'],
-  tags: ['Athleisure', 'Jacket', 'Women', 'Clothing', 'Blazers']
+  size: ['S', 'M', 'L', 'XL'],
+  colors: ['Negro', 'Rojo', 'Azul', 'Verde', 'Blanco', 'Cafe'],
+  categories: ['Hombres', 'Mujeres', 'niños', 'Irezumi Art', 'Todo o Nada'],
 }
 
 const productAdd = () => {
@@ -119,13 +120,45 @@ const productAdd = () => {
                 <div className='product-top-right col-xl-7 col-md-6'>
                   <div className='product-top-right-inner'>
                     <div className='summary entry-summary'>
-                      <FormGroup className='edit-icon'>
-                        <Input
-                          type='text'
-                          className='form-control product_title'
-                          placeholder='Product Name'
-                        />
-                      </FormGroup>
+                      <Formik
+                        initialValues={{name: ''}}
+                        validate={values => {
+                          const errors = {}
+                          if (!values.name) {
+                            errors.name = 'nombre requerido'
+                          }
+                          return errors
+                        }}
+                        onSubmit={(values, { setSubmitting }) => {
+                          console.log(JSON.stringify(values, null, 2))
+                          setSubmitting(false)
+                        }}
+                      >
+                        {({
+                            values,
+                            errors,
+                            touched,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            // isSubmitting,
+                        }) => (
+                          <form onSubmit={handleSubmit}>
+                            <FormGroup className='edit-icon'>
+                              <Input
+                                type='text'
+                                name='name'
+                                className='form-control product_title'
+                                placeholder='nombre'
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.email}
+                              />
+                              {errors.name && touched.name && errors.name}
+                            </FormGroup>
+                          </form>
+                        )}
+                      </Formik>
                       <FormGroup className='edit-icon'>
                         <Input
                           type='text'
@@ -168,7 +201,7 @@ const productAdd = () => {
 
                       <Label className='title mb-2'>Category</Label>
                       <FormGroup>
-                        {productdata.tags.map((brand, index) => (
+                        {productdata.categories.map((brand, index) => (
                           <Label key={index}>
                             <Input type='checkbox' /> {brand}
                           </Label>
