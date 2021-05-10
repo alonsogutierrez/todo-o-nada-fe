@@ -12,6 +12,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "fetch-instagram": "^1.0.0-alpha.3",
     "font-awesome": "^4.7.0",
+    "formik": "^2.2.6",
     "google-maps-react": "^2.0.2",
     "html-webpack-plugin": "^4.0.0-beta.5",
     "prop-types": "^15.7.2",
