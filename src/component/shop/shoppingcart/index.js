@@ -13,9 +13,9 @@ class ShopingCart extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      ShippingFlatRate: 1.5,
-      ShippingLocalPickUp: 2.0,
-      TotalShippingCarge: 1.5,
+      ShippingFlatRate: 1.5, //TODO: Change by real values
+      ShippingLocalPickUp: 2.0, //TODO: Change by real values
+      TotalShippingCarge: 1.5, //TODO: Change by real values
     }
     this.readCartItems = this.readCartItems.bind(this)
     this.plusQty = this.plusQty.bind(this)
@@ -47,39 +47,37 @@ class ShopingCart extends Component {
     return JSON.parse(localStorage.getItem('LocalCartItems'))
   }
 
-  removeFromCart(Index) {
+  removeFromCart(position) {
     const { setChangeCart, changeCart } = this.props
-    let UpdatedCart = this.readCartItems()
-    UpdatedCart = UpdatedCart.slice(0, Index).concat(
-      UpdatedCart.slice(Index + 1, UpdatedCart.length)
-    )
+    let cartItems = this.readCartItems()
+    cartItems = cartItems.slice(0, position).concat(cartItems.slice(position + 1, cartItems.length))
     localStorage.removeItem('LocalCartItems')
-    localStorage.setItem('LocalCartItems', JSON.stringify(UpdatedCart))
+    localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
     setChangeCart(!changeCart)
     toast.warning('Producto eliminado del carro')
   }
 
-  plusQty(Index) {
+  plusQty(position) {
     const { setChangeCart, changeCart } = this.props
-    let UpdatedCart = this.readCartItems()
-    UpdatedCart[Index].Qty = parseInt(UpdatedCart[Index].Qty + 1)
+    let cartItems = this.readCartItems()
+    cartItems[position].quantity = parseInt(cartItems[position].quantity + 1)
     localStorage.removeItem('LocalCartItems')
-    localStorage.setItem('LocalCartItems', JSON.stringify(UpdatedCart))
+    localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
     setChangeCart(!changeCart)
     toast.success('Producto agregado al carro')
   }
 
-  minusQty(Index) {
+  minusQty(position) {
     const { setChangeCart, changeCart } = this.props
-    let UpdatedCart = this.readCartItems()
-    if (UpdatedCart[Index].Qty != 1) {
-      UpdatedCart[Index].Qty = parseInt(UpdatedCart[Index].Qty - 1)
+    let cartItems = this.readCartItems()
+    if (cartItems[position].quantity != 1) {
+      cartItems[position].quantity = parseInt(cartItems[position].quantity - 1)
       localStorage.removeItem('LocalCartItems')
-      localStorage.setItem('LocalCartItems', JSON.stringify(UpdatedCart))
+      localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
       setChangeCart(!changeCart)
       toast.warning('Producto eliminado del carro')
     } else {
-      this.removeFromCart(Index)
+      this.removeFromCart(position)
     }
   }
 

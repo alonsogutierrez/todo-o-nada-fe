@@ -67,12 +67,13 @@ class CheckOut extends Component {
         const cartItemsParsed = JSON.parse(cartItems)
         try {
           const orderDataToSave = orderCreator(cartItemsParsed, formValues, shippingData)
+          console.log('orderDataToSave: ', orderDataToSave)
           const orderDataSaved = await clientAPI.createOrder(orderDataToSave)
           setOrderData(orderDataSaved)
           localStorage.removeItem('LocalCartItems')
           console.log('Order well saved: ', orderDataSaved)
           setChangeCart(!changeCart)
-          this.props.history.push('/SuccessScreen')
+          window.location.replace(orderDataSaved.redirect_to)
         } catch (e) {
           this.setState({ loading: false })
           console.log('Can`t createOrder: ', e)

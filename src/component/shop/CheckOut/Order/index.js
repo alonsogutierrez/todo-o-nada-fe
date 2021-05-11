@@ -1,30 +1,29 @@
-import products from '../../../../api/product.json'
-
 const calculateSubTotal = (items) => {
-  const subTotal = items
-    .reduce((fr, CartItem) => fr + CartItem.Qty * CartItem.Rate, 0)
-    .toLocaleString(navigator.language, {
-      minimumFractionDigits: 0,
-    })
+  const subTotal = items.reduce(
+    (fr, cartItem) => fr + Number(cartItem.quantity) * Number(cartItem.price),
+    0
+  )
+
   return subTotal
 }
 
 const orderCreator = (cartItems, formValues, shippingData) => {
   const productsInfo = cartItems.map((item) => {
-    const product = products.find((product) => product.id === item.ProductID)
+    //TODO: Validate if item exist in db and get it
+    //const product = products.find((product) => product.id === item.ProductID)
     const productInfo = {
-      name: product.name,
-      category: product.category,
-      sku: product.id, //TODO: Change by real sku
-      itemNumber: 0, //TODO: Change by real itemNumber
+      name: item.productName,
+      category: 'dummy category', //product.category,
+      sku: item.sku, //TODO: Change by real sku
+      itemNumber: item.itemNumber, //TODO: Change by real itemNumber
       prices: [
         {
-          basePriceSales: product.salePrice,
-          basePriceReference: product.price,
-          discount: product.discount,
+          basePriceSales: item.price,
+          basePriceReference: item.price,
+          discount: 0,
         },
       ],
-      quantity: Number(item.Qty), //TODO: Change by real qty
+      quantity: parseInt(item.quantity, 10), //TODO: Change by real qty
     }
     return productInfo
   })

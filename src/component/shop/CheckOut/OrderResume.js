@@ -5,7 +5,7 @@ import PaymentMethods from './PaymentMethods'
 
 const calculateSubTotal = (items) => {
   return items
-    .reduce((fr, CartItem) => fr + Number(CartItem.Qty) * Number(CartItem.Rate), 0)
+    .reduce((fr, cartItem) => fr + Number(cartItem.quantity) * Number(cartItem.price), 0)
     .toLocaleString(navigator.language, {
       minimumFractionDigits: 0,
     })
@@ -27,7 +27,7 @@ const OrderResume = () => {
   }
 
   const calculateTotalOrder = () => {
-    const total = Number(subTotal) + Number(totalShippingCharge)
+    const total = parseInt(subTotal, 10) + parseInt(totalShippingCharge, 10)
     return total
   }
 
@@ -45,14 +45,14 @@ const OrderResume = () => {
             {cartItems.map((item, index) => (
               <tr key={index} className="cart_item">
                 <td className="product-name">
-                  {item.ProductName}&nbsp;{' '}
-                  <strong className="product-quantity">× {item.Qty}</strong>{' '}
+                  {item.productName}&nbsp;{' '}
+                  <strong className="product-quantity">× {item.quantity}</strong>{' '}
                 </td>
                 <td className="product-total">
                   <span className="woocs_special_price_code">
                     <span className="Price-amount amount">
                       <span className="Price-currencySymbol">$</span>{' '}
-                      {formatToCurrency(item.Rate * item.Qty)}{' '}
+                      {formatToCurrency(Number(item.price) * Number(item.quantity))}{' '}
                     </span>
                   </span>
                 </td>

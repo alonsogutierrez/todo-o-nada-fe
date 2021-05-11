@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 const dispatchData = {
   homeDelivery: {
     name: 'Despacho a domicilio',
-    total: 1000,
+    total: 1000, //Change by real value
   },
   localPickUp: {
     name: 'Retiro en tienda',
