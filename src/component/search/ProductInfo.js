@@ -8,13 +8,16 @@ import { toast, ToastContainer } from 'react-toastify'
 import setChangeCartData from '../../actions/setChangeCartData'
 
 const ProductInfo = ({ product, changeCart, setChangeCart }) => {
-  const AddToCart = (productId, productName, quantity, price, stockStatus) => {
+  const AddToCart = (itemNumber, sku, productName, quantity, price, stockStatus) => {
     let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (!cartItems) cartItems = []
-    let selectedProduct = cartItems.find((product) => product.productId === productId)
+    let selectedProduct = cartItems.find(
+      (product) => product.itemNumber === itemNumber && product.sku === sku
+    )
     if (!selectedProduct) {
       cartItems.push({
-        productId,
+        itemNumber,
+        sku,
         productName,
         quantity,
         price,
@@ -29,12 +32,12 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
     }
   }
 
-  const CheckCardItem = (prodId) => {
+  const CheckCardItem = (itemNumber, sku) => {
     let checkCart = false
     let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (cartItems && cartItems.length > 0) {
       for (const cartItem of cartItems) {
-        if (cartItem.productId === prodId) {
+        if (cartItem.itemNumber === itemNumber && cartItem.sku === sku) {
           checkCart = true
         }
       }
@@ -73,11 +76,12 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
             <div className="product-actions">
               <div className="product-actions-inner">
                 <div className="product-action product-action-add-to-cart">
-                  {!CheckCardItem(product.id) ? (
+                  {!CheckCardItem(product.itemNumber, product.sku) ? (
                     <Link
                       onClick={() =>
                         AddToCart(
-                          product.id,
+                          product.itemNumber,
+                          product.sku,
                           product.name,
                           1,
                           productPrice,
@@ -121,13 +125,14 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
             <div className="product-actions product-actions-list">
               <div className="product-actions-inner">
                 <div className="product-action product-action-add-to-cart">
-                  {!CheckCardItem(product.id) ? (
+                  {!CheckCardItem(product.itemNumber, product.sku) ? (
                     <Link
                       onClick={() =>
                         AddToCart(
-                          product.id,
+                          product.itemNumber,
+                          product.sku,
                           product.name,
-                          1, //product.quantity,
+                          1,
                           productPrice,
                           product.quantity > 0 ? 'In Stock' : 'No Stock'
                         )

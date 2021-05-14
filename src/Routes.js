@@ -63,11 +63,11 @@ const Routes = ({ receiveProducts }) => {
           <Route exact path="/account/SavedCards" component={SavedCards} />
           <Route exact path="/account/SavedCardsedit" component={SavedCardsedit} />
           <Route exact path="/account/SavedCardsadd" component={SavedCardsadd} />
-          <Route exact path="/SuccessScreen" component={SuccessScreen} />
+          <Route exact path="/successpayment" component={SuccessScreen} />
           <Route exact path="/admin/login" component={Login} />
           <Route path={`/shop/:category/:id`} component={ProductDetail} />
           <Route path={`/product/:itemNumber`} component={ProductDetail} />
-          <Route exact path="/pagenotfound" component={PageNotFound} />
+          <Route component={PageNotFound} />
         </Switch>
         <Footer />
       </Router>
