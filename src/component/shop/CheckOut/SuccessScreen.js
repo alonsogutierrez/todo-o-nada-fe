@@ -21,6 +21,7 @@ class SuccessScreen extends Component {
   }
 
   componentDidMount() {
+    // TODO: Call to bff to get payment status, if if valid show data if not say a wrong message
     this.setFormValues()
     this.ReadCartItems()
     this.forceUpdate()

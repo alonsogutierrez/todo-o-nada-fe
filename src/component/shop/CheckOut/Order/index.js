@@ -1,57 +1,56 @@
-const calculateSubTotal = (items) => {
-  const subTotal = items.reduce(
-    (fr, cartItem) => fr + Number(cartItem.quantity) * Number(cartItem.price),
-    0
-  )
-
-  return subTotal
-}
-
-const orderCreator = (cartItems, formValues, shippingData) => {
-  const productsInfo = cartItems.map((item) => {
-    //TODO: Validate if item exist in db and get it
-    //const product = products.find((product) => product.id === item.ProductID)
+const getProductsInfo = (items) => {
+  return items.map((item) => {
     const productInfo = {
       name: item.productName,
-      category: 'dummy category', //product.category,
-      sku: item.sku, //TODO: Change by real sku
-      itemNumber: item.itemNumber, //TODO: Change by real itemNumber
-      prices: [
-        {
-          basePriceSales: item.price,
-          basePriceReference: item.price,
-          discount: 0,
-        },
-      ],
-      quantity: parseInt(item.quantity, 10), //TODO: Change by real qty
+      sku: item.sku,
+      itemNumber: item.itemNumber,
+      price: {
+        basePriceSales: item.price,
+        basePriceReference: item.price,
+        discount: 0,
+      },
+      quantity: parseInt(item.quantity, 10),
     }
     return productInfo
   })
+}
+
+const getUserInfo = (data) => {
+  const {
+    first_name,
+    last_name,
+    email,
+    phone,
+    country_selected,
+    region_selected,
+    commune_selected,
+    zip_code,
+    address,
+    num_address,
+  } = data
+  return {
+    firstName: first_name,
+    lastName: last_name,
+    email: email,
+    phone: phone,
+    address: {
+      country: country_selected.name,
+      city: region_selected.region,
+      commune: commune_selected,
+      zip_code: zip_code,
+      address: address,
+      num_address: num_address,
+    },
+  }
+}
+
+const orderCreator = (cartItems, formValues) => {
+  const productsInfo = getProductsInfo(cartItems)
+  const userInfo = getUserInfo(formValues)
   const orderDataToSave = {
     products: productsInfo,
-    inventoryState: {},
     paymentData: {
-      user: {
-        firstName: formValues.first_name,
-        lastName: formValues.last_name,
-        email: formValues.email,
-        phone: formValues.phone,
-        address: {
-          country: formValues.country_selected.name,
-          city: formValues.region_selected.region,
-          commune: formValues.commune_selected,
-          zip_code: formValues.zip_code,
-          address: formValues.address,
-          num_address: formValues.num_address,
-        },
-      },
-      state: 'created',
-      transaction: {
-        date: new Date(),
-        subTotal: calculateSubTotal(cartItems),
-        shipping: shippingData.total,
-        id: 1,
-      },
+      user: userInfo,
     },
   }
   return orderDataToSave
