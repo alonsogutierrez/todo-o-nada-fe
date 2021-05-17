@@ -4,11 +4,10 @@ import DispatchOptions from './DispatchOptions'
 import PaymentMethods from './PaymentMethods'
 
 const calculateSubTotal = (items) => {
-  return items
-    .reduce((fr, cartItem) => fr + Number(cartItem.quantity) * Number(cartItem.price), 0)
-    .toLocaleString(navigator.language, {
-      minimumFractionDigits: 0,
-    })
+  return items.reduce(
+    (accum, cartItem) => accum + parseInt(cartItem.quantity, 10) * parseInt(cartItem.price, 10),
+    0
+  )
 }
 
 const OrderResume = () => {
@@ -27,8 +26,7 @@ const OrderResume = () => {
   }
 
   const calculateTotalOrder = () => {
-    const total = parseInt(subTotal, 10) + parseInt(totalShippingCharge, 10)
-    return total
+    return parseInt(subTotal, 10) + parseInt(totalShippingCharge, 10)
   }
 
   return (
