@@ -1,6 +1,24 @@
 import React from 'react'
-import { Container, Row, FormGroup, Input } from 'reactstrap'
+import { Container, Row, FormGroup, Input, Label } from 'reactstrap'
 import { Formik } from 'formik'
+import S3FileUpload from 'react-s3'
+
+// config S3 access
+const config = {
+  bucketName: 'todo-o-nada-imagenes',
+  dirName: 'images', /* optional */
+  region: 'us-east-2',
+  accessKeyId: 'AKIAUZQTDOXUTFXWCY5V',
+  secretAccessKey: '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'
+}
+
+const uploadImage = (e) => {
+  S3FileUpload.uploadFile(e.target.files[0], config)
+    .then((data) => {
+      console.log(data)
+    })
+    .catch((err) => alert(err))
+}
 
 const SubProductAdd = () => {
   return (
@@ -76,6 +94,30 @@ const SubProductAdd = () => {
                               value={values.stock}
                             />
                             {errors.stock && touched.stock && errors.stock}
+                          </FormGroup>
+                          <FormGroup className="col-md-4">
+                            <Label className="title pl-0">Imagen 1</Label>
+                            <Input type="file"
+                                   name="image1"
+                                   className="form-control"
+                                   placeholder="image 1"
+                                   onChange={uploadImage}/>
+                          </FormGroup>
+                          <FormGroup className="col-md-4">
+                            <Label className="title pl-0">Imagen 2</Label>
+                            <Input type="file"
+                                   name="image1"
+                                   className="form-control"
+                                   placeholder="image 2"
+                                   onChange={uploadImage}/>
+                          </FormGroup>
+                          <FormGroup className="col-md-4">
+                            <Label className="title pl-0">Imagen 3</Label>
+                            <Input type="file"
+                                   name="image3"
+                                   className="form-control"
+                                   placeholder="image 3"
+                                   onChange={uploadImage}/>
                           </FormGroup>
                         </Row>
                       </form>
