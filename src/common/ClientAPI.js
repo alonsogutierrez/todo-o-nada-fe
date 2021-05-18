@@ -109,25 +109,21 @@ export default class ClientAPI {
     })
   }
 
-  getOrderByOrderNumber(orderNumber) {
-    return new Promise((resolve, reject) => {
+  async getOrderByOrderNumber(orderNumber) {
+    try {
       const client = this.bffInstance()
-      client
-        .request({
-          url: '/orders',
-          method: 'get',
-          params: {
-            orderNumber,
-          },
-          timeout: 10 * 1000,
-        })
-        .then((response) => {
-          resolve(response.data)
-        })
-        .catch((error) => {
-          reject(error)
-        })
-    })
+      const response = await client.request({
+        url: '/orders',
+        method: 'get',
+        params: {
+          orderNumber,
+        },
+        timeout: 10 * 1000,
+      })
+      return response.data
+    } catch (err) {
+      throw new Error('Cant get order by orderNumber')
+    }
   }
 
   getProfileInfo(userId) {

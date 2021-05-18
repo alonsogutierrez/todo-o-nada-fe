@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Col, Row } from 'reactstrap'
 
-import productsAPI from '../../../api/product.json'
-
 const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
   const { orderNumber, products, createdAt } = orderData
   const createdDate = new Date(createdAt).toLocaleDateString('es-CL')
@@ -16,19 +14,19 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
   const getOrderSubTotal = (products) => {
     let total = 0
     products.forEach((product) => {
-      total += product.quantity * product.prices[0].basePriceSales
+      total += product.quantity * product.price.basePriceSales
     })
     return total
   }
 
-  const getProductImage = (product) => {
-    const productFind = productsAPI.find((productAPI) => {
-      return product.sku === productAPI['id']
-    })
-    if (productFind) {
-      return productFind.pictures[0]
-    }
-  }
+  // const getProductImage = (product) => {
+  //   const productFind = productsAPI.find((productAPI) => {
+  //     return product.sku === productAPI['id']
+  //   })
+  //   if (productFind) {
+  //     return productFind.pictures[0]
+  //   }
+  // }
 
   return (
     <div className="success-screen">
@@ -96,7 +94,8 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
                       <td className="ordered-image">
                         <img
                           alt="img 01"
-                          src={require(`../../../assets/images/${getProductImage(product)}`)}
+                          //src={require(`../../../assets/images/${getProductImage(product)}`)}
+                          src="https://cl.shein.com/Solid-Crew-Neck-Tee-p-1780218-cat-1738.html?url_from=adpla-cl-pla-swtee24201027171-M_ssc&gclid=CjwKCAjwqIiFBhAHEiwANg9szv_4aYOaGgiAHnbRH1-lI0Onwu4lK_KnmgdJ2APXuC_Yv-cb-UbEMRoCAu4QAvD_BwE"
                           className="img-fluid"
                         />
                       </td>
@@ -112,7 +111,7 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
                         <h6 className="mb-0">Precio</h6>
                         <span>
                           $
-                          {product.prices[0].basePriceSales.toLocaleString(navigator.language, {
+                          {product.price.basePriceSales.toLocaleString(navigator.language, {
                             minimumFractionDigits: 0,
                           })}
                         </span>
