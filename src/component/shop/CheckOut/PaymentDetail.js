@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Col, Row } from 'reactstrap'
 
-const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
+const PaymentDetail = ({ orderData, totalShippingCarge }) => {
   const { orderNumber, products, createdAt } = orderData
   const createdDate = new Date(createdAt).toLocaleDateString('es-CL')
 
   const getOrderTotal = (products, totalShippingCarge) => {
-    return getOrderSubTotal(products) + totalShippingCarge
+    return getOrderSubTotal(products) + parseInt(totalShippingCarge, 10)
   }
 
   const getOrderSubTotal = (products) => {
@@ -19,6 +19,11 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
     return total
   }
 
+  const isValidParams = (order) => {
+    const isValid = order && Object.keys(order).length > 0
+    return isValid
+  }
+
   // const getProductImage = (product) => {
   //   const productFind = productsAPI.find((productAPI) => {
   //     return product.sku === productAPI['id']
@@ -27,6 +32,16 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
   //     return productFind.pictures[0]
   //   }
   // }
+  let user = {}
+  const order = orderData
+  if (!isValidParams(order)) {
+    return <div>Cargando data...</div>
+  }
+  const { paymentData } = order
+  if (paymentData && Object.keys(paymentData).length > 0) {
+    user = paymentData.user
+  }
+  const userData = user
 
   return (
     <div className="success-screen">

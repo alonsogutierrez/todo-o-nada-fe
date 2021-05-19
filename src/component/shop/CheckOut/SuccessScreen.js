@@ -1,6 +1,3 @@
-/**
- *  Success Screen
- */
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -11,22 +8,24 @@ import PaymentDetail from './PaymentDetail.js'
 import ClientAPI from './../../../common/ClientAPI'
 
 const SuccessPayment = (props) => {
-  const [shippingAmount, setShippingAmount] = useState(0)
+  const [shippingAmount, setShippingAmount] = useState(0.0)
   const [clientAPI] = useState(new ClientAPI())
-  const [orderNumber] = useState(new URLSearchParams(props.location.search).get('orderNumber'))
-  const [order, setOrder] = useState({})
-  const [loading, setLoading] = useState(false)
+  const [response, setResponse] = useState({
+    data: null,
+    loading: true,
+  })
   const [cartItems, setCartItems] = useState([])
 
   const setShippingAmountInfo = () => {
-    if (localStorage.getItem('TotalShippingCharge') !== null) {
-      setShippingAmount(parseFloat(localStorage.getItem('TotalShippingCharge')))
+    const shippingAmount = localStorage.getItem('TotalShippingCharge')
+    if (shippingAmount) {
+      setShippingAmount(parseFloat(0.0))
     }
   }
 
-  const loadOrderData = async () => {
+  const getOrderData = async (orderNumber) => {
     const order = await clientAPI.getOrderByOrderNumber(orderNumber)
-    return order[0]
+    return order
   }
 
   const readCartItems = () => {
@@ -35,79 +34,72 @@ const SuccessPayment = (props) => {
     localStorage.removeItem('formValues')
     localStorage.removeItem('errors')
     if (!cartItems) {
-      this.props.history.push(`/`)
+      props.history.push(`/`)
     }
-  }
-  const renderPaymentInfo = (user, shippingAmount) => {
-    console.log('loading: ', loading)
-    console.log('user, order, shippingAmount: ', user, order, shippingAmount)
-    if (!loading && order && Object.keys(order).length > 0) {
-      return (
-        <PaymentDetail
-          orderData={order}
-          userData={user}
-          totalShippingCarge={shippingAmount}
-        ></PaymentDetail>
-      )
-    }
-    return <h2>Loading data...</h2>
   }
 
-  useEffect(async () => {
+  useEffect(() => {
     setShippingAmountInfo()
     readCartItems()
-    setLoading(true)
-    setOrder(await loadOrderData())
-    setLoading(false)
+    const fetchOrderData = async () => {
+      const orderNumber = new URLSearchParams(props.location.search).get('orderNumber')
+      const orderData = await getOrderData(orderNumber)
+      setResponse({
+        data: orderData,
+        loading: false,
+      })
+    }
+    fetchOrderData()
     let evt = document.createEvent('Event')
     evt.initEvent('load', false, false)
     window.dispatchEvent(evt)
     window.scrollTo(0, 0)
   }, [])
 
-  console.log('orderDta: ', order)
-
-  const { paymentData } = order
-  let user = {}
-  if (paymentData) {
-    user = paymentData.user
-  }
+  const orderData = response.data ? response.data : {}
 
   return (
-    <div>
-      <div className="inner-intro">
-        <Container>
-          <Row className="intro-title align-items-center">
-            <Col md={6} className="text-left">
-              <div className="intro-title-inner">
-                <h1>Mi cuenta</h1>
-              </div>
-            </Col>
-            <Col md={6} className="text-right">
-              <ul className="ciyashop_breadcrumbs page-breadcrumb breadcrumbs">
-                <li className="home">
-                  <span>
-                    <Link className="bread-link bread-home" to="/">
-                      Home
-                    </Link>
-                  </span>
-                </li>
-                <li>
-                  <span>Mi cuenta</span>
-                </li>
-              </ul>
-            </Col>
-          </Row>
-        </Container>
+    <>
+      <div>
+        <div className="inner-intro">
+          <Container>
+            <Row className="intro-title align-items-center">
+              <Col md={6} className="text-left">
+                <div className="intro-title-inner">
+                  <h1>Mi cuenta</h1>
+                </div>
+              </Col>
+              <Col md={6} className="text-right">
+                <ul className="ciyashop_breadcrumbs page-breadcrumb breadcrumbs">
+                  <li className="home">
+                    <span>
+                      <Link className="bread-link bread-home" to="/">
+                        Home
+                      </Link>
+                    </span>
+                  </li>
+                  <li>
+                    <span>Mi cuenta</span>
+                  </li>
+                </ul>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+        <div className="section-ptb">
+          <Container>
+            <Row className="justify-content-center">
+              <Col lg={7}>
+                <PaymentDetail
+                  orderData={orderData}
+                  totalShippingCarge={shippingAmount}
+                ></PaymentDetail>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
-      <div className="section-ptb">
-        <Container>
-          <Row className="justify-content-center">
-            <Col lg={7}>{renderPaymentInfo(user, shippingAmount)}</Col>
-          </Row>
-        </Container>
-      </div>
-    </div>
+    </>
   )
 }
 
