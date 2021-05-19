@@ -1446,7 +1446,7 @@
   }
 
   .success-screen .table {
-    min-width: 500px;
+    min-width: auto;
   }
 
   .shop_table.shop_table_responsive.table {
