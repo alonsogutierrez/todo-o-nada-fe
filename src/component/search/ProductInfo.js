@@ -45,7 +45,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
     return checkCart
   }
 
-  const productPrice = product.price.BasePriceSales ? product.price.BasePriceSales : product.price
+  const productPrice = product.price.basePriceSales ? product.price.basePriceSales : product.price
   return (
     <>
       <ToastContainer autoClose={1000} draggable={false} />

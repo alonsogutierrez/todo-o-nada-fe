@@ -64,9 +64,9 @@ const getBaseSalesPrice = (product) => {
   if (_source) {
     const { price } = _source
     if (price) {
-      const { BasePriceSales } = price
-      if (BasePriceSales) {
-        productPrice = BasePriceSales
+      const { basePriceSales } = price
+      if (basePriceSales) {
+        productPrice = basePriceSales
       }
     }
   }
