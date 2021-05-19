@@ -1,93 +1,65 @@
-/**
- *  Success Screen
- */
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Col, Container, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 
-import productsAPI from '../../../api/product.json'
 import PaymentDetail from './PaymentDetail.js'
+import ClientAPI from './../../../common/ClientAPI'
 
-class SuccessScreen extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      TotalShippingCarge: 0,
-      formValues: {},
+const SuccessPayment = (props) => {
+  const [shippingAmount, setShippingAmount] = useState(0.0)
+  const [clientAPI] = useState(new ClientAPI())
+  const [response, setResponse] = useState({
+    data: null,
+    loading: true,
+  })
+  const [cartItems, setCartItems] = useState([])
+
+  const setShippingAmountInfo = () => {
+    const shippingAmount = localStorage.getItem('TotalShippingCharge')
+    if (shippingAmount) {
+      setShippingAmount(parseFloat(0.0))
     }
-    this.setFormValues = this.setFormValues.bind(this)
   }
 
-  componentDidMount() {
-    // TODO: Call to bff to get payment status, if if valid show data if not say a wrong message
-    this.setFormValues()
-    this.ReadCartItems()
-    this.forceUpdate()
-    var evt = document.createEvent('Event')
+  const getOrderData = async (orderNumber) => {
+    const order = await clientAPI.getOrderByOrderNumber(orderNumber)
+    return order
+  }
+
+  const readCartItems = () => {
+    setCartItems(JSON.parse(localStorage.getItem('finalCheckoutCartItems')))
+    localStorage.removeItem('finalCheckoutCartItems')
+    localStorage.removeItem('formValues')
+    localStorage.removeItem('errors')
+    if (!cartItems) {
+      props.history.push(`/`)
+    }
+  }
+
+  useEffect(() => {
+    setShippingAmountInfo()
+    readCartItems()
+    const fetchOrderData = async () => {
+      const orderNumber = new URLSearchParams(props.location.search).get('orderNumber')
+      const orderData = await getOrderData(orderNumber)
+      setResponse({
+        data: orderData,
+        loading: false,
+      })
+    }
+    fetchOrderData()
+    let evt = document.createEvent('Event')
     evt.initEvent('load', false, false)
     window.dispatchEvent(evt)
     window.scrollTo(0, 0)
-  }
+  }, [])
 
-  setFormValues() {
-    const { userData } = this.props
-    this.setState({ formValues: userData }, () => {
-      if (localStorage.getItem('TotalShippingCharge') !== null) {
-        this.setState({
-          TotalShippingCarge: parseFloat(localStorage.getItem('TotalShippingCharge')),
-        })
-      }
-    })
-  }
+  const orderData = response.data ? response.data : {}
 
-  ReadCartItems() {
-    this.setState(
-      {
-        cartItems: JSON.parse(localStorage.getItem('finalCheckoutCartItems')),
-      },
-      () => {
-        localStorage.removeItem('finalCheckoutCartItems')
-        localStorage.removeItem('formValues')
-        localStorage.removeItem('errors')
-        if (this.state.cartItems === null) {
-          this.props.history.push(`/`)
-        }
-      }
-    )
-  }
-
-  //TODO: Create functions to get all prices, TOTAL, SUBTOTAL AND DISPATCH
-  getOrderSubTotal(products) {
-    let total = 0
-    products.forEach((product) => {
-      total += product.quantity * product.prices[0].basePriceSales
-    })
-    return total
-  }
-
-  getProductImage(product) {
-    const productFind = productsAPI.find((productAPI) => {
-      return product.sku === productAPI['id']
-    })
-    if (productFind) {
-      return productFind.pictures[0]
-    }
-  }
-
-  getOrderTotal(products, totalShippingCarge) {
-    return this.getOrderSubTotal(products) + totalShippingCarge
-  }
-
-  render() {
-    const { orderData } = this.props
-    const { paymentData } = orderData.order
-    const { user } = paymentData
-    const userData = user
-    const { TotalShippingCarge } = this.state
-
-    return (
+  return (
+    <>
       <div>
         <div className="inner-intro">
           <Container>
@@ -119,17 +91,16 @@ class SuccessScreen extends Component {
             <Row className="justify-content-center">
               <Col lg={7}>
                 <PaymentDetail
-                  orderData={orderData.order}
-                  userData={userData}
-                  totalShippingCarge={TotalShippingCarge}
+                  orderData={orderData}
+                  totalShippingCarge={shippingAmount}
                 ></PaymentDetail>
               </Col>
             </Row>
           </Container>
         </div>
       </div>
-    )
-  }
+    </>
+  )
 }
 
 const mapStateToProps = (state) => ({
@@ -137,16 +108,18 @@ const mapStateToProps = (state) => ({
   orderData: state.orderDataReducer.orderData,
 })
 
-export default connect(mapStateToProps)(SuccessScreen)
+export default connect(mapStateToProps)(SuccessPayment)
 
-SuccessScreen.defaultProps = {
+SuccessPayment.defaultProps = {
   history: {},
+  location: {},
   userData: {},
   orderData: {},
 }
 
-SuccessScreen.propTypes = {
+SuccessPayment.propTypes = {
   history: PropTypes.object,
+  location: PropTypes.object,
   userData: PropTypes.object,
   orderData: PropTypes.object,
 }

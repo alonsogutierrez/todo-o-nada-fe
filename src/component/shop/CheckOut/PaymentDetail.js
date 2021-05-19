@@ -3,32 +3,43 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Col, Row } from 'reactstrap'
 
-import productsAPI from '../../../api/product.json'
-
-const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
-  const { orderNumber, products, createdAt } = orderData
+const PaymentDetail = ({ orderData, totalShippingCarge }) => {
+  const { orderNumber, paymentData, products, createdAt } = orderData
   const createdDate = new Date(createdAt).toLocaleDateString('es-CL')
 
   const getOrderTotal = (products, totalShippingCarge) => {
-    return getOrderSubTotal(products) + totalShippingCarge
+    return getOrderSubTotal(products) + parseInt(totalShippingCarge, 10)
   }
 
   const getOrderSubTotal = (products) => {
     let total = 0
     products.forEach((product) => {
-      total += product.quantity * product.prices[0].basePriceSales
+      total += parseInt(product.quantity, 10) * parseInt(product.price.basePriceSales, 10)
     })
     return total
   }
 
-  const getProductImage = (product) => {
-    const productFind = productsAPI.find((productAPI) => {
-      return product.sku === productAPI['id']
-    })
-    if (productFind) {
-      return productFind.pictures[0]
-    }
+  const isValidParams = (order) => {
+    const isValid = order && Object.keys(order).length > 0
+    return isValid
   }
+
+  // const getProductImage = (product) => {
+  //   const productFind = productsAPI.find((productAPI) => {
+  //     return product.sku === productAPI['id']
+  //   })
+  //   if (productFind) {
+  //     return productFind.pictures[0]
+  //   }
+  // }
+  let user = {}
+  if (!isValidParams(orderData)) {
+    return <div>Cargando data...</div>
+  }
+  if (paymentData && Object.keys(paymentData).length > 0) {
+    user = paymentData.user
+  }
+  const userData = user
 
   return (
     <div className="success-screen">
@@ -36,11 +47,13 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
         <i className="fa fa-check-circle-o"></i>
         <h1 className="text-white">¡Muchas gracias {userData.firstName}!</h1>
         <span>Perfecto! Recibimos tu pago. Tu orden será procesada pronto.</span>
-        <strong className="text-white">Nº de orden: {orderNumber}</strong>
+        <h1>
+          <strong className="text-white">Nº de orden: {orderNumber}</strong>
+        </h1>
       </div>
       <div className="delivery p-4 p-md-5 bg-light text-center">
         <span className="h5">Fecha estimada de llegada</span>
-        <h2 className="mb-0 mt-2">Entre 3 a 5 dias habiles</h2>
+        <h2 className="mb-0 mt-2">Entre 3 a 5 días hábiles</h2>
       </div>
       <div className="pt-4 px-4 pt-md-5 px-md-5 pb-3">
         <Row>
@@ -67,15 +80,7 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
                 </li>
                 <li>
                   <span>Totales orden:</span>{' '}
-                  <strong>
-                    $
-                    {getOrderTotal(products, totalShippingCarge).toLocaleString(
-                      navigator.language,
-                      {
-                        minimumFractionDigits: 0,
-                      }
-                    )}{' '}
-                  </strong>
+                  <strong>${getOrderTotal(products, totalShippingCarge)} </strong>
                 </li>
               </ul>
             </Col>
@@ -96,7 +101,8 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
                       <td className="ordered-image">
                         <img
                           alt="img 01"
-                          src={require(`../../../assets/images/${getProductImage(product)}`)}
+                          //src={require(`../../../assets/images/${getProductImage(product)}`)}
+                          src="https://funky-t-shirt.com/assets/funkytshirt/img/products/4032/image/skull-snake-illustration-tattoo-design-shirt.jpg"
                           className="img-fluid"
                         />
                       </td>
@@ -112,7 +118,7 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
                         <h6 className="mb-0">Precio</h6>
                         <span>
                           $
-                          {product.prices[0].basePriceSales.toLocaleString(navigator.language, {
+                          {product.price.basePriceSales.toLocaleString(navigator.language, {
                             minimumFractionDigits: 0,
                           })}
                         </span>
@@ -133,7 +139,7 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
                   <td className="text-right">
                     $
                     {parseFloat(getOrderSubTotal(products)).toLocaleString(navigator.language, {
-                      minimumFractionDigits: 2,
+                      minimumFractionDigits: 0,
                     })}
                   </td>
                 </tr>
@@ -151,7 +157,7 @@ const PaymentDetail = ({ orderData, userData, totalShippingCarge }) => {
                       {getOrderTotal(products, totalShippingCarge).toLocaleString(
                         navigator.language,
                         {
-                          minimumFractionDigits: 2,
+                          minimumFractionDigits: 0,
                         }
                       )}
                     </strong>
