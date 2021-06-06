@@ -53,6 +53,13 @@ const productAdd = () => {
   //     SetErrorMsg('')
   //   }
   // }
+  const [subProducts, setSubProducts] = useState([])
+  const subProductsHandle = (subProductInstance) => {
+    console.log('subProductsHandle', subProductInstance)
+    if(subProductInstance !== {}) {
+      setSubProducts(subProducts.concat(subProductInstance))
+    }
+  }
 
   return (
     <div>
@@ -217,7 +224,7 @@ const productAdd = () => {
                               <div className="title">
                                 SubProductos
                               </div>
-                             <SubProductAdd />
+                              {subProducts.length > 0 ? (<div>tabla con subproducts, subproducts totales {subProducts.length}</div>) : <SubProductAdd subProductInstance={subProductsHandle}/> }
                             </Row>
                           </form>
                         )}
