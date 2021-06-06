@@ -2,6 +2,7 @@ import React from 'react'
 import { Container, Row, FormGroup, Input, Label } from 'reactstrap'
 import { Formik } from 'formik'
 import ClientAPI from '../../../common/ClientAPI'
+import PropTypes from 'prop-types'
 
 const uploadImages = async (imagesFormData) => {
   const clientAPI = new ClientAPI()
@@ -12,7 +13,7 @@ const uploadImages = async (imagesFormData) => {
   return {}
 }
 
-const SubProductAdd = () => {
+const SubProductAdd = ({ subProductInstance }) => {
   return (
     <div className="content-wrapper section-ptb">
       <Container>
@@ -55,8 +56,8 @@ const SubProductAdd = () => {
                       }
                       const urlImages = await uploadImages(formData)
                       const subProduct = { ...values, pictures: urlImages }
-                      console.log(subProduct)
-                      return subProduct
+                      console.log('subProductInstance: ',subProduct)
+                      subProductInstance(subProduct)
                     }}
                   >
                     {({
@@ -147,6 +148,10 @@ const SubProductAdd = () => {
       </Container>
     </div>
   )
+}
+
+SubProductAdd.propTypes = {
+  subProductInstance: PropTypes.func
 }
 
 export default SubProductAdd
