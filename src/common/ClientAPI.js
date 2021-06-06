@@ -207,4 +207,24 @@ export default class ClientAPI {
         })
     })
   }
+
+  updateImages(pictures) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/product/uploadImage',
+          method: 'post',
+          timeout: 10 * 1000,
+          data: pictures,
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }

@@ -1,23 +1,15 @@
 import React from 'react'
 import { Container, Row, FormGroup, Input, Label } from 'reactstrap'
 import { Formik } from 'formik'
-import S3FileUpload from 'react-s3'
+import ClientAPI from '../../../common/ClientAPI'
 
-// config S3 access
-const config = {
-  bucketName: 'todo-o-nada-imagenes',
-  dirName: 'images', /* optional */
-  region: 'us-east-2',
-  accessKeyId: 'AKIAUZQTDOXUTFXWCY5V',
-  secretAccessKey: '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'
-}
-
-const uploadImage = (e) => {
-  S3FileUpload.uploadFile(e.target.files[0], config)
-    .then((data) => {
-      console.log(data)
-    })
-    .catch((err) => alert(err))
+const uploadImages = async (imagesFormData) => {
+  const clientAPI = new ClientAPI()
+  const data = await clientAPI.updateImages(imagesFormData)
+  if(data.status === 'ok') {
+    return data.locationArray
+  }
+  return {}
 }
 
 const SubProductAdd = () => {
@@ -30,23 +22,41 @@ const SubProductAdd = () => {
               <div className="product-top-right-inner">
                 <div className="summary entry-summary">
                   <Formik
-                    initialValues={{ color: '', size: '', stock: '', pictures: [] }}
+                    initialValues={
+                      { color: '',
+                        size: '',
+                        stock: '',
+                        pictures: null,
+                      }
+                    }
                     validate={values => {
                       const errors = {}
                       if (!values.color) {
-                        errors.color = 'debes seleccionar un color'
+                        errors.color = 'selecciona un color'
                       }
                       if(!values.size){
-                        errors.size = 'debes seleccionar una talla'
+                        errors.size = 'selecciona una talla'
                       }
                       if(!values.stock){
-                        errors.stock = 'debes ingresar el stock'
+                        errors.stock = 'ingresa el stock'
+                      }
+                      if(!values.pictures) {
+                        errors.pictures = 'agrega una imagen'
+                      }
+                      if(values.pictures != null && values.pictures.length > 3) {
+                        errors.pictures = 'cargar no mas de 3 imagenes'
                       }
                       return errors
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
-                      console.log(JSON.stringify(values, null, 2))
-                      setSubmitting(false)
+                    onSubmit={ async (values) => {
+                      let formData = new FormData()
+                      for (const key of Object.keys(values.pictures)) {
+                        formData.append('pictures', values.pictures[key])
+                      }
+                      const urlImages = await uploadImages(formData)
+                      const subProduct = { ...values, pictures: urlImages }
+                      console.log(subProduct)
+                      return subProduct
                     }}
                   >
                     {({
@@ -55,32 +65,47 @@ const SubProductAdd = () => {
                       touched,
                       handleChange,
                       handleBlur,
-                      handleSubmit
+                      handleSubmit,
+                      setFieldValue
                     }) => (
                       <form onSubmit={handleSubmit}>
                         <Row>
                           <FormGroup className="edit-icon col-md-4">
                             <Input
-                              type="text"
+                              type="select"
                               name="color"
                               className="form-control product_title"
                               placeholder="color"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.color}
-                            />
+                            >
+                              <option value="">selecciona un color</option>
+                              <option value="Rojo">Rojo</option>
+                              <option value="Azul">Azul</option>
+                              <option value="Negro">Negro</option>
+                              <option value="Verde">Verde</option>
+                              <option value="Amarillo">Amarillo</option>
+                              <option value="Blanco">Blanco</option>
+                            </Input>
                             {errors.color && touched.color && errors.color}
                           </FormGroup>
                           <FormGroup className="edit-icon col-md-4">
                             <Input
-                              type="text"
+                              type="select"
                               name="size"
                               className="form-control product_title"
-                              placeholder="size"
+                              placeholder="talla"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.size}
-                            />
+                            >
+                              <option value="">selecciona una talla</option>
+                              <option value="S">S</option>
+                              <option value="M">M</option>
+                              <option value="L">L</option>
+                              <option value="XL">XL</option>
+                            </Input>
                             {errors.size && touched.size && errors.size}
                           </FormGroup>
                           <FormGroup className="edit-icon col-md-4">
@@ -95,30 +120,21 @@ const SubProductAdd = () => {
                             />
                             {errors.stock && touched.stock && errors.stock}
                           </FormGroup>
-                          <FormGroup className="col-md-4">
-                            <Label className="title pl-0">Imagen 1</Label>
-                            <Input type="file"
-                                   name="image1"
+                          <FormGroup className="col-md-12">
+                            <Label className="title pl-0">Imágenes</Label>
+                            <input type="file"
+                                   name="pictures"
                                    className="form-control"
-                                   placeholder="image 1"
-                                   onChange={uploadImage}/>
+                                   multiple
+                                   onChange={(event) => {
+                                     setFieldValue("pictures", event.currentTarget.files)
+                                   }}
+                            />
+                            {errors.pictures && touched.pictures && errors.pictures}
                           </FormGroup>
-                          <FormGroup className="col-md-4">
-                            <Label className="title pl-0">Imagen 2</Label>
-                            <Input type="file"
-                                   name="image1"
-                                   className="form-control"
-                                   placeholder="image 2"
-                                   onChange={uploadImage}/>
-                          </FormGroup>
-                          <FormGroup className="col-md-4">
-                            <Label className="title pl-0">Imagen 3</Label>
-                            <Input type="file"
-                                   name="image3"
-                                   className="form-control"
-                                   placeholder="image 3"
-                                   onChange={uploadImage}/>
-                          </FormGroup>
+                          <button type="submit" className="btn btn-primary mb-2 mr-2">
+                            Guardar
+                          </button>
                         </Row>
                       </form>
                     )}
