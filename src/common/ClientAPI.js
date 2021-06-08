@@ -109,7 +109,7 @@ export default class ClientAPI {
     })
   }
 
-  getOrderByOrderNumber(orderNumber) {
+  getOrderByOrderNumber(orderNumber, id) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
       client
@@ -118,6 +118,7 @@ export default class ClientAPI {
           method: 'get',
           params: {
             orderNumber,
+            id,
           },
           timeout: 10 * 1000,
         })

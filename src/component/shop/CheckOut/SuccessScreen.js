@@ -23,8 +23,8 @@ const SuccessPayment = (props) => {
     }
   }
 
-  const getOrderData = async (orderNumber) => {
-    const order = await clientAPI.getOrderByOrderNumber(orderNumber)
+  const getOrderData = async (orderNumber, id) => {
+    const order = await clientAPI.getOrderByOrderNumber(orderNumber, id)
     return order
   }
 
@@ -43,7 +43,8 @@ const SuccessPayment = (props) => {
     readCartItems()
     const fetchOrderData = async () => {
       const orderNumber = new URLSearchParams(props.location.search).get('orderNumber')
-      const orderData = await getOrderData(orderNumber)
+      const id = new URLSearchParams(props.location.search).get('id')
+      const orderData = await getOrderData(orderNumber, id)
       setResponse({
         data: orderData,
         loading: false,

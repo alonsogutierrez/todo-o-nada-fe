@@ -788,6 +788,7 @@ body {
   }
   .table-responsive .table {
     max-width: none;
+    min-width: auto;
   }
 }
 @media screen and (max-width: 767px) {
