@@ -228,7 +228,7 @@ class ShopingCart extends Component {
                         </Table>
                       </div>
                       <div className="proceed-to-checkout">
-                        <Link to="CheckOut" className="checkout-button button">
+                        <Link to="/checkout" className="checkout-button button">
                           Ir al checkout
                         </Link>
                       </div>

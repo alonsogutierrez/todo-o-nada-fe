@@ -97,7 +97,7 @@ const ShoppingCart = ({ cartItems }) => {
               <Link to="/shopping-cart" className="button wc-forward">
                 Ver carrito
               </Link>
-              <Link to="/CheckOut" className="button checkout wc-forward">
+              <Link to="/checkout" className="button checkout wc-forward">
                 Checkout
               </Link>
             </p>

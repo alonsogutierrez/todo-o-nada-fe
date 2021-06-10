@@ -5,7 +5,7 @@ import { Col, Container, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 
 import PaymentDetail from './PaymentDetail.js'
-import ClientAPI from './../../../common/ClientAPI'
+import ClientAPI from '../../../common/ClientAPI'
 
 const SuccessPayment = (props) => {
   const [shippingAmount, setShippingAmount] = useState(0.0)

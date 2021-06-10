@@ -4,16 +4,13 @@
   "private": true,
   "homepage": "https://ciyashop-react.potenzaglobalsolutions.com/",
   "dependencies": {
-    "@babel/polyfill": "^7.10.1",
     "antd": "^3.26.5",
     "axios": "^0.20.0",
     "bootstrap": "^4.3.1",
     "date-fns": "^2.16.1",
-    "extract-text-webpack-plugin": "^3.0.2",
     "fetch-instagram": "^1.0.0-alpha.3",
     "font-awesome": "^4.7.0",
     "google-maps-react": "^2.0.2",
-    "html-webpack-plugin": "^4.0.0-beta.5",
     "prop-types": "^15.7.2",
     "query-string": "^7.0.0",
     "react": "16.11.0",
@@ -38,11 +35,10 @@
     "reactstrap": "^8.0.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "slick-carousel": "^1.8.1",
-    "sw-precache-webpack-plugin": "^0.11.5",
-    "webpack": "^4.44.1"
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
+    "@babel/polyfill": "^7.10.1",
     "@babel/core": "^7.11.0",
     "@babel/preset-env": "^7.11.0",
     "babel-cli": "^6.26.0",
@@ -58,6 +54,8 @@
     "eslint-loader": "^4.0.2",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.5",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^4.0.0-beta.5",
     "mini-css-extract-plugin": "^0.7.0",
     "prettier": "2.0.5",
     "redux-devtools-extension": "^2.13.8",
@@ -65,7 +63,9 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.11.0",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-hot-middleware": "^2.25.0",
+    "sw-precache-webpack-plugin": "^0.11.5",
+    "webpack": "^4.44.1"
   },
   "scripts": {
     "start": "node scripts/start.js",

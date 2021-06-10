@@ -18,7 +18,7 @@ import ShoppingCart from './component/shop/shoppingcart'
 import MyAccount from './component/account/MyAccount'
 import PageNotFound from './component/pages/PageNotFound'
 
-import CheckOut from './component/shop/CheckOut'
+import CheckOut from './component/shop/checkout'
 
 import Address from './component/account/Address'
 import Addressedit from './component/account/Addressedit'
@@ -26,7 +26,7 @@ import AccountProfile from './component/account/AccountProfile'
 import AccountProfileedit from './component/account/AccountProfileedit'
 import SavedCards from './component/account/SavedCards'
 import SavedCardsedit from './component/account/SavedCardsedit'
-import SuccessScreen from './component/shop/CheckOut/SuccessScreen'
+import SuccessScreen from './component/shop/checkout/SuccessScreen'
 
 import OrderHistory from './component/account/OrderHistory'
 import AdminDashboard from './component/admin'

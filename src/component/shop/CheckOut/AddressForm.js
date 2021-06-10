@@ -292,6 +292,7 @@ const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView }) => {
               className="form-control"
               value={country.code}
               onChange={(e) => handleSelectedCountry(e.target.value)}
+              disabled={true}
             >
               {countries.map((country, key) => (
                 <option key={key} value={country.code}>

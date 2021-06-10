@@ -13,7 +13,7 @@ import setUserData from '../../../actions/setUserData'
 import setOrderData from '../../../actions/setOrderData'
 import setChangeCartData from '../../../actions/setChangeCartData'
 
-import orderCreator from './Order'
+import orderCreator from './helpers/order'
 
 import validators from '../../../helpers/validators'
 import ClientAPI from '../../../common/ClientAPI'
