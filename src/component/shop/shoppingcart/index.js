@@ -39,7 +39,7 @@ const ShopingCart = (props) => {
         actualProduct.itemNumber,
         actualProduct.sku
       )
-      const desiredProductQuantity = actualProduct.quantity
+      const desiredProductQuantity = actualProduct.quantity + 1
       const isStockAvailable = totalProductStock > desiredProductQuantity
       if (isStockAvailable) {
         actualProduct.quantity = parseInt(actualProduct.quantity + 1)
