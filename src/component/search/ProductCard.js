@@ -12,7 +12,7 @@ class ProductCard extends Component {
   render() {
     const { product } = this.props
     const { _source, _id } = product
-    let { pictures, categories, name, price, description, itemNumber, sku } = _source
+    let { pictures, categories, name, price, description, itemNumber, sku, quantity } = _source
     //TODO: Get image for CDN Repository of images
     const randomNumberForTest = Math.random() * (6 - 3) + 3
     if (!pictures) {
@@ -30,6 +30,7 @@ class ProductCard extends Component {
       itemNumber,
       sku,
       id: _id,
+      quantity,
     }
     return (
       <div key={1} className={this.props.layoutstyle}>

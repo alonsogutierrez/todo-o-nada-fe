@@ -8,27 +8,38 @@ import { toast, ToastContainer } from 'react-toastify'
 import setChangeCartData from '../../actions/setChangeCartData'
 
 const ProductInfo = ({ product, changeCart, setChangeCart }) => {
-  const AddToCart = (itemNumber, sku, productName, quantity, price, stockStatus) => {
-    let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
-    if (!cartItems) cartItems = []
-    let selectedProduct = cartItems.find(
-      (product) => product.itemNumber === itemNumber && product.sku === sku
-    )
-    if (!selectedProduct) {
-      cartItems.push({
-        itemNumber,
-        sku,
-        productName,
-        quantity,
-        price,
-        stockStatus,
-      })
-      localStorage.removeItem('LocalCartItems')
-      localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
-      setChangeCart(!changeCart)
-      toast.success('Producto agregado al carro')
+  const AddToCart = (
+    itemNumber,
+    sku,
+    productName,
+    quantity,
+    price,
+    isProductWithStockAvailable
+  ) => {
+    if (!isProductWithStockAvailable) {
+      toast.warning('Producto sin stock')
     } else {
-      toast.warning('Producto ya esta en el carro')
+      let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
+      if (!cartItems) cartItems = []
+      let selectedProduct = cartItems.find(
+        (product) => product.itemNumber === itemNumber && product.sku === sku
+      )
+      if (!selectedProduct) {
+        cartItems.push({
+          itemNumber,
+          sku,
+          productName,
+          quantity,
+          price,
+          isProductWithStockAvailable,
+        })
+        localStorage.removeItem('LocalCartItems')
+        localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
+        setChangeCart(!changeCart)
+        toast.success('Producto agregado al carro')
+      } else {
+        toast.warning('Producto ya esta en el carro')
+      }
     }
   }
 
@@ -46,6 +57,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
   }
 
   const productPrice = product.price.basePriceSales ? product.price.basePriceSales : product.price
+  const isProductWithStockAvailable = product.quantity > 0
   return (
     <>
       <ToastContainer autoClose={1000} draggable={false} />
@@ -85,13 +97,13 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                           product.name,
                           1,
                           productPrice,
-                          product.quantity > 0 ? 'In Stock' : 'No Stock'
+                          isProductWithStockAvailable
                         )
                       }
                       className="button add_to_cart_button"
                       rel="nofollow"
                     >
-                      Agregar al carro
+                      {isProductWithStockAvailable ? 'Agregar al carro' : 'No hay stock'}
                     </Link>
                   ) : (
                     <Link to="/shopping-cart" className="button add_to_cart_button" rel="nofollow">
@@ -134,13 +146,13 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                           product.name,
                           1,
                           productPrice,
-                          product.quantity > 0 ? 'In Stock' : 'No Stock'
+                          isProductWithStockAvailable
                         )
                       }
                       className="button add_to_cart_button"
                       rel="nofollow"
                     >
-                      Agregar al carro
+                      {isProductWithStockAvailable ? 'Agregar al carro' : 'No hay stock'}
                     </Link>
                   ) : (
                     <Link to="/shopping-cart" className="button add_to_cart_button" rel="nofollow">
