@@ -56,8 +56,10 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
     return checkCart
   }
 
-  const productPrice = product.price.basePriceSales ? product.price.basePriceSales : product.price
-  const isProductWithStockAvailable = product.quantity > 0
+  const { pictures, name, price, description, itemNumber, sku, quantity } = product
+
+  const productPrice = price.basePriceSales
+  const isProductWithStockAvailable = quantity > 0
   return (
     <>
       <ToastContainer autoClose={1000} draggable={false} />
@@ -65,19 +67,19 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
         <div className="product-inner element-hovered">
           <div className="product-thumbnail">
             <div className="product-thumbnail-inner">
-              <Link to={`/product/${product.itemNumber}`}>
-                {product.pictures[0] ? (
+              <Link to={`/product/${itemNumber}`}>
+                {pictures[0] ? (
                   <div className="product-thumbnail-main">
                     <img
-                      src={require(`./../../assets/images/${product.pictures[0]}`).default}
+                      src={require(`./../../assets/images/${pictures[0]}`).default}
                       className="img-fluid"
                     />
                   </div>
                 ) : null}
-                {product.pictures[1] ? (
+                {pictures[1] ? (
                   <div className="product-thumbnail-swap">
                     <img
-                      src={require(`./../../assets/images/${product.pictures[1]}`).default}
+                      src={require(`./../../assets/images/${pictures[1]}`).default}
                       className="img-fluid"
                     />
                   </div>
@@ -88,13 +90,13 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
             <div className="product-actions">
               <div className="product-actions-inner">
                 <div className="product-action product-action-add-to-cart">
-                  {!CheckCardItem(product.itemNumber, product.sku) ? (
+                  {!CheckCardItem(itemNumber, sku) ? (
                     <Link
                       onClick={() =>
                         AddToCart(
-                          product.itemNumber,
-                          product.sku,
-                          product.name,
+                          itemNumber,
+                          sku,
+                          name,
                           1,
                           productPrice,
                           isProductWithStockAvailable
@@ -115,9 +117,9 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
             </div>
           </div>
           <div className="product-info">
-            {product.name && (
+            {name && (
               <h3 className="product-name">
-                <Link to={`/product/${product.itemNumber}`}>{product.name}</Link>
+                <Link to={`/product/${itemNumber}`}>{name}</Link>
               </h3>
             )}
             <div className="product-rating-price">
@@ -137,13 +139,13 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
             <div className="product-actions product-actions-list">
               <div className="product-actions-inner">
                 <div className="product-action product-action-add-to-cart">
-                  {!CheckCardItem(product.itemNumber, product.sku) ? (
+                  {!CheckCardItem(itemNumber, sku) ? (
                     <Link
                       onClick={() =>
                         AddToCart(
-                          product.itemNumber,
-                          product.sku,
-                          product.name,
+                          itemNumber,
+                          sku,
+                          name,
                           1,
                           productPrice,
                           isProductWithStockAvailable
@@ -162,9 +164,9 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                 </div>
               </div>
             </div>
-            {product.description && (
+            {description && (
               <div className="product-details__short-description">
-                <p>{product.description}</p>
+                <p>{description}</p>
               </div>
             )}
           </div>
