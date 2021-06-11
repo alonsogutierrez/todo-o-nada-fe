@@ -1,19 +1,22 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import ReactTable from 'react-table'
-import { Col, Container, Row } from 'reactstrap'
+import { Col, Container, Row, Input } from 'reactstrap'
 import { format } from 'date-fns'
 
-import OrderDetailModal from './OrderDetailModal'
 import ClientAPI from '../../../common/ClientAPI'
+import OrderDetailModal from './OrderDetailModal'
+import COLUMNS_TABLE from './constants/columnsTable'
+import setViewOrderToggle from './../../../actions/setViewOrderToggle'
 
 class SearchOrders extends Component {
   constructor(props) {
     super(props)
     this.state = {
       modal: false,
+      orderNumber: '',
       invoices: [],
-      searchText: '',
       orderData: {},
       userData: {},
     }
@@ -22,59 +25,82 @@ class SearchOrders extends Component {
   }
 
   toggle() {
-    this.setState({
-      modal: !this.state.modal,
-    })
+    const { viewOrderToggle, setViewOrderToggle } = this.props
+    setViewOrderToggle(!viewOrderToggle)
   }
 
-  onSearchOrder(orderNumber) {
-    this.setState(
-      {
-        searchText: orderNumber,
-      },
-      async () => {
-        if (orderNumber != '') {
-          const clientAPI = new ClientAPI()
-          try {
-            const orderDataAPIResponse = await clientAPI.getOrderByOrderNumber(orderNumber)
-            if (orderDataAPIResponse && Object.keys(orderDataAPIResponse).length > 0) {
-              const { orderNumber, paymentData, createdAt } = orderDataAPIResponse
-              const userData = paymentData.user
-              const clientNames = userData.firstName + ' ' + userData.lastName
-              let orderDataTableResponse = {
-                orderNumber,
-                clientNames,
-                createdAt: format(new Date(createdAt), 'yyyy-MM-dd'),
-                orderStatus: paymentData.state,
-                paymentType: 'Webpay', //TODO: Change by real payment channel
-                totalPrice: paymentData.transaction.subTotal + paymentData.transaction.shipping,
-              }
-              this.setState({
-                userData,
-                orderData: orderDataAPIResponse[0],
-                invoices: [orderDataTableResponse],
-              })
-            } else {
-              this.setState({
-                userData: {},
-                orderData: {},
-                invoices: [],
-              })
-            }
-          } catch (err) {
-            console.error('Error trying to get order: ', err.message)
-          }
+  generateTableOrderData(orderNumber, paymentData, createdDate) {
+    const userData = paymentData.user
+    const clientNames = userData.firstName + ' ' + userData.lastName
+    const orderDataTableResponse = {
+      orderNumber,
+      clientNames,
+      email: userData.email,
+      phone: userData.phone,
+      createdAt: format(new Date(createdDate), 'yyyy-MM-dd'),
+      orderStatus: paymentData.state,
+      paymentType: 'Webpay', //TODO: Change by real payment channel
+      totalPrice: paymentData.transaction.subTotal + paymentData.transaction.shipping,
+    }
+    return orderDataTableResponse
+  }
+
+  async onSearchOrder(e) {
+    e.preventDefault()
+    const { orderNumber } = this.state
+    if (orderNumber !== '') {
+      const clientAPI = new ClientAPI()
+      try {
+        const orderDataAPIResponse = await clientAPI.getOrderByOrderNumber(orderNumber)
+        if (orderDataAPIResponse && Object.keys(orderDataAPIResponse).length > 0) {
+          const { orderNumber, paymentData, createdAt } = orderDataAPIResponse
+          const orderDataTableResponse = this.generateTableOrderData(
+            orderNumber,
+            paymentData,
+            createdAt
+          )
+          this.setState({
+            userData: paymentData.user,
+            orderData: orderDataAPIResponse,
+            invoices: [orderDataTableResponse],
+          })
+        } else {
+          this.setState({
+            userData: {},
+            orderData: {},
+            invoices: [],
+          })
         }
+      } catch (err) {
+        console.error('Error trying to get order: ', err.message)
       }
-    )
+    }
   }
 
-  onViewInvoicePopup() {
-    this.toggle()
+  handleSearchOrder(e) {
+    const lastInputCharacter = e.target.value
+    const orderNumberFormatted = lastInputCharacter.replace(/[^0-9'\s]/g, '')
+    this.setState({
+      orderNumber: orderNumberFormatted,
+    })
   }
 
   isEmptyUserData(userData) {
     return Object.entries(userData).length > 0
+  }
+
+  getTableColumns() {
+    const tableColumnsData = COLUMNS_TABLE
+    let columnsResponse = []
+    for (let key in tableColumnsData) {
+      let objectResponse = {}
+      objectResponse.accessor = key
+      for (let keyData in tableColumnsData[key]) {
+        objectResponse[keyData] = tableColumnsData[key][keyData]
+      }
+      columnsResponse.push(objectResponse)
+    }
+    return columnsResponse
   }
 
   componentDidMount() {
@@ -82,49 +108,9 @@ class SearchOrders extends Component {
   }
 
   render() {
-    const columns = [
-      {
-        maxWidth: 75,
-        Header: 'Nº orden',
-        accessor: 'orderNumber',
-      },
-      {
-        minWidth: 160,
-        Header: 'Cliente',
-        accessor: 'clientNames',
-      },
-      {
-        Header: 'Fecha compra',
-        accessor: 'createdAt',
-      },
-      {
-        Header: 'Estado',
-        accessor: 'orderStatus',
-      },
-      {
-        Header: 'Tipo de pago',
-        accessor: 'paymentType',
-      },
-      {
-        Header: 'Total',
-        accessor: 'totalPrice',
-      },
-      {
-        Header: 'Acciones',
-        accessor: 'action',
-        Cell: (props) => {
-          return (
-            <div>
-              <Link className="view-button" onClick={() => this.onViewInvoicePopup(props.original)}>
-                {' '}
-                Ver <i className="fa fa-eye pl-2"></i>
-              </Link>
-            </div>
-          )
-        },
-      },
-    ]
-    const { searchText, userData, orderData, invoices, modal } = this.state
+    const columns = this.getTableColumns()
+    const { orderNumber, userData, orderData, invoices } = this.state
+    const { viewOrderToggle } = this.props
 
     return (
       <div>
@@ -135,19 +121,30 @@ class SearchOrders extends Component {
                 <div className="mb-0">
                   <h4>Lista de ordenes</h4>
                 </div>
-                <div className="mb-4">
-                  <form>
-                    <div className="form-group">
-                      <input
-                        type="text"
+                <form role="search" onSubmit={async (e) => await this.onSearchOrder(e)}>
+                  <Row className="ciya-tools-action ciya-tools-search">
+                    <Col xs="10">
+                      <Input
+                        type="search"
                         className="form-control"
-                        placeholder="Buscador de ordenes"
-                        value={searchText}
-                        onChange={(e) => this.onSearchOrder(e.target.value)}
-                      ></input>
-                    </div>
-                  </form>
-                </div>
+                        maxLength={50}
+                        name="search_order_input"
+                        id="search_order_input"
+                        placeholder="Ingresa una orden"
+                        value={orderNumber}
+                        onChange={(e) => this.handleSearchOrder(e)}
+                      />
+                    </Col>
+                    <Col xs="2">
+                      <button
+                        type="submit"
+                        className="btn btn-solid glyph-icon pgsicon-ecommerce-magnifying-glass"
+                        onClick={async (e) => await this.onSearchOrder(e)}
+                      ></button>
+                    </Col>
+                  </Row>
+                </form>
+
                 <ReactTable
                   className="invoices-table"
                   data={invoices}
@@ -155,12 +152,11 @@ class SearchOrders extends Component {
                   minRows={1}
                   defaultPageSize={5}
                 />
-                {/* modal-view */}
                 {this.isEmptyUserData(userData) ? (
                   <OrderDetailModal
                     userData={userData}
                     orderData={orderData}
-                    openModal={modal}
+                    openModal={viewOrderToggle}
                     setToggle={this.toggle}
                   />
                 ) : (
@@ -174,4 +170,23 @@ class SearchOrders extends Component {
     )
   }
 }
-export default SearchOrders
+
+const mapStateToProps = (state) => ({
+  viewOrderToggle: state.viewOrderToggleReducer.viewOrderToggleData,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  setViewOrderToggle: (viewOrderToggle) => dispatch(setViewOrderToggle(viewOrderToggle)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchOrders)
+
+SearchOrders.defaultProps = {
+  viewOrderToggle: false,
+  setViewOrderToggle: () => {},
+}
+
+SearchOrders.propTypes = {
+  viewOrderToggle: PropTypes.bool,
+  setViewOrderToggle: PropTypes.func,
+}
