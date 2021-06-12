@@ -208,4 +208,22 @@ export default class ClientAPI {
         })
     })
   }
+
+  getMoreInterestingProducts() {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: `/search/interesting-products`,
+          method: 'get',
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }

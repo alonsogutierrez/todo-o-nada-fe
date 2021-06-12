@@ -11,7 +11,7 @@ import Collections from './Collections'
 
 const HomePage = () => {
   return (
-    <Fragment>
+    <>
       <HomSlider />
       <div id="content" className="site-content">
         <div className="content-wrapper">
@@ -32,7 +32,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-    </Fragment>
+    </>
   )
 }
 export default HomePage

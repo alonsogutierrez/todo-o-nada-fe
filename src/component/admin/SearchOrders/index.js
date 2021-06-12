@@ -65,14 +65,15 @@ class SearchOrders extends Component {
             invoices: [orderDataTableResponse],
           })
         } else {
-          this.setState({
-            userData: {},
-            orderData: {},
-            invoices: [],
-          })
+          throw new Error(`Order ${orderNumber} not found`)
         }
       } catch (err) {
-        console.error('Error trying to get order: ', err.message)
+        this.setState({
+          userData: {},
+          orderData: {},
+          invoices: [],
+        })
+        console.error('Order not found: ', err.message)
       }
     }
   }
@@ -86,7 +87,7 @@ class SearchOrders extends Component {
   }
 
   isEmptyUserData(userData) {
-    return Object.entries(userData).length > 0
+    return !userData || !Object.entries(userData).length > 0
   }
 
   getTableColumns() {
@@ -152,7 +153,7 @@ class SearchOrders extends Component {
                   minRows={1}
                   defaultPageSize={5}
                 />
-                {this.isEmptyUserData(userData) ? (
+                {!this.isEmptyUserData(userData) ? (
                   <OrderDetailModal
                     userData={userData}
                     orderData={orderData}
