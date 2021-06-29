@@ -53,6 +53,7 @@ export default class ClientAPI {
       client
         .request({
           url: '/reports/week',
+          // TODO: Add header authentication with token
           method: 'get',
           timeout: 10 * 1000,
         })
@@ -71,6 +72,7 @@ export default class ClientAPI {
       client
         .request({
           url: '/reports/betweenDates',
+          // TODO: Add header authentication with token
           method: 'get',
           params: {
             startDate,
@@ -94,6 +96,7 @@ export default class ClientAPI {
       client
         .request({
           url: '/reports/orders',
+          // TODO: Add header authentication with token
           method: 'get',
           params: {
             paymentType,
@@ -137,6 +140,7 @@ export default class ClientAPI {
       client
         .request({
           url: '/users/profile',
+          // TODO: Add header authentication with token
           method: 'get',
           params: {
             userId,

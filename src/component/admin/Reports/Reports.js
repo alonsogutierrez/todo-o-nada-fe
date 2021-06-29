@@ -15,7 +15,6 @@ import Orders from './Orders'
 import DownloadSalesByDate from './DownloadSalesByDate'
 
 import ClientAPI from '../../../common/ClientAPI'
-
 import setChangeWeekSales from '../../../actions/setChangeWeekSales'
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart

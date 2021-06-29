@@ -6,6 +6,7 @@ import { Link, withRouter } from 'react-router-dom'
 import { Row, Container, Input, Nav, NavItem, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import PropTypes from 'prop-types'
 
+import ClientAPI from '../../common/ClientAPI'
 import validators from '../../helpers/validators'
 
 const Login = (props) => {
@@ -13,16 +14,26 @@ const Login = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState('')
+  const [clientAPI] = useState(new ClientAPI())
 
   const handleLoginValidation = async () => {
-    const validatorResponse = await validators.validateLoginForm(email, password)
-    return validatorResponse
+    const loginData = { email, password }
+    try {
+      const loginResponse = await clientAPI.loginUser(loginData)
+      return loginResponse
+    } catch (err) {
+      throw new Error(`Can't login user: ${err.message}`)
+    }
   }
 
   const onLoginSubmit = async (e) => {
     e.preventDefault()
-    const loginValidation = await handleLoginValidation()
-    if (loginValidation) {
+    const loginResponse = await handleLoginValidation()
+    const isValidLogin = validators.validateLoginForm(loginResponse)
+
+    if (isValidLogin) {
+      localStorage.removeItem('userToken')
+      localStorage.setItem('userToken', loginResponse.token)
       props.history.push('/admin-dashboard/reports')
     } else {
       const errorsMessage = 'Usuario o contraseña incorrecta'

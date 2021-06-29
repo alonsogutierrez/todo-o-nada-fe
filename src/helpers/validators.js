@@ -1,20 +1,7 @@
-import ClientAPI from '../common/ClientAPI'
-
-const validateLoginForm = async (email, password) => {
-  const clientAPI = new ClientAPI()
-  const data = {
-    email,
-    password,
-  }
+const validateLoginForm = (loginResponse) => {
   let isValidLogin = false
-  try {
-    const loginResponse = await clientAPI.loginUser(data)
-    isValidLogin = typeof loginResponse === 'object' && loginResponse.user
-    return isValidLogin
-  } catch (err) {
-    console.error('invalid login: ', err.message)
-    return isValidLogin
-  }
+  isValidLogin = typeof loginResponse === 'object' && loginResponse.user && loginResponse.token
+  return isValidLogin
 }
 
 const validatorUserForm = (userForm) => {

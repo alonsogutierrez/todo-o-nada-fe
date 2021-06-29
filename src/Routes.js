@@ -1,7 +1,5 @@
-import React, { Fragment } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
 
-import PropTypes from 'prop-types'
 import { Switch, Route, BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import HomeRoutePage from './RoutesPages/HomePage'
@@ -32,15 +30,13 @@ import OrderHistory from './component/account/OrderHistory'
 import AdminDashboard from './component/admin'
 import Login from './component/admin/Login'
 import SavedCardsadd from './component/account/SavedCardsadd'
-import { receiveProducts } from './actions'
 
 import Header from './layouts/header/Header'
 import Footer from './layouts/footer/Footer'
 
-const Routes = ({ receiveProducts }) => {
-  receiveProducts()
+const Routes = () => {
   return (
-    <Fragment>
+    <>
       <Router>
         <Header />
         <Switch>
@@ -71,24 +67,8 @@ const Routes = ({ receiveProducts }) => {
         </Switch>
         <Footer />
       </Router>
-    </Fragment>
+    </>
   )
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    receiveProducts: () => {
-      dispatch(receiveProducts())
-    },
-  }
-}
-
-export default connect(null, mapDispatchToProps)(withRouter(Routes))
-
-Routes.defaultProps = {
-  receiveProducts: () => {},
-}
-
-Routes.propTypes = {
-  receiveProducts: PropTypes.func,
-}
+export default withRouter(Routes)
