@@ -1,29 +1,92 @@
 import React from 'react'
-import { Input } from 'reactstrap'
+import { Input, Row, Col } from 'reactstrap'
 
 const PaymentMethods = () => {
+  const renderDesktopScreen = () => {
+    return (
+      <>
+        <Row>
+          <Col xs={2}>Pagos</Col>
+          <Col xs={10}>
+            <Row>
+              <Col>
+                <img
+                  src={require(`./../../../assets/images/logo_onepay.png`).default}
+                  alt="OnePay"
+                />
+              </Col>
+              <Col>
+                <img src={require(`./../../../assets/images/logo_mach.png`).default} alt="MACH" />
+              </Col>
+              <Col>
+                <img
+                  src={require(`./../../../assets/images/logo_webpay.png`).default}
+                  alt="WebPay"
+                />
+              </Col>
+              <Col>
+                <img
+                  src={require(`./../../../assets/images/BP_Servipag_peq.png`).default}
+                  alt="WebPay"
+                />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </>
+    )
+  }
+
+  const renderMobileScreen = () => {
+    return (
+      <>
+        <Row>
+          <Col xs={3}>Pagos</Col>
+          <Col xs={9}>
+            <Row>
+              <img src={require(`./../../../assets/images/logo_onepay.png`).default} alt="OnePay" />
+            </Row>
+            <Row>
+              <img src={require(`./../../../assets/images/logo_mach.png`).default} alt="MACH" />
+            </Row>
+            <Row>
+              <img src={require(`./../../../assets/images/logo_webpay.png`).default} alt="WebPay" />
+            </Row>
+            <Row>
+              <img
+                src={require(`./../../../assets/images/BP_Servipag_peq.png`).default}
+                alt="WebPay"
+              />
+            </Row>
+          </Col>
+        </Row>
+      </>
+    )
+  }
+  console.log('window.screen.width: ', window.screen.width)
+
   return (
     <>
       <div id="payment" className="checkout-payment">
         <ul className="payment_methods methods">
           <li className="payment_method_paypal">
-            <input
-              id="payment_method_paypal"
-              type="radio"
-              checked
-              enabled
-              className="input-radio"
-              name="payment_method"
-              value="paypal"
-              data-order_button_text="Proceed to PayPal"
-            />
-            <label htmlFor="payment_method_paypal">
-              Tranferencia{' '}
-              <img
-                src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg"
-                alt="PayPal acceptance mark"
-              />
-            </label>
+            <Row>
+              <Col xs={1}>
+                <input
+                  id="payment_method_paypal"
+                  type="radio"
+                  checked
+                  enabled
+                  className="input-radio"
+                  name="payment_method"
+                  value="paypal"
+                  data-order_button_text="Proceed to PayPal"
+                />
+              </Col>
+              <Col xs={11}>
+                {window.screen.width < 500 ? renderMobileScreen() : renderDesktopScreen()}
+              </Col>
+            </Row>
           </li>
         </ul>
         <div className="form-row place-order">
