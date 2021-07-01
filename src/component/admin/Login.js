@@ -32,7 +32,6 @@ const Login = (props) => {
     const isValidLogin = validators.validateLoginForm(loginResponse)
 
     if (isValidLogin) {
-      localStorage.removeItem('userToken')
       localStorage.setItem('userToken', loginResponse.token)
       props.history.push('/admin-dashboard/reports')
     } else {

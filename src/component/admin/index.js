@@ -1,7 +1,4 @@
-/**
- *  Admin Dashboard Menu
- */
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -18,22 +15,21 @@ import Settings from './Settings'
 
 class AdminDashboard extends Component {
   render() {
-    const { match } = this.props
     return (
-      <Fragment>
+      <>
         <div>
           <AdminHeader />
-          <Route path={`${match.url}/reports`} component={Reports} />
-          <Route path={`${match.url}/invoices`} component={SearchOrders} />
-          <Route path={`${match.url}/profile`} component={Profile} />
-          <Route path={`${match.url}/product`} component={AdminProductList} />
-          <Route path={`${match.url}/profileedit`} component={Profileedit} />
-          <Route path={`${match.url}/collaboration`} component={Collaboration} />
-          <Route path={`${match.url}/settings`} component={Settings} />
-          <Route path={`${match.url}/product-add`} component={Productadd} />
-          <Route path={`${match.url}/product-edit/:category/:id`} component={Productedit} />
+          <Route path={`/admin-dashboard/reports`} component={Reports} />
+          <Route path={`/admin-dashboard/invoices`} component={SearchOrders} />
+          <Route path={`/admin-dashboard/profile`} component={Profile} />
+          <Route path={`/admin-dashboard/product`} component={AdminProductList} />
+          <Route path={`/admin-dashboard/profileedit`} component={Profileedit} />
+          <Route path={`/admin-dashboard/collaboration`} component={Collaboration} />
+          <Route path={`/admin-dashboard/settings`} component={Settings} />
+          <Route path={`/admin-dashboard/product-add`} component={Productadd} />
+          <Route path={`/admin-dashboard/product-edit/:category/:id`} component={Productedit} />
         </div>
-      </Fragment>
+      </>
     )
   }
 }

@@ -11,6 +11,7 @@
     "fetch-instagram": "^1.0.0-alpha.3",
     "font-awesome": "^4.7.0",
     "google-maps-react": "^2.0.2",
+    "jsonwebtoken": "8.5.1",
     "prop-types": "^15.7.2",
     "query-string": "^7.0.0",
     "react": "16.11.0",
