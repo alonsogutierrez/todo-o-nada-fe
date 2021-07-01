@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input, Row, Col } from 'reactstrap'
 
 const PaymentMethods = () => {
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  })
+
   const renderDesktopScreen = () => {
     return (
       <>
@@ -63,7 +68,19 @@ const PaymentMethods = () => {
       </>
     )
   }
-  console.log('window.screen.width: ', window.screen.width)
+
+  const handleResize = () => {
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize, false)
+  }, [])
+
+  const isMobileScreen = dimensions.width < 500
 
   return (
     <>
@@ -83,9 +100,7 @@ const PaymentMethods = () => {
                   data-order_button_text="Proceed to PayPal"
                 />
               </Col>
-              <Col xs={11}>
-                {window.screen.width < 500 ? renderMobileScreen() : renderDesktopScreen()}
-              </Col>
+              <Col xs={11}>{isMobileScreen ? renderMobileScreen() : renderDesktopScreen()}</Col>
             </Row>
           </li>
         </ul>
