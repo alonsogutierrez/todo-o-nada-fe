@@ -51,7 +51,7 @@ class SearchOrders extends Component {
     if (orderNumber !== '') {
       const clientAPI = new ClientAPI()
       try {
-        const orderDataAPIResponse = await clientAPI.getOrderByOrderNumber(orderNumber)
+        const orderDataAPIResponse = await clientAPI.getAdminOrderData(orderNumber)
         if (orderDataAPIResponse && Object.keys(orderDataAPIResponse).length > 0) {
           const { orderNumber, paymentData, createdAt } = orderDataAPIResponse
           const orderDataTableResponse = this.generateTableOrderData(

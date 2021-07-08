@@ -60,9 +60,9 @@ class ProductDetail extends Component {
     const { clientAPI, itemNumber } = this.state
     const product = await clientAPI.getProductByItemNumber(itemNumber)
     const { history } = this.props
-    if(!product) {
+    if (!product) {
       // redirect to page not foun
-      history.push("/pagenotfound")
+      history.push('/pagenotfound')
     }
     this.setState({
       currentProduct: product,
@@ -148,7 +148,7 @@ class ProductDetail extends Component {
                         >
                           <h2>Descripción del producto</h2>
                           <p>Características y detalle del producto, tallas, etc...</p>
-                          <img src={require('../../assets/images/TALLAS_POLERAS.jpg')} />
+                          <img src={require('../../assets/images/TALLAS_POLERAS.jpg').default} />
                           <ProductDetailSupportInfo />
                         </div>
                       </div>
@@ -184,11 +184,11 @@ export default connect(null)(withRouter(ProductDetail))
 ProductDetail.defaultProps = {
   products: [],
   match: {},
-  history: {}
+  history: {},
 }
 
 ProductDetail.propTypes = {
   products: PropTypes.array,
   match: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
 }

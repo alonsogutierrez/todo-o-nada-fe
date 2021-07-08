@@ -1,9 +1,6 @@
 'use strict'
-/**
- *  Admin Header
- */
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import {
   Col,
   Collapse,
@@ -19,12 +16,13 @@ import {
   Row,
   UncontrolledDropdown,
 } from 'reactstrap'
+import PropTypes from 'prop-types'
 
 import Common from '../../api/common'
 import logo from '../../assets/images/logo.svg'
 import profileImg from '../../assets/images/testimonials/img-02.jpg'
 
-const AdminHeader = () => {
+const AdminHeader = (props) => {
   const [dropdownOpen, setDropDownOpen] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
 
@@ -59,6 +57,11 @@ const AdminHeader = () => {
     }
   }
 
+  const logout = () => {
+    localStorage.removeItem('userToken')
+    props.history.push('/')
+  }
+
   const Profile = Common['0']['profile']
   return (
     <div className="admin-menu">
@@ -89,23 +92,10 @@ const AdminHeader = () => {
                     tag={Link}
                     to="/admin-dashboard/profile"
                   >
-                    <i className="fa fa-user-circle-o"></i>Profile
+                    <i className="fa fa-user-circle-o"></i>Perfil
                   </DropdownItem>
-                  <DropdownItem
-                    onClick={() => changeClass('profile')}
-                    className="nav-link"
-                    tag={Link}
-                    to="/admin-dashboard/settings"
-                  >
-                    <i className="fa fa-cog"></i>Account settings
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() => changeClass('profile')}
-                    className="nav-link"
-                    tag={Link}
-                    to="/"
-                  >
-                    <i className="fa fa-sign-out"></i>Logout
+                  <DropdownItem onClick={() => logout()} className="nav-link" tag={Link} to="/">
+                    <i className="fa fa-sign-out"></i>Cerrar sesión
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -179,4 +169,12 @@ const AdminHeader = () => {
   )
 }
 
-export default AdminHeader
+export default withRouter(AdminHeader)
+
+AdminHeader.defaultProps = {
+  history: {},
+}
+
+AdminHeader.propTypes = {
+  history: PropTypes.object,
+}

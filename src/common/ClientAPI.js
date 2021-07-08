@@ -50,9 +50,13 @@ export default class ClientAPI {
   getWeekSales() {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
       client
         .request({
           url: '/reports/week',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
           method: 'get',
           timeout: 10 * 1000,
         })
@@ -68,9 +72,13 @@ export default class ClientAPI {
   downloadSales(startDate, endDate) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
       client
         .request({
           url: '/reports/betweenDates',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
           method: 'get',
           params: {
             startDate,
@@ -91,9 +99,13 @@ export default class ClientAPI {
   getOrders(paymentType) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
       client
         .request({
           url: '/reports/orders',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
           method: 'get',
           params: {
             paymentType,
@@ -131,12 +143,42 @@ export default class ClientAPI {
     })
   }
 
+  getAdminOrderData(orderNumber, id) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
+      client
+        .request({
+          url: '/orders/admin',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+          method: 'get',
+          params: {
+            orderNumber,
+            id,
+          },
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
   getProfileInfo(userId) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
       client
         .request({
           url: '/users/profile',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
           method: 'get',
           params: {
             userId,

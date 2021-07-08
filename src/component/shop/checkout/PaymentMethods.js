@@ -1,29 +1,107 @@
-import React from 'react'
-import { Input } from 'reactstrap'
+import React, { useState, useEffect } from 'react'
+import { Input, Row, Col } from 'reactstrap'
 
 const PaymentMethods = () => {
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  })
+
+  const renderDesktopScreen = () => {
+    return (
+      <>
+        <Row>
+          <Col xs={2}>Pagos</Col>
+          <Col xs={10}>
+            <Row>
+              <Col>
+                <img
+                  src={require(`./../../../assets/images/logo_onepay.png`).default}
+                  alt="OnePay"
+                />
+              </Col>
+              <Col>
+                <img src={require(`./../../../assets/images/logo_mach.png`).default} alt="MACH" />
+              </Col>
+              <Col>
+                <img
+                  src={require(`./../../../assets/images/logo_webpay.png`).default}
+                  alt="WebPay"
+                />
+              </Col>
+              <Col>
+                <img
+                  src={require(`./../../../assets/images/BP_Servipag_peq.png`).default}
+                  alt="WebPay"
+                />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </>
+    )
+  }
+
+  const renderMobileScreen = () => {
+    return (
+      <>
+        <Row>
+          <Col xs={3}>Pagos</Col>
+          <Col xs={9}>
+            <Row>
+              <img src={require(`./../../../assets/images/logo_onepay.png`).default} alt="OnePay" />
+            </Row>
+            <Row>
+              <img src={require(`./../../../assets/images/logo_mach.png`).default} alt="MACH" />
+            </Row>
+            <Row>
+              <img src={require(`./../../../assets/images/logo_webpay.png`).default} alt="WebPay" />
+            </Row>
+            <Row>
+              <img
+                src={require(`./../../../assets/images/BP_Servipag_peq.png`).default}
+                alt="WebPay"
+              />
+            </Row>
+          </Col>
+        </Row>
+      </>
+    )
+  }
+
+  const handleResize = () => {
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize, false)
+  }, [])
+
+  const isMobileScreen = dimensions.width < 500
+
   return (
     <>
       <div id="payment" className="checkout-payment">
         <ul className="payment_methods methods">
           <li className="payment_method_paypal">
-            <input
-              id="payment_method_paypal"
-              type="radio"
-              checked
-              enabled
-              className="input-radio"
-              name="payment_method"
-              value="paypal"
-              data-order_button_text="Proceed to PayPal"
-            />
-            <label htmlFor="payment_method_paypal">
-              Tranferencia{' '}
-              <img
-                src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg"
-                alt="PayPal acceptance mark"
-              />
-            </label>
+            <Row>
+              <Col xs={1}>
+                <input
+                  id="payment_method_paypal"
+                  type="radio"
+                  checked
+                  enabled
+                  className="input-radio"
+                  name="payment_method"
+                  value="paypal"
+                  data-order_button_text="Proceed to PayPal"
+                />
+              </Col>
+              <Col xs={11}>{isMobileScreen ? renderMobileScreen() : renderDesktopScreen()}</Col>
+            </Row>
           </li>
         </ul>
         <div className="form-row place-order">
