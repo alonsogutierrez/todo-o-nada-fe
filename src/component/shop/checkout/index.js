@@ -46,7 +46,7 @@ class CheckOut extends Component {
 
   readCartItems() {
     var cart = JSON.parse(localStorage.getItem('LocalCartItems'))
-    if (cart === null) {
+    if (!cart) {
       this.props.history.push(`/`)
     }
     return cart
@@ -55,18 +55,16 @@ class CheckOut extends Component {
   onCheckOutSubmit(e) {
     e.preventDefault()
     this.setState({ loading: true }, async () => {
-      const formValidation = this.handleValidation()
+      const { dispatchType } = this.props
+      const formValidation = this.handleValidation(dispatchType)
       if (formValidation) {
         const { clientAPI, formValues } = this.state
-        const { setOrderData, setChangeCart, changeCart } = this.props
-        const shippingData = {
-          total: 1000, //TODO: Change this by real shipping value
-        }
+        const { setOrderData, setChangeCart, changeCart, dispatchType } = this.props
         const cartItems = localStorage.getItem('LocalCartItems')
         localStorage.setItem('finalCheckoutCartItems', cartItems)
         const cartItemsParsed = JSON.parse(cartItems)
         try {
-          const orderDataToSave = orderCreator(cartItemsParsed, formValues, shippingData)
+          const orderDataToSave = orderCreator(cartItemsParsed, formValues, dispatchType)
           console.log('orderDataToSave: ', orderDataToSave)
           const orderDataSaved = await clientAPI.createOrder(orderDataToSave)
           setOrderData(orderDataSaved)
@@ -87,13 +85,13 @@ class CheckOut extends Component {
     })
   }
 
-  handleValidation() {
+  handleValidation(dispatchType) {
     const { formValues } = this.state
     let errors = {}
     let formIsValid = false
     this.props.setErrorsForm(errors)
 
-    const validatorResponse = validators.validatorUserForm(formValues)
+    const validatorResponse = validators.validatorUserForm(formValues, dispatchType)
 
     if (!validatorResponse.isValid) {
       errors = validatorResponse.errors
@@ -158,6 +156,7 @@ class CheckOut extends Component {
 
 const mapStateToProps = (state) => ({
   changeCart: state.changeCartDataReducer.changeCartData,
+  dispatchType: state.dispatchTypeDataReducer.dispatchTypeData,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -172,6 +171,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CheckOut)
 CheckOut.defaultProps = {
   history: {},
   changeCart: false,
+  dispatchType: '',
   setChangeCart: () => {},
   setErrorsForm: () => {},
   setUserData: () => {},
@@ -181,6 +181,7 @@ CheckOut.defaultProps = {
 CheckOut.propTypes = {
   history: PropTypes.object,
   changeCart: PropTypes.bool,
+  dispatchType: PropTypes.string,
   setChangeCart: PropTypes.func,
   setErrorsForm: PropTypes.func,
   setUserData: PropTypes.func,

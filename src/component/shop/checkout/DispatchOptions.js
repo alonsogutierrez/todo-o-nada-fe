@@ -2,37 +2,38 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
+import setDispatchType from './../../../actions/setDispatchType'
+
 const dispatchData = {
   homeDelivery: {
-    name: 'Despacho a domicilio',
-    total: 1000, //Change by real value
+    name: 'Despacho a domicilio (por pagar)',
+    code: 'HOME_DELIVERY',
+    total: 0,
   },
   localPickUp: {
-    name: 'Retiro en tienda',
+    name: 'Retiro en tienda (Av. Portugal #123)', // TODO: Cambiar por dirección de la tienda
+    code: 'PICKUP',
     total: 0,
   },
 }
 
-const DispatchOptions = ({ setTotalShippingChargeFunc, userData }) => {
-  const getShippingChargeByAddress = () => {
-    console.log('User Data: ', userData)
-    //console.log(`Calculating dispatch to: ${country}, ${region}`)
-    return 1000
-  }
-
+const DispatchOptions = ({ setTotalShippingChargeFunc, dispatchType, setDispatchType }) => {
   const setShippingCharge = (numCase) => {
     switch (numCase) {
       case dispatchData.homeDelivery.name:
-        dispatchData.homeDelivery.total = getShippingChargeByAddress(userData)
         setTotalShippingChargeFunc(dispatchData.homeDelivery.total)
-        break
+        setDispatchType(dispatchData.homeDelivery.code)
+        return
       case dispatchData.localPickUp.name:
         setTotalShippingChargeFunc(dispatchData.localPickUp.total)
-        break
+        setDispatchType(dispatchData.localPickUp.code)
+        return
       default:
         return
     }
   }
+
+  const isHomeDelivery = dispatchType !== 'PICKUP'
 
   return (
     <>
@@ -50,7 +51,7 @@ const DispatchOptions = ({ setTotalShippingChargeFunc, userData }) => {
                   id="shipping_method_0_flat_rate3"
                   value="flat_rate:3"
                   className="shipping_method"
-                  defaultChecked
+                  defaultChecked={isHomeDelivery}
                 />
                 <label style={{ cursor: 'pointer' }} htmlFor="shipping_method_0_flat_rate3">
                   {dispatchData.homeDelivery.name}:{' '}
@@ -71,6 +72,7 @@ const DispatchOptions = ({ setTotalShippingChargeFunc, userData }) => {
                   id="shipping_method_0_local_pickup4"
                   value="local_pickup:4"
                   className="shipping_method"
+                  defaultChecked={!isHomeDelivery}
                 />
                 <label style={{ cursor: 'pointer' }} htmlFor="shipping_method_0_local_pickup4">
                   {dispatchData.localPickUp.name}:{' '}
@@ -90,16 +92,25 @@ const DispatchOptions = ({ setTotalShippingChargeFunc, userData }) => {
 
 const mapStateToProps = (state) => ({
   userData: state.userDataReducer.userData,
+  dispatchType: state.dispatchTypeDataReducer.dispatchTypeData,
 })
 
-export default connect(mapStateToProps, null)(DispatchOptions)
+const mapDispatchToProps = (dispatch) => ({
+  setDispatchType: (type) => dispatch(setDispatchType(type)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DispatchOptions)
 
 DispatchOptions.defaultProps = {
   userData: {},
+  dispatchType: '',
   setTotalShippingChargeFunc: () => {},
+  setDispatchType: () => {},
 }
 
 DispatchOptions.propTypes = {
   userData: PropTypes.object,
+  dispatchType: PropTypes.string,
   setTotalShippingChargeFunc: PropTypes.func,
+  setDispatchType: PropTypes.func,
 }

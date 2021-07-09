@@ -44,7 +44,7 @@ const getUserInfo = (data) => {
   }
 }
 
-const orderCreator = (cartItems, formValues) => {
+const orderCreator = (cartItems, formValues, dispatchType) => {
   const productsInfo = getProductsInfo(cartItems)
   const userInfo = getUserInfo(formValues)
   const orderDataToSave = {
@@ -52,6 +52,7 @@ const orderCreator = (cartItems, formValues) => {
     paymentData: {
       user: userInfo,
     },
+    dispatchData: dispatchType,
   }
   return orderDataToSave
 }

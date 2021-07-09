@@ -4,7 +4,6 @@
 import React from 'react'
 import Loader from 'react-loader-spinner'
 
-import AllProduct from '../../api/product'
 import Topbar from './HeaderComponents/Topbar'
 import HeaderMain from './HeaderComponents/HeaderMain'
 
@@ -19,7 +18,6 @@ class Header extends React.Component {
       collapsed: true,
       CartHide: true,
       classset: '',
-      getproduct: AllProduct,
     }
     this.toggleNavbar = this.toggleNavbar.bind(this)
   }

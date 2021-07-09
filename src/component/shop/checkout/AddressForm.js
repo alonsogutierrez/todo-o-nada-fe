@@ -16,7 +16,7 @@ const getRegionByCode = (regionCode) => {
   return regionSelected[0]
 }
 
-const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView }) => {
+const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView, dispatchType }) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [dni, setDni] = useState('')
@@ -166,11 +166,12 @@ const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView }) => {
   const firstNameRef = useRef(null)
   const lastNameRef = useRef(null)
   const dniRef = useRef(null)
+  const phoneRef = useRef(null)
+  const emailRef = useRef(null)
+
   const postalCodeRef = useRef(null)
   const addressRef = useRef(null)
   const address2Ref = useRef(null)
-  const phoneRef = useRef(null)
-  const emailRef = useRef(null)
 
   const scrollIntoViewBehavior = {
     inline: 'end',
@@ -178,7 +179,7 @@ const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView }) => {
     behavior: 'smooth',
   }
 
-  const scrollIntoErrorsView = (errorsForm) => {
+  const scrollIntoErrorsView = (errorsForm, dispatchType) => {
     for (const errorType in errorsForm) {
       if (errorType === 'first_name') {
         firstNameRef.current.scrollIntoView(scrollIntoViewBehavior)
@@ -192,18 +193,21 @@ const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView }) => {
         dniRef.current.scrollIntoView(scrollIntoViewBehavior)
         return
       }
-      if (errorType === 'postal_code') {
-        postalCodeRef.current.scrollIntoView(scrollIntoViewBehavior)
-        return
+      if (dispatchType !== 'PICKUP') {
+        if (errorType === 'postal_code') {
+          postalCodeRef.current.scrollIntoView(scrollIntoViewBehavior)
+          return
+        }
+        if (errorType === 'address') {
+          addressRef.current.scrollIntoView(scrollIntoViewBehavior)
+          return
+        }
+        if (errorType === 'num_address') {
+          address2Ref.current.scrollIntoView(scrollIntoViewBehavior)
+          return
+        }
       }
-      if (errorType === 'address') {
-        addressRef.current.scrollIntoView(scrollIntoViewBehavior)
-        return
-      }
-      if (errorType === 'num_address') {
-        address2Ref.current.scrollIntoView(scrollIntoViewBehavior)
-        return
-      }
+
       if (errorType === 'phone') {
         phoneRef.current.scrollIntoView(scrollIntoViewBehavior)
         return
@@ -219,7 +223,7 @@ const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView }) => {
     setFormValues(userFormData)
     setErrors(errorsForm)
     if (flagScrollErrorsView) {
-      scrollIntoErrorsView(errorsForm)
+      scrollIntoErrorsView(errorsForm, dispatchType)
     }
   }, [userFormData, errorsForm, flagScrollErrorsView])
 
@@ -282,121 +286,125 @@ const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView }) => {
             />
             <span className="error">{errors['dni']}</span>
           </div>
-          <div className="form-group">
-            <label htmlFor="billing_country" className="">
-              País&nbsp;<abbr className="required" title="required"></abbr>
-            </label>
-            <select
-              name="billing_country"
-              id="billing_country"
-              className="form-control"
-              value={country.code}
-              onChange={(e) => handleSelectedCountry(e.target.value)}
-              disabled={true}
-            >
-              {countries.map((country, key) => (
-                <option key={key} value={country.code}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          {country.code === 'CL' && (
+          {dispatchType !== 'PICKUP' && (
             <>
               <div className="form-group">
                 <label htmlFor="billing_country" className="">
-                  Región&nbsp;
-                  <abbr className="required" title="required"></abbr>
+                  País&nbsp;<abbr className="required" title="required"></abbr>
                 </label>
                 <select
                   name="billing_country"
                   id="billing_country"
                   className="form-control"
-                  value={region.code}
-                  onChange={(e) => handleSelectedRegion(e.target.value)}
+                  value={country.code}
+                  onChange={(e) => handleSelectedCountry(e.target.value)}
+                  disabled={true}
                 >
-                  {regions.map((region, key) => (
-                    <option key={key} value={region.code}>
-                      {region.region}
+                  {countries.map((country, key) => (
+                    <option key={key} value={country.code}>
+                      {country.name}
                     </option>
                   ))}
                 </select>
               </div>
-              <div className="form-group">
-                <label htmlFor="billing_country" className="">
-                  Comuna&nbsp;
-                  <abbr className="required" title="required"></abbr>
+              {country.code === 'CL' && (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="billing_country" className="">
+                      Región&nbsp;
+                      <abbr className="required" title="required"></abbr>
+                    </label>
+                    <select
+                      name="billing_country"
+                      id="billing_country"
+                      className="form-control"
+                      value={region.code}
+                      onChange={(e) => handleSelectedRegion(e.target.value)}
+                    >
+                      {regions.map((region, key) => (
+                        <option key={key} value={region.code}>
+                          {region.region}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="billing_country" className="">
+                      Comuna&nbsp;
+                      <abbr className="required" title="required"></abbr>
+                    </label>
+                    <select
+                      name="billing_country"
+                      id="billing_country"
+                      className="form-control"
+                      value={commune}
+                      onChange={(e) => handleSelectedCommune(e.target.value)}
+                    >
+                      {communes.map((commune, key) => (
+                        <option key={key} value={commune.code}>
+                          {commune}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </>
+              )}
+              {country.code !== 'CL' && (
+                <div className="form-group" ref={postalCodeRef}>
+                  <label htmlFor="billing_postal_code_1" className="">
+                    Código postal&nbsp;
+                    <abbr className="required" title="required">
+                      *
+                    </abbr>
+                  </label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="billing_postal_code_1"
+                    id="billing_postal_code_1"
+                    placeholder="Código postal"
+                    value={postalCode}
+                    onChange={(e) => handleInputPostalCode(e.target.value)}
+                  />
+                  <span className="error">{errors['zip_code']}</span>
+                </div>
+              )}
+              <div className="form-group" ref={addressRef}>
+                <label htmlFor="billing_address_1" className="">
+                  Dirección&nbsp;
+                  <abbr className="required" title="required">
+                    *
+                  </abbr>
                 </label>
-                <select
-                  name="billing_country"
-                  id="billing_country"
+                <Input
+                  type="text"
                   className="form-control"
-                  value={commune}
-                  onChange={(e) => handleSelectedCommune(e.target.value)}
-                >
-                  {communes.map((commune, key) => (
-                    <option key={key} value={commune.code}>
-                      {commune}
-                    </option>
-                  ))}
-                </select>
+                  name="billing_address_1"
+                  id="billing_address_1"
+                  placeholder="Dirección y nº de casa/depto"
+                  value={address}
+                  onChange={(e) => handleInputAddress(e.target.value)}
+                />
+                <span className="error">{errors['address']}</span>
+              </div>
+              <div className="form-group" ref={address2Ref}>
+                <label htmlFor="billing_address_2" className="screen-reader-text">
+                  Departamento, block, etc.&nbsp;
+                  <span className="optional">(opcional)</span>
+                </label>
+                <Input
+                  type="text"
+                  className="form-control"
+                  name="billing_address_2"
+                  id="billing_address_2"
+                  placeholder="Nº casa, departamento, etc."
+                  value={numberAddress}
+                  onChange={(e) => handleInputNumberAddress(e.target.value)}
+                />
+                <span className="error">{errors['num_address']}</span>
               </div>
             </>
           )}
-          {country.code !== 'CL' && (
-            <div className="form-group" ref={postalCodeRef}>
-              <label htmlFor="billing_postal_code_1" className="">
-                Código postal&nbsp;
-                <abbr className="required" title="required">
-                  *
-                </abbr>
-              </label>
-              <Input
-                type="text"
-                className="form-control"
-                name="billing_postal_code_1"
-                id="billing_postal_code_1"
-                placeholder="Código postal"
-                value={postalCode}
-                onChange={(e) => handleInputPostalCode(e.target.value)}
-              />
-              <span className="error">{errors['zip_code']}</span>
-            </div>
-          )}
-          <div className="form-group" ref={addressRef}>
-            <label htmlFor="billing_address_1" className="">
-              Dirección&nbsp;
-              <abbr className="required" title="required">
-                *
-              </abbr>
-            </label>
-            <Input
-              type="text"
-              className="form-control"
-              name="billing_address_1"
-              id="billing_address_1"
-              placeholder="Dirección y nº de casa/depto"
-              value={address}
-              onChange={(e) => handleInputAddress(e.target.value)}
-            />
-            <span className="error">{errors['address']}</span>
-          </div>
-          <div className="form-group" ref={address2Ref}>
-            <label htmlFor="billing_address_2" className="screen-reader-text">
-              Departamento, block, etc.&nbsp;
-              <span className="optional">(opcional)</span>
-            </label>
-            <Input
-              type="text"
-              className="form-control"
-              name="billing_address_2"
-              id="billing_address_2"
-              placeholder="Nº casa, departamento, etc."
-              value={numberAddress}
-              onChange={(e) => handleInputNumberAddress(e.target.value)}
-            />
-            <span className="error">{errors['num_address']}</span>
-          </div>
           <div className="form-group" ref={phoneRef}>
             <label htmlFor="billing_phone" className="">
               Telefono&nbsp;
@@ -443,6 +451,7 @@ const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView }) => {
 
 const mapStateToProps = (state) => ({
   errorsForm: state.errorsForm.errorsForm,
+  dispatchType: state.dispatchTypeDataReducer.dispatchTypeData,
 })
 
 export default connect(mapStateToProps, null)(AddressForm)
@@ -451,4 +460,5 @@ AddressForm.propTypes = {
   setFormValues: PropTypes.func,
   errorsForm: PropTypes.object,
   flagScrollErrorsView: PropTypes.bool,
+  dispatchType: PropTypes.string,
 }
