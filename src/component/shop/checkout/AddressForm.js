@@ -407,7 +407,7 @@ const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView, dispatch
           )}
           <div className="form-group" ref={phoneRef}>
             <label htmlFor="billing_phone" className="">
-              Telefono&nbsp;
+              Telefono&nbsp; (WhatsApp)
               <abbr className="required" title="required">
                 *
               </abbr>

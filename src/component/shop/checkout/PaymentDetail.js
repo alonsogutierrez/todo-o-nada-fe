@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Col, Row } from 'reactstrap'
 
 const PaymentDetail = ({ orderData, totalShippingCarge }) => {
-  const { orderNumber, paymentData, products, createdAt } = orderData
+  const { orderNumber, paymentData, products, createdAt, dispatchData } = orderData
   const createdDate = new Date(createdAt).toLocaleDateString('es-CL')
 
   const getOrderTotal = (products, totalShippingCarge) => {
@@ -40,6 +40,8 @@ const PaymentDetail = ({ orderData, totalShippingCarge }) => {
     user = paymentData.user
   }
   const userData = user
+  const isHomeDelivery = dispatchData !== 'PICKUP'
+  const contactPhone = '989370610' // TODO: Change to env variable
 
   return (
     <div className="success-screen">
@@ -52,19 +54,25 @@ const PaymentDetail = ({ orderData, totalShippingCarge }) => {
         </h1>
       </div>
       <div className="delivery p-4 p-md-5 bg-light text-center">
-        <span className="h5">Fecha estimada de llegada</span>
-        <h2 className="mb-0 mt-2">Entre 3 a 5 días hábiles</h2>
+        <span className="h5">
+          {isHomeDelivery
+            ? 'Fecha estimada de llegada'
+            : `Ponte en contacto a nuestro n°${contactPhone}, para coordinar el retiro en la tienda de forma segura`}
+        </span>
+        <h2 className="mb-0 mt-2">
+          {isHomeDelivery ? 'Entre 3 a 5 días hábiles' : 'WhatsApp \n+569 8937 1212'}
+        </h2>
       </div>
       <div className="pt-4 px-4 pt-md-5 px-md-5 pb-3">
         <Row>
           <Col lg={6}>
-            <h6>Despacho a</h6>
+            <h6>{isHomeDelivery ? 'Despacho a' : 'Retiro en'}</h6>
             <ul className="list-unstyled mb-0">
               <li>
                 {userData.firstName} {userData.lastName}
               </li>
-              <li>{userData.address.address}</li>
-              <li>{userData.address.num_address}</li>
+              <li>{isHomeDelivery ? userData.address.address : 'Dirección tienda, Santiago'}</li>
+              <li>{isHomeDelivery ? userData.address.num_address : '#123'}</li>
               <li>{userData.address.country}</li>
             </ul>
           </Col>
@@ -74,6 +82,10 @@ const PaymentDetail = ({ orderData, totalShippingCarge }) => {
               <ul className="list-unstyled mb-0">
                 <li>
                   <span>Nº de orden:</span> <strong>{orderNumber}</strong>
+                </li>
+                <li>
+                  <span>Tipo entrega:</span>{' '}
+                  <strong>{isHomeDelivery ? 'Despacho a domicilio' : 'Retiro en tienda'}</strong>
                 </li>
                 <li>
                   <span>Fecha de compra:</span> <strong>{createdDate}</strong>
