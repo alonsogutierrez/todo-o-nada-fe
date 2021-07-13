@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import Loader from 'react-loader-spinner'
 import Slider from 'react-slick'
 import { Col } from 'reactstrap'
 import PropTypes from 'prop-types'
-import { ToastContainer } from 'react-toastify'
 
 import ClientAPI from '../../common/ClientAPI'
 import setChangeCartData from '../../actions/setChangeCartData'
@@ -11,11 +11,14 @@ import ProductInfo from './../search/ProductInfo'
 
 const ProductSlider = ({ settings }) => {
   const [clientAPI] = useState(new ClientAPI())
+  const [loading, setLoading] = useState(false)
   const [products, setProducts] = useState([])
 
   useEffect(() => {
     const getMoreInterestingProducts = async () => {
+      setLoading(true)
       const productsResponse = await clientAPI.getMoreInterestingProducts()
+
       if (productsResponse.hits.length > 0) {
         const hits = productsResponse.hits
 
@@ -52,13 +55,13 @@ const ProductSlider = ({ settings }) => {
           })
         )
       }
+      setLoading(false)
     }
     getMoreInterestingProducts()
   }, [products.length])
 
   return (
     <>
-      <ToastContainer autoClose={1000} draggable={false} />
       <Col sm={12}>
         <div className="products-listing-items-wrapper products-listing-carousel">
           <div
@@ -72,14 +75,15 @@ const ProductSlider = ({ settings }) => {
             data-space={20}
           >
             <Slider {...settings} className="slider-spacing-10 slider-arrow-hover">
-              {products.length === 0 && (
+              {loading && (
                 <>
                   <div>
-                    <h2>Loading data...</h2>
+                    <Loader type="Puff" color="#04d39f" height="100" width="100" />
                   </div>
                 </>
               )}
-              {products.length > 0 &&
+              {!loading &&
+                products.length > 0 &&
                 products.map((product, index) => (
                   <div key={index}>
                     <div className="item">
