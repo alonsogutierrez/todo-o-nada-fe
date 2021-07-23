@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Col } from 'reactstrap'
 
-const ProductDetailSupportInfo = () => (
+const SupportInfo = () => (
   <div className="product-info-box border-top border-bottom mt-5  pt-4 pt-lg-0 pb-2 pb-sm-0">
     <Row>
       <Col sm={6} md={4}>
@@ -83,4 +83,4 @@ const ProductDetailSupportInfo = () => (
   </div>
 )
 
-export default ProductDetailSupportInfo
+export default SupportInfo

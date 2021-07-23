@@ -5,7 +5,7 @@
   "homepage": "https://ciyashop-react.potenzaglobalsolutions.com/",
   "dependencies": {
     "antd": "^3.26.5",
-    "axios": "^0.20.0",
+    "axios": "0.21.1",
     "bootstrap": "^4.3.1",
     "date-fns": "^2.16.1",
     "fetch-instagram": "^1.0.0-alpha.3",
