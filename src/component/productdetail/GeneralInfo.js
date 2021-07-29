@@ -1,31 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
+import { Link, withRouter } from 'react-router-dom'
 import Lightbox from 'react-image-lightbox'
 import PropTypes from 'prop-types'
-import { Link, withRouter } from 'react-router-dom'
 import Slider from 'react-slick'
-import 'react-toastify/dist/ReactToastify.min.css'
 import { toast, ToastContainer } from 'react-toastify'
 import { Row } from 'reactstrap'
+import 'react-toastify/dist/ReactToastify.min.css'
 import 'react-image-lightbox/style.css'
-
 import './style.css'
 
-const settings = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-}
-const productslider = {
-  dots: false,
-  infinite: false,
-  speed: 500,
-  slidesToShow: 5,
-  slidesToScroll: 1,
-}
-
-const sizes = ['S', 'M', 'L', 'XL']
+import setChangeCartData from '../../actions/setChangeCartData'
 
 const getDefaultSize = (product) => {
   const details = product.details
@@ -35,6 +20,7 @@ const getDefaultSize = (product) => {
     }
   }
 }
+
 const getDefaultColor = (product) => {
   const details = product.details
   for (let sku in details) {
@@ -53,11 +39,25 @@ const getDefaultSku = (product) => {
 }
 
 const GeneralInfo = (props) => {
+  const [settings] = useState({
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  })
+  const [productslider] = useState({
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+  })
+  const [sizes] = useState(['S', 'M', 'L', 'XL'])
   const [photoIndex, setPhotoIndex] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
   const [qty, setQuantity] = useState(1)
   const [imagePreview, setImagePreview] = useState('')
-  //const [colorsAvailable, setColorsAvailable] = useState([])
   const [size, setSize] = useState(getDefaultSize(props.product))
   const [color] = useState(getDefaultColor(props.product))
   const [sku, setSku] = useState(getDefaultSku(props.product))
@@ -72,8 +72,8 @@ const GeneralInfo = (props) => {
 
   const AddToCart = (
     e,
-    itemNumber,
-    sku,
+    itemNumberProduct,
+    skuSelected,
     productName,
     quantity,
     price,
@@ -87,13 +87,13 @@ const GeneralInfo = (props) => {
       let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
       if (!cartItems) cartItems = []
       const selectedProduct = cartItems.find(
-        (product) => product.itemNumber === itemNumber && product.sku === sku
+        (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
       )
       console.log('selectedProduct: ', selectedProduct)
       if (!selectedProduct) {
         cartItems.push({
-          itemNumber,
-          sku,
+          itemNumber: itemNumberProduct,
+          sku: skuSelected,
           productName,
           quantity,
           price,
@@ -101,6 +101,8 @@ const GeneralInfo = (props) => {
         })
         localStorage.removeItem('LocalCartItems')
         localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
+        const { setChangeCart, changeCart } = props
+        setChangeCart(!changeCart)
         toast.success('Producto agregado al carro')
       } else {
         toast.warning('Producto ya esta en el carro')
@@ -108,22 +110,87 @@ const GeneralInfo = (props) => {
     }
   }
 
-  const PlusQty = () => {
+  const PlusQty = (itemNumberProduct, skuSelected) => {
     setQuantity(qty + 1)
-  }
-
-  const MinusQty = () => {
-    if (qty > 1) {
-      setQuantity(qty - 1)
-      // TODO: Add logic to erase 1 product from array
+    let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
+    if (!cartItems) cartItems = []
+    const selectedProduct = cartItems.find(
+      (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
+    )
+    if (selectedProduct) {
+      console.log('product in localstorage')
+      cartItems = cartItems.map((item) => {
+        if (item.itemNumber === itemNumberProduct && item.sku === skuSelected) {
+          return {
+            ...item,
+            quantity: item.quantity + 1,
+          }
+        }
+        return item
+      })
+      localStorage.removeItem('LocalCartItems')
+      localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
+      const { setChangeCart, changeCart } = props
+      setChangeCart(!changeCart)
+      toast.success('Producto agregado al carro')
     }
   }
 
-  const isSkuInCard = (sku) => {
+  const MinusQty = (itemNumberProduct, skuSelected) => {
+    if (qty > 1) {
+      setQuantity(qty - 1)
+      let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
+      if (!cartItems) cartItems = []
+      const selectedProduct = cartItems.find(
+        (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
+      )
+      if (selectedProduct) {
+        cartItems = cartItems.map((item) => {
+          if (item.itemNumber === itemNumberProduct && item.sku === skuSelected) {
+            return {
+              ...item,
+              quantity: item.quantity - 1,
+            }
+          }
+          return item
+        })
+        localStorage.removeItem('LocalCartItems')
+        localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
+        const { setChangeCart, changeCart } = props
+        setChangeCart(!changeCart)
+        toast.warn('Producto eliminado del carro')
+      }
+    }
+    if (qty === 1) {
+      setQuantity(1)
+      let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
+      if (!cartItems) cartItems = []
+      const selectedProduct = cartItems.find(
+        (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
+      )
+      if (selectedProduct) {
+        cartItems =
+          cartItems.length > 1
+            ? cartItems.map((item) => {
+                if (item.itemNumber !== itemNumberProduct && item.sku !== skuSelected) {
+                  return item
+                }
+              })
+            : []
+        localStorage.removeItem('LocalCartItems')
+        localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
+        const { setChangeCart, changeCart } = props
+        setChangeCart(!changeCart)
+        toast.warn('Producto borrado del carro')
+      }
+    }
+  }
+
+  const isSkuInCard = (skuSelected) => {
     let checkCart = false
     const cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (cartItems && cartItems.length > 0) {
-      checkCart = cartItems.some((item) => item.sku === sku)
+      checkCart = cartItems.some((item) => item.sku === skuSelected)
     }
     return checkCart
   }
@@ -150,8 +217,7 @@ const GeneralInfo = (props) => {
   }
 
   const handleSetSize = (size) => {
-    const { product } = props
-    const productDetails = product.details
+    const productDetails = props.product.details
     for (const sku in productDetails) {
       if (productDetails[sku].size === size) {
         setSku(sku)
@@ -229,8 +295,8 @@ const GeneralInfo = (props) => {
 
   const handleGoToShoppingCart = (e) => {
     console.log('********** SHOPPING CART ********')
-    const { history } = props
     e.preventDefault()
+    const { history } = props
     history.push('/shopping-cart')
   }
 
@@ -340,6 +406,7 @@ const GeneralInfo = (props) => {
     }
     i += 1
   }
+
   return (
     <>
       <ToastContainer autoClose={1000} draggable={false} />
@@ -380,9 +447,7 @@ const GeneralInfo = (props) => {
               <div className="product-top-right-inner">
                 <div className="summary entry-summary">
                   <h1 className="product_title entry-title">{product.name}</h1>
-                  <p className="price">{`${formatNumberToView(
-                    product.price.basePriceSales * qty
-                  )}`}</p>
+                  <p className="price">{`${formatNumberToView(product.price.basePriceSales)}`}</p>
                   <div className="product-details__short-description">
                     <div className="pdp-about-details-txt pdp-about-details-equit">
                       {product.description}
@@ -395,10 +460,16 @@ const GeneralInfo = (props) => {
                       </label>
                       <input type="text" className="input-text qty text" value={qty} title="Qty" />
                       <div className="quantity-nav">
-                        <Link className="quantity-button quantity-up" onClick={() => PlusQty()}>
+                        <Link
+                          className="quantity-button quantity-up"
+                          onClick={() => PlusQty(itemNumber, sku)}
+                        >
                           +
                         </Link>
-                        <Link className="quantity-button quantity-down" onClick={() => MinusQty()}>
+                        <Link
+                          className="quantity-button quantity-down"
+                          onClick={() => MinusQty(itemNumber, sku)}
+                        >
                           -
                         </Link>
                       </div>
@@ -482,14 +553,26 @@ const GeneralInfo = (props) => {
   )
 }
 
-export default withRouter(GeneralInfo)
+const mapStateToProps = (state) => ({
+  changeCart: state.changeCartDataReducer.changeCartData,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  setChangeCart: (changeCart) => dispatch(setChangeCartData(changeCart)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(GeneralInfo))
 
 GeneralInfo.defaultProps = {
   product: {},
   history: {},
+  changeCart: false,
+  setChangeCart: () => {},
 }
 
 GeneralInfo.propTypes = {
   product: PropTypes.object,
   history: PropTypes.object,
+  changeCart: PropTypes.bool,
+  setChangeCart: PropTypes.func,
 }

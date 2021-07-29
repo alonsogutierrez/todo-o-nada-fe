@@ -48,7 +48,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
     let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (cartItems && cartItems.length > 0) {
       for (const cartItem of cartItems) {
-        if (cartItem.itemNumber === itemNumber && cartItem.sku === sku) {
+        if (cartItem && cartItem.itemNumber === itemNumber && cartItem.sku === sku) {
           checkCart = true
         }
       }
