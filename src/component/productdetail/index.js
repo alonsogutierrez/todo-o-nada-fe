@@ -6,36 +6,7 @@ import classnames from 'classnames'
 
 import SupportInfo from './SupportInfo'
 import GeneralInfo from './GeneralInfo'
-import ProductSlider from '../home/ProductSlider'
 import ClientAPI from '../../common/ClientAPI'
-
-const relatedSliderConfig = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 4,
-  slidesToScroll: 1,
-  responsive: [
-    {
-      breakpoint: 991,
-      settings: {
-        slidesToShow: 3,
-      },
-    },
-    {
-      breakpoint: 767,
-      settings: {
-        slidesToShow: 2,
-      },
-    },
-    {
-      breakpoint: 575,
-      settings: {
-        slidesToShow: 1,
-      },
-    },
-  ],
-}
 
 const ProductDetail = (props) => {
   const { match } = props
@@ -59,6 +30,16 @@ const ProductDetail = (props) => {
       setActiveTab(tab)
     }
   }
+  let productDescription = ''
+  let productCategory = ''
+  let productName = ''
+
+  if (actualProduct) {
+    let { description, category, name } = actualProduct
+    productDescription = description ? description : ''
+    productCategory = category ? category : ''
+    productName = name ? name : ''
+  }
 
   return (
     <div>
@@ -77,10 +58,10 @@ const ProductDetail = (props) => {
                       </span>
                     </li>
                     <li>
-                      <span>{actualProduct.category}</span>
+                      <span>{productCategory}</span>
                     </li>
                     <li>
-                      <span>{actualProduct.name}</span>
+                      <span>{productName}</span>
                     </li>
                   </ul>
                 </div>
@@ -114,24 +95,12 @@ const ProductDetail = (props) => {
                       aria-labelledby="home-tab"
                     >
                       <h2>Descripción del producto</h2>
-                      <p>Características y detalle del producto, tallas, etc...</p>
-                      <img src={require('../../assets/images/TALLAS_POLERAS.jpg').default} />
+                      <p>{productDescription}</p>
                       <SupportInfo />
                     </div>
                   </div>
                 </TabPane>
               </TabContent>
-              {actualProduct !== null && (
-                <div className="related products">
-                  <h2>Productos relacionados</h2>
-                  <div className="row">
-                    <ProductSlider
-                      productSub={actualProduct.subcategory}
-                      settings={relatedSliderConfig}
-                    />
-                  </div>
-                </div>
-              )}
             </div>
           </Container>
         </div>

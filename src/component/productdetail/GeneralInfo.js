@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import Lightbox from 'react-image-lightbox'
 import PropTypes from 'prop-types'
-import Slider from 'react-slick'
 import { toast, ToastContainer } from 'react-toastify'
 import { Row } from 'reactstrap'
 import 'react-toastify/dist/ReactToastify.min.css'
@@ -39,36 +38,13 @@ const getDefaultSku = (product) => {
 }
 
 const GeneralInfo = (props) => {
-  const [settings] = useState({
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  })
-  const [productslider] = useState({
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-  })
   const [sizes] = useState(['S', 'M', 'L', 'XL'])
   const [photoIndex, setPhotoIndex] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
   const [qty, setQuantity] = useState(1)
-  const [imagePreview, setImagePreview] = useState('')
   const [size, setSize] = useState(getDefaultSize(props.product))
   const [color] = useState(getDefaultColor(props.product))
   const [sku, setSku] = useState(getDefaultSku(props.product))
-  // const [pictures, setPictures] = useState([])
-  // const [newImage, setNewImage] = useState('')
-  // const [cc, settabid] = useState(0)
-
-  // const changePreviewImage = (image) => {
-  //   setNewImage(image)
-  //   settabid(1)
-  // }
 
   const AddToCart = (
     e,
@@ -80,7 +56,6 @@ const GeneralInfo = (props) => {
     isProductWithStockAvailable
   ) => {
     e.preventDefault()
-    console.log('Click AddToCart button')
     if (!isProductWithStockAvailable) {
       toast.warning('Producto sin stock')
     } else {
@@ -89,7 +64,6 @@ const GeneralInfo = (props) => {
       const selectedProduct = cartItems.find(
         (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
       )
-      console.log('selectedProduct: ', selectedProduct)
       if (!selectedProduct) {
         cartItems.push({
           itemNumber: itemNumberProduct,
@@ -118,7 +92,6 @@ const GeneralInfo = (props) => {
       (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
     )
     if (selectedProduct) {
-      console.log('product in localstorage')
       cartItems = cartItems.map((item) => {
         if (item.itemNumber === itemNumberProduct && item.sku === skuSelected) {
           return {
@@ -145,15 +118,14 @@ const GeneralInfo = (props) => {
         (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
       )
       if (selectedProduct) {
-        cartItems = cartItems.map((item) => {
-          if (item.itemNumber === itemNumberProduct && item.sku === skuSelected) {
-            return {
-              ...item,
-              quantity: item.quantity - 1,
-            }
-          }
-          return item
-        })
+        cartItems = cartItems.map((item) =>
+          item.itemNumber === itemNumberProduct && item.sku === skuSelected
+            ? {
+                ...item,
+                quantity: item.quantity - 1,
+              }
+            : item
+        )
         localStorage.removeItem('LocalCartItems')
         localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
         const { setChangeCart, changeCart } = props
@@ -171,11 +143,9 @@ const GeneralInfo = (props) => {
       if (selectedProduct) {
         cartItems =
           cartItems.length > 1
-            ? cartItems.map((item) => {
-                if (item.itemNumber !== itemNumberProduct && item.sku !== skuSelected) {
-                  return item
-                }
-              })
+            ? cartItems.filter(
+                (item) => item.itemNumber !== itemNumberProduct && item.sku !== skuSelected
+              )
             : []
         localStorage.removeItem('LocalCartItems')
         localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
@@ -342,37 +312,7 @@ const GeneralInfo = (props) => {
         }
       })
     }
-    return (
-      <Slider {...productslider} className="ciyashop-product-thumbnails__wrapper">
-        {spSelected.pictures.map((pic, index) => (
-          <div key={index} className="ciyashop-product-thumbnail__image">
-            <Link onMouseOver={() => console.log('clicked')}>
-              <img
-                src={pic.image}
-                className="img-fluid"
-                id={pic.image}
-                name={pic.image}
-                onClick={(event) => setImagePreview(event.target.name)}
-              />
-            </Link>
-          </div>
-        ))}
-      </Slider>
-    )
-  }
-
-  const setImagePreviewFunc = (imagePreview, images) => {
-    let image = ''
-    if (!imagePreview) {
-      image = images[0]
-    } else {
-      image = imagePreview
-    }
-    return (
-      <div className="ciyashop-product-gallery__image">
-        <img src={image} className="img-fluid" />
-      </div>
-    )
+    return <img src={spSelected.pictures} className="img-fluid" name={spSelected.itemNumber} />
   }
 
   const isSomeSkuWithStockAvailable = (skuDetails) => {
@@ -382,7 +322,20 @@ const GeneralInfo = (props) => {
     return false
   }
 
-  useEffect(() => {}, [size, sku])
+  const setActualQuantity = (sku) => {
+    const cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
+    let cartItem = {}
+    if (cartItems && cartItems.length > 0) {
+      cartItem = cartItems.filter((item) => item.sku === sku)
+      if (cartItem && Object.keys(cartItem).length > 0) {
+        setQuantity(cartItem[0].quantity)
+      }
+    }
+  }
+
+  useEffect(() => {
+    setActualQuantity(sku)
+  }, [size, sku])
 
   const { product } = props
   const { name, price, itemNumber } = product
@@ -417,24 +370,6 @@ const GeneralInfo = (props) => {
               <div className="product-top-left-inner">
                 <div className="ciyashop-product-images">
                   <div className="ciyashop-product-images-wrapper ciyashop-gallery-style-default ciyashop-gallery-thumb_position-bottom ciyashop-gallery-thumb_vh-horizontal">
-                    <div className="ciyashop-product-gallery ciyashop-product-gallery--with-images slick-carousel">
-                      <Slider
-                        {...settings}
-                        className="ciyashop-product-gallery__wrapper popup-gallery"
-                      >
-                        {setImagePreviewFunc(imagePreview, images)}
-                      </Slider>
-                      <div className="ciyashop-product-gallery_buttons_wrapper">
-                        <div
-                          className="ciyashop-product-gallery_button ciyashop-product-gallery_button-zoom popup-gallery"
-                          onClick={() => setIsOpen(true)}
-                        >
-                          <Link to="#" className="ciyashop-product-gallery_button-link-zoom">
-                            <i className="fa fa-arrows-alt" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
                     <div className="ciyashop-product-thumbnails">
                       {setCarousel(subProducts, sku)}
                     </div>

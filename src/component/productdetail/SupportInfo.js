@@ -19,9 +19,11 @@ const SupportInfo = () => (
             <div className="ciyashop_info_box_2-content">
               <div className="ciyashop_info_box_2-content-wrap">
                 <div className="ciyashop_info_box_2-content-inner">
-                  <h6 className="ciyashop_info_box_2-title inline_hover">Free shipping </h6>
+                  <h6 className="ciyashop_info_box_2-title inline_hover">
+                    Despachos a todo Chile{' '}
+                  </h6>
                   <div className="ciyashop_info_box_2-content">
-                    <p>Free Shipping on orders $199.</p>
+                    <p>Retiro en tienda gratis</p>
                   </div>
                 </div>
               </div>
@@ -44,9 +46,9 @@ const SupportInfo = () => (
             <div className="ciyashop_info_box_2-content">
               <div className="ciyashop_info_box_2-content-wrap">
                 <div className="ciyashop_info_box_2-content-inner">
-                  <h6 className="ciyashop_info_box_2-title inline_hover">24/7 Support: </h6>
+                  <h6 className="ciyashop_info_box_2-title inline_hover">Soporte 24/7: </h6>
                   <div className="ciyashop_info_box_2-content">
-                    <p>Online and phone support 24 / 7</p>
+                    <p>Soporte por instagram @todoonadatattooart</p>
                   </div>
                 </div>
               </div>
@@ -69,10 +71,9 @@ const SupportInfo = () => (
             <div className="ciyashop_info_box_2-content">
               <div className="ciyashop_info_box_2-content-wrap">
                 <div className="ciyashop_info_box_2-content-inner">
-                  <h6 className="ciyashop_info_box_2-title inline_hover">30 Days Return </h6>
-                  <div className="ciyashop_info_box_2-content">
-                    <p>30 days money back guarantee. </p>
-                  </div>
+                  <h6 className="ciyashop_info_box_2-title inline_hover">
+                    Devoluciones hasta 30 días{' '}
+                  </h6>
                 </div>
               </div>
             </div>
