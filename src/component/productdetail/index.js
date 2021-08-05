@@ -13,7 +13,7 @@ const ProductDetail = (props) => {
   const [itemNumber] = useState(match.params.itemNumber)
   const [activeTab, setActiveTab] = useState('1')
   const [clientAPI] = useState(new ClientAPI())
-  const [actualProduct, setActualProduct] = useState(null)
+  const [actualProduct, setActualProduct] = useState()
 
   useEffect(async () => {
     const productResponseData = await clientAPI.getProductByItemNumber(itemNumber)
@@ -45,7 +45,7 @@ const ProductDetail = (props) => {
     <div>
       <div className="site-content">
         <div className="inner-intro">
-          {actualProduct !== null && (
+          {actualProduct && (
             <Container>
               <Row className="intro-title align-items-center">
                 <div className="col-12">
@@ -71,7 +71,7 @@ const ProductDetail = (props) => {
         </div>
         <div className="content-wrapper section-ptb">
           <Container>
-            {actualProduct !== null && <GeneralInfo product={actualProduct} tabid={activeTab} />}
+            {actualProduct && <GeneralInfo product={actualProduct} tabid={activeTab} />}
             <div className="product-content-bottom">
               <Nav tabs>
                 <NavItem active>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import Lightbox from 'react-image-lightbox'
 import PropTypes from 'prop-types'
 import { toast, ToastContainer } from 'react-toastify'
 import { Row } from 'reactstrap'
@@ -20,14 +19,8 @@ const getDefaultSize = (product) => {
   }
 }
 
-const getDefaultColor = (product) => {
-  const details = product.details
-  for (let sku in details) {
-    if (details[sku].stock > 0) {
-      return details[sku].color
-    }
-  }
-}
+const getDefaultColor = (product) => (product.color ? product.color : '')
+
 const getDefaultSku = (product) => {
   const details = product.details
   for (let sku in details) {
@@ -39,8 +32,6 @@ const getDefaultSku = (product) => {
 
 const GeneralInfo = (props) => {
   const [sizes] = useState(['S', 'M', 'L', 'XL'])
-  const [photoIndex, setPhotoIndex] = useState(0)
-  const [isOpen, setIsOpen] = useState(false)
   const [qty, setQuantity] = useState(1)
   const [size, setSize] = useState(getDefaultSize(props.product))
   const [color] = useState(getDefaultColor(props.product))
@@ -228,40 +219,21 @@ const GeneralInfo = (props) => {
     )
   }
 
-  const renderColorsProduct = (subProducts) => {
-    let colorSelected = ''
-    subProducts.forEach((p) => {
-      if (p.details.sku === sku) {
-        colorSelected = p.details.color
-      }
-    })
-    return (
-      <span className="size">
-        <label>Color:</label>
-        <span itemProp="size" style={{ paddingRight: '4px' }}>
-          {colorSelected}
-        </span>
+  const renderColorsProduct = (color) => (
+    <span className="size">
+      <label>Color:</label>
+      <span itemProp="size" style={{ paddingRight: '4px' }}>
+        {color}
       </span>
-    )
-  }
+    </span>
+  )
 
-  const renderSKUProduct = () => {
-    if (!sku) {
-      return (
-        <span className="sku_wrapper">
-          <label>SKU:</label>
-          <span className="sku"></span>
-        </span>
-      )
-    }
-
-    return (
-      <span className="sku_wrapper">
-        <label>SKU:</label>
-        <span className="sku">{sku}</span>
-      </span>
-    )
-  }
+  const renderSKUProduct = (sku) => (
+    <span className="sku_wrapper">
+      <label>SKU:</label>
+      <span className="sku">{sku ? sku : ''}</span>
+    </span>
+  )
 
   const handleGoToShoppingCart = (e) => {
     console.log('********** SHOPPING CART ********')
@@ -270,49 +242,10 @@ const GeneralInfo = (props) => {
     history.push('/shopping-cart')
   }
 
-  const setImages = () => {
-    subProducts.forEach((p) => {
-      if (p.sku === sku) {
-        return p.pictures
-      }
-    })
-    return []
-  }
-
-  const setFirstSubProductAvailable = (subProducts) => {
-    const productsAvailable = subProducts.length > 0
-    if (productsAvailable) {
-      subProducts.forEach((p) => {
-        if (p.details.stock > 0) {
-          return {
-            size: p.details.stock,
-            color: p.details.color,
-            sku: p.details.sku,
-          }
-        }
-      })
-    }
-    return {}
-  }
-
-  const setCarousel = (subProducts, sku) => {
-    let spSelected = {}
-    let defaultProduct = {}
-    if (!sku) {
-      defaultProduct = setFirstSubProductAvailable(subProducts)
-      subProducts.forEach((sp) => {
-        if (sp.details.sku === defaultProduct.sku) {
-          spSelected = sp.details
-        }
-      })
-    } else {
-      subProducts.forEach((sp) => {
-        if (sp.details.sku === sku) {
-          spSelected = sp.details
-        }
-      })
-    }
-    return <img src={spSelected.pictures} className="img-fluid" name={spSelected.itemNumber} />
+  const renderImageProduct = () => {
+    return (
+      <img src={props.product.pictures} className="img-fluid" name={props.product.itemNumber} />
+    )
   }
 
   const isSomeSkuWithStockAvailable = (skuDetails) => {
@@ -345,8 +278,6 @@ const GeneralInfo = (props) => {
   const isProductWithStockAvailable = isSomeSkuWithStockAvailable(skuDetails)
 
   const subProducts = configSubProduct(product)
-  const defaultProduct = setFirstSubProductAvailable(subProducts)
-  const images = setImages(subProducts, defaultProduct.size, defaultProduct.color)
 
   let rat = []
   let rating = product.rating
@@ -370,9 +301,7 @@ const GeneralInfo = (props) => {
               <div className="product-top-left-inner">
                 <div className="ciyashop-product-images">
                   <div className="ciyashop-product-images-wrapper ciyashop-gallery-style-default ciyashop-gallery-thumb_position-bottom ciyashop-gallery-thumb_vh-horizontal">
-                    <div className="ciyashop-product-thumbnails">
-                      {setCarousel(subProducts, sku)}
-                    </div>
+                    <div className="ciyashop-product-thumbnails">{renderImageProduct()}</div>
                     <div className="clearfix" />
                   </div>
                 </div>
@@ -445,8 +374,8 @@ const GeneralInfo = (props) => {
                       {product.category.toString()}
                     </span>
                     {renderSizesProduct(subProducts)}
-                    {renderColorsProduct(subProducts, size)}
-                    {renderSKUProduct(subProducts, size, color)}
+                    {renderColorsProduct(color)}
+                    {renderSKUProduct(sku)}
                   </div>
                   <div className="social-profiles">
                     <span className="share-label">Compartir:</span>
@@ -467,21 +396,6 @@ const GeneralInfo = (props) => {
               </div>
             </div>
           </Row>
-        </div>
-        <div>
-          {isOpen && (
-            <Lightbox
-              mainSrc={images[photoIndex]}
-              nextSrc={images[(photoIndex + 1) % images.length]}
-              prevSrc={images[(photoIndex + images.length - 1) % images.length]}
-              onCloseRequest={() => setIsOpen(false)}
-              enableZoom={false}
-              onMovePrevRequest={() =>
-                setPhotoIndex((photoIndex + images.length - 1) % images.length)
-              }
-              onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images.length)}
-            />
-          )}
         </div>
       </section>
     </>
