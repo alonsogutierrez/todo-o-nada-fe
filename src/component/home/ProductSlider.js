@@ -25,7 +25,7 @@ const ProductSlider = ({ settings }) => {
         setProducts(
           hits.map((hit) => {
             let {
-              pictures, //TODO: Get image for CDN Repository of images
+              picture,
               categories,
               name,
               price,
@@ -34,15 +34,8 @@ const ProductSlider = ({ settings }) => {
               sku,
               quantity,
             } = hit._source
-            const randomNumberForTest = Math.random() * (6 - 3) + 3
-            if (!pictures) {
-              pictures = [
-                `products/product-0${parseInt(randomNumberForTest)}.png`,
-                `products/product-0${parseInt(randomNumberForTest)}.png`,
-              ]
-            }
             return {
-              pictures,
+              picture,
               categories,
               name,
               price,

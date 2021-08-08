@@ -32,10 +32,10 @@ const Routes = () => {
           <Route path="/aboutus" component={AboutUsPage} />
           <Route path="/checkout" component={CheckOut} />
           <Route path="/contactus" component={ContactUsPage} />
-          <Route exact path="/search" component={SearchPage} />
+          <Route path="/search" component={SearchPage} />
           <Route path={`/product/:itemNumber`} component={ProductDetail} />
           <Route exact path="/category/:categoryName" component={CategoryPage} />
-          <Route exact path="/shopping-cart" component={ShoppingCart} />
+          <Route path="/shopping-cart" component={ShoppingCart} />
           <Route exact path="/successpayment" component={SuccessScreen} />
           <Route exact path="/admin/login" component={Login} />
 

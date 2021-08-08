@@ -1,7 +1,7 @@
 /* eslint-disable react/no-string-refs */
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Col, Container, Row, Table } from 'reactstrap'
 import PropTypes from 'prop-types'
 import 'react-toastify/dist/ReactToastify.min.css'
@@ -70,10 +70,11 @@ const ShopingCart = (props) => {
       removeFromCart(position)
     }
   }
+
   const setDefaults = () => {
     const { history } = props
     const cartItems = readCartItems()
-    if (cartItems && !cartItems.length > 0) {
+    if (cartItems && cartItems.length <= 0) {
       history.push('/')
     }
     localStorage.setItem('ShippingType', 1)
@@ -90,12 +91,13 @@ const ShopingCart = (props) => {
   }
 
   useEffect(() => {
-    setDefaults(document, 'script')
     var evt = document.createEvent('Event')
     evt.initEvent('load', false, false)
     window.dispatchEvent(evt)
     window.scrollTo(0, 0)
-  })
+  }, [])
+
+  setDefaults()
 
   const cartItems = readCartItems()
   return (
@@ -277,7 +279,7 @@ const mapDispatchToProps = (dispatch) => ({
   setChangeCart: (change) => dispatch(setChangeCartData(change)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopingCart)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ShopingCart))
 
 ShopingCart.defaultProps = {
   history: {},

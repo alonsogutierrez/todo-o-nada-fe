@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { toast, ToastContainer } from 'react-toastify'
 import { Row } from 'reactstrap'
@@ -236,10 +236,8 @@ const GeneralInfo = (props) => {
   )
 
   const handleGoToShoppingCart = (e) => {
-    console.log('********** SHOPPING CART ********')
     e.preventDefault()
-    const { history } = props
-    history.push('/shopping-cart')
+    props.history.push(`/shopping-cart`)
   }
 
   const renderImageProduct = () => {
@@ -324,22 +322,22 @@ const GeneralInfo = (props) => {
                       </label>
                       <input type="text" className="input-text qty text" value={qty} title="Qty" />
                       <div className="quantity-nav">
-                        <Link
+                        <button
                           className="quantity-button quantity-up"
                           onClick={() => PlusQty(itemNumber, sku)}
                         >
                           +
-                        </Link>
-                        <Link
+                        </button>
+                        <button
                           className="quantity-button quantity-down"
                           onClick={() => MinusQty(itemNumber, sku)}
                         >
                           -
-                        </Link>
+                        </button>
                       </div>
                     </div>
                     {!isSkuInCard(sku) ? (
-                      <Link
+                      <button
                         onClick={(e) =>
                           AddToCart(
                             e,
@@ -355,19 +353,17 @@ const GeneralInfo = (props) => {
                         rel="nofollow"
                       >
                         Agregar al carro
-                      </Link>
+                      </button>
                     ) : (
-                      <Link
-                        onClick={(e) => handleGoToShoppingCart(e)}
+                      <button
                         className="button single_add_to_cart_button"
-                        rel="nofollow"
+                        onClick={(e) => handleGoToShoppingCart(e)}
                       >
                         Ir al carro
-                      </Link>
+                      </button>
                     )}
                     <div className="clearfix" />
                   </form>
-                  {/* TODO: aun no es necesario el refactor de product_meta */}
                   <div className="product_meta">
                     <span className="posted_in">
                       <label>Categorías:</label>
@@ -413,15 +409,15 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(GeneralInfo))
 
 GeneralInfo.defaultProps = {
-  product: {},
   history: {},
+  product: {},
   changeCart: false,
   setChangeCart: () => {},
 }
 
 GeneralInfo.propTypes = {
-  product: PropTypes.object,
   history: PropTypes.object,
+  product: PropTypes.object,
   changeCart: PropTypes.bool,
   setChangeCart: PropTypes.func,
 }

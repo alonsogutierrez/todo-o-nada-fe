@@ -56,7 +56,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
     return checkCart
   }
 
-  const { pictures, name, price, description, itemNumber, sku, quantity } = product
+  const { picture, name, price, description, itemNumber, sku, quantity } = product
 
   const productPrice = price.basePriceSales
   const isProductWithStockAvailable = quantity > 0
@@ -68,22 +68,9 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
           <div className="product-thumbnail">
             <div className="product-thumbnail-inner">
               <Link to={`/product/${itemNumber}`}>
-                {pictures[0] ? (
-                  <div className="product-thumbnail-main">
-                    <img
-                      src={require(`./../../assets/images/${pictures[0]}`).default}
-                      className="img-fluid"
-                    />
-                  </div>
-                ) : null}
-                {pictures[1] ? (
-                  <div className="product-thumbnail-swap">
-                    <img
-                      src={require(`./../../assets/images/${pictures[1]}`).default}
-                      className="img-fluid"
-                    />
-                  </div>
-                ) : null}
+                <div className="product-thumbnail-main">
+                  <img src={picture} className="img-fluid" />
+                </div>
               </Link>
             </div>
 
