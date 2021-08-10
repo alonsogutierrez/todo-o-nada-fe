@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { toast, ToastContainer } from 'react-toastify'
 import { Row } from 'reactstrap'
@@ -76,7 +76,6 @@ const GeneralInfo = (props) => {
   }
 
   const PlusQty = (itemNumberProduct, skuSelected) => {
-    setQuantity(qty + 1)
     let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (!cartItems) cartItems = []
     const selectedProduct = cartItems.find(
@@ -98,6 +97,7 @@ const GeneralInfo = (props) => {
       setChangeCart(!changeCart)
       toast.success('Producto agregado al carro')
     }
+    setQuantity(qty + 1)
   }
 
   const MinusQty = (itemNumberProduct, skuSelected) => {
@@ -322,18 +322,18 @@ const GeneralInfo = (props) => {
                       </label>
                       <input type="text" className="input-text qty text" value={qty} title="Qty" />
                       <div className="quantity-nav">
-                        <button
+                        <Link
                           className="quantity-button quantity-up"
                           onClick={() => PlusQty(itemNumber, sku)}
                         >
                           +
-                        </button>
-                        <button
+                        </Link>
+                        <Link
                           className="quantity-button quantity-down"
                           onClick={() => MinusQty(itemNumber, sku)}
                         >
                           -
-                        </button>
+                        </Link>
                       </div>
                     </div>
                     {!isSkuInCard(sku) ? (
