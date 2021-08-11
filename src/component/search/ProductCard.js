@@ -12,17 +12,9 @@ class ProductCard extends Component {
   render() {
     const { product } = this.props
     const { _source, _id } = product
-    let { pictures, categories, name, price, description, itemNumber, sku, quantity } = _source
-    //TODO: Get image for CDN Repository of images
-    const randomNumberForTest = Math.random() * (6 - 3) + 3
-    if (!pictures) {
-      pictures = [
-        `products/product-0${parseInt(randomNumberForTest)}.png`,
-        `products/product-0${parseInt(randomNumberForTest)}.png`,
-      ]
-    }
+    let { picture, categories, name, price, description, itemNumber, sku, quantity } = _source
     const productMapped = {
-      pictures,
+      pictures: picture,
       categories,
       name,
       price,

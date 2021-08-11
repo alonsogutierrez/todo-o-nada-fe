@@ -2,16 +2,23 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import 'react-toastify/dist/ReactToastify.min.css'
+import { toast, ToastContainer } from 'react-toastify'
 
-const ShoppingCart = ({ cartItems }) => {
-  const removeFromCart = () => {
-    //TODO: Add logic to erase this product from cart
-    return []
+import setChangeCartData from './../../../../actions/setChangeCartData'
+
+const ShoppingCart = ({ cartItems, changeCart, setChangeCart }) => {
+  const readCartItems = () => {
+    return JSON.parse(localStorage.getItem('LocalCartItems'))
   }
 
-  const getItemImage = () => {
-    //TODO: Call to CDN to get item image
-    return require('../../../../assets/images/products/product-01.jpg')
+  const removeFromCart = (position) => {
+    let cartItems = readCartItems()
+    cartItems = cartItems.slice(0, position).concat(cartItems.slice(position + 1, cartItems.length))
+    localStorage.removeItem('LocalCartItems')
+    localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
+    setChangeCart(!changeCart)
+    toast.warning('Producto eliminado del carro')
   }
 
   const getItemPrice = (item) => {
@@ -42,6 +49,7 @@ const ShoppingCart = ({ cartItems }) => {
 
   return cartItems ? (
     <>
+      <ToastContainer autoClose={1000} draggable={false} />
       <div className="cart-contents" id="DivCartContent">
         <div className="widget ciyashop widget-shopping-cart">
           <div className="widget-shopping-cart-content">
@@ -61,7 +69,7 @@ const ShoppingCart = ({ cartItems }) => {
                         <img
                           width={60}
                           height={76}
-                          src={getItemImage()}
+                          src={cartItem.picture}
                           className="img-fluid"
                           alt
                         />
@@ -110,12 +118,24 @@ const ShoppingCart = ({ cartItems }) => {
   )
 }
 
-export default connect()(ShoppingCart)
+const mapStateToProps = (state) => ({
+  changeCart: state.changeCartDataReducer.changeCartData,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  setChangeCart: (change) => dispatch(setChangeCartData(change)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart)
 
 ShoppingCart.defaultProps = {
   cartItems: [],
+  changeCart: false,
+  setChangeCart: () => {},
 }
 
 ShoppingCart.propTypes = {
   cartItems: PropTypes.array,
+  changeCart: PropTypes.bool,
+  setChangeCart: PropTypes.func,
 }

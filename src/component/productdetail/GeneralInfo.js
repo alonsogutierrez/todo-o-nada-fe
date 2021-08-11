@@ -37,15 +37,7 @@ const GeneralInfo = (props) => {
   const [color] = useState(getDefaultColor(props.product))
   const [sku, setSku] = useState(getDefaultSku(props.product))
 
-  const AddToCart = (
-    e,
-    itemNumberProduct,
-    skuSelected,
-    productName,
-    quantity,
-    price,
-    isProductWithStockAvailable
-  ) => {
+  const AddToCart = (e, product, skuSelected, quantity, isProductWithStockAvailable) => {
     e.preventDefault()
     if (!isProductWithStockAvailable) {
       toast.warning('Producto sin stock')
@@ -53,16 +45,19 @@ const GeneralInfo = (props) => {
       let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
       if (!cartItems) cartItems = []
       const selectedProduct = cartItems.find(
-        (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
+        (cartItem) =>
+          cartItem.itemNumber === parseInt(product.itemNumber, 10) &&
+          cartItem.sku === parseInt(skuSelected, 10)
       )
       if (!selectedProduct) {
         cartItems.push({
-          itemNumber: itemNumberProduct,
-          sku: skuSelected,
-          productName,
+          itemNumber: parseInt(product.itemNumber, 10),
+          sku: parseInt(skuSelected, 10),
+          productName: product.name,
           quantity,
-          price,
+          price: product.price.basePriceSales,
           isProductWithStockAvailable,
+          picture: product.pictures[0],
         })
         localStorage.removeItem('LocalCartItems')
         localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
@@ -269,8 +264,7 @@ const GeneralInfo = (props) => {
   }, [size, sku])
 
   const { product } = props
-  const { name, price, itemNumber } = product
-  const productPrice = price.basePriceSales
+  const { itemNumber } = product
   const skuDetails = product.details
 
   const isProductWithStockAvailable = isSomeSkuWithStockAvailable(skuDetails)
@@ -339,15 +333,7 @@ const GeneralInfo = (props) => {
                     {!isSkuInCard(sku) ? (
                       <button
                         onClick={(e) =>
-                          AddToCart(
-                            e,
-                            itemNumber,
-                            sku,
-                            name,
-                            qty,
-                            productPrice,
-                            isProductWithStockAvailable
-                          )
+                          AddToCart(e, product, sku, qty, isProductWithStockAvailable)
                         }
                         className="button single_add_to_cart_button"
                         rel="nofollow"

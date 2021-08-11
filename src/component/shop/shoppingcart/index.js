@@ -19,7 +19,7 @@ const ShopingCart = (props) => {
     const clientAPI = new ClientAPI()
     const productResponse = await clientAPI.getProductByItemNumber(itemNumber)
     const { details } = productResponse
-    const productDetail = details.find((detail) => detail.sku === sku)
+    const productDetail = details[sku]
     if (productDetail) {
       const { stock: actualStock } = productDetail
       return actualStock
@@ -132,13 +132,7 @@ const ShopingCart = (props) => {
                             </td>
                             <td className="product-thumbnail">
                               <Link to="#">
-                                <img
-                                  src={
-                                    require(`../../../assets/images/products/product-01.jpg`)
-                                      .default
-                                  }
-                                  alt="product"
-                                />
+                                <img src={cartItem.picture} alt="product" />
                               </Link>
                             </td>
                             <td className="product-name">{cartItem.productName}</td>
