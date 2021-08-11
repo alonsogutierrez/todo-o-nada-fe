@@ -199,7 +199,7 @@ export default class ClientAPI {
       const client = this.bffInstance()
       client
         .request({
-          url: `/product/itemNumber/${itemNumber}`,
+          url: `/product/itemnumber/${itemNumber}`,
           method: 'get',
           timeout: 10 * 1000,
         })

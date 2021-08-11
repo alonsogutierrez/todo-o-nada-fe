@@ -1,102 +1,41 @@
-/**
- *  Shop Product Detail Page
- */
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-
+import React, { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { Container, Nav, NavItem, NavLink, Row, TabContent, TabPane } from 'reactstrap'
-import classnames from 'classnames'
-import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
-import ProductDetailSupportInfo from './ProductDetailSupportInfo'
-import PostDetail from '../../templates/post-detail'
-import ProductSlider from '../home/ProductSlider'
+import SupportInfo from './SupportInfo'
+import GeneralInfo from './GeneralInfo'
 import ClientAPI from '../../common/ClientAPI'
 
-const relatedSliderConfig = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 4,
-  slidesToScroll: 1,
-  responsive: [
-    {
-      breakpoint: 991,
-      settings: {
-        slidesToShow: 3,
-      },
-    },
-    {
-      breakpoint: 767,
-      settings: {
-        slidesToShow: 2,
-      },
-    },
-    {
-      breakpoint: 575,
-      settings: {
-        slidesToShow: 1,
-      },
-    },
-  ],
-}
+const ProductDetail = (props) => {
+  const { match } = props
+  const [itemNumber] = useState(match.params.itemNumber)
+  const [activeTab] = useState('1')
+  const [clientAPI] = useState(new ClientAPI())
+  const [actualProduct, setActualProduct] = useState()
 
-class ProductDetail extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      allProducts: this.props.products,
-      productId: parseInt(this.props.match.params.id),
-      itemNumber: parseInt(this.props.match.params.itemNumber),
-      currentProduct: null,
-      activeTab: '1',
-      clientAPI: new ClientAPI(),
-    }
-    this.toggle = this.toggle.bind(this)
-  }
-
-  async componentDidMount() {
-    const { clientAPI, itemNumber } = this.state
-    const product = await clientAPI.getProductByItemNumber(itemNumber)
-    const { history } = this.props
-    if (!product) {
-      // redirect to page not foun
-      history.push('/pagenotfound')
-    }
-    this.setState({
-      currentProduct: product,
-    })
-
+  useEffect(async () => {
+    const productResponseData = await clientAPI.getProductByItemNumber(itemNumber)
+    setActualProduct(productResponseData)
     window.scrollTo(0, 0)
-    let currentProductId = this.state.productId
-    let allProducts = this.state.allProducts
-    if (allProducts && allProducts.length > 0) {
-      const product = allProducts.find((product) => product.id === currentProductId)
-      if (product !== undefined) {
-        this.setState({
-          currentProduct: product,
-        })
-      }
-    }
+  }, [])
+
+  let productDescription = ''
+  let productCategory = ''
+  let productName = ''
+
+  if (actualProduct) {
+    let { description, category, name } = actualProduct
+    productDescription = description ? description : ''
+    productCategory = category ? category : ''
+    productName = name ? name : ''
   }
 
-  toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab,
-      })
-    }
-  }
-
-  render() {
-    const currentProduct = this.state.currentProduct
-
-    return (
-      <div>
-        {currentProduct !== null ? (
-          // <!-- Links -->
-          <div className="site-content">
+  return (
+    <div>
+      <div className="site-content">
+        {actualProduct && (
+          <>
             <div className="inner-intro">
               <Container>
                 <Row className="intro-title align-items-center">
@@ -110,10 +49,10 @@ class ProductDetail extends Component {
                         </span>
                       </li>
                       <li>
-                        <span>{currentProduct.category}</span>
+                        <span>{productCategory}</span>
                       </li>
                       <li>
-                        <span>{currentProduct.name}</span>
+                        <span>{productName}</span>
                       </li>
                     </ul>
                   </div>
@@ -122,22 +61,14 @@ class ProductDetail extends Component {
             </div>
             <div className="content-wrapper section-ptb">
               <Container>
-                {/* PDP Details */}
-                <PostDetail product={currentProduct} tabid={this.state.activeTab} />
+                <GeneralInfo product={actualProduct} tabid={activeTab} />
                 <div className="product-content-bottom">
                   <Nav tabs>
                     <NavItem active>
-                      <NavLink
-                        className={classnames({ active: this.state.activeTab === '1' })}
-                        onClick={() => {
-                          this.toggle('1')
-                        }}
-                      >
-                        Descripción
-                      </NavLink>
+                      <NavLink className="nav-item active">Descripción</NavLink>
                     </NavItem>
                   </Nav>
-                  <TabContent activeTab={this.state.activeTab}>
+                  <TabContent activeTab={activeTab}>
                     <TabPane tabId="1">
                       <div className="tab-content" id="myTabContent">
                         <div
@@ -147,48 +78,28 @@ class ProductDetail extends Component {
                           aria-labelledby="home-tab"
                         >
                           <h2>Descripción del producto</h2>
-                          <p>Características y detalle del producto, tallas, etc...</p>
-                          <img src={require('../../assets/images/TALLAS_POLERAS.jpg').default} />
-                          <ProductDetailSupportInfo />
+                          <p>{productDescription}</p>
+                          <SupportInfo />
                         </div>
                       </div>
                     </TabPane>
                   </TabContent>
-                  <div className="related products">
-                    <h2>Productos relacionados</h2>
-                    <div className="row">
-                      <ProductSlider
-                        productSub={currentProduct.subcategory}
-                        settings={relatedSliderConfig}
-                      />
-                    </div>
-                  </div>
                 </div>
               </Container>
             </div>
-          </div>
-        ) : null}
+          </>
+        )}
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-// const AppMapStateToProps = (state) => {
-//   return {
-//     products: state.data.products,
-//   }
-// }
-
-export default connect(null)(withRouter(ProductDetail))
+export default withRouter(ProductDetail)
 
 ProductDetail.defaultProps = {
-  products: [],
   match: {},
-  history: {},
 }
 
 ProductDetail.propTypes = {
-  products: PropTypes.array,
   match: PropTypes.object,
-  history: PropTypes.object,
 }

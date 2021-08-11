@@ -1,7 +1,7 @@
 /* eslint-disable react/no-string-refs */
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Col, Container, Row, Table } from 'reactstrap'
 import PropTypes from 'prop-types'
 import 'react-toastify/dist/ReactToastify.min.css'
@@ -19,7 +19,7 @@ const ShopingCart = (props) => {
     const clientAPI = new ClientAPI()
     const productResponse = await clientAPI.getProductByItemNumber(itemNumber)
     const { details } = productResponse
-    const productDetail = details.find((detail) => detail.sku === sku)
+    const productDetail = details[sku]
     if (productDetail) {
       const { stock: actualStock } = productDetail
       return actualStock
@@ -70,10 +70,11 @@ const ShopingCart = (props) => {
       removeFromCart(position)
     }
   }
+
   const setDefaults = () => {
     const { history } = props
     const cartItems = readCartItems()
-    if (cartItems && !cartItems.length > 0) {
+    if (cartItems && cartItems.length <= 0) {
       history.push('/')
     }
     localStorage.setItem('ShippingType', 1)
@@ -90,12 +91,13 @@ const ShopingCart = (props) => {
   }
 
   useEffect(() => {
-    setDefaults(document, 'script')
     var evt = document.createEvent('Event')
     evt.initEvent('load', false, false)
     window.dispatchEvent(evt)
     window.scrollTo(0, 0)
-  })
+  }, [])
+
+  setDefaults()
 
   const cartItems = readCartItems()
   return (
@@ -130,13 +132,7 @@ const ShopingCart = (props) => {
                             </td>
                             <td className="product-thumbnail">
                               <Link to="#">
-                                <img
-                                  src={
-                                    require(`../../../assets/images/products/product-01.jpg`)
-                                      .default
-                                  }
-                                  alt="product"
-                                />
+                                <img src={cartItem.picture} alt="product" />
                               </Link>
                             </td>
                             <td className="product-name">{cartItem.productName}</td>
@@ -277,7 +273,7 @@ const mapDispatchToProps = (dispatch) => ({
   setChangeCart: (change) => dispatch(setChangeCartData(change)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopingCart)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ShopingCart))
 
 ShopingCart.defaultProps = {
   history: {},

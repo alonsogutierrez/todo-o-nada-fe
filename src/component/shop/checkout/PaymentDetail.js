@@ -24,14 +24,6 @@ const PaymentDetail = ({ orderData, totalShippingCarge }) => {
     return isValid
   }
 
-  // const getProductImage = (product) => {
-  //   const productFind = productsAPI.find((productAPI) => {
-  //     return product.sku === productAPI['id']
-  //   })
-  //   if (productFind) {
-  //     return productFind.pictures[0]
-  //   }
-  // }
   let user = {}
   if (!isValidParams(orderData)) {
     return <div>Cargando data...</div>
@@ -76,7 +68,7 @@ const PaymentDetail = ({ orderData, totalShippingCarge }) => {
               <li>{userData.address.country}</li>
             </ul>
           </Col>
-          {products !== null && products.length > 0 ? (
+          {products ? (
             <Col lg={6} className="text-lg-right mt-4 mt-lg-0">
               <h6>Resumen</h6>
               <ul className="list-unstyled mb-0">
@@ -101,7 +93,7 @@ const PaymentDetail = ({ orderData, totalShippingCarge }) => {
           )}
         </Row>
       </div>
-      {products !== null && products.length > 0 ? (
+      {products ? (
         <div className="ordered-detail">
           <h5 className="mb-4">Los detalles de tu orden</h5>
           <div className="table-responsive">
@@ -111,12 +103,7 @@ const PaymentDetail = ({ orderData, totalShippingCarge }) => {
                   {products.map((product, index) => (
                     <tr key={index} className="ordered-item">
                       <td className="ordered-image">
-                        <img
-                          alt="img 01"
-                          //src={require(`../../../assets/images/${getProductImage(product)}`)}
-                          src="https://funky-t-shirt.com/assets/funkytshirt/img/products/4032/image/skull-snake-illustration-tattoo-design-shirt.jpg"
-                          className="img-fluid"
-                        />
+                        <img alt="img 01" src={product.pictures} className="img-fluid" />
                       </td>
                       <td className="ordered-name">
                         <h6 className="mb-0">Producto</h6>

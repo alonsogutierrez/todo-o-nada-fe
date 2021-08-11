@@ -8,30 +8,26 @@ import { toast, ToastContainer } from 'react-toastify'
 import setChangeCartData from '../../actions/setChangeCartData'
 
 const ProductInfo = ({ product, changeCart, setChangeCart }) => {
-  const AddToCart = (
-    itemNumber,
-    sku,
-    productName,
-    quantity,
-    price,
-    isProductWithStockAvailable
-  ) => {
+  const AddToCart = (product, quantity, isProductWithStockAvailable) => {
     if (!isProductWithStockAvailable) {
       toast.warning('Producto sin stock')
     } else {
       let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
       if (!cartItems) cartItems = []
       let selectedProduct = cartItems.find(
-        (product) => product.itemNumber === itemNumber && product.sku === sku
+        (cartItem) =>
+          cartItem.itemNumber === parseInt(product.itemNumber, 10) &&
+          cartItem.sku === parseInt(product.sku, 10)
       )
       if (!selectedProduct) {
         cartItems.push({
-          itemNumber,
-          sku,
-          productName,
+          itemNumber: parseInt(product.itemNumber, 10),
+          sku: parseInt(product.sku, 10),
+          productName: product.name,
           quantity,
-          price,
+          price: product.price.basePriceSales,
           isProductWithStockAvailable,
+          picture: product.picture,
         })
         localStorage.removeItem('LocalCartItems')
         localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
@@ -48,7 +44,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
     let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (cartItems && cartItems.length > 0) {
       for (const cartItem of cartItems) {
-        if (cartItem.itemNumber === itemNumber && cartItem.sku === sku) {
+        if (cartItem && cartItem.itemNumber === itemNumber && cartItem.sku === sku) {
           checkCart = true
         }
       }
@@ -56,7 +52,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
     return checkCart
   }
 
-  const { pictures, name, price, description, itemNumber, sku, quantity } = product
+  const { picture, name, price, description, itemNumber, sku, quantity } = product
 
   const productPrice = price.basePriceSales
   const isProductWithStockAvailable = quantity > 0
@@ -68,22 +64,9 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
           <div className="product-thumbnail">
             <div className="product-thumbnail-inner">
               <Link to={`/product/${itemNumber}`}>
-                {pictures[0] ? (
-                  <div className="product-thumbnail-main">
-                    <img
-                      src={require(`./../../assets/images/${pictures[0]}`).default}
-                      className="img-fluid"
-                    />
-                  </div>
-                ) : null}
-                {pictures[1] ? (
-                  <div className="product-thumbnail-swap">
-                    <img
-                      src={require(`./../../assets/images/${pictures[1]}`).default}
-                      className="img-fluid"
-                    />
-                  </div>
-                ) : null}
+                <div className="product-thumbnail-main">
+                  <img src={picture} className="img-fluid" />
+                </div>
               </Link>
             </div>
 
@@ -92,16 +75,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                 <div className="product-action product-action-add-to-cart">
                   {!CheckCardItem(itemNumber, sku) ? (
                     <Link
-                      onClick={() =>
-                        AddToCart(
-                          itemNumber,
-                          sku,
-                          name,
-                          1,
-                          productPrice,
-                          isProductWithStockAvailable
-                        )
-                      }
+                      onClick={() => AddToCart(product, 1, isProductWithStockAvailable)}
                       className="button add_to_cart_button"
                       rel="nofollow"
                     >
@@ -141,16 +115,7 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
                 <div className="product-action product-action-add-to-cart">
                   {!CheckCardItem(itemNumber, sku) ? (
                     <Link
-                      onClick={() =>
-                        AddToCart(
-                          itemNumber,
-                          sku,
-                          name,
-                          1,
-                          productPrice,
-                          isProductWithStockAvailable
-                        )
-                      }
+                      onClick={() => AddToCart(product, 1, isProductWithStockAvailable)}
                       className="button add_to_cart_button"
                       rel="nofollow"
                     >
