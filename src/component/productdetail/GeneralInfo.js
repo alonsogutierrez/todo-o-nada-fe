@@ -58,6 +58,7 @@ const GeneralInfo = (props) => {
           price: product.price.basePriceSales,
           isProductWithStockAvailable,
           picture: product.pictures[0],
+          size,
         })
         localStorage.removeItem('LocalCartItems')
         localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
@@ -74,11 +75,16 @@ const GeneralInfo = (props) => {
     let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (!cartItems) cartItems = []
     const selectedProduct = cartItems.find(
-      (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
+      (product) =>
+        product.itemNumber === parseInt(itemNumberProduct, 10) &&
+        product.sku === parseInt(skuSelected, 10)
     )
     if (selectedProduct) {
       cartItems = cartItems.map((item) => {
-        if (item.itemNumber === itemNumberProduct && item.sku === skuSelected) {
+        if (
+          item.itemNumber === parseInt(itemNumberProduct, 10) &&
+          item.sku === parseInt(skuSelected, 10)
+        ) {
           return {
             ...item,
             quantity: item.quantity + 1,
@@ -100,12 +106,18 @@ const GeneralInfo = (props) => {
       setQuantity(qty - 1)
       let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
       if (!cartItems) cartItems = []
+      console.log('itemNumberProduct qty > 1: ', itemNumberProduct)
+      console.log('skuSelected qty > 1: ', skuSelected)
       const selectedProduct = cartItems.find(
-        (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
+        (product) =>
+          product.itemNumber === parseInt(itemNumberProduct, 10) &&
+          product.sku === parseInt(skuSelected, 10)
       )
+      console.log('selectedProduct qty > 1: ', selectedProduct)
       if (selectedProduct) {
         cartItems = cartItems.map((item) =>
-          item.itemNumber === itemNumberProduct && item.sku === skuSelected
+          item.itemNumber === parseInt(itemNumberProduct, 10) &&
+          item.sku === parseInt(skuSelected, 10)
             ? {
                 ...item,
                 quantity: item.quantity - 1,
@@ -123,14 +135,21 @@ const GeneralInfo = (props) => {
       setQuantity(1)
       let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
       if (!cartItems) cartItems = []
+      console.log('itemNumberProduct qty = 1: ', itemNumberProduct)
+      console.log('skuSelected qty = 1: ', skuSelected)
       const selectedProduct = cartItems.find(
-        (product) => product.itemNumber === itemNumberProduct && product.sku === skuSelected
+        (product) =>
+          product.itemNumber === parseInt(itemNumberProduct, 10) &&
+          product.sku === parseInt(skuSelected, 10)
       )
+      console.log('selectedProduct qty = 1: ', selectedProduct)
       if (selectedProduct) {
         cartItems =
           cartItems.length > 1
             ? cartItems.filter(
-                (item) => item.itemNumber !== itemNumberProduct && item.sku !== skuSelected
+                (item) =>
+                  item.itemNumber !== parseInt(itemNumberProduct, 10) &&
+                  item.sku !== parseInt(skuSelected, 10)
               )
             : []
         localStorage.removeItem('LocalCartItems')
@@ -146,7 +165,7 @@ const GeneralInfo = (props) => {
     let checkCart = false
     const cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (cartItems && cartItems.length > 0) {
-      checkCart = cartItems.some((item) => item.sku === skuSelected)
+      checkCart = cartItems.some((item) => item.sku === parseInt(skuSelected, 10))
     }
     return checkCart
   }

@@ -12,9 +12,19 @@ class ProductCard extends Component {
   render() {
     const { product } = this.props
     const { _source, _id } = product
-    let { picture, categories, name, price, description, itemNumber, sku, quantity } = _source
+    let {
+      picture,
+      categories,
+      name,
+      price,
+      description,
+      itemNumber,
+      sku,
+      quantity,
+      details,
+    } = _source
     const productMapped = {
-      pictures: picture,
+      picture,
       categories,
       name,
       price,
@@ -23,6 +33,7 @@ class ProductCard extends Component {
       sku,
       id: _id,
       quantity,
+      details,
     }
     return (
       <div key={1} className={this.props.layoutstyle}>
