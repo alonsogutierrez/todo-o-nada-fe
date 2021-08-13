@@ -33,6 +33,7 @@ const ProductSlider = ({ settings }) => {
               itemNumber,
               sku,
               quantity,
+              details,
             } = hit._source
             return {
               picture,
@@ -44,6 +45,7 @@ const ProductSlider = ({ settings }) => {
               sku,
               id: hit._id,
               quantity,
+              details,
             }
           })
         )

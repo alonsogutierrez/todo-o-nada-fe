@@ -135,7 +135,9 @@ const ShopingCart = (props) => {
                                 <img src={cartItem.picture} alt="product" />
                               </Link>
                             </td>
-                            <td className="product-name">{cartItem.productName}</td>
+                            <td className="product-name">
+                              {cartItem.productName} - {cartItem.size}
+                            </td>
                             <td className="product-price">
                               $
                               {cartItem.price.toLocaleString(navigator.language, {

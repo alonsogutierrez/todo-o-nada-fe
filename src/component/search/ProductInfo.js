@@ -1,64 +1,17 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import 'react-toastify/dist/ReactToastify.min.css'
-import { toast, ToastContainer } from 'react-toastify'
 
-import setChangeCartData from '../../actions/setChangeCartData'
-
-const ProductInfo = ({ product, changeCart, setChangeCart }) => {
-  const AddToCart = (product, quantity, isProductWithStockAvailable) => {
-    if (!isProductWithStockAvailable) {
-      toast.warning('Producto sin stock')
-    } else {
-      let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
-      if (!cartItems) cartItems = []
-      let selectedProduct = cartItems.find(
-        (cartItem) =>
-          cartItem.itemNumber === parseInt(product.itemNumber, 10) &&
-          cartItem.sku === parseInt(product.sku, 10)
-      )
-      if (!selectedProduct) {
-        cartItems.push({
-          itemNumber: parseInt(product.itemNumber, 10),
-          sku: parseInt(product.sku, 10),
-          productName: product.name,
-          quantity,
-          price: product.price.basePriceSales,
-          isProductWithStockAvailable,
-          picture: product.picture,
-        })
-        localStorage.removeItem('LocalCartItems')
-        localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
-        setChangeCart(!changeCart)
-        toast.success('Producto agregado al carro')
-      } else {
-        toast.warning('Producto ya esta en el carro')
-      }
-    }
-  }
-
-  const CheckCardItem = (itemNumber, sku) => {
-    let checkCart = false
-    let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
-    if (cartItems && cartItems.length > 0) {
-      for (const cartItem of cartItems) {
-        if (cartItem && cartItem.itemNumber === itemNumber && cartItem.sku === sku) {
-          checkCart = true
-        }
-      }
-    }
-    return checkCart
-  }
-
-  const { picture, name, price, description, itemNumber, sku, quantity } = product
+const ProductInfo = ({ product }) => {
+  const { picture, name, price, description, itemNumber, details } = product
 
   const productPrice = price.basePriceSales
-  const isProductWithStockAvailable = quantity > 0
+  let isProductWithStockAvailable = false
+  for (const sku in details) {
+    if (parseInt(details[sku].quantity, 10) > 0) isProductWithStockAvailable = true
+  }
   return (
     <>
-      <ToastContainer autoClose={1000} draggable={false} />
       <div className="product product_tag-black product-hover-style-default product-hover-button-style-dark product_title_type-single_line product_icon_type-line-icon">
         <div className="product-inner element-hovered">
           <div className="product-thumbnail">
@@ -73,19 +26,15 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
             <div className="product-actions">
               <div className="product-actions-inner">
                 <div className="product-action product-action-add-to-cart">
-                  {!CheckCardItem(itemNumber, sku) ? (
+                  {
                     <Link
-                      onClick={() => AddToCart(product, 1, isProductWithStockAvailable)}
+                      to={`/product/${itemNumber}`}
                       className="button add_to_cart_button"
                       rel="nofollow"
                     >
-                      {isProductWithStockAvailable ? 'Agregar al carro' : 'No hay stock'}
+                      {isProductWithStockAvailable ? 'Ver producto' : 'No hay stock'}
                     </Link>
-                  ) : (
-                    <Link to="/shopping-cart" className="button add_to_cart_button" rel="nofollow">
-                      Ver carro
-                    </Link>
-                  )}
+                  }
                 </div>
               </div>
             </div>
@@ -113,19 +62,13 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
             <div className="product-actions product-actions-list">
               <div className="product-actions-inner">
                 <div className="product-action product-action-add-to-cart">
-                  {!CheckCardItem(itemNumber, sku) ? (
-                    <Link
-                      onClick={() => AddToCart(product, 1, isProductWithStockAvailable)}
-                      className="button add_to_cart_button"
-                      rel="nofollow"
-                    >
-                      {isProductWithStockAvailable ? 'Agregar al carro' : 'No hay stock'}
-                    </Link>
-                  ) : (
-                    <Link to="/shopping-cart" className="button add_to_cart_button" rel="nofollow">
-                      Ver carro
-                    </Link>
-                  )}
+                  <Link
+                    to={`/product/${itemNumber}`}
+                    className="button add_to_cart_button"
+                    rel="nofollow"
+                  >
+                    {isProductWithStockAvailable ? 'Ver producto' : 'No hay stock'}
+                  </Link>
                 </div>
               </div>
             </div>
@@ -141,24 +84,12 @@ const ProductInfo = ({ product, changeCart, setChangeCart }) => {
   )
 }
 
-const mapStateToProps = (state) => ({
-  changeCart: state.changeCartDataReducer.changeCartData,
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  setChangeCart: (change) => dispatch(setChangeCartData(change)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductInfo)
+export default ProductInfo
 
 ProductInfo.defaultProps = {
   product: {},
-  changeCart: false,
-  setChangeCart: () => {},
 }
 
 ProductInfo.propTypes = {
   product: PropTypes.object,
-  changeCart: PropTypes.bool,
-  setChangeCart: PropTypes.func,
 }

@@ -107,7 +107,9 @@ const PaymentDetail = ({ orderData, totalShippingCarge }) => {
                       </td>
                       <td className="ordered-name">
                         <h6 className="mb-0">Producto</h6>
-                        <span>{product.name}</span>
+                        <span>
+                          {product.name} - {product.size}
+                        </span>
                       </td>
                       <td className="ordered-quantity">
                         <h6 className="mb-0">Cantidad</h6>

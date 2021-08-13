@@ -43,8 +43,8 @@ const OrderResume = () => {
             {cartItems.map((item, index) => (
               <tr key={index} className="cart_item">
                 <td className="product-name">
-                  {item.productName}&nbsp;{' '}
-                  <strong className="product-quantity">× {item.quantity}</strong>{' '}
+                  {item.productName}&nbsp; {`- ${item.size}`}
+                  <strong className="product-quantity"> × {item.quantity}</strong>{' '}
                 </td>
                 <td className="product-total">
                   <span className="woocs_special_price_code">

@@ -76,7 +76,7 @@ const ShoppingCart = ({ cartItems, changeCart, setChangeCart }) => {
                       </Link>
                       <div className="media-body">
                         <Link to="#" className="product-title">
-                          {cartItem.productName}
+                          {cartItem.productName} - {cartItem.size}
                         </Link>
                         <span className="quantity">
                           {cartItem.quantity} ×{' '}

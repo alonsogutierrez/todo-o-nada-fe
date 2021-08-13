@@ -5,10 +5,10 @@ export const uniqueColors = (products) => {
     hits.forEach((hit) => {
       const { _source } = hit
       if (_source) {
-        const { colors } = _source
-        if (colors && colors.length > 0) {
-          if (uniqueColors.indexOf(colors) == -1) {
-            uniqueColors.push(colors)
+        const { color } = _source
+        if (color) {
+          if (!uniqueColors.includes(color)) {
+            uniqueColors.push(color)
           }
         }
       }
@@ -27,7 +27,7 @@ export const uniqueCategory = (products) => {
         const { categories } = _source
         if (categories && categories.length > 0) {
           categories.forEach((category) => {
-            if (uniqueCategorys.indexOf(category) == -1) {
+            if (!uniqueCategorys.includes(category)) {
               uniqueCategorys.push(category)
             }
           })
@@ -46,11 +46,13 @@ export const uniqueSizes = (products) => {
     hits.forEach((hit) => {
       const { _source } = hit
       if (_source) {
-        const { sizeDetail } = _source
-        if (sizeDetail && sizeDetail.length > 0) {
-          if (uniqueSizes.indexOf(sizeDetail) == -1) {
-            uniqueSizes.push(sizeDetail)
-          }
+        const { sizes } = _source
+        if (sizes) {
+          sizes.forEach((size) => {
+            if (!uniqueSizes.includes(size)) {
+              uniqueSizes.push(size)
+            }
+          })
         }
       }
     })
@@ -83,35 +85,26 @@ export const getFilterProductsdata = (data, { category, size, color, sortOrder }
         .filter((product) => {
           const { _source } = product
           if (_source) {
-            const { categories, sizeDetail, colors } = _source
+            const { categories, sizes, color: productColor } = _source
 
             if (category.length === 0 && size.length === 0 && color.length === 0) return true
-            let categoryMatchValue
-            if (category.length > 0) {
-              if (categories && categories.length > 0) {
-                categoryMatchValue =
-                  categories.length > 0 ? categories.some((cat) => category.includes(cat)) : false
-              } else {
-                categoryMatchValue = false
-              }
+            let categoryMatchValue = false
+            if (category.length > 0 && categories) {
+              categoryMatchValue = categories.some((cat) => category.includes(cat))
             }
 
-            let sizeMatchValue
-            if (size.length > 0) {
-              if (sizeDetail && sizeDetail.length > 0) {
-                sizeMatchValue = sizeDetail.length > 0 ? size.includes(sizeDetail) : false
-              } else {
-                sizeMatchValue = false
-              }
+            let sizeMatchValue = false
+            if (size.length > 0 && sizes) {
+              sizes.forEach((productSize) => {
+                if (size.some((filterSize) => filterSize === productSize)) {
+                  sizeMatchValue = true
+                }
+              })
             }
 
-            let colorMatchValue
-            if (color.length > 0) {
-              if (colors && colors.length > 0) {
-                colorMatchValue = colors.length > 0 ? color.includes(colors) : false
-              } else {
-                colorMatchValue = false
-              }
+            let colorMatchValue = false
+            if (color.length > 0 && color.includes(productColor)) {
+              colorMatchValue = true
             }
 
             if (category.length > 0 && color.length > 0 && size.length > 0) {
