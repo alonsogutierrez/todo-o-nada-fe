@@ -31,15 +31,22 @@ const getDefaultSku = (product) => {
 }
 
 const GeneralInfo = (props) => {
-  const [sizes] = useState(['S', 'M', 'L', 'XL'])
+  const [sizes] = useState(['S', 'M', 'L', 'XL', 'XXL'])
   const [qty, setQuantity] = useState(1)
   const [size, setSize] = useState(getDefaultSize(props.product))
   const [color] = useState(getDefaultColor(props.product))
   const [sku, setSku] = useState(getDefaultSku(props.product))
 
-  const AddToCart = (e, product, skuSelected, quantity, isProductWithStockAvailable) => {
+  const IsSkuWithAvailableStock = (skuSelected, desiredQuantity) => {
+    const { product } = props
+    const skuDetails = product.details
+    const isStockAvailable = desiredQuantity <= skuDetails[skuSelected].stock
+    return isStockAvailable
+  }
+
+  const AddToCart = (e, product, skuSelected, quantity) => {
     e.preventDefault()
-    if (!isProductWithStockAvailable) {
+    if (!IsSkuWithAvailableStock(skuSelected, quantity)) {
       toast.warning('Producto sin stock')
     } else {
       let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
@@ -56,7 +63,6 @@ const GeneralInfo = (props) => {
           productName: product.name,
           quantity,
           price: product.price.basePriceSales,
-          isProductWithStockAvailable,
           picture: product.pictures[0],
           size,
         })
@@ -72,33 +78,39 @@ const GeneralInfo = (props) => {
   }
 
   const PlusQty = (itemNumberProduct, skuSelected) => {
-    let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
-    if (!cartItems) cartItems = []
-    const selectedProduct = cartItems.find(
-      (product) =>
-        product.itemNumber === parseInt(itemNumberProduct, 10) &&
-        product.sku === parseInt(skuSelected, 10)
-    )
-    if (selectedProduct) {
-      cartItems = cartItems.map((item) => {
-        if (
-          item.itemNumber === parseInt(itemNumberProduct, 10) &&
-          item.sku === parseInt(skuSelected, 10)
-        ) {
-          return {
-            ...item,
-            quantity: item.quantity + 1,
+    const desiredQuantity = qty + 1
+    if (!IsSkuWithAvailableStock(skuSelected, desiredQuantity)) {
+      toast.warning('Producto sin stock')
+    } else {
+      let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
+      if (!cartItems) cartItems = []
+
+      const selectedProduct = cartItems.find(
+        (product) =>
+          product.itemNumber === parseInt(itemNumberProduct, 10) &&
+          product.sku === parseInt(skuSelected, 10)
+      )
+      if (selectedProduct) {
+        cartItems = cartItems.map((item) => {
+          if (
+            item.itemNumber === parseInt(itemNumberProduct, 10) &&
+            item.sku === parseInt(skuSelected, 10)
+          ) {
+            return {
+              ...item,
+              quantity: item.quantity + 1,
+            }
           }
-        }
-        return item
-      })
-      localStorage.removeItem('LocalCartItems')
-      localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
-      const { setChangeCart, changeCart } = props
-      setChangeCart(!changeCart)
-      toast.success('Producto agregado al carro')
+          return item
+        })
+        localStorage.removeItem('LocalCartItems')
+        localStorage.setItem('LocalCartItems', JSON.stringify(cartItems))
+        const { setChangeCart, changeCart } = props
+        setChangeCart(!changeCart)
+        toast.success('Producto agregado al carro')
+      }
+      setQuantity(qty + 1)
     }
-    setQuantity(qty + 1)
   }
 
   const MinusQty = (itemNumberProduct, skuSelected) => {
@@ -106,14 +118,11 @@ const GeneralInfo = (props) => {
       setQuantity(qty - 1)
       let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
       if (!cartItems) cartItems = []
-      console.log('itemNumberProduct qty > 1: ', itemNumberProduct)
-      console.log('skuSelected qty > 1: ', skuSelected)
       const selectedProduct = cartItems.find(
         (product) =>
           product.itemNumber === parseInt(itemNumberProduct, 10) &&
           product.sku === parseInt(skuSelected, 10)
       )
-      console.log('selectedProduct qty > 1: ', selectedProduct)
       if (selectedProduct) {
         cartItems = cartItems.map((item) =>
           item.itemNumber === parseInt(itemNumberProduct, 10) &&
@@ -135,14 +144,11 @@ const GeneralInfo = (props) => {
       setQuantity(1)
       let cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
       if (!cartItems) cartItems = []
-      console.log('itemNumberProduct qty = 1: ', itemNumberProduct)
-      console.log('skuSelected qty = 1: ', skuSelected)
       const selectedProduct = cartItems.find(
         (product) =>
           product.itemNumber === parseInt(itemNumberProduct, 10) &&
           product.sku === parseInt(skuSelected, 10)
       )
-      console.log('selectedProduct qty = 1: ', selectedProduct)
       if (selectedProduct) {
         cartItems =
           cartItems.length > 1
@@ -161,7 +167,7 @@ const GeneralInfo = (props) => {
     }
   }
 
-  const isSkuInCard = (skuSelected) => {
+  const IsSkuInCard = (skuSelected) => {
     let checkCart = false
     const cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     if (cartItems && cartItems.length > 0) {
@@ -206,7 +212,7 @@ const GeneralInfo = (props) => {
       <span className="size">
         <label>Tamaño:</label>
         {subProducts.map((product, index) => {
-          if (Object.keys(product.details).length > 0) {
+          if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
             return (
               <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
                 <a
@@ -260,13 +266,6 @@ const GeneralInfo = (props) => {
     )
   }
 
-  const isSomeSkuWithStockAvailable = (skuDetails) => {
-    for (let sku in skuDetails) {
-      if (skuDetails[sku].stock > 0) return true
-    }
-    return false
-  }
-
   const setActualQuantity = (sku) => {
     const cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     let cartItem = {}
@@ -284,23 +283,7 @@ const GeneralInfo = (props) => {
 
   const { product } = props
   const { itemNumber } = product
-  const skuDetails = product.details
-
-  const isProductWithStockAvailable = isSomeSkuWithStockAvailable(skuDetails)
-
   const subProducts = configSubProduct(product)
-
-  let rat = []
-  let rating = product.rating
-  let i = 1
-  while (i <= 5) {
-    if (i <= rating) {
-      rat.push(<i className="fa fa-star" />)
-    } else {
-      rat.push(<i className="fa fa-star-o" />)
-    }
-    i += 1
-  }
 
   return (
     <>
@@ -349,11 +332,9 @@ const GeneralInfo = (props) => {
                         </Link>
                       </div>
                     </div>
-                    {!isSkuInCard(sku) ? (
+                    {!IsSkuInCard(sku) ? (
                       <button
-                        onClick={(e) =>
-                          AddToCart(e, product, sku, qty, isProductWithStockAvailable)
-                        }
+                        onClick={(e) => AddToCart(e, product, sku, qty)}
                         className="button single_add_to_cart_button"
                         rel="nofollow"
                       >

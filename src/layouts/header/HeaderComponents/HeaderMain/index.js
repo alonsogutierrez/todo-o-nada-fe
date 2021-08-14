@@ -115,7 +115,10 @@ const HeaderMain = ({ changeCart }) => {
                 </Col>
                 <Navbar color="faded" light>
                   <NavbarToggler onClick={toggle} className="mr-2" />
-                  {isOpen && (
+                  {isOpen && width < 992 && (
+                    <HeaderNavLinks navLinks={navLinks} pageName={pageName} />
+                  )}
+                  {isOpen && width >= 992 && (
                     <Nav className="ml-auto" navbar>
                       {navLinks.map((navLink, index) => (
                         <li

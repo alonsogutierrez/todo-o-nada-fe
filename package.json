@@ -1,8 +1,8 @@
 {
-  "name": "reactdemo",
+  "name": "TodoONadaTattooArtWebPage",
   "version": "1.0.2",
   "private": true,
-  "homepage": "https://ciyashop-react.potenzaglobalsolutions.com/",
+  "homepage": "https://todoonadatattooart.cl/",
   "dependencies": {
     "antd": "^3.26.5",
     "axios": "0.21.1",
