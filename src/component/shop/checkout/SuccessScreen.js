@@ -60,8 +60,6 @@ const SuccessPayment = (props) => {
 
   const orderData = response.data ? response.data : {}
 
-  console.log('props: ', props.location)
-
   return (
     <>
       <div>
