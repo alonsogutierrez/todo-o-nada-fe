@@ -43,7 +43,10 @@ const SuccessPayment = (props) => {
     readCartItems()
     const fetchOrderData = async () => {
       const orderNumber = new URLSearchParams(props.location.search).get('orderNumber')
+      console.log('orderNumber: ', orderNumber)
       const id = new URLSearchParams(props.location.search).get('id')
+      console.log('id: ', id)
+
       const orderData = await getOrderData(orderNumber, id)
       setResponse({
         data: orderData,
@@ -51,6 +54,8 @@ const SuccessPayment = (props) => {
       })
     }
     fetchOrderData()
+    console.log('call fetchOrderData')
+    console.log('props.location')
     let evt = document.createEvent('Event')
     evt.initEvent('load', false, false)
     window.dispatchEvent(evt)
@@ -58,6 +63,8 @@ const SuccessPayment = (props) => {
   }, [])
 
   const orderData = response.data ? response.data : {}
+
+  console.log('props: ', props.location)
 
   return (
     <>
@@ -94,6 +101,7 @@ const SuccessPayment = (props) => {
                 <PaymentDetail
                   orderData={orderData}
                   totalShippingCarge={shippingAmount}
+                  loading={response.loading}
                 ></PaymentDetail>
               </Col>
             </Row>

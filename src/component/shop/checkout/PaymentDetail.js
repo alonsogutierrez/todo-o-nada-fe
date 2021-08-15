@@ -2,8 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Col, Row } from 'reactstrap'
+import Loader from 'react-loader-spinner'
 
-const PaymentDetail = ({ orderData, totalShippingCarge }) => {
+const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
   const { orderNumber, paymentData, products, createdAt, dispatchData } = orderData
   const createdDate = new Date(createdAt).toLocaleDateString('es-CL')
 
@@ -19,14 +20,17 @@ const PaymentDetail = ({ orderData, totalShippingCarge }) => {
     return total
   }
 
-  const isValidParams = (order) => {
-    const isValid = order && Object.keys(order).length > 0
-    return isValid
-  }
-
   let user = {}
-  if (!isValidParams(orderData)) {
-    return <div>Cargando data...</div>
+  if (loading) {
+    return (
+      loading && (
+        <>
+          <div>
+            <Loader type="Puff" color="#04d39f" height="100" width="100" />
+          </div>
+        </>
+      )
+    )
   }
   if (paymentData && Object.keys(paymentData).length > 0) {
     user = paymentData.user
@@ -186,10 +190,12 @@ PaymentDetail.defaultProps = {
   userData: {},
   orderData: {},
   totalShippingCarge: 0,
+  loading: true,
 }
 
 PaymentDetail.propTypes = {
   userData: PropTypes.object,
   orderData: PropTypes.object,
   totalShippingCarge: PropTypes.number,
+  loading: PropTypes.bool,
 }

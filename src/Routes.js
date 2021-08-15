@@ -36,7 +36,7 @@ const Routes = () => {
           <Route path={`/product/:itemNumber`} component={ProductDetail} />
           <Route exact path="/category/:categoryName" component={CategoryPage} />
           <Route path="/shopping-cart" component={ShoppingCart} />
-          <Route exact path="/successpayment" component={SuccessScreen} />
+          <Route path="/successpayment" component={SuccessScreen} />
           <Route exact path="/admin/login" component={Login} />
 
           <PrivateRoute path="/admin-dashboard">
