@@ -43,9 +43,7 @@ const SuccessPayment = (props) => {
     readCartItems()
     const fetchOrderData = async () => {
       const orderNumber = new URLSearchParams(props.location.search).get('orderNumber')
-      console.log('orderNumber: ', orderNumber)
       const id = new URLSearchParams(props.location.search).get('id')
-      console.log('id: ', id)
 
       const orderData = await getOrderData(orderNumber, id)
       setResponse({
@@ -54,8 +52,6 @@ const SuccessPayment = (props) => {
       })
     }
     fetchOrderData()
-    console.log('call fetchOrderData')
-    console.log('props.location')
     let evt = document.createEvent('Event')
     evt.initEvent('load', false, false)
     window.dispatchEvent(evt)

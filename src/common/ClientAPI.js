@@ -122,7 +122,6 @@ export default class ClientAPI {
   }
 
   getOrderByOrderNumber(orderNumber, id) {
-    console.log('getOrderByOrderNumber ', orderNumber, id)
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
       client
