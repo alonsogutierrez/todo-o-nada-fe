@@ -1,7 +1,6 @@
 import React from 'react'
 import Loader from 'react-loader-spinner'
 
-import Topbar from './HeaderComponents/Topbar'
 import HeaderMain from './HeaderComponents/HeaderMain'
 
 class Header extends React.Component {
@@ -112,7 +111,6 @@ class Header extends React.Component {
       <header className="site-header header-style-menu-center" id="site-header">
         {this.state.timeout === false ? (
           <div>
-            <Topbar />
             <HeaderMain />
           </div>
         ) : (

@@ -15,14 +15,20 @@ export default [
     type: 'subMenu',
     child_routes: [
       {
-        path: '/category/irezumi-art',
-        menu_title: 'Irezumi Art',
+        path: '/category/irezumi',
+        menu_title: 'Irezumi',
         icon: 'arrow_right_alt',
         child_routes: null,
       },
       {
-        path: '/category/todo-o-nada',
-        menu_title: 'Todo o Nada',
+        path: '/category/art-collection',
+        menu_title: 'Art collection',
+        icon: 'arrow_right_alt',
+        child_routes: null,
+      },
+      {
+        path: '/category/tattoo-collection',
+        menu_title: 'Tattoo collection',
         icon: 'arrow_right_alt',
         child_routes: null,
       },
@@ -35,14 +41,20 @@ export default [
     icon: 'arrow_right_alt',
     child_routes: [
       {
-        path: '/category/irezumi-art',
-        menu_title: 'Irezumi Art',
+        path: '/category/irezumi',
+        menu_title: 'Irezumi',
         icon: 'arrow_right_alt',
         child_routes: null,
       },
       {
-        path: '/category/todo-o-nada',
-        menu_title: 'Todo o Nada',
+        path: '/category/art-collection',
+        menu_title: 'Art collection',
+        icon: 'arrow_right_alt',
+        child_routes: null,
+      },
+      {
+        path: '/category/tattoo-collection',
+        menu_title: 'Tattoo collection',
         icon: 'arrow_right_alt',
         child_routes: null,
       },
@@ -55,14 +67,20 @@ export default [
     type: 'subMenu',
     child_routes: [
       {
-        path: '/category/irezumi-art',
-        menu_title: 'Irezumi Art',
+        path: '/category/irezumi',
+        menu_title: 'Irezumi',
         icon: 'arrow_right_alt',
         child_routes: null,
       },
       {
-        path: '/category/todo-o-nada',
-        menu_title: 'Todo o Nada',
+        path: '/category/art-collection',
+        menu_title: 'Art collection',
+        icon: 'arrow_right_alt',
+        child_routes: null,
+      },
+      {
+        path: '/category/tattoo-collection',
+        menu_title: 'Tattoo collection',
         icon: 'arrow_right_alt',
         child_routes: null,
       },

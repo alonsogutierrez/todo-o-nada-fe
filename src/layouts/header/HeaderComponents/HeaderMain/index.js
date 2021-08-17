@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 //TODO: Get navLinks from BFF
-import navLinks from '../../../../NavLinks'
+import navLinks from './../../../../NavLinks'
 import HeaderNavLinks from './HeaderNavLinks'
 import LogoWrapper from '../LogoWrapper'
 import ShoppingCart from './ShoppingCart'

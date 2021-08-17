@@ -14,6 +14,15 @@ const ProductDetail = (props) => {
   const [clientAPI] = useState(new ClientAPI())
   const [actualProduct, setActualProduct] = useState()
 
+  const getProductCategory = (categories) => {
+    if (!categories) {
+      return ''
+    }
+    const firstTwoCategories = categories.slice(0, 2)
+    let itemCategories = firstTwoCategories.map((cat) => cat.toUpperCase())
+    return itemCategories.join('-')
+  }
+
   useEffect(async () => {
     const productResponseData = await clientAPI.getProductByItemNumber(itemNumber)
     setActualProduct(productResponseData)
@@ -27,7 +36,7 @@ const ProductDetail = (props) => {
   if (actualProduct) {
     let { description, category, name } = actualProduct
     productDescription = description ? description : ''
-    productCategory = category ? category : ''
+    productCategory = getProductCategory(category)
     productName = name ? name : ''
   }
 

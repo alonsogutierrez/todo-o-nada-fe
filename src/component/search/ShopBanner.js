@@ -4,7 +4,7 @@ const ShopBanner = () => {
   return (
     <div className="widget widget_media_image">
       <img
-        src={require(`../../assets/images/shop/sale-banner2.jpg`)}
+        src={require(`../../assets/images/shop/sale-banner2.jpg`).default}
         className="img-fluid"
         alt="sale"
       />
