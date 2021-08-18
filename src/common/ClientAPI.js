@@ -208,12 +208,12 @@ export default class ClientAPI {
     })
   }
 
-  updateImages(pictures) {
+  createProduct(pictures) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
       client
         .request({
-          url: '/product/uploadImage',
+          url: '/product',
           method: 'post',
           timeout: 10 * 1000,
           data: pictures,

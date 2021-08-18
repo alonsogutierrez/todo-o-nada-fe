@@ -1,137 +1,49 @@
 /**
  *  Admin Site Product Add
  */
-import React, { useState } from 'react'
-//import ImageUploader from 'react-images-upload'
+import React from 'react'
 import { Link } from 'react-router-dom'
-//import Slider from 'react-slick'
 import { Container, FormGroup, Input, Label, Row } from 'reactstrap'
 import { Formik } from 'formik'
-import SubProductAdd from './SubProductAdd'
+import ClientAPI from '../../../common/ClientAPI'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-// const settings = {
-//   dots: false,
-//   infinite: true,
-//   speed: 500,
-//   slidesToShow: 1,
-//   slidesToScroll: 1
-// }
-// const productslider = {
-//   dots: false,
-//   infinite: false,
-//   speed: 500,
-//   slidesToShow: 5,
-//   slidesToScroll: 1
-// }
-const productdata = {
-  Product_single: 'product-single.jpg',
-  product_gallery: [
-    'product-single.jpg',
-    'product-single.jpg',
-    'product-single.jpg',
-    'product-single.jpg'
-  ],
-  size: ['S', 'M', 'L', 'XL'],
-  colors: ['Negro', 'Rojo', 'Azul', 'Verde', 'Blanco', 'Cafe'],
-  categories: ['Hombres', 'Mujeres', 'niños', 'Irezumi Art', 'Todo o Nada']
-}
+const categories = ['Hombres', 'Mujeres', 'niños', 'Irezumi Art', 'Todo o Nada']
 
 const productAdd = () => {
   window.scrollTo(0, 0)
-  // const [pictures, setPictures] = useState([])
-  // eslint-disable-next-line no-unused-vars
-  const [photoIndex, setPhotoIndex] = useState(0)
-  // eslint-disable-next-line no-unused-vars
-  const [isOpen, setIsOpen] = useState(false)
-  // const [errorMsg, SetErrorMsg] = useState('')
-
-  // const uploadImage = (picture) => {
-  //   if (picture === '') {
-  //     SetErrorMsg('File Not Supported')
-  //   } else {
-  //     setPictures(pictures.concat(picture))
-  //     SetErrorMsg('')
-  //   }
-  // }
-  const [subProducts, setSubProducts] = useState([])
-  const subProductsHandle = (subProductInstance) => {
-    console.log('subProductsHandle', subProductInstance)
-    if(subProductInstance !== {}) {
-      setSubProducts(subProducts.concat(subProductInstance))
-    }
+  const createProduct = async (productFormData) => {
+    const clientAPI = new ClientAPI()
+    return await clientAPI.createProduct(productFormData)
   }
 
   return (
     <div>
+      <ToastContainer autoClose={3000}/>
       <div className="site-content">
         <div className="content-wrapper section-ptb">
           <Container>
             <div className="product-content-top single-product single-product-edit">
               <Row>
-                {/*
-                <div className='product-top-left col-xl-5 col-md-6'>
-                  <div className='product-top-left-inner'>
-                    <div className='ciyashop-product-images'>
-                      <div className='ciyashop-product-images-wrapper ciyashop-gallery-style-default ciyashop-gallery-thumb_position-bottom ciyashop-gallery-thumb_vh-horizontal'>
-                        <div className='ciyashop-product-gallery ciyashop-product-gallery--with-images slick-carousel'>
-                          <Slider
-                            {...settings}
-                            className='ciyashop-product-gallery__wrapper popup-gallery'
-                          >
-                            <div className='ciyashop-product-gallery__image'>
-                              <img
-                                src='https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/demo/product-single.jpg'
-                                className='img-fluid'
-                              />
-                            </div>
-                          </Slider>
-                        </div>
-                        <div className='ciyashop-product-thumbnails'>
-                          <Slider
-                            {...productslider}
-                            className='ciyashop-product-thumbnails__wrapper'
-                          >
-                            {productdata.product_gallery.map(
-                              (pictureImage, index) => (
-                                <div key={index}>
-                                  <div className='ciyashop-product-thumbnail__image'>
-                                    <a href='javascript:void(0)'>
-                                      <img
-                                        src={`https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/demo/${pictureImage}`}
-                                        className='img-fluid'
-                                      />
-                                    </a>
-                                    <div className='d-flex justify-content-center image-content align-items-center'>
-                                      <ImageUploader
-                                        buttonText=''
-                                        withIcon={false}
-                                        withPreview={true}
-                                        fileTypeError={errorMsg}
-                                        onChange={uploadImage}
-                                        imgExtension={[
-                                          '.jpg',
-                                          '.jpeg',
-                                          '.png'
-                                        ]}
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              )
-                            )}
-                          </Slider>
-                        </div>
-                        <div className='clearfix' />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                */}
-                <div className="product-top-left col-xl-7 col-md-12">
+                <div className="product-top-left col-xl-12 col-md-12">
                   <div className="product-top-right-inner">
                     <div className="summary entry-summary">
                       <Formik
-                        initialValues={{ name: '' }}
+                        initialValues={
+                          { name: '' ,
+                            description: '',
+                            price: 0,
+                            color: '',
+                            pictures: null,
+                            published: false,
+                            categories: [],
+                            stockBySizeS: 0,
+                            stockBySizeM: 0,
+                            stockBySizeL: 0,
+                            stockBySizeXL: 0
+                          }
+                        }
                         validate={values => {
                           const errors = {}
                           if (!values.name) {
@@ -143,10 +55,43 @@ const productAdd = () => {
                           if (!values.price) {
                             errors.price = 'precio requerido'
                           }
+                          if (!values.color) {
+                            errors.color = 'selecciona un color'
+                          }
+                          if(values.pictures != null && values.pictures.length > 3) {
+                            errors.pictures = 'cargar no mas de 3 imagenes'
+                          }
+                          if(values.categories.length < 1) {
+                            errors.categories = 'debes elegir almenos una categoria'
+                          }
                           return errors
                         }}
-                        onSubmit={(values, { setSubmitting }) => {
-                          console.log(JSON.stringify(values, null, 2))
+                        onSubmit={ async (values, { setSubmitting }) => {
+                          let formData = new FormData()
+                          formData.append('name', values.name)
+                          formData.append('description', values.description)
+                          const price  = {
+                            basePriceReference: 0,
+                            basePriceSales: values.price
+                          }
+                          formData.append('price', JSON.stringify(price))
+                          formData.append('color', values.color)
+                          formData.append('published', values.published)
+                          formData.append('category', JSON.stringify(values.categories))
+
+                          const subProducts = []
+                          subProducts.push({size: 'S', stock: values.stockBySizeS, sku: 1})
+                          subProducts.push({size: 'M', stock: values.stockBySizeM, sku: 2})
+                          subProducts.push({size: 'L', stock: values.stockBySizeL, sku: 3})
+                          subProducts.push({size: 'XL', stock: values.stockBySizeXL, sku: 4})
+
+                          formData.append('details', JSON.stringify(subProducts))
+                          for (const key of Object.keys(values.pictures)) {
+                            formData.append('pictures', values.pictures[key])
+                          }
+                          const productCreatedResponse = await createProduct(formData)
+
+                          if (productCreatedResponse.status === 201) return toast.success('Producto creado exitosamente')
                           setSubmitting(false)
                         }}
                       >
@@ -156,12 +101,13 @@ const productAdd = () => {
                             touched,
                             handleChange,
                             handleBlur,
-                            handleSubmit
-                            // isSubmitting,
+                            handleSubmit,
+                            setFieldValue,
+                            isSubmitting,
                           }) => (
                           <form onSubmit={handleSubmit}>
                             <Row>
-                              <FormGroup className="edit-icon col-md-6">
+                              <FormGroup className="edit-icon col-md-12">
                                 <Input
                                   type="text"
                                   name="name"
@@ -172,6 +118,28 @@ const productAdd = () => {
                                   value={values.email}
                                 />
                                 {errors.name && touched.name && errors.name}
+                              </FormGroup>
+                            </Row>
+                            <Row>
+                              <FormGroup className="edit-icon col-md-6">
+                                <Input
+                                  type="select"
+                                  name="color"
+                                  className="form-control product_title"
+                                  placeholder="color"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.color}
+                                >
+                                  <option value="">selecciona un color</option>
+                                  <option value="Rojo">Rojo</option>
+                                  <option value="Azul">Azul</option>
+                                  <option value="Negro">Negro</option>
+                                  <option value="Verde">Verde</option>
+                                  <option value="Amarillo">Amarillo</option>
+                                  <option value="Blanco">Blanco</option>
+                                </Input>
+                                {errors.color && touched.color && errors.color}
                               </FormGroup>
                               <FormGroup className="edit-icon col-md-6">
                                 <Input
@@ -204,8 +172,10 @@ const productAdd = () => {
                             <Row>
                               <FormGroup className="col-md">
                                 <Label className="title pl-0">Producto publicado</Label>
-                                <input type="checkbox" placeholder="Visible"
-                                       name="published" onChange={handleChange}
+                                <input type="checkbox"
+                                       placeholder="Visible"
+                                       name="published"
+                                       onChange={handleChange}
                                        onBlur={handleBlur}
                                        value={values.published} />
                               </FormGroup>
@@ -213,62 +183,102 @@ const productAdd = () => {
                             <Row>
                               <FormGroup className="col-md-12">
                                 <Label className="title pl-0">Categorias</Label>
-                                {productdata.categories.map((brand, index) => (
+                                {categories.map((category, index) => (
                                   <Label key={index}>
-                                    <Input type="checkbox" /> {brand}
+                                    <Input
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                      name="categories"
+                                      value={category}
+                                      type="checkbox" /> {category}
                                   </Label>
                                 ))}
+                                {errors.categories && touched.categories && errors.categories}
                               </FormGroup>
                             </Row>
                             <Row>
-                              <div className="title">
-                                SubProductos
-                              </div>
-                              {subProducts.length > 0 ? (<div>tabla con subproducts, subproducts totales {subProducts.length}</div>) : <SubProductAdd subProductInstance={subProductsHandle}/> }
+                              <FormGroup className="col-md-12">
+                                <Label className="title pl-0">Imágenes</Label>
+                                <input type="file"
+                                       name="pictures"
+                                       className="form-control"
+                                       multiple
+                                       onChange={(event) => {
+                                         setFieldValue("pictures", event.currentTarget.files)
+                                       }}
+                                />
+                                {errors.pictures && touched.pictures && errors.pictures}
+                              </FormGroup>
+                            </Row>
+                            Stock por Talla
+                            <Row>
+                              <FormGroup className="edit-icon col-md-6">
+                                <Label className="title pl-0">Talla S</Label>
+                                <Input
+                                  type="number"
+                                  name="stockBySizeS"
+                                  className="form-control product_title"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.stockBySizeS}
+                                />
+                                {errors.stockBySizeS && touched.stockBySizeS && errors.stockBySizeS}
+                              </FormGroup>
+                              <FormGroup className="edit-icon col-md-6">
+                                <Label className="title pl-0">Talla M</Label>
+                                <Input
+                                  type="number"
+                                  name="stockBySizeM"
+                                  className="form-control product_title"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.stockBySizeM}
+                                />
+                                {errors.stockBySizeM && touched.stockBySizeM && errors.stockBySizeM}
+                              </FormGroup>
+                            </Row>
+                            <Row>
+                              <FormGroup className="edit-icon col-md-6">
+                                <Label className="title pl-0">Talla L</Label>
+                                <Input
+                                  type="number"
+                                  name="stockBySizeL"
+                                  className="form-control product_title"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.stockBySizeL}
+                                />
+                                {errors.stockBySizeL && touched.stockBySizeL && errors.stockBySizeL}
+                              </FormGroup>
+                              <FormGroup className="edit-icon col-md-6">
+                                <Label className="title pl-0">Talla XL</Label>
+                                <Input
+                                  type="number"
+                                  name="stockBySizeXL"
+                                  className="form-control product_title"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.stockBySizeXL}
+                                />
+                                {errors.stockBySizeXL && touched.stockBySizeXL && errors.stockBySizeXL}
+                              </FormGroup>
+                            </Row>
+                            <Row>
+                              <button className="btn btn-primary mb-2 mr-2" disabled={isSubmitting}>
+                                {' '}
+                                Crear Producto{' '}
+                              </button>
+                              <Link
+                                to="/admin-panel/Product"
+                                class="btn btn-danger mb-2"
+                              >
+                                {' '}
+                                Cancelar{' '}
+                              </Link>
                             </Row>
                           </form>
                         )}
                       </Formik>
-                      {/*
-                      <Label className='title'>Size</Label>
-                      <FormGroup>
-                        {productdata.size.map((size, index) => (
-                          <Label key={index}>
-                            <Input type='checkbox' /> {size}
-                          </Label>
-                        ))}
-                      </FormGroup>
-                      <Label className='title'>Color</Label>
-                      <FormGroup>
-                        {productdata.colors.map((color, index) => (
-                          <Label key={index}>
-                            <Input type='checkbox' /> {color}
-                          </Label>
-                        ))}
-                      </FormGroup>
-                      */}
-                      {/*
-                      <FormGroup>
-                        <Label className='title pl-0'>Product Stock</Label>
-                        <input
-                          type='text'
-                          className='form-control'
-                          placeholder='Product Stock'
-                        ></input>
-                      </FormGroup>
-                      */}
-
-                      <a href="#" className="btn btn-primary mb-2 mr-2">
-                        {' '}
-                        Guardar{' '}
-                      </a>
-                      <Link
-                        to="/admin-panel/Product"
-                        class="btn btn-danger mb-2"
-                      >
-                        {' '}
-                        Cancelar{' '}
-                      </Link>
                     </div>
                   </div>
                 </div>
