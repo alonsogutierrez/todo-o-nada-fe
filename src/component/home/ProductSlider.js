@@ -1,18 +1,62 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import Loader from 'react-loader-spinner'
 import Slider from 'react-slick'
 import { Col } from 'reactstrap'
 import PropTypes from 'prop-types'
-import { ToastContainer } from 'react-toastify'
 
-import sliderProducts from '../../api/sliderProducts.json'
+import ClientAPI from '../../common/ClientAPI'
 import setChangeCartData from '../../actions/setChangeCartData'
 import ProductInfo from './../search/ProductInfo'
 
 const ProductSlider = ({ settings }) => {
+  const [clientAPI] = useState(new ClientAPI())
+  const [loading, setLoading] = useState(false)
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    const getMoreInterestingProducts = async () => {
+      setLoading(true)
+      const productsResponse = await clientAPI.getMoreInterestingProducts()
+
+      if (productsResponse.hits.length > 0) {
+        const hits = productsResponse.hits
+
+        setProducts(
+          hits.map((hit) => {
+            let {
+              picture,
+              categories,
+              name,
+              price,
+              description,
+              itemNumber,
+              sku,
+              quantity,
+              details,
+            } = hit._source
+            return {
+              picture,
+              categories,
+              name,
+              price,
+              description,
+              itemNumber,
+              sku,
+              id: hit._id,
+              quantity,
+              details,
+            }
+          })
+        )
+      }
+      setLoading(false)
+    }
+    getMoreInterestingProducts()
+  }, [products.length])
+
   return (
     <>
-      <ToastContainer autoClose={1000} draggable={false} />
       <Col sm={12}>
         <div className="products-listing-items-wrapper products-listing-carousel">
           <div
@@ -26,13 +70,22 @@ const ProductSlider = ({ settings }) => {
             data-space={20}
           >
             <Slider {...settings} className="slider-spacing-10 slider-arrow-hover">
-              {sliderProducts.map((product, index) => (
-                <div key={index}>
-                  <div className="item">
-                    <ProductInfo product={product} />
+              {loading && (
+                <>
+                  <div>
+                    <Loader type="Puff" color="#04d39f" height="100" width="100" />
                   </div>
-                </div>
-              ))}
+                </>
+              )}
+              {!loading &&
+                products.length > 0 &&
+                products.map((product, index) => (
+                  <div key={index}>
+                    <div className="item">
+                      <ProductInfo product={product} />
+                    </div>
+                  </div>
+                ))}
             </Slider>
           </div>
         </div>

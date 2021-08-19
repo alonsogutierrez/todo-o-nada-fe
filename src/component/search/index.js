@@ -9,7 +9,7 @@ import ProductCard from './ProductCard'
 
 import SideFilter from './filters/SideFilter'
 import TopFilter from './filters/TopFilter'
-import ShopBanner from './ShopBanner'
+//import ShopBanner from './ShopBanner'
 import SocialFilter from './SocialInfo'
 import SubHeader from './SubHeader'
 
@@ -143,7 +143,7 @@ class SearchPage extends Component {
                   <div className="shop-sidebar-widgets">
                     <SideFilter />
                     <SocialFilter />
-                    <ShopBanner />
+                    {/* <ShopBanner /> */}
                   </div>
                 </div>
                 <div className="content col-xl-9 col-lg-8">

@@ -43,12 +43,7 @@ const HeaderNavLinks = ({ navLinks, pageName }) => {
                   <DropdownItem
                     key={index}
                     tag={Link}
-                    className={`nav-item  ${
-                      pageName == subNavLink.path ||
-                      (subNavLink.path == '/shop/clothing/29' && pageName == '/29')
-                        ? 'active'
-                        : ''
-                    }`}
+                    className={`nav-item  ${pageName == subNavLink.path ? 'active' : ''}`}
                     to={subNavLink.path}
                   >
                     {subNavLink.menu_title}

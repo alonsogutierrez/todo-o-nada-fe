@@ -50,9 +50,13 @@ export default class ClientAPI {
   getWeekSales() {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
       client
         .request({
           url: '/reports/week',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
           method: 'get',
           timeout: 10 * 1000,
         })
@@ -68,9 +72,13 @@ export default class ClientAPI {
   downloadSales(startDate, endDate) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
       client
         .request({
           url: '/reports/betweenDates',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
           method: 'get',
           params: {
             startDate,
@@ -91,9 +99,13 @@ export default class ClientAPI {
   getOrders(paymentType) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
       client
         .request({
           url: '/reports/orders',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
           method: 'get',
           params: {
             paymentType,
@@ -109,7 +121,7 @@ export default class ClientAPI {
     })
   }
 
-  getOrderByOrderNumber(orderNumber) {
+  getOrderByOrderNumber(orderNumber, id) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
       client
@@ -118,6 +130,33 @@ export default class ClientAPI {
           method: 'get',
           params: {
             orderNumber,
+            id,
+          },
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  getAdminOrderData(orderNumber, id) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
+      client
+        .request({
+          url: '/orders/admin',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+          method: 'get',
+          params: {
+            orderNumber,
+            id,
           },
           timeout: 10 * 1000,
         })
@@ -133,9 +172,13 @@ export default class ClientAPI {
   getProfileInfo(userId) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
       client
         .request({
           url: '/users/profile',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
           method: 'get',
           params: {
             userId,
@@ -156,7 +199,7 @@ export default class ClientAPI {
       const client = this.bffInstance()
       client
         .request({
-          url: `/product/itemNumber/${itemNumber}`,
+          url: `/product/itemnumber/${itemNumber}`,
           method: 'get',
           timeout: 10 * 1000,
         })
@@ -218,6 +261,24 @@ export default class ClientAPI {
           timeout: 10 * 1000,
           data: pictures,
           headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  getMoreInterestingProducts() {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: `/search/interesting-products`,
+          method: 'get',
+          timeout: 10 * 1000,
         })
         .then((response) => {
           resolve(response.data)

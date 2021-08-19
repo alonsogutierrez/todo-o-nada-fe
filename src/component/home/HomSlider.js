@@ -22,7 +22,7 @@ class HomSlider extends Component {
           <div className="slide-inner">
             <div className="slide-image">
               <img
-                src={require(`../../assets/images/home-04-slider/img-01.jpg`).default}
+                src={require(`../../assets/images/home-slider/img-01.jpg`).default}
                 alt="slide-1"
               />
             </div>
@@ -33,7 +33,7 @@ class HomSlider extends Component {
                     <div className="slide-inner bg-white">
                       <img
                         className="mx-auto"
-                        src={require(`../../assets/images/home-04-slider/sale.png`).default}
+                        src={require(`../../assets/images/home-slider/sale.png`).default}
                         alt="slide-1"
                       />
                       <div className="slide-title">
@@ -55,7 +55,7 @@ class HomSlider extends Component {
           <div className="slide-inner">
             <div className="slide-image">
               <img
-                src={require(`../../assets/images/home-04-slider/img-02.jpg`).default}
+                src={require(`../../assets/images/home-slider/img-02.jpg`).default}
                 alt="slide-1"
               />
             </div>
@@ -66,7 +66,7 @@ class HomSlider extends Component {
                     <div className="slide-inner-02 bg-white">
                       <img
                         className="mx-auto slide-sale"
-                        src={require(`../../assets/images/home-04-slider/sale-02.png`).default}
+                        src={require(`../../assets/images/home-slider/sale-02.png`).default}
                         alt="slide-1"
                       />
                       <div className="slide-subtitle">#Introducing</div>

@@ -1,23 +1,10 @@
-import ClientAPI from '../common/ClientAPI'
-
-const validateLoginForm = async (email, password) => {
-  const clientAPI = new ClientAPI()
-  const data = {
-    email,
-    password,
-  }
+const validateLoginForm = (loginResponse) => {
   let isValidLogin = false
-  try {
-    const loginResponse = await clientAPI.loginUser(data)
-    isValidLogin = typeof loginResponse === 'object' && loginResponse.user
-    return isValidLogin
-  } catch (err) {
-    console.error('invalid login: ', err.message)
-    return isValidLogin
-  }
+  isValidLogin = typeof loginResponse === 'object' && loginResponse.user && loginResponse.token
+  return isValidLogin
 }
 
-const validatorUserForm = (userForm) => {
+const validatorUserForm = (userForm, dispatchType) => {
   let formValues = userForm
   let errors = {}
   let formIsValid = true
@@ -40,42 +27,44 @@ const validatorUserForm = (userForm) => {
     errors['dni'] = dniValidation.message
   }
 
-  const countryValidation = validateLocation(formValues['country_selected'])
-  if (!countryValidation.isValid) {
-    formIsValid = false
-    errors['country'] = countryValidation.message
-  }
-
-  const regionValidation = validateLocation(formValues['region_selected'])
-  if (!regionValidation.isValid) {
-    formIsValid = false
-    errors['region'] = regionValidation.message
-  }
-
-  const communeValidation = validateNames(formValues['commune_selected'])
-  if (!communeValidation.isValid) {
-    formIsValid = false
-    errors['commune'] = communeValidation.message
-  }
-
-  if (formValues['country_selected'].code !== 'CL') {
-    const zipCodeValidation = validateZipCode(formValues['zip_code'])
-    if (!zipCodeValidation.isValid) {
+  if (dispatchType !== 'PICKUP') {
+    const countryValidation = validateLocation(formValues['country_selected'])
+    if (!countryValidation.isValid) {
       formIsValid = false
-      errors['zip_code'] = zipCodeValidation.message
+      errors['country'] = countryValidation.message
     }
-  }
 
-  const addressValidation = validateAddress(formValues['address'])
-  if (!addressValidation.isValid) {
-    formIsValid = false
-    errors['address'] = addressValidation.message
-  }
+    const regionValidation = validateLocation(formValues['region_selected'])
+    if (!regionValidation.isValid) {
+      formIsValid = false
+      errors['region'] = regionValidation.message
+    }
 
-  const numAddressValidation = validateAddress(formValues['num_address'])
-  if (!numAddressValidation.isValid) {
-    formIsValid = false
-    errors['num_address'] = numAddressValidation.message
+    const communeValidation = validateNames(formValues['commune_selected'])
+    if (!communeValidation.isValid) {
+      formIsValid = false
+      errors['commune'] = communeValidation.message
+    }
+
+    if (formValues['country_selected'].code !== 'CL') {
+      const zipCodeValidation = validateZipCode(formValues['zip_code'])
+      if (!zipCodeValidation.isValid) {
+        formIsValid = false
+        errors['zip_code'] = zipCodeValidation.message
+      }
+    }
+
+    const addressValidation = validateAddress(formValues['address'])
+    if (!addressValidation.isValid) {
+      formIsValid = false
+      errors['address'] = addressValidation.message
+    }
+
+    const numAddressValidation = validateAddress(formValues['num_address'])
+    if (!numAddressValidation.isValid) {
+      formIsValid = false
+      errors['num_address'] = numAddressValidation.message
+    }
   }
 
   const phoneValidation = validatePhone(formValues['phone'], 9)

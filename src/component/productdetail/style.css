@@ -1,0 +1,12 @@
+.isDisabled {
+  color: currentColor !important;
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+  text-decoration: none !important;
+}
+
+.selectedSize {
+  color: #04d39f !important;
+  font-size: large;
+  font-weight: bold;
+}

@@ -1,20 +1,19 @@
-@media (min-width:1200px) {
+@media (min-width: 1200px) {
   .container {
     max-width: 1300px;
   }
-
 }
 
 body,
 html {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-weight: 400;
   line-height: 24px;
   font-size: 14px;
 }
 
 h1 {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 700;
   line-height: 44px;
   font-size: 36px;
@@ -22,21 +21,21 @@ h1 {
 
 h2,
 .deal-banner .caption h2 {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 700;
   line-height: 38px;
   font-size: 30px;
 }
 
 h3 {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
   line-height: 34px;
   font-size: 26px;
 }
 
 h4 {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
   line-height: 30px;
   font-size: 22px;
@@ -44,7 +43,7 @@ h4 {
 
 h5,
 .testimonials h5 {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
   line-height: 28px;
   font-size: 20px;
@@ -54,7 +53,7 @@ h6,
 .share h5,
 .share ul,
 .sidebar .widget .item-detail h4 {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
   line-height: 22px;
   font-size: 18px;
@@ -135,7 +134,11 @@ h6,
 }
 
 /*--------------------  Categoru Slider Start  -------------------*/
-.ciyashop_banner .ciyashop_banner-content .ciyashop_banner-content-inner-wrapper .ciyashop_banner-text-wrap-1 .ciyashop_banner-text.tag-text {
+.ciyashop_banner
+  .ciyashop_banner-content
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-text-wrap-1
+  .ciyashop_banner-text.tag-text {
   font-size: 0.23em;
   color: #323232;
   background-color: #ffffff;
@@ -151,8 +154,11 @@ h6,
   font-size: 70px;
 }
 
-.ciyashop_banner .ciyashop_banner-content .ciyashop_banner-content-inner-wrapper .ciyashop_banner-text {
-  font-family: "Montserrat", sans-serif;
+.ciyashop_banner
+  .ciyashop_banner-content
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-text {
+  font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 0.42em;
@@ -160,16 +166,29 @@ h6,
   line-height: 55px;
 }
 
-.ciyashop_banner .ciyashop_banner-content .ciyashop_banner-content-inner-wrapper .ciyashop_banner-btn-wrap.ciyashop_banner-btn-style-link .ciyashop_banner-btn {
+.ciyashop_banner
+  .ciyashop_banner-content
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-btn-wrap.ciyashop_banner-btn-style-link
+  .ciyashop_banner-btn {
   color: #323232;
 }
 
-.ciyashop_banner.ciyashop_banner-style-deal-1 .ciyashop_banner-content .ciyashop_banner-content-wrapper .ciyashop_banner-content-inner-wrapper .ciyashop_banner-text-wrap .ciyashop_banner-text h2 {
+.ciyashop_banner.ciyashop_banner-style-deal-1
+  .ciyashop_banner-content
+  .ciyashop_banner-content-wrapper
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-text-wrap
+  .ciyashop_banner-text
+  h2 {
   font-size: 62px;
   font-weight: 600;
 }
 
-.ciyashop_banner.ciyashop_banner-style-deal-1 .ciyashop_banner-content-inner-wrapper .ciyashop_banner-btn-wrap.ciyashop_banner-btn-style-flat .ciyashop_banner-btn {
+.ciyashop_banner.ciyashop_banner-style-deal-1
+  .ciyashop_banner-content-inner-wrapper
+  .ciyashop_banner-btn-wrap.ciyashop_banner-btn-style-flat
+  .ciyashop_banner-btn {
   background: #ffffff;
 }
 
@@ -185,16 +204,6 @@ h6,
 .newsletter-bg h4.title {
   text-align: center;
   font-weight: 600;
-}
-
-/*--------------------  testimonial  Start  -------------------*/
-.testimonial-bg {
-  margin-right: 0px;
-  margin-left: 0px;
-  background-image: url(../../assets//images/categories/modern/testimonial-bg.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 /*--------------------  Latest Post Start  -------------------*/

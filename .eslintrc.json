@@ -17,5 +17,8 @@
   "plugins": ["react"],
   "rules": {
     "semi": ["error", "never"]
+  },
+  "settings": {
+    "version": "detect"
   }
 }

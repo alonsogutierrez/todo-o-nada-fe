@@ -2,8 +2,7 @@ import React from 'react'
 
 const EmptyShoppingCart = () => {
   const getEmptyCartImage = () => {
-    //TODO: Call to CDN to get empty cart image
-    return require(`../../../../assets/images/empty-cart.png`)
+    return require(`./../../../../assets/images/empty-cart.png`).default
   }
 
   return (

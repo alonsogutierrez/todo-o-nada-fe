@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 //TODO: Get navLinks from BFF
-import navLinks from '../../../../NavLinks'
+import navLinks from './../../../../NavLinks'
 import HeaderNavLinks from './HeaderNavLinks'
 import LogoWrapper from '../LogoWrapper'
 import ShoppingCart from './ShoppingCart'
@@ -115,7 +115,10 @@ const HeaderMain = ({ changeCart }) => {
                 </Col>
                 <Navbar color="faded" light>
                   <NavbarToggler onClick={toggle} className="mr-2" />
-                  {isOpen && (
+                  {isOpen && width < 992 && (
+                    <HeaderNavLinks navLinks={navLinks} pageName={pageName} />
+                  )}
+                  {isOpen && width >= 992 && (
                     <Nav className="ml-auto" navbar>
                       {navLinks.map((navLink, index) => (
                         <li

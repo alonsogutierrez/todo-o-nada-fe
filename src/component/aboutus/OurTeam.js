@@ -15,7 +15,10 @@ const OurTeam = (props) => {
           <div className="item">
             <div className="team shadow">
               <div className="team-images">
-                <img className="img-fluid" src={require(`../../assets/images/team/img-01.jpg`)} />
+                <img
+                  className="img-fluid"
+                  src={require(`../../assets/images/team/img-01.jpg`).default}
+                />
               </div>
               <div className="team-info">
                 <div className="team-description">
@@ -72,7 +75,10 @@ const OurTeam = (props) => {
           <div className="item">
             <div className="team shadow">
               <div className="team-images">
-                <img className="img-fluid" src={require(`../../assets/images/team/img-02.jpg`)} />
+                <img
+                  className="img-fluid"
+                  src={require(`../../assets/images/team/img-02.jpg`).default}
+                />
               </div>
               <div className="team-info">
                 <div className="team-description">
@@ -129,7 +135,10 @@ const OurTeam = (props) => {
           <div className="item">
             <div className="team shadow">
               <div className="team-images">
-                <img className="img-fluid" src={require(`../../assets/images/team/img-03.jpg`)} />
+                <img
+                  className="img-fluid"
+                  src={require(`../../assets/images/team/img-03.jpg`).default}
+                />
               </div>
               <div className="team-info">
                 <div className="team-description">
@@ -166,7 +175,10 @@ const OurTeam = (props) => {
           <div className="item">
             <div className="team shadow">
               <div className="team-images">
-                <img className="img-fluid" src={require(`../../assets/images/team/img-04.jpg`)} />
+                <img
+                  className="img-fluid"
+                  src={require(`../../assets/images/team/img-04.jpg`).default}
+                />
               </div>
               <div className="team-info">
                 <div className="team-description">
@@ -203,7 +215,10 @@ const OurTeam = (props) => {
           <div className="item">
             <div className="team shadow">
               <div className="team-images">
-                <img className="img-fluid" src={require(`../../assets/images/team/img-05.jpg`)} />
+                <img
+                  className="img-fluid"
+                  src={require(`../../assets/images/team/img-05.jpg`).default}
+                />
               </div>
               <div className="team-info">
                 <div className="team-description">
@@ -240,7 +255,10 @@ const OurTeam = (props) => {
           <div className="item">
             <div className="team shadow">
               <div className="team-images">
-                <img className="img-fluid" src={require(`../../assets/images/team/img-06.jpg`)} />
+                <img
+                  className="img-fluid"
+                  src={require(`../../assets/images/team/img-06.jpg`).default}
+                />
               </div>
               <div className="team-info">
                 <div className="team-description">
@@ -277,7 +295,10 @@ const OurTeam = (props) => {
           <div className="item">
             <div className="team shadow">
               <div className="team-images">
-                <img className="img-fluid" src={require(`../../assets/images/team/img-07.jpg`)} />
+                <img
+                  className="img-fluid"
+                  src={require(`../../assets/images/team/img-07.jpg`).default}
+                />
               </div>
               <div className="team-info">
                 <div className="team-description">
@@ -314,7 +335,10 @@ const OurTeam = (props) => {
           <div className="item">
             <div className="team shadow">
               <div className="team-images">
-                <img className="img-fluid" src={require(`../../assets/images/team/img-08.jpg`)} />
+                <img
+                  className="img-fluid"
+                  src={require(`../../assets/images/team/img-08.jpg`).default}
+                />
               </div>
               <div className="team-info">
                 <div className="team-description">

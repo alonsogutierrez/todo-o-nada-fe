@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
-import PaymentDetail from '../../shop/CheckOut/PaymentDetail'
+
+import PaymentDetail from '../../shop/checkout/PaymentDetail'
 
 const OrderDetailModal = ({ userData, orderData, openModal, setToggle }) => {
   const [isOpenModal, setIsOpenModal] = useState(false)

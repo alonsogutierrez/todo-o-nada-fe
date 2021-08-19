@@ -14,24 +14,24 @@ const settings = {
       breakpoint: 991,
       settings: {
         slidesToShow: 5,
-        slidesToScroll: 3
-      }
+        slidesToScroll: 3,
+      },
     },
     {
       breakpoint: 767,
       settings: {
         slidesToShow: 3,
-        slidesToScroll: 2
-      }
+        slidesToScroll: 2,
+      },
     },
     {
       breakpoint: 575,
       settings: {
         slidesToShow: 2,
-        slidesToScroll: 1
-      }
-    }
-  ]
+        slidesToScroll: 1,
+      },
+    },
+  ],
 }
 
 class Instagram extends Component {
@@ -39,18 +39,18 @@ class Instagram extends Component {
     super(props)
 
     this.state = {
-      APIData: []
+      APIData: [],
     }
   }
 
   UNSAFE_componentWillMount() {
     const apiid = ig({
-      accessToken: '6441986712.39e610e.04d86db2af844635bd9df83ad7f4f824'
+      accessToken: '6441986712.39e610e.04d86db2af844635bd9df83ad7f4f824', //TODO: Change by real token
     })
     const instagramval = apiid.media()
     instagramval
-      .then(res => this.setState({ APIData: res.data }))
-      .catch(err => console.error('err: ', err))
+      .then((res) => this.setState({ APIData: res.data }))
+      .catch((err) => console.error('err: ', err))
   }
 
   render() {

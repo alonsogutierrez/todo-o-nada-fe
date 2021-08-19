@@ -32,19 +32,17 @@ const SearchBar = (props) => {
     if (searchValidation) {
       try {
         const searchResult = await clientAPI.getSearch(searchText)
-        //TODO: Save product search result into reducer
         props.setProducts(searchResult)
         props.setChangeProducts(!props.changeProducts)
-        console.log('searchResult: ', searchResult)
         setLoading(false)
         props.history.push(`/search?query=${searchText}`)
       } catch (err) {
         setLoading(false)
-        console.log('error en busqueda: ', err.message)
+        console.error('error en busqueda: ', err.message)
       }
     } else {
       setLoading(false)
-      console.log('busqueda invalida')
+      console.error('busqueda invalida')
     }
   }
 
@@ -77,7 +75,6 @@ const SearchBar = (props) => {
               />
               <span className="error">{errors['search-error']}</span>
             </Col>
-
             <Col xs="2">
               <button
                 type="submit"
