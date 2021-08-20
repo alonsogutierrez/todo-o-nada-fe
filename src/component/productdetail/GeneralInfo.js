@@ -209,8 +209,8 @@ const GeneralInfo = (props) => {
 
   const renderSizesProduct = (subProducts) => {
     return (
-      <span className="size">
-        <label>Tamaño:</label>
+      <span className="size normalSize">
+        <label className="normalSize">Tamaño:</label>
         {subProducts.map((product, index) => {
           if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
             return (
@@ -240,18 +240,18 @@ const GeneralInfo = (props) => {
   }
 
   const renderColorsProduct = (color) => (
-    <span className="size">
-      <label>Color:</label>
-      <span itemProp="size" style={{ paddingRight: '4px' }}>
+    <span className="size normalSize">
+      <label className="normalSize">Color:</label>
+      <span className="normalSize" itemProp="size" style={{ paddingRight: '4px' }}>
         {color}
       </span>
     </span>
   )
 
   const renderSKUProduct = (sku) => (
-    <span className="sku_wrapper">
-      <label>SKU:</label>
-      <span className="sku">{sku ? sku : ''}</span>
+    <span className="sku_wrapper normalSize">
+      <label className="normalSize">SKU:</label>
+      <span className="sku normalSize">{sku ? sku : ''}</span>
     </span>
   )
 
@@ -284,6 +284,8 @@ const GeneralInfo = (props) => {
   const { product } = props
   const { itemNumber } = product
   const subProducts = configSubProduct(product)
+
+  console.log('product.category: ', product.category)
 
   return (
     <>
@@ -351,9 +353,9 @@ const GeneralInfo = (props) => {
                     <div className="clearfix" />
                   </form>
                   <div className="product_meta">
-                    <span className="posted_in">
-                      <label>Categorías:</label>
-                      {product.category.toString()}
+                    <span className="posted_in normalSize">
+                      <label className="normalSize">Categorías:</label>
+                      <span className="normalSize">{product.category.join(', ')}</span>
                     </span>
                     {renderSizesProduct(subProducts)}
                     {renderColorsProduct(color)}

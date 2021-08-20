@@ -12,7 +12,7 @@ function OurHistory() {
           <Col lg={5}>
             <img
               // eslint-disable-next-line no-undef
-              src={require(`../../assets/images/quienes-somos-1.jpg`).default}
+              src={require(`./../../assets/images/quienes-somos-01.jpg`).default}
               className="img-fluid"
             />
           </Col>
@@ -70,10 +70,13 @@ function OurHistory() {
                       <div className="ciyashop_info_box-content-wrap">
                         <div className="ciyashop_info_box-content-inner">
                           <h5 className="ciyashop_info_box-title" style={{ color: '#323232' }}>
-                            Nuestra tienda{' '}
+                            Nuestro taller{' '}
                           </h5>
                           <div className="ciyashop_info_box-description">
-                            <p>Tenemos retiros en tienda y además despachos a domicilio.</p>
+                            <p>
+                              Tenemos opción de retiro en nuestro taller ubicado en Santiago Centro,
+                              o envíos a domicilio y regiones via Starken todas las semanas.
+                            </p>
                           </div>
                         </div>
                       </div>

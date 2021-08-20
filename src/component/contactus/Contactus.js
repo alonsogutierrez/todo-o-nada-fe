@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Col, Container, Row } from 'reactstrap'
+import { Container, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 import ContactDetail from './ContactDetail'
-import ContactForm from './ContactForm'
 import PageTitle from '../../widgets/PageTitle'
 
 class Contactus extends Component {
@@ -21,13 +20,6 @@ class Contactus extends Component {
         </div>
         <div className="content-wrapper">
           <ContactDetail />
-          <div className="section-wrapper">
-            <Row className="row-equal-height no-gutters">
-              <Col lg={12}>
-                <ContactForm />
-              </Col>
-            </Row>
-          </div>
         </div>
       </div>
     )

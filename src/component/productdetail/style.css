@@ -7,6 +7,10 @@
 
 .selectedSize {
   color: #04d39f !important;
-  font-size: large;
+  font-size: 210%;
   font-weight: bold;
+}
+
+.normalSize {
+  font-size: 120% !important;
 }

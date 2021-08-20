@@ -99,6 +99,8 @@ const ProductDetail = (props) => {
                             >
                               <h2>Descripción del producto</h2>
                               <p>{productDescription}</p>
+                              <br />
+                              <img src={require('./../../assets/images/sizes.jpg').default} />
                               <SupportInfo />
                             </div>
                           </div>
