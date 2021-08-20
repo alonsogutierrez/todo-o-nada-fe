@@ -1,7 +1,3 @@
-/**
- *  Contact Us Page
- */
-import { GoogleApiWrapper, Map } from 'google-maps-react'
 import React, { Component } from 'react'
 import { Col, Container, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
@@ -9,11 +5,6 @@ import Businessschedule from './Businessschedule'
 import ContactDetail from './ContactDetail'
 import ContactForm from './ContactForm'
 import PageTitle from '../../widgets/PageTitle'
-
-const mapStyles = {
-  width: '100%',
-  height: '100%',
-}
 
 class Contactus extends Component {
   componentDidMount() {
@@ -25,29 +16,16 @@ class Contactus extends Component {
         <div className="inner-intro header_intro header_intro_bg-image header_intro_opacity header_intro_opacity-custom">
           <Container>
             <Row className="intro-title align-items-center intro-section-center">
-              <PageTitle title="Contact Us" />
+              <PageTitle title="Contáctanos" />
             </Row>
           </Container>
         </div>
         <div className="content-wrapper">
-          <div className="section-wrapper section-pt pb-6">
-            <ContactDetail />
-          </div>
+          <ContactDetail />
           <div className="section-wrapper">
             <Row className="row-equal-height no-gutters">
-              <Col md={6}>
+              <Col lg={12}>
                 <ContactForm />
-              </Col>
-              <Col md={6} className="google-map">
-                <Map
-                  google={this.props.google}
-                  zoom={14}
-                  style={mapStyles}
-                  initialCenter={{
-                    lat: -37.817065,
-                    lng: 144.955903,
-                  }}
-                />
               </Col>
             </Row>
           </div>
@@ -61,9 +39,7 @@ class Contactus extends Component {
     )
   }
 }
-export default GoogleApiWrapper({
-  apiKey: 'AIzaSyBfqH9LV7E0y3DvblpSUoAHkA33S7pWCII',
-})(Contactus)
+export default Contactus
 
 Contactus.defaultProps = {
   google: {},
