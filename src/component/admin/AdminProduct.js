@@ -1,36 +1,29 @@
-/**
- * Admin List Product Display
- **/
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import PropTypes from 'prop-types'
 import { Col, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import Loader from 'react-loader-spinner'
 
-class AdminproductList extends Component {
-  constructor(props) {
-    super(props)
-    this.toggle1 = this.toggle1.bind(this)
+const AdminproductList = (props) => {
+  const [modal1, setModal1] = useState(false)
 
-    this.state = {
-      open: false,
-      modal1: false,
-      stock: 'InStock',
-      quantity: 1,
-      image: '',
-    }
+  const toggle1 = () => {
+    setModal1(!modal1)
   }
 
-  toggle1() {
-    this.setState((prevState) => ({
-      modal1: !prevState.modal1,
-    }))
+  const onDeleteInvoicePopup = () => {
+    toggle1()
   }
-  onDeleteInvoicePopup() {
-    this.toggle1()
-  }
-  render() {
-    const { product, deleteproduct } = this.props
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  const { product, deleteproduct } = props
+
+  if (product && Object.keys(product).length > 0) {
+    const { picture, itemNumber, categories, name, price, description } = product._source
     return (
       <Col key={1} sm={6} lg={3}>
         <ToastContainer autoClose={1000} />
@@ -39,68 +32,56 @@ class AdminproductList extends Component {
             <div className="product-thumbnail">
               <div className="product-thumbnail-inner">
                 <Link to="#">
-                  {product.pictures[0] ? (
+                  {picture ? (
                     <div className="product-thumbnail-main">
-                      <img
-                        src={require(`../../assets/images/${product.pictures[0]}`)}
-                        className="img-fluid"
-                      />
+                      <img src={picture} className="img-fluid" />
                     </div>
-                  ) : null}
-                  {product.pictures[1] ? (
-                    <div className="product-thumbnail-swap">
-                      <img
-                        src={require(`../../assets/images/${product.pictures[1]}`)}
-                        className="img-fluid"
-                      />
-                    </div>
-                  ) : null}
+                  ) : (
+                    <>Img not found</>
+                  )}
                 </Link>
               </div>
               <div className="product-action product-action-quick-view">
-                <Link
-                  to={`/admin-panel/Product-edit/${product.category}/${product.id}`}
-                  className="open-edit-view"
-                >
+                <Link to={`/admin-panel/Product-edit/${itemNumber}`} className="open-edit-view">
                   <i className="fa fa-pencil-square-o"></i>
                 </Link>
-                <Link to="#" className="product-delete" onClick={() => this.onDeleteInvoicePopup()}>
+                <Link to="#" className="product-delete" onClick={() => onDeleteInvoicePopup()}>
                   <i className="fa fa-trash-o"></i>
                 </Link>
               </div>
               <div className="product-actions"></div>
             </div>
             <div className="product-info">
-              {product.tags ? (
+              {categories ? (
                 <span className="ciyashop-product-category">
-                  {product.tags.map((tag, index) => (
+                  {categories.map((category, index) => (
                     <span key={index}>
-                      {tag}
-                      {index === product.tags.length - 1 ? '' : ','}
+                      {category}
+                      {index === category.length - 1 ? '' : ','}
                     </span>
                   ))}
                 </span>
               ) : null}
-              {product.name ? (
+              {name ? (
                 <h3 className="product-name">
-                  <Link to="#">{product.name}</Link>
+                  <Link to="#">{name}</Link>
                 </h3>
               ) : null}
-              {product.salePrice ? (
+              {price && price.basePriceSales ? (
                 <span className="price">
                   <ins>
                     <span className="price-amount amount">
                       <span className="currency-symbol">$</span>
-                      {product.salePrice.toLocaleString(navigator.language, {
+                      {price.basePriceSales.toLocaleString(navigator.language, {
                         minimumFractionDigits: 0,
                       })}
                     </span>
                   </ins>
                 </span>
               ) : null}
-              {product.description ? (
+              {description ? (
                 <div className="product-details__short-description">
-                  <p>{product.description}</p>
+                  <p>{description}</p>
                 </div>
               ) : null}
             </div>
@@ -109,17 +90,17 @@ class AdminproductList extends Component {
 
         {/* modal-delete */}
         <Modal
-          isOpen={this.state.modal1}
-          toggle={this.toggle1}
+          isOpen={modal1}
+          toggle={toggle1}
           className="modal-delete modal-lg modal-dialog-centered"
         >
-          <ModalHeader toggle={this.toggle1}></ModalHeader>
-          <ModalBody>Are You Sure You Want To Delete This Product ?</ModalBody>
+          <ModalHeader toggle={toggle1}></ModalHeader>
+          <ModalBody>Estas seguro que deseas eliminar este producto ?</ModalBody>
           <ModalFooter className="justify-content-center pt-4">
-            <Link className="action-button" onClick={(e) => deleteproduct(this.toggle1(e))}>
-              Yes
+            <Link className="action-button" onClick={(e) => deleteproduct(toggle1(e))}>
+              Si
             </Link>
-            <Link className="action-button no" onClick={this.toggle1}>
+            <Link className="action-button no" onClick={toggle1}>
               No
             </Link>
           </ModalFooter>
@@ -127,6 +108,13 @@ class AdminproductList extends Component {
       </Col>
     )
   }
+  return (
+    <>
+      <div>
+        <Loader type="Puff" color="#04d39f" height="100" width="100" />
+      </div>
+    </>
+  )
 }
 
 export default AdminproductList

@@ -260,7 +260,7 @@ export default class ClientAPI {
           method: 'post',
           timeout: 10 * 1000,
           data: pictures,
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then((response) => {
           resolve(response.data)
@@ -277,6 +277,28 @@ export default class ClientAPI {
       client
         .request({
           url: `/search/interesting-products`,
+          method: 'get',
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  getAdminAllProducts() {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
+      client
+        .request({
+          url: `/search/admin-products`,
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
           method: 'get',
           timeout: 10 * 1000,
         })
