@@ -4,7 +4,7 @@
 import React from 'react'
 import { Col, Row } from 'reactstrap'
 
-function AboutBanner2() {
+function OurHistory() {
   return (
     <div className="section-wrapper section-ptb">
       <div className="container">
@@ -12,39 +12,37 @@ function AboutBanner2() {
           <Col lg={5}>
             <img
               // eslint-disable-next-line no-undef
-              src={require(`../../assets/images/about-us.jpg`).default}
+              src={require(`../../assets/images/quienes-somos-1.jpg`).default}
               className="img-fluid"
             />
           </Col>
           <Col lg={7} className="mt-4 mt-lg-0">
             <div className="section-title mb-3">
-              <h2 className="font-bold">Get to know us better.</h2>
+              <h2 className="font-bold">Conocenos mejor !</h2>
             </div>
             <p>
-              We are Ciya Shop. Our store is more than just another average online retailer. We sell
-              not only top quality products, but give our customers a positive online shopping
-              experience. Forget about struggling to do everything at once taking care of the
-              family.
+              Somos un colectivo de serigrafistas dedicados a la reproducción de obras de arte. El
+              arte tattoo es parte de la contracultura que nos representa como equipo de trabajo.
+              Parte de nuestra misión consiste en establecer relaciones colaborativas con artistas
+              visuales, diseñadores y tatuadores de todo el mundo.
             </p>
             <div className="ciyashop_list_wrapper mb-3">
               <ul className="ciyashop_list list icon-list-type-none">
                 <li>
                   <i className="fa fa-check-square" />
                   <p className="ciyashop-list-info">
-                    There are basically six key areas to higher achievement
+                    Amamos lo que hacemos por eso siempre damos lo mejor de nosotros
                   </p>
                 </li>
                 <li>
                   <i className="fa fa-check-square" />
                   <p className="ciyashop-list-info">
-                    The first thing to remember about success is that it
+                    Respetamos mucho el arte tattoo y tenemos algunas ediciones limitadas
                   </p>
                 </li>
                 <li>
                   <i className="fa fa-check-square" />
-                  <p className="ciyashop-list-info">
-                    Belief – believing in yourself and those around you
-                  </p>
+                  <p className="ciyashop-list-info">Muchas gracias por preferir nuestro trabajo</p>
                 </li>
               </ul>
             </div>
@@ -72,10 +70,10 @@ function AboutBanner2() {
                       <div className="ciyashop_info_box-content-wrap">
                         <div className="ciyashop_info_box-content-inner">
                           <h5 className="ciyashop_info_box-title" style={{ color: '#323232' }}>
-                            Our Store{' '}
+                            Nuestra tienda{' '}
                           </h5>
                           <div className="ciyashop_info_box-description">
-                            <p>But give our customers a positive online.</p>
+                            <p>Tenemos retiros en tienda y además despachos a domicilio.</p>
                           </div>
                         </div>
                       </div>
@@ -106,10 +104,15 @@ function AboutBanner2() {
                       <div className="ciyashop_info_box-content-wrap">
                         <div className="ciyashop_info_box-content-inner">
                           <h5 className="ciyashop_info_box-title" style={{ color: '#323232' }}>
-                            Our Mission{' '}
+                            Nuestra misión{' '}
                           </h5>
                           <div className="ciyashop_info_box-description">
-                            <p>Depending on the device you use to access.</p>
+                            <p>
+                              TODO O NADA es una marca independiente inspirada en el arte tattoo y
+                              dedicada al trabajo de excelencia hecho a mano. Buscamos rescatar y
+                              valorizar elementos culturales y artísticos a través de la impresión
+                              de las obras de arte de nuestros colaboradores.
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -125,4 +128,4 @@ function AboutBanner2() {
   )
 }
 
-export default AboutBanner2
+export default OurHistory

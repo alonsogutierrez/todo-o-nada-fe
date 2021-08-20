@@ -4,7 +4,7 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import PaymentDetail from '../../shop/checkout/PaymentDetail'
 
-const OrderDetailModal = ({ userData, orderData, openModal, setToggle }) => {
+const OrderDetailModal = ({ orderData, openModal, setToggle }) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [closeModal, setCloseModal] = useState(openModal)
   const [totalShippingCarge, setTotalShippingCarge] = useState(0)
@@ -36,8 +36,8 @@ const OrderDetailModal = ({ userData, orderData, openModal, setToggle }) => {
         <ModalBody>
           <PaymentDetail
             orderData={orderData}
-            userData={userData}
             totalShippingCarge={totalShippingCarge}
+            loading={false}
           ></PaymentDetail>
         </ModalBody>
       </Modal>

@@ -23,13 +23,11 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
   let user = {}
   if (loading) {
     return (
-      loading && (
-        <>
-          <div>
-            <Loader type="Puff" color="#04d39f" height="100" width="100" />
-          </div>
-        </>
-      )
+      <>
+        <div>
+          <Loader type="Puff" color="#04d39f" height="100" width="100" />
+        </div>
+      </>
     )
   }
   if (paymentData && Object.keys(paymentData).length > 0) {

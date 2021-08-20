@@ -155,7 +155,6 @@ class SearchOrders extends Component {
                 />
                 {!this.isEmptyUserData(userData) ? (
                   <OrderDetailModal
-                    userData={userData}
                     orderData={orderData}
                     openModal={viewOrderToggle}
                     setToggle={this.toggle}

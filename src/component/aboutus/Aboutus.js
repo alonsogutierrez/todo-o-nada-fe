@@ -2,8 +2,8 @@
  *  About Us Page
  */
 import React, { Component } from 'react'
-import { Col, Container, Row } from 'reactstrap'
-import AboutBanner2 from './AboutBanner2'
+import { Container } from 'reactstrap'
+import OurHistory from './OurHistory'
 import BrandLogoSlider2 from './BrandLogoSlider2'
 import InterestingFacts from './InterestingFacts'
 import OurTeam from './OurTeam'
@@ -13,7 +13,7 @@ const ourteam = {
   dots: false,
   infinite: true,
   speed: 500,
-  slidesToShow: 4,
+  slidesToShow: 3,
   slidesToScroll: 1,
   responsive: [
     {
@@ -47,31 +47,14 @@ class Aboutus extends Component {
         <div className="inner-intro header_intro header_intro_bg-image header_intro_opacity header_intro_opacity-custom">
           <Container>
             <div className="row intro-title align-items-center intro-section-center">
-              <PageTitle title="About Us" />
+              <PageTitle title="Quienes somos" />
             </div>
           </Container>
         </div>
         <div className="content-wrapper">
-          <AboutBanner2 />
+          <OurHistory />
           <InterestingFacts />
-          <div className="section-wrapper section-ptb">
-            <Container>
-              <Row className="justify-content-center">
-                <Col sm={12} lg={7}>
-                  <div className="section-title text-center">
-                    <h2 className="title">Our Team</h2>
-                    <p className="text-center">
-                      Discover the best collection for autumn of Stylist Art. With so charming,
-                      modern and passionate, you certainly love this collection.
-                    </p>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <OurTeam settings={ourteam} />
-              </Row>
-            </Container>
-          </div>
+          <OurTeam settings={ourteam} />
           <div className="section-wrapper section-ptb bg-dark-gray">
             <Container>
               <BrandLogoSlider2 />
