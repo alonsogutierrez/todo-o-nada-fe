@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Col, Container, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
-import Businessschedule from './Businessschedule'
 import ContactDetail from './ContactDetail'
 import ContactForm from './ContactForm'
 import PageTitle from '../../widgets/PageTitle'
@@ -28,11 +27,6 @@ class Contactus extends Component {
                 <ContactForm />
               </Col>
             </Row>
-          </div>
-          <div className="section-wrapper section-ptb">
-            <Container>
-              <Businessschedule />
-            </Container>
           </div>
         </div>
       </div>
