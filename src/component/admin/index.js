@@ -6,10 +6,9 @@ import AdminHeader from './Adminheader'
 import AdminProductList from './AdminProductList'
 import Collaboration from './Collaboration'
 import SearchOrders from './SearchOrders'
-import Productadd from './Product/Productadd'
-import Productedit from './Product/Productedit'
+import ProductForm from './Product/ProductForm'
 import Profile from './Profile'
-import Profileedit from './Profileedit'
+import EditProduct from './Product/EditProduct'
 import Reports from './Reports/Reports'
 import Settings from './Settings'
 
@@ -23,11 +22,10 @@ class AdminDashboard extends Component {
           <Route path={`/admin-dashboard/invoices`} component={SearchOrders} />
           <Route path={`/admin-dashboard/profile`} component={Profile} />
           <Route path={`/admin-dashboard/product`} component={AdminProductList} />
-          <Route path={`/admin-dashboard/profileedit`} component={Profileedit} />
           <Route path={`/admin-dashboard/collaboration`} component={Collaboration} />
           <Route path={`/admin-dashboard/settings`} component={Settings} />
-          <Route path={`/admin-dashboard/product-add`} component={Productadd} />
-          <Route path={`/admin-dashboard/product-edit/:category/:id`} component={Productedit} />
+          <Route path={`/admin-dashboard/product-add`} component={ProductForm} />
+          <Route path={`/admin-dashboard/product-edit/:itemNumber`} component={EditProduct} />
         </div>
       </>
     )

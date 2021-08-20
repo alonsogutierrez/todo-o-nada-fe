@@ -42,7 +42,7 @@ const AdminproductList = (props) => {
                 </Link>
               </div>
               <div className="product-action product-action-quick-view">
-                <Link to={`/admin-panel/Product-edit/${itemNumber}`} className="open-edit-view">
+                <Link to={`/admin-dashboard/product-edit/${itemNumber}`} className="open-edit-view">
                   <i className="fa fa-pencil-square-o"></i>
                 </Link>
                 <Link to="#" className="product-delete" onClick={() => onDeleteInvoicePopup()}>
