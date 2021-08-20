@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 import ClientAPI from '../../../../common/ClientAPI'
 import setActualProductsData from '../../../../actions/setActualProductsData'
 import setChangeProducts from '../../../../actions/setChangeProducts'
+import { categoryValue } from '../../../../actions/filter'
 
 const SearchBar = (props) => {
   const [searchText, setSearchText] = useState('')
@@ -27,6 +28,7 @@ const SearchBar = (props) => {
 
   const onSearchSubmit = async (e) => {
     e.preventDefault()
+    const { setCategorySelected, setSubCategorySelected, categoryValue } = props
     setLoading(true)
     const searchValidation = handleSearchValidation()
     if (searchValidation) {
@@ -34,6 +36,9 @@ const SearchBar = (props) => {
         const searchResult = await clientAPI.getSearch(searchText)
         props.setProducts(searchResult)
         props.setChangeProducts(!props.changeProducts)
+        setCategorySelected('')
+        setSubCategorySelected('')
+        categoryValue([])
         setLoading(false)
         props.history.push(`/search?query=${searchText}`)
       } catch (err) {
@@ -93,6 +98,7 @@ const SearchBar = (props) => {
 const mapDispatchToProps = (dispatch) => ({
   setProducts: (products) => dispatch(setActualProductsData(products)),
   setChangeProducts: (changeProducts) => dispatch(setChangeProducts(changeProducts)),
+  categoryValue: (categoryName) => dispatch(categoryValue(categoryName)),
 })
 
 export default connect(null, mapDispatchToProps)(withRouter(SearchBar))
@@ -102,6 +108,9 @@ SearchBar.defaultProps = {
   setProducts: () => {},
   changeProducts: false,
   setChangeProducts: () => {},
+  setCategorySelected: () => {},
+  setSubCategorySelected: () => {},
+  categoryValue: () => {},
 }
 
 SearchBar.propTypes = {
@@ -109,4 +118,7 @@ SearchBar.propTypes = {
   setProducts: PropTypes.func,
   changeProducts: PropTypes.bool,
   setChangeProducts: PropTypes.func,
+  categoryValue: PropTypes.func,
+  setCategorySelected: PropTypes.func,
+  setSubCategorySelected: PropTypes.func,
 }

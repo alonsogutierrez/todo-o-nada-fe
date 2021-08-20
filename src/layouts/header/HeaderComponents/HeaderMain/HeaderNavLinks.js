@@ -1,9 +1,24 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Nav, UncontrolledDropdown, DropdownMenu, DropdownItem } from 'reactstrap'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, withRouter } from 'react-router-dom'
 
-const HeaderNavLinks = ({ navLinks, pageName }) => {
+import setCategorySelected from './../../../../actions/setCategorySelected'
+import setSubCategorySelected from './../../../../actions/setSubCategorySelected'
+
+import { categoryValue } from './../../../../actions/filter'
+
+const HeaderNavLinks = ({
+  navLinks,
+  pageName,
+  setCategorySelected,
+  setSubCategorySelected,
+  history,
+  categoryValue,
+  setChangeProducts,
+  changeProducts,
+}) => {
   const openSubMenuOpen = (id) => {
     var elm = document.getElementById(id)
     if (elm !== null) {
@@ -16,6 +31,25 @@ const HeaderNavLinks = ({ navLinks, pageName }) => {
     if (elm !== null) {
       document.getElementById(id).setAttribute('class', 'dropdown-menu dropdown-menu-right')
     }
+  }
+
+  const handleCategoryClick = (e, categoryName) => {
+    e.preventDefault()
+    setCategorySelected(categoryName.toLowerCase())
+    setSubCategorySelected('')
+    const categories = [categoryName.toLowerCase()]
+    categoryValue(categories)
+    setChangeProducts(!changeProducts)
+    history.push(`/category/${categoryName.toLowerCase()}`)
+  }
+
+  const handleSetSubCategorySelected = (e, categoryName, subCategoryName) => {
+    e.preventDefault()
+    setCategorySelected(categoryName.toLowerCase())
+    setSubCategorySelected(subCategoryName.toLowerCase().split(' ').join('-'))
+    categoryValue([categoryName.toLowerCase(), subCategoryName.toLowerCase().split(' ').join('-')])
+    setChangeProducts(!changeProducts)
+    history.push(`/category/${categoryName.toLowerCase()}`)
   }
 
   return navLinks.map((navLink, index) => (
@@ -33,6 +67,7 @@ const HeaderNavLinks = ({ navLinks, pageName }) => {
               to={navLink.path}
               className="dropdown-toggle nav-link"
               aria-expanded="true"
+              onClick={(e) => handleCategoryClick(e, navLink.category_name)}
             >
               {' '}
               {navLink.menu_title}
@@ -45,6 +80,9 @@ const HeaderNavLinks = ({ navLinks, pageName }) => {
                     tag={Link}
                     className={`nav-item  ${pageName == subNavLink.path ? 'active' : ''}`}
                     to={subNavLink.path}
+                    onClick={(e) =>
+                      handleSetSubCategorySelected(e, navLink.category_name, subNavLink.menu_title)
+                    }
                   >
                     {subNavLink.menu_title}
                   </DropdownItem>
@@ -63,14 +101,34 @@ const HeaderNavLinks = ({ navLinks, pageName }) => {
   ))
 }
 
-export default HeaderNavLinks
+const mapStateToProps = (state) => ({
+  changeProducts: state.changeProductsDataReducer.changeProductsData,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  setCategorySelected: (categoryName) => dispatch(setCategorySelected(categoryName)),
+  setSubCategorySelected: (subCategoryName) => dispatch(setSubCategorySelected(subCategoryName)),
+  categoryValue: (categoryName) => dispatch(categoryValue(categoryName)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HeaderNavLinks))
 
 HeaderNavLinks.defaultProps = {
   navLinks: [],
   pageName: '',
+  setCategorySelected: () => {},
+  setSubCategorySelected: () => {},
+  history: {},
+  categoryValue: () => {},
+  setChangeProducts: () => {},
 }
 
 HeaderNavLinks.propTypes = {
   navLinks: PropTypes.array,
   pageName: PropTypes.string,
+  setCategorySelected: PropTypes.func,
+  setSubCategorySelected: PropTypes.func,
+  history: PropTypes.object,
+  categoryValue: PropTypes.func,
+  setChangeProducts: PropTypes.func,
 }

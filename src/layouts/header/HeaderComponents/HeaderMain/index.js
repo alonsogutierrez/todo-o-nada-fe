@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 //TODO: Get navLinks from BFF
 import navLinks from './../../../../NavLinks'
 import HeaderNavLinks from './HeaderNavLinks'
-import LogoWrapper from '../LogoWrapper'
+import LogoWrapper from './../LogoWrapper'
 import ShoppingCart from './ShoppingCart'
 import EmptyShoppingCart from './EmptyShoppingCart'
 import SearchBar from './SearchBar'

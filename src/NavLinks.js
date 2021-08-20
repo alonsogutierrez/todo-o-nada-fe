@@ -9,8 +9,9 @@ export default [
     child_routes: null,
   },
   {
-    path: '/category/hombres',
+    path: '/category/hombre',
     menu_title: 'Hombres',
+    category_name: 'hombre',
     icon: 'arrow_right_alt',
     type: 'subMenu',
     child_routes: [
@@ -35,8 +36,9 @@ export default [
     ],
   },
   {
-    path: '/category/mujeres',
+    path: '/category/mujer',
     menu_title: 'Mujeres',
+    category_name: 'mujer',
     type: 'subMenu',
     icon: 'arrow_right_alt',
     child_routes: [
@@ -61,8 +63,36 @@ export default [
     ],
   },
   {
-    path: '/category/niños',
+    path: '/category/niña',
+    menu_title: 'Niñas',
+    category_name: 'niña',
+    icon: 'arrow_right_alt',
+    type: 'subMenu',
+    child_routes: [
+      {
+        path: '/category/irezumi',
+        menu_title: 'Irezumi',
+        icon: 'arrow_right_alt',
+        child_routes: null,
+      },
+      {
+        path: '/category/art-collection',
+        menu_title: 'Art collection',
+        icon: 'arrow_right_alt',
+        child_routes: null,
+      },
+      {
+        path: '/category/tattoo-collection',
+        menu_title: 'Tattoo collection',
+        icon: 'arrow_right_alt',
+        child_routes: null,
+      },
+    ],
+  },
+  {
+    path: '/category/niño',
     menu_title: 'Niños',
+    category_name: 'niño',
     icon: 'arrow_right_alt',
     type: 'subMenu',
     child_routes: [
