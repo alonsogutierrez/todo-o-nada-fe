@@ -72,12 +72,12 @@ class Footer extends React.Component {
                               <ul>
                                 <li>
                                   <a
-                                    href="https://www.facebook.com"
-                                    title="Facebook"
+                                    href="https://www.instagram.com/todoonadatattooart/"
+                                    title="Instagram"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                   >
-                                    <i className="fa fa-facebook" />
+                                    <i className="fa fa-instagram" />
                                   </a>
                                 </li>
                               </ul>
@@ -117,11 +117,11 @@ class Footer extends React.Component {
                           <ul>
                             <li>
                               <i className="fa fa-map-marker" />
-                              <span>Puente Alto, Santiago, Chile</span>
+                              <span>Catedral 2116, Santiago, Chile</span>
                             </li>
                             <li className="pgs-contact-email">
                               <i className="fa fa-envelope-o" />
-                              <span>contacto@todoonadatattoart.cl</span>
+                              <span>todoonadatattooart2017@gmail.com</span>
                             </li>
                             <li>
                               <i className="fa fa-phone" />
@@ -142,7 +142,7 @@ class Footer extends React.Component {
                     <Col md={6} className="float-left">
                       <p>
                         {' '}
-                        © Copyright 2021 <Link to="/home">Todo o nada Tatto art</Link> Todos los
+                        © Copyright 2021 <Link to="/home">Todo o Nada Tattoo Art</Link> Todos los
                         derechos reservados.
                       </p>
                     </Col>

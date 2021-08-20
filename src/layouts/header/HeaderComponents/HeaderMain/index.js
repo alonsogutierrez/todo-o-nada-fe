@@ -15,13 +15,13 @@ import SearchBar from './SearchBar'
 const HeaderMain = ({ changeCart }) => {
   const [productsCartItems, setProductsCartItems] = useState([])
   const [cartHide, setCartHide] = useState(true)
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpenMenu, setIsOpenMenu] = useState(false)
   const [isOpenSearchBar, setIsOpenSearchBar] = useState(false)
   const [width, setWidth] = useState(window.innerWidth)
   const [classset] = useState('')
 
   const toggle = () => {
-    setIsOpen(!isOpen)
+    setIsOpenMenu(!isOpenMenu)
   }
 
   const readCartItems = () => {
@@ -46,7 +46,7 @@ const HeaderMain = ({ changeCart }) => {
     setProductsCartItems(JSON.parse(localStorage.getItem('LocalCartItems')))
     window.addEventListener('resize', updateDimensions)
     return () => window.removeEventListener('resize', updateDimensions)
-  }, [changeCart, isOpen])
+  }, [changeCart, isOpenMenu])
 
   const pathnames = document.location.href
   const pathArray = pathnames.split('/')
@@ -54,6 +54,7 @@ const HeaderMain = ({ changeCart }) => {
   const cartItems = readCartItems()
   const isItemsInCart = cartItems.length > 0
   const urlRedirectShoppingCart = !isItemsInCart ? '#' : '/shopping-cart'
+  const isDesktopScreen = width >= 992
 
   return (
     <Fragment>
@@ -115,10 +116,10 @@ const HeaderMain = ({ changeCart }) => {
                 </Col>
                 <Navbar color="faded" light>
                   <NavbarToggler onClick={toggle} className="mr-2" />
-                  {isOpen && width < 992 && (
-                    <HeaderNavLinks navLinks={navLinks} pageName={pageName} />
+                  {isOpenMenu && !isDesktopScreen && (
+                    <HeaderNavLinks navLinks={navLinks} pageName={pageName} toggle={toggle} />
                   )}
-                  {isOpen && width >= 992 && (
+                  {isOpenMenu && isDesktopScreen && (
                     <Nav className="ml-auto" navbar>
                       {navLinks.map((navLink, index) => (
                         <li
@@ -174,12 +175,12 @@ const HeaderMain = ({ changeCart }) => {
                   )}
                 </Navbar>
               </div>
-              {isOpenSearchBar && width < 992 && (
+              {isOpenSearchBar && !isDesktopScreen && (
                 <Row style={{ marginBottom: '5px', marginTop: '-10px' }}>
                   <SearchBar />
                 </Row>
               )}
-              {width >= 992 && (
+              {isDesktopScreen && (
                 <Row>
                   <Col lg={12}>
                     <div className="col" id="mainMenu">
@@ -194,7 +195,7 @@ const HeaderMain = ({ changeCart }) => {
                                       <div className="menu-list-items">
                                         <Navbar light expand="md" className="front_menu">
                                           <NavbarToggler onClick={() => toggle()} />
-                                          <Collapse isOpen={isOpen} navbar>
+                                          <Collapse isOpen={isOpenMenu} navbar>
                                             <HeaderNavLinks
                                               navLinks={navLinks}
                                               pageName={pageName}

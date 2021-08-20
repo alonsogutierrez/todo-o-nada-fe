@@ -15,14 +15,14 @@ const settings = {
   infinite: true,
   speed: 500,
   slidesToShow: 1,
-  slidesToScroll: 1
+  slidesToScroll: 1,
 }
 const productslider = {
   dots: false,
   infinite: false,
   speed: 500,
   slidesToShow: 5,
-  slidesToScroll: 1
+  slidesToScroll: 1,
 }
 
 class ProductEditDetail extends Component {
@@ -31,26 +31,26 @@ class ProductEditDetail extends Component {
     this.state = {
       pictures: [],
       photoIndex: 0,
-      isOpen: false
+      isOpen: false,
     }
   }
 
   componentDidMount() {
     this.setState({
-      newImage: 'product-01.jpg'
+      newImage: 'product-01.jpg',
     })
   }
 
   //function for preview images
   changePreviewImage(image) {
     this.setState({
-      newImage: image
+      newImage: image,
     })
   }
 
   ImageChange(picture) {
     this.setState({
-      pictures: this.state.pictures.concat(picture)
+      pictures: this.state.pictures.concat(picture),
     })
   }
 
@@ -59,71 +59,58 @@ class ProductEditDetail extends Component {
     const { product } = this.props
     const images = []
     {
-      product.pictures.map(pic =>
-        images.push(require(`../../assets/images/${pic}`))
-      )
+      product.pictures.map((pic) => images.push(require(`../../assets/images/${pic}`)))
     }
     return (
       <section>
-        <div className='product-content-top single-product single-product-edit'>
+        <div className="product-content-top single-product single-product-edit">
           <Row>
-            <div className='product-top-left col-xl-5 col-md-6'>
-              <div className='product-top-left-inner'>
-                <div className='ciyashop-product-images'>
-                  <div className='ciyashop-product-images-wrapper ciyashop-gallery-style-default ciyashop-gallery-thumb_position-bottom ciyashop-gallery-thumb_vh-horizontal'>
-                    <div className='ciyashop-product-gallery ciyashop-product-gallery--with-images slick-carousel'>
+            <div className="product-top-left col-xl-5 col-md-6">
+              <div className="product-top-left-inner">
+                <div className="ciyashop-product-images">
+                  <div className="ciyashop-product-images-wrapper ciyashop-gallery-style-default ciyashop-gallery-thumb_position-bottom ciyashop-gallery-thumb_vh-horizontal">
+                    <div className="ciyashop-product-gallery ciyashop-product-gallery--with-images slick-carousel">
                       <Slider
                         {...settings}
-                        className='ciyashop-product-gallery__wrapper popup-gallery'
+                        className="ciyashop-product-gallery__wrapper popup-gallery"
                       >
-                        <div className='ciyashop-product-gallery__image'>
+                        <div className="ciyashop-product-gallery__image">
                           <img
                             src={require(`../../assets/images/${product.pictures[0]}`)}
-                            className='img-fluid'
+                            className="img-fluid"
                           />
                         </div>
                       </Slider>
-                      <div className='ciyashop-product-gallery_buttons_wrapper'>
+                      <div className="ciyashop-product-gallery_buttons_wrapper">
                         <div
-                          className='ciyashop-product-gallery_button ciyashop-product-gallery_button-zoom popup-gallery'
+                          className="ciyashop-product-gallery_button ciyashop-product-gallery_button-zoom popup-gallery"
                           onClick={() => this.setState({ isOpen: true })}
                         >
-                          <Link
-                            to='#'
-                            className='ciyashop-product-gallery_button-link-zoom'
-                          >
-                            <i className='fa fa-arrows-alt' />
+                          <Link to="#" className="ciyashop-product-gallery_button-link-zoom">
+                            <i className="fa fa-arrows-alt" />
                           </Link>
                         </div>
                       </div>
                     </div>
-                    <div className='ciyashop-product-thumbnails'>
-                      <Slider
-                        {...productslider}
-                        className='ciyashop-product-thumbnails__wrapper'
-                      >
+                    <div className="ciyashop-product-thumbnails">
+                      <Slider {...productslider} className="ciyashop-product-thumbnails__wrapper">
                         {product.pictures.map((pictureimage, index) => (
                           <div key={index}>
-                            <div className='ciyashop-product-thumbnail__image'>
-                              <a href='javascript:void(0)'>
+                            <div className="ciyashop-product-thumbnail__image">
+                              <a href="javascript:void(0)">
                                 <img
                                   src={require(`../../assets/images/${pictureimage}`)}
-                                  className='img-fluid'
+                                  className="img-fluid"
                                 />
                               </a>
-                              <div className='d-flex justify-content-center image-content align-items-center'>
+                              <div className="d-flex justify-content-center image-content align-items-center">
                                 <ImageUploader
-                                  buttonText=''
+                                  buttonText=""
                                   onChange={() => this.ImageChange()}
                                   withPreview
                                   withIcon={false}
                                   maxFileSize={5242880}
-                                  imgExtension={[
-                                    '.jpg',
-                                    '.gif',
-                                    '.png',
-                                    '.gif'
-                                  ]}
+                                  imgExtension={['.jpg', '.gif', '.png', '.gif']}
                                 />
                               </div>
                             </div>
@@ -131,96 +118,95 @@ class ProductEditDetail extends Component {
                         ))}
                       </Slider>
                     </div>
-                    <div className='clearfix' />
+                    <div className="clearfix" />
                   </div>
                 </div>
               </div>
             </div>
-            <div className='product-top-right col-xl-7 col-md-6'>
-              <div className='product-top-right-inner'>
-                <div className='summary entry-summary'>
-                  <FormGroup className='edit-icon'>
+            <div className="product-top-right col-xl-7 col-md-6">
+              <div className="product-top-right-inner">
+                <div className="summary entry-summary">
+                  <FormGroup className="edit-icon">
                     <Input
-                      type='text'
-                      className='form-control product_title'
-                      placeholder='Product Name'
+                      type="text"
+                      className="form-control product_title"
+                      placeholder="Product Name"
                       defaultValue={product.name}
                     />
                   </FormGroup>
-                  <FormGroup className='edit-icon'>
+                  <FormGroup className="edit-icon">
                     <Input
-                      type='text'
-                      className='form-control price'
-                      placeholder='Product Price'
-                      defaultValue={`$${product.salePrice.toLocaleString(
-                        navigator.language,
-                        { minimumFractionDigits: 0 }
-                      )}`}
+                      type="text"
+                      className="form-control price"
+                      placeholder="Product Price"
+                      defaultValue={`$${product.salePrice.toLocaleString(navigator.language, {
+                        minimumFractionDigits: 0,
+                      })}`}
                     />
                   </FormGroup>
-                  <FormGroup className='edit-icon'>
+                  <FormGroup className="edit-icon">
                     <Input
-                      type='textarea'
-                      className='form-control'
-                      rows='3'
-                      placeholder='Product Description'
+                      type="textarea"
+                      className="form-control"
+                      rows="3"
+                      placeholder="Product Description"
                       defaultValue={product.description}
                     />
                   </FormGroup>
-                  <Label className='title'>Size</Label>
+                  <Label className="title">Size</Label>
                   <FormGroup>
                     {product.size.map((size, index) => (
                       <Label key={index}>
-                        <Input type='checkbox' /> {size}
+                        <Input type="checkbox" /> {size}
                       </Label>
                     ))}
                   </FormGroup>
-                  <Label className='title'>Color</Label>
+                  <Label className="title">Color</Label>
                   <FormGroup>
                     {product.colors.map((color, index) => (
                       <Label key={index}>
-                        <Input type='checkbox' /> {color}
+                        <Input type="checkbox" /> {color}
                       </Label>
                     ))}
                   </FormGroup>
-                  <Label className='title'>Category</Label>
+                  <Label className="title">Category</Label>
                   <Input
-                    type='text'
-                    class='form-control'
-                    placeholder='Product Category'
+                    type="text"
+                    class="form-control"
+                    placeholder="Product Category"
                     defaultValue={product.category}
                   />
 
-                  <Label className='title'>Brand</Label>
+                  <Label className="title">Brand</Label>
                   <FormGroup>
                     {product.tags.map((brand, index) => (
                       <Label key={index}>
-                        <Input type='checkbox' /> {brand}
+                        <Input type="checkbox" /> {brand}
                       </Label>
                     ))}
                   </FormGroup>
 
-                  <Label className='title'>Total Products</Label>
+                  <Label className="title">Total Products</Label>
                   <input
-                    type='text'
-                    className='form-control'
-                    placeholder='Total Product'
+                    type="text"
+                    className="form-control"
+                    placeholder="Total Product"
                     defaultValue={product.stock}
                   ></input>
 
-                  <Label className='title'>Product Stock</Label>
+                  <Label className="title">Product Stock</Label>
                   <input
-                    type='text'
-                    className='form-control'
-                    placeholder='Product Stock'
+                    type="text"
+                    className="form-control"
+                    placeholder="Product Stock"
                     defaultValue={product.stock}
                   ></input>
 
-                  <a href='#' className='btn btn-primary mb-2 mr-2'>
+                  <a href="#" className="btn btn-primary mb-2 mr-2">
                     {' '}
                     Update{' '}
                   </a>
-                  <Link to='/admin-panel/Product' class='btn btn-danger mb-2'>
+                  <Link to="/admin-panel/Product" class="btn btn-danger mb-2">
                     {' '}
                     Cancel{' '}
                   </Link>
@@ -239,12 +225,12 @@ class ProductEditDetail extends Component {
               onCloseRequest={() => this.setState({ isOpen: false })}
               onMovePrevRequest={() =>
                 this.setState({
-                  photoIndex: (photoIndex + images.length - 1) % images.length
+                  photoIndex: (photoIndex + images.length - 1) % images.length,
                 })
               }
               onMoveNextRequest={() =>
                 this.setState({
-                  photoIndex: (photoIndex + 1) % images.length
+                  photoIndex: (photoIndex + 1) % images.length,
                 })
               }
             />
@@ -257,9 +243,9 @@ class ProductEditDetail extends Component {
 export default ProductEditDetail
 
 ProductEditDetail.defaultProps = {
-  product: {}
+  product: {},
 }
 
 ProductEditDetail.propTypes = {
-  product: PropTypes.object
+  product: PropTypes.object,
 }

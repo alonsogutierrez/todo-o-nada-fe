@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row } from 'reactstrap'
+import Loader from 'react-loader-spinner'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 
@@ -29,6 +30,7 @@ const SearchPage = ({
   const [productsPerPage, setProductsPerPage] = useState(16)
   const [clientAPI] = useState(new ClientAPI())
   const [isEnabledLoadMoreButton, setIsEnabledLoadMoreButton] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   const onLoadMore = () => {
     let totalProducts = 0
@@ -69,6 +71,7 @@ const SearchPage = ({
     } catch (err) {
       console.log('Error trying to get products by category')
     }
+    setLoading(false)
   }
 
   const searchByText = async () => {
@@ -81,6 +84,7 @@ const SearchPage = ({
     } catch (err) {
       console.log('Error trying to get products by search')
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -112,8 +116,18 @@ const SearchPage = ({
             <Row>
               <div className="sidebar col-xl-3 col-lg-4 desktop">
                 <div className="shop-sidebar-widgets">
-                  <SideFilter />
-                  <SocialFilter />
+                  {!loading ? (
+                    <>
+                      <SideFilter />
+                      <SocialFilter />
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <Loader type="Puff" color="#04d39f" height="100" width="100" />
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="content col-xl-9 col-lg-8">
@@ -126,7 +140,7 @@ const SearchPage = ({
                     </div>
                   </div>
                 </div>
-                {actualProducts && actualProducts.length > 0 ? (
+                {!loading && actualProducts && actualProducts.length > 0 && (
                   <div>
                     <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
                       {actualProducts.slice(0, productsPerPage).map((product, index) => (
@@ -141,7 +155,8 @@ const SearchPage = ({
                       </div>
                     )}
                   </div>
-                ) : (
+                )}{' '}
+                {!loading && !actualProducts && actualProducts.length <= 0 && (
                   <div>
                     <Row className="products products-loop grid ciyashop-products-shortcode">
                       <div className="col-sm-12 text-center  mt-5">
@@ -157,6 +172,13 @@ const SearchPage = ({
                       </div>
                     </Row>
                   </div>
+                )}
+                {loading && (
+                  <>
+                    <div>
+                      <Loader type="Puff" color="#04d39f" height="100" width="100" />
+                    </div>
+                  </>
                 )}
               </div>
             </Row>

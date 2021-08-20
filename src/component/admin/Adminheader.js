@@ -19,7 +19,6 @@ import {
 import PropTypes from 'prop-types'
 
 import Common from '../../api/common'
-import logo from '../../assets/images/logo.svg'
 import profileImg from '../../assets/images/testimonials/img-02.jpg'
 
 const AdminHeader = (props) => {
@@ -69,10 +68,6 @@ const AdminHeader = (props) => {
         <Row className="align-items-center">
           <Col md={12}>
             <div className="d-flex align-items-center positive-reletive">
-              <Link to="/">
-                <img className="img-fluid logo" src={logo} alt="logo" />
-              </Link>
-
               <Dropdown isOpen={dropdownOpen} toggle={toggle2} className="profile-dropdown ml-auto">
                 <DropdownToggle caret className="btn-white">
                   <img

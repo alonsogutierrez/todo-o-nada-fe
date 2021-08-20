@@ -12,6 +12,7 @@ import { categoryValue } from './../../../../actions/filter'
 const HeaderNavLinks = ({
   navLinks,
   pageName,
+  toggle,
   setCategorySelected,
   setSubCategorySelected,
   history,
@@ -49,6 +50,7 @@ const HeaderNavLinks = ({
     setSubCategorySelected(subCategoryName.toLowerCase().split(' ').join('-'))
     categoryValue([categoryName.toLowerCase(), subCategoryName.toLowerCase().split(' ').join('-')])
     setChangeProducts(!changeProducts)
+    toggle()
     history.push(`/category/${categoryName.toLowerCase()}`)
   }
 
@@ -121,6 +123,7 @@ HeaderNavLinks.defaultProps = {
   history: {},
   categoryValue: () => {},
   setChangeProducts: () => {},
+  toggle: () => {},
 }
 
 HeaderNavLinks.propTypes = {
@@ -131,4 +134,5 @@ HeaderNavLinks.propTypes = {
   history: PropTypes.object,
   categoryValue: PropTypes.func,
   setChangeProducts: PropTypes.func,
+  toggle: PropTypes.func,
 }

@@ -13,12 +13,12 @@ function SocialFilter() {
             <ul>
               <li>
                 <a
-                  href="https://www.facebook.com"
-                  title="Facebook"
+                  href="https://www.instagram.com/todoonadatattooart/"
+                  title="Instagram"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fa fa-facebook" />
+                  <i className="fa fa-instagram" />
                 </a>
               </li>
             </ul>

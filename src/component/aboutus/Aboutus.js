@@ -4,7 +4,6 @@
 import React, { Component } from 'react'
 import { Container } from 'reactstrap'
 import OurHistory from './OurHistory'
-import BrandLogoSlider2 from './BrandLogoSlider2'
 import InterestingFacts from './InterestingFacts'
 import OurTeam from './OurTeam'
 import PageTitle from '../../widgets/PageTitle'
@@ -55,11 +54,6 @@ class Aboutus extends Component {
           <OurHistory />
           <InterestingFacts />
           <OurTeam settings={ourteam} />
-          <div className="section-wrapper section-ptb bg-dark-gray">
-            <Container>
-              <BrandLogoSlider2 />
-            </Container>
-          </div>
         </div>
       </div>
     )

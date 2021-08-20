@@ -359,21 +359,6 @@ const GeneralInfo = (props) => {
                     {renderColorsProduct(color)}
                     {renderSKUProduct(sku)}
                   </div>
-                  <div className="social-profiles">
-                    <span className="share-label">Compartir:</span>
-                    <ul className="share-links">
-                      <li>
-                        <a
-                          href="https://www.facebook.com"
-                          className="share-link facebook-share"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <i className="fa fa-facebook" />
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
                 </div>
               </div>
             </div>
