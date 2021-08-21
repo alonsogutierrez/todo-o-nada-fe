@@ -310,4 +310,30 @@ export default class ClientAPI {
         })
     })
   }
+
+  uploadLotsProducts(file) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
+      let formData = new FormData()
+      formData.append('file', file)
+      client
+        .request({
+          url: `/product/upload`,
+          headers: {
+            'content-type': 'multipart/form-data',
+            Authorization: `Bearer ${userToken}`,
+          },
+          method: 'post',
+          timeout: 180 * 1000,
+          data: formData,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }

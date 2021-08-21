@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { Col, Container, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 
@@ -32,10 +32,10 @@ const collections = [
 
 const Collections = (props) => {
   const handleCollectionClick = (e, categoryName) => {
-    console.log('here')
     e.preventDefault()
     props.history.push(`/category/${categoryName}`)
   }
+
   return (
     <Container>
       <Row className="margin-top-8 mb-7 pb-3 pb-sm-0">
@@ -43,23 +43,22 @@ const Collections = (props) => {
           <Row>
             {collections.map((collection) => (
               <div className="col-lg-3" key={collection.id}>
-                <div className="ciyashop_banner_wrapper">
-                  <div className="ciyashop_banner ciyashop_banner-style-style-1 ciyashop_banner-effect-border banner-2">
-                    <img
-                      className="ciyashop_banner-image img-fluid inline"
-                      alt="Banner"
-                      src={collection.imageSrc}
-                      onClick={(e) => handleCollectionClick(e, collection.name)}
-                    />
-                    <div className="ciyashop_banner-content ciyashop_banner-content-hleft ciyashop_banner-content-vtop">
-                      <div className="ciyashop_banner-content-wrapper">
-                        <div className="ciyashop_banner-content-inner-wrapper">
-                          <div className="ciyashop_banner-text-wrap ciyashop_banner-text-wrap-1 hidden-lg hidden-md hidden-sm hidden-xs"></div>
-                        </div>
-                      </div>
+                <Link
+                  key={collection.id}
+                  to={`/category/${collection.name}`}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className="ciyashop_banner_wrapper">
+                    <div className="ciyashop_banner ciyashop_banner-style-style-1 ciyashop_banner-effect-border banner-2">
+                      <img
+                        className="ciyashop_banner-image img-fluid inline"
+                        alt="Banner"
+                        src={collection.imageSrc}
+                        onClick={(e) => handleCollectionClick(e, collection.name)}
+                      />
                     </div>
                   </div>
-                </div>
+                </Link>
               </div>
             ))}
           </Row>
