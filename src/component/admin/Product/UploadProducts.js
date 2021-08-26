@@ -24,6 +24,7 @@ const UploadProducts = () => {
       setLoading(false)
       toast.success('Productos cargados en base de datos')
     } catch (err) {
+      setLoading(false)
       toast.error('Problema al cargar, reintentar porfavor')
     }
   }
