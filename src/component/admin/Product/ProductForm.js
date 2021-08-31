@@ -8,7 +8,15 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import ClientAPI from '../../../common/ClientAPI'
 
-const categories = ['hombre', 'mujer', 'niño', 'niña', 'irezumi', 'traditional']
+const categories = [
+  'hombre',
+  'mujer',
+  'niño',
+  'niña',
+  'irezumi',
+  'traditional',
+  'tattoo collection',
+]
 
 const ProductForm = (props) => {
   const [productData, setProductData] = useState(props.product)
@@ -26,10 +34,11 @@ const ProductForm = (props) => {
   useEffect(() => {
     const { product } = props
     if (product && Object.keys(product).length > 0) {
-      const { name, description, color, picture, category, details } = product
+      const { itemNumber, name, description, color, picture, category, details } = product
       let productData = {}
       productData = {
         ...productData,
+        itemNumber,
         name,
         description,
         color,
@@ -45,29 +54,44 @@ const ProductForm = (props) => {
 
       setProductData(productData)
     }
+    window.scrollTo(0, 0)
   }, [props.product])
 
-  window.scrollTo(0, 0)
   const createProduct = async (productFormData) => {
     const clientAPI = new ClientAPI()
     return await clientAPI.createProduct(productFormData)
   }
 
-  const product = !productData
-    ? {
-        name: '',
-        description: '',
-        price: 0,
-        color: '',
-        pictures: null,
-        published: false,
-        categories: [],
-        stockBySizeS: 0,
-        stockBySizeM: 0,
-        stockBySizeL: 0,
-        stockBySizeXL: 0,
-      }
-    : productData
+  console.log('productData: ', productData)
+
+  const product =
+    !Object.keys(productData).length > 0
+      ? {
+          itemNumber: '',
+          name: '',
+          description: '',
+          price: {
+            basePriceSales: 0,
+            basePriceReference: 0,
+            discount: 0,
+          },
+          color: '',
+          pictures: null,
+          published: false,
+          categories: [],
+          details: {},
+          stockBySizeS: 0,
+          stockBySizeM: 0,
+          stockBySizeL: 0,
+          stockBySizeXL: 0,
+          stockBySizeXXL: 0,
+          skuBySizeS: '',
+          skuBySizeM: '',
+          skuBySizeL: '',
+          skuBySizeXL: '',
+          skuBySizeXXL: '',
+        }
+      : productData
 
   console.log('product: ', product)
 
@@ -87,34 +111,43 @@ const ProductForm = (props) => {
                         validate={(values) => {
                           console.log('validate values: ', values)
                           const errors = {}
+                          if (!values.itemNumber) {
+                            errors.itemNumber = 'itemNumber requerido'
+                          }
                           if (!values.name) {
                             errors.name = 'nombre requerido'
                           }
                           if (!values.description) {
-                            errors.description = 'descripcion requerida'
+                            errors.description = 'descripción requerida'
                           }
-                          if (!values.price) {
-                            errors.price = 'precio requerido'
+                          if (!values.basePriceSales) {
+                            errors.price = 'precio venta requerido'
+                          }
+                          if (!values.basePriceReference) {
+                            errors.price = 'precio costo requerido'
                           }
                           if (!values.color) {
                             errors.color = 'selecciona un color'
                           }
                           if (values.pictures != null && values.pictures.length > 3) {
-                            errors.pictures = 'cargar no mas de 3 imagenes'
+                            errors.pictures = 'cargar no más de 3 imagenes'
                           }
-                          if (values.category.length < 1) {
-                            errors.categories = 'debes elegir almenos una categoria'
+                          if (values.category && values.category.length < 1) {
+                            errors.categories = 'debes elegir almenos una categoría'
                           }
                           return errors
                         }}
                         onSubmit={async (values, { setSubmitting }) => {
-                          let formData = new FormData()
-                          formData.append('name', values.name)
-                          formData.append('description', values.description)
                           const price = {
                             basePriceReference: 0,
                             basePriceSales: values.price,
+                            discount: 0,
                           }
+                          let formData = new FormData()
+
+                          formData.append('itemNumber', values.itemNumber)
+                          formData.append('name', values.name)
+                          formData.append('description', values.description)
                           formData.append('price', JSON.stringify(price))
                           formData.append('color', values.color)
                           formData.append('published', values.published)
@@ -148,15 +181,33 @@ const ProductForm = (props) => {
                           setFieldValue,
                           isSubmitting,
                         }) => {
+                          console.log('**** values: ', values)
+                          //const { price } = values
                           return (
                             <form onSubmit={handleSubmit}>
                               <Row>
                                 <FormGroup className="edit-icon col-md-12">
+                                  <Label className="title pl-0">Item number</Label>
+                                  <Input
+                                    type="text"
+                                    name="itemNumber"
+                                    className="form-control product_title"
+                                    placeholder="Ingresa el n° del producto"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.itemNumber}
+                                  />
+                                  {errors.itemNumber && touched.itemNumber && errors.itemNumber}
+                                </FormGroup>
+                              </Row>
+                              <Row>
+                                <FormGroup className="edit-icon col-md-12">
+                                  <Label className="title pl-0">Nombre</Label>
                                   <Input
                                     type="text"
                                     name="name"
                                     className="form-control product_title"
-                                    placeholder="nombre"
+                                    placeholder="Ingresa el nombre del producto"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.name}
@@ -166,6 +217,7 @@ const ProductForm = (props) => {
                               </Row>
                               <Row>
                                 <FormGroup className="edit-icon col-md-6">
+                                  <Label className="title pl-0">Color</Label>
                                   <Input
                                     type="select"
                                     name="color"
@@ -185,27 +237,48 @@ const ProductForm = (props) => {
                                   </Input>
                                   {errors.color && touched.color && errors.color}
                                 </FormGroup>
+                              </Row>
+                              <Row>
                                 <FormGroup className="edit-icon col-md-6">
+                                  <Label className="title pl-0">Precio venta</Label>
                                   <Input
                                     type="number"
                                     className="form-control price"
-                                    placeholder="precio"
-                                    name="price"
+                                    placeholder="Precio Venta"
+                                    name="basePriceSales"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.price.basePriceSales}
                                   />
-                                  {errors.price && touched.price && errors.price}
+                                  {errors.basePriceSales &&
+                                    touched.basePriceSales &&
+                                    errors.basePriceSales}
+                                </FormGroup>
+                                <FormGroup className="edit-icon col-md-6">
+                                  <Label className="title pl-0">Precio costo</Label>
+                                  <Input
+                                    type="number"
+                                    className="form-control price"
+                                    placeholder="Precio Compra"
+                                    name="basePriceReference"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.price.basePriceReference}
+                                  />
+                                  {errors.basePriceReference &&
+                                    touched.basePriceReference &&
+                                    errors.basePriceReference}
                                 </FormGroup>
                               </Row>
                               <Row>
                                 <FormGroup className="edit-icon col-md-12">
+                                  <Label className="title pl-0">Descripción</Label>
                                   <Input
                                     type="textarea"
                                     className="form-control"
                                     name="description"
                                     rows="3"
-                                    placeholder="descripción"
+                                    placeholder="Ingresa la descripción de tu producto"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.description}
@@ -271,6 +344,15 @@ const ProductForm = (props) => {
                                     onBlur={handleBlur}
                                     value={values.stockBySizeS}
                                   />
+                                  <Label className="title pl-0">SKU talla S</Label>
+                                  <Input
+                                    type="text"
+                                    name="skuBySizeS"
+                                    className="form-control product_title"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.skuBySizeS}
+                                  />
                                   {errors.stockBySizeS &&
                                     touched.stockBySizeS &&
                                     errors.stockBySizeS}
@@ -284,6 +366,15 @@ const ProductForm = (props) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.stockBySizeM}
+                                  />
+                                  <Label className="title pl-0">SKU talla M</Label>
+                                  <Input
+                                    type="text"
+                                    name="skuBySizeM"
+                                    className="form-control product_title"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.skuBySizeM}
                                   />
                                   {errors.stockBySizeM &&
                                     touched.stockBySizeM &&
@@ -301,6 +392,15 @@ const ProductForm = (props) => {
                                     onBlur={handleBlur}
                                     value={values.stockBySizeL}
                                   />
+                                  <Label className="title pl-0">SKU talla L</Label>
+                                  <Input
+                                    type="text"
+                                    name="skuBySizeL"
+                                    className="form-control product_title"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.skuBySizeL}
+                                  />
                                   {errors.stockBySizeL &&
                                     touched.stockBySizeL &&
                                     errors.stockBySizeL}
@@ -314,6 +414,15 @@ const ProductForm = (props) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.stockBySizeXL}
+                                  />
+                                  <Label className="title pl-0">SKU talla XL</Label>
+                                  <Input
+                                    type="text"
+                                    name="skuBySizeXL"
+                                    className="form-control product_title"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.skuBySizeXL}
                                   />
                                   {errors.stockBySizeXL &&
                                     touched.stockBySizeXL &&
@@ -330,6 +439,15 @@ const ProductForm = (props) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.stockBySizeXXL}
+                                  />
+                                  <Label className="title pl-0">SKU talla XXL</Label>
+                                  <Input
+                                    type="text"
+                                    name="skuBySizeXXL"
+                                    className="form-control product_title"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.skuBySizeXXL}
                                   />
                                   {errors.stockBySizeXXL &&
                                     touched.stockBySizeXXL &&
