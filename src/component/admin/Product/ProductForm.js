@@ -5,6 +5,7 @@ import { Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Loader from 'react-loader-spinner'
 
 import ClientAPI from '../../../common/ClientAPI'
 
@@ -20,6 +21,7 @@ const categories = [
 
 const ProductForm = (props) => {
   const [productData, setProductData] = useState(props.product)
+  const [loading, setLoading] = useState(false)
 
   const getSizeSKU = (details, size) => {
     let stock = 0
@@ -29,6 +31,15 @@ const ProductForm = (props) => {
       }
     }
     return stock
+  }
+
+  const getSKUBySize = (details, size) => {
+    for (let sku in details) {
+      if (details[sku].size === size) {
+        return sku
+      }
+    }
+    return ''
   }
 
   useEffect(() => {
@@ -50,6 +61,11 @@ const ProductForm = (props) => {
         stockBySizeL: getSizeSKU(details, 'L'),
         stockBySizeXL: getSizeSKU(details, 'XL'),
         stockBySizeXXL: getSizeSKU(details, 'XXL'),
+        skuBySizeS: getSKUBySize(details, 'S'),
+        skuBySizeM: getSKUBySize(details, 'M'),
+        skuBySizeL: getSKUBySize(details, 'L'),
+        skuBySizeXL: getSKUBySize(details, 'XL'),
+        skuBySizeXXL: getSKUBySize(details, 'XXL'),
       }
 
       setProductData(productData)
@@ -57,9 +73,12 @@ const ProductForm = (props) => {
     window.scrollTo(0, 0)
   }, [props.product])
 
-  const createProduct = async (productFormData) => {
+  const processProduct = async (productFormData) => {
     const clientAPI = new ClientAPI()
-    return await clientAPI.createProduct(productFormData)
+    setLoading(true)
+    await clientAPI.processProduct(productFormData)
+    setLoading(false)
+    return
   }
 
   console.log('productData: ', productData)
@@ -95,6 +114,16 @@ const ProductForm = (props) => {
 
   console.log('product: ', product)
 
+  if (loading) {
+    return (
+      <>
+        <div>
+          <Loader type="Puff" color="#04d39f" height="100" width="100" />
+        </div>
+      </>
+    )
+  }
+
   return (
     <div>
       <ToastContainer autoClose={3000} />
@@ -120,10 +149,10 @@ const ProductForm = (props) => {
                           if (!values.description) {
                             errors.description = 'descripción requerida'
                           }
-                          if (!values.basePriceSales) {
+                          if (!values.price.basePriceSales) {
                             errors.price = 'precio venta requerido'
                           }
-                          if (!values.basePriceReference) {
+                          if (!values.price.basePriceReference) {
                             errors.price = 'precio costo requerido'
                           }
                           if (!values.color) {
@@ -132,43 +161,76 @@ const ProductForm = (props) => {
                           if (values.pictures != null && values.pictures.length > 3) {
                             errors.pictures = 'cargar no más de 3 imagenes'
                           }
-                          if (values.category && values.category.length < 1) {
+                          if (values.categories && values.categories.length < 1) {
                             errors.categories = 'debes elegir almenos una categoría'
                           }
                           return errors
                         }}
-                        onSubmit={async (values, { setSubmitting }) => {
+                        onSubmit={async (values) => {
+                          console.log('SUBMIT values: ', values)
                           const price = {
-                            basePriceReference: 0,
-                            basePriceSales: values.price,
+                            basePriceReference: values.price.basePriceReference,
+                            basePriceSales: values.price.basePriceSales,
                             discount: 0,
                           }
                           let formData = new FormData()
 
                           formData.append('itemNumber', values.itemNumber)
                           formData.append('name', values.name)
+                          formData.append('category', values.categories)
                           formData.append('description', values.description)
-                          formData.append('price', JSON.stringify(price))
                           formData.append('color', values.color)
+                          formData.append('price', JSON.stringify(price))
                           formData.append('published', values.published)
-                          formData.append('category', JSON.stringify(values.category))
 
-                          const subProducts = []
-                          subProducts.push({ size: 'S', stock: values.stockBySizeS, sku: 1 })
-                          subProducts.push({ size: 'M', stock: values.stockBySizeM, sku: 2 })
-                          subProducts.push({ size: 'L', stock: values.stockBySizeL, sku: 3 })
-                          subProducts.push({ size: 'XL', stock: values.stockBySizeXL, sku: 4 })
-                          subProducts.push({ size: 'XXL', stock: values.stockBySizeXxL, sku: 5 })
-
-                          formData.append('details', JSON.stringify(subProducts))
-                          for (const key of Object.keys(values.pictures)) {
-                            formData.append('pictures', values.pictures[key])
+                          const details = {}
+                          if (values.skuBySizeS) {
+                            details[values.skuBySizeS] = {
+                              quantity: values.stockBySizeS,
+                              size: 'S',
+                            }
                           }
-                          const productCreatedResponse = await createProduct(formData)
+                          if (values.skuBySizeM) {
+                            details[values.skuBySizeM] = {
+                              quantity: values.stockBySizeM,
+                              size: 'M',
+                            }
+                          }
+                          if (values.skuBySizeL) {
+                            details[values.skuBySizeL] = {
+                              quantity: values.stockBySizeL,
+                              size: 'L',
+                            }
+                          }
+                          if (values.skuBySizeXL) {
+                            details[values.skuBySizeXL] = {
+                              quantity: values.stockBySizeXL,
+                              size: 'XL',
+                            }
+                          }
+                          if (values.skuBySizeXXL) {
+                            details[values.skuBySizeXXL] = {
+                              quantity: values.stockBySizeXXL,
+                              size: 'XXL',
+                            }
+                          }
 
-                          if (productCreatedResponse.status === 201)
-                            return toast.success('Producto creado exitosamente')
-                          setSubmitting(false)
+                          formData.append('details', JSON.stringify(details))
+                          if (values.pictures) {
+                            for (const key of Object.keys(values.pictures)) {
+                              formData.append('pictures', values.pictures[key])
+                            }
+                          }
+
+                          console.log('formData: ', formData)
+
+                          const productProcessResponse = await processProduct(formData)
+
+                          if (productProcessResponse.status === 201)
+                            return toast.success('Producto procesado exitosamente')
+                          else {
+                            return toast.error('No se pudo procesar el producto')
+                          }
                         }}
                       >
                         {({
@@ -179,7 +241,6 @@ const ProductForm = (props) => {
                           handleBlur,
                           handleSubmit,
                           setFieldValue,
-                          isSubmitting,
                         }) => {
                           console.log('**** values: ', values)
                           //const { price } = values
@@ -245,7 +306,7 @@ const ProductForm = (props) => {
                                     type="number"
                                     className="form-control price"
                                     placeholder="Precio Venta"
-                                    name="basePriceSales"
+                                    name="price.basePriceSales"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.price.basePriceSales}
@@ -260,7 +321,7 @@ const ProductForm = (props) => {
                                     type="number"
                                     className="form-control price"
                                     placeholder="Precio Compra"
-                                    name="basePriceReference"
+                                    name="price.basePriceReference"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.price.basePriceReference}
@@ -456,8 +517,9 @@ const ProductForm = (props) => {
                               </Row>
                               <Row>
                                 <button
+                                  type="submit"
                                   className="btn btn-primary mb-2 mr-2"
-                                  disabled={isSubmitting}
+                                  disabled={false}
                                 >
                                   {' '}
                                   Crear Producto{' '}

@@ -251,7 +251,7 @@ export default class ClientAPI {
     })
   }
 
-  createProduct(pictures) {
+  processProduct(productData) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
       const userToken = localStorage.getItem('userToken')
@@ -264,7 +264,7 @@ export default class ClientAPI {
           },
           method: 'post',
           timeout: 10 * 1000,
-          data: pictures,
+          data: productData,
         })
         .then((response) => {
           resolve(response.data)
