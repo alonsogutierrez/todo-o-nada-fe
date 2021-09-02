@@ -16,8 +16,8 @@ const categories = [
   'niña',
   'irezumi',
   'traditional',
-  'tattoo collection',
-]
+  'tattoo-collection',
+] // Get from Categories API
 
 const ProductForm = (props) => {
   const [productData, setProductData] = useState(props.product)
@@ -81,7 +81,53 @@ const ProductForm = (props) => {
     return
   }
 
-  console.log('productData: ', productData)
+  const getProductMappedFromProps = (productData) => {
+    const productMappedFromProps = {}
+    const {
+      itemNumber,
+      name,
+      description,
+      price,
+      color,
+      pictures,
+      published,
+      category,
+      details,
+    } = productData
+    productMappedFromProps.itemNumber = itemNumber
+    productMappedFromProps.name = name
+    productMappedFromProps.description = description
+    productMappedFromProps.price = price
+    productMappedFromProps.color = color
+    productMappedFromProps.pictures = pictures
+    productMappedFromProps.published = published
+    productMappedFromProps.categories = category
+    productMappedFromProps.details = details
+    for (let sku in details) {
+      if (details[sku].size === 'S') {
+        productMappedFromProps.stockBySizeS = details[sku].stock
+        productMappedFromProps.skuBySizeS = sku
+      }
+      if (details[sku].size === 'M') {
+        productMappedFromProps.stockBySizeM = details[sku].stock
+        productMappedFromProps.skuBySizeM = sku
+      }
+      if (details[sku].size === 'L') {
+        productMappedFromProps.stockBySizeL = details[sku].stock
+        productMappedFromProps.skuBySizeL = sku
+      }
+      if (details[sku].size === 'XL') {
+        productMappedFromProps.stockBySizeXL = details[sku].stock
+        productMappedFromProps.skuBySizeXL = sku
+      }
+      if (details[sku].size === 'XXL') {
+        productMappedFromProps.stockBySizeXXL = details[sku].quantity
+        productMappedFromProps.skuBySizeXXL = sku
+      }
+    }
+
+    return productMappedFromProps
+  }
 
   const product =
     !Object.keys(productData).length > 0
@@ -110,8 +156,7 @@ const ProductForm = (props) => {
           skuBySizeXL: '',
           skuBySizeXXL: '',
         }
-      : productData
-
+      : getProductMappedFromProps(productData)
   console.log('product: ', product)
 
   if (loading) {
@@ -177,7 +222,10 @@ const ProductForm = (props) => {
 
                           formData.append('itemNumber', values.itemNumber)
                           formData.append('name', values.name)
-                          formData.append('category', values.categories)
+                          formData.append(
+                            'category',
+                            values.categories.map((cat) => cat.toLowerCase())
+                          )
                           formData.append('description', values.description)
                           formData.append('color', values.color)
                           formData.append('price', JSON.stringify(price))
