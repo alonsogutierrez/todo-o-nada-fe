@@ -157,7 +157,6 @@ const ProductForm = (props) => {
           skuBySizeXXL: '',
         }
       : getProductMappedFromProps(productData)
-  console.log('product: ', product)
 
   if (loading) {
     return (
@@ -183,7 +182,6 @@ const ProductForm = (props) => {
                       <Formik
                         initialValues={product}
                         validate={(values) => {
-                          console.log('validate values: ', values)
                           const errors = {}
                           if (!values.itemNumber) {
                             errors.itemNumber = 'itemNumber requerido'
@@ -212,7 +210,6 @@ const ProductForm = (props) => {
                           return errors
                         }}
                         onSubmit={async (values) => {
-                          console.log('SUBMIT values: ', values)
                           const price = {
                             basePriceReference: values.price.basePriceReference,
                             basePriceSales: values.price.basePriceSales,
@@ -290,8 +287,6 @@ const ProductForm = (props) => {
                           handleSubmit,
                           setFieldValue,
                         }) => {
-                          console.log('**** values: ', values)
-                          //const { price } = values
                           return (
                             <form onSubmit={handleSubmit}>
                               <Row>
@@ -419,6 +414,7 @@ const ProductForm = (props) => {
                                         name="categories"
                                         value={category}
                                         type="checkbox"
+                                        defaultChecked={values.categories.includes(category)}
                                       />{' '}
                                       {category}
                                     </Label>
@@ -570,7 +566,7 @@ const ProductForm = (props) => {
                                   disabled={false}
                                 >
                                   {' '}
-                                  Crear Producto{' '}
+                                  Procesar Producto{' '}
                                 </button>
                                 <Link to="/admin-panel/Product" class="btn btn-danger mb-2">
                                   {' '}
