@@ -23,7 +23,13 @@ const AdminproductList = (props) => {
   const { product, deleteproduct } = props
 
   if (product && Object.keys(product).length > 0) {
-    const { picture, itemNumber, categories, name, price, description } = product._source
+    const { picture, itemNumber, name, price, details } = product._source
+    let hasInventory = false
+    for (let sku in details) {
+      if (details[sku].quantity > 0) {
+        hasInventory = true
+      }
+    }
     return (
       <Col key={1} sm={6} lg={3}>
         <ToastContainer autoClose={1000} />
@@ -52,19 +58,9 @@ const AdminproductList = (props) => {
               <div className="product-actions"></div>
             </div>
             <div className="product-info">
-              {categories ? (
-                <span className="ciyashop-product-category">
-                  {categories.map((category, index) => (
-                    <span key={index}>
-                      {category}
-                      {index === category.length - 1 ? '' : ','}
-                    </span>
-                  ))}
-                </span>
-              ) : null}
               {name ? (
                 <h3 className="product-name">
-                  <Link to="#">{name}</Link>
+                  <Link to={`/admin-dashboard/product-edit/${itemNumber}`}>{name}</Link>
                 </h3>
               ) : null}
               {price && price.basePriceSales ? (
@@ -79,10 +75,14 @@ const AdminproductList = (props) => {
                   </ins>
                 </span>
               ) : null}
-              {description ? (
-                <div className="product-details__short-description">
-                  <p>{description}</p>
-                </div>
+              {details && Object.keys(details).length > 0 ? (
+                <span className="text">
+                  <ins>
+                    <span className="text">
+                      {hasInventory ? 'Inventario disponible' : 'Sin stock'}
+                    </span>
+                  </ins>
+                </span>
               ) : null}
             </div>
           </div>

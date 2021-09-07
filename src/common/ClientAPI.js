@@ -251,16 +251,20 @@ export default class ClientAPI {
     })
   }
 
-  createProduct(pictures) {
+  processProduct(productData) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
       client
         .request({
           url: '/product',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+            'Content-Type': 'multipart/form-data',
+          },
           method: 'post',
           timeout: 10 * 1000,
-          data: pictures,
-          headers: { 'Content-Type': 'multipart/form-data' },
+          data: productData,
         })
         .then((response) => {
           resolve(response.data)

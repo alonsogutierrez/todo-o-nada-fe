@@ -5,71 +5,118 @@ import { Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Loader from 'react-loader-spinner'
 
 import ClientAPI from '../../../common/ClientAPI'
 
-const categories = ['hombre', 'mujer', 'niño', 'niña', 'irezumi', 'traditional']
+const categories = [
+  'hombre',
+  'mujer',
+  'niño',
+  'niña',
+  'irezumi',
+  'traditional',
+  'tattoo-collection',
+] // Get from Categories API
 
 const ProductForm = (props) => {
-  const [productData, setProductData] = useState(props.product)
+  const [productData] = useState(props.product)
+  const [loading, setLoading] = useState(false)
 
-  const getSizeSKU = (details, size) => {
-    let stock = 0
-    for (let sku in details) {
-      if (details[sku].size === size) {
-        stock = details[sku].stock
-      }
-    }
-    return stock
-  }
+  useEffect(() => {}, [props.product])
 
-  useEffect(() => {
-    const { product } = props
-    if (product && Object.keys(product).length > 0) {
-      const { name, description, color, picture, category, details } = product
-      let productData = {}
-      productData = {
-        ...productData,
-        name,
-        description,
-        color,
-        pictures: [picture],
-        published: false,
-        categories: category,
-        stockBySizeS: getSizeSKU(details, 'S'),
-        stockBySizeM: getSizeSKU(details, 'M'),
-        stockBySizeL: getSizeSKU(details, 'L'),
-        stockBySizeXL: getSizeSKU(details, 'XL'),
-        stockBySizeXXL: getSizeSKU(details, 'XXL'),
-      }
-
-      setProductData(productData)
-    }
-  }, [props.product])
-
-  window.scrollTo(0, 0)
-  const createProduct = async (productFormData) => {
+  const processProduct = async (productFormData) => {
     const clientAPI = new ClientAPI()
-    return await clientAPI.createProduct(productFormData)
+    setLoading(true)
+    return await clientAPI.processProduct(productFormData)
   }
 
-  const product = !productData
-    ? {
-        name: '',
-        description: '',
-        price: 0,
-        color: '',
-        pictures: null,
-        published: false,
-        categories: [],
-        stockBySizeS: 0,
-        stockBySizeM: 0,
-        stockBySizeL: 0,
-        stockBySizeXL: 0,
+  const getProductMappedFromProps = (productData) => {
+    const productMappedFromProps = {}
+    const {
+      itemNumber,
+      name,
+      description,
+      price,
+      color,
+      pictures,
+      published,
+      category,
+      details,
+    } = productData
+    productMappedFromProps.itemNumber = itemNumber
+    productMappedFromProps.name = name
+    productMappedFromProps.description = description
+    productMappedFromProps.price = price
+    productMappedFromProps.color = color
+    productMappedFromProps.pictures = pictures
+    productMappedFromProps.published = published
+    productMappedFromProps.categories = category
+    productMappedFromProps.details = details
+    for (let sku in details) {
+      if (details[sku].size === 'S') {
+        productMappedFromProps.stockBySizeS = details[sku].stock
+        productMappedFromProps.skuBySizeS = sku
       }
-    : productData
+      if (details[sku].size === 'M') {
+        productMappedFromProps.stockBySizeM = details[sku].stock
+        productMappedFromProps.skuBySizeM = sku
+      }
+      if (details[sku].size === 'L') {
+        productMappedFromProps.stockBySizeL = details[sku].stock
+        productMappedFromProps.skuBySizeL = sku
+      }
+      if (details[sku].size === 'XL') {
+        productMappedFromProps.stockBySizeXL = details[sku].stock
+        productMappedFromProps.skuBySizeXL = sku
+      }
+      if (details[sku].size === 'XXL') {
+        productMappedFromProps.stockBySizeXXL = details[sku].stock
+        productMappedFromProps.skuBySizeXXL = sku
+      }
+    }
 
-  console.log('product: ', product)
+    return productMappedFromProps
+  }
+
+  const product =
+    !Object.keys(productData).length > 0
+      ? {
+          itemNumber: '',
+          name: '',
+          description: '',
+          price: {
+            basePriceSales: 0,
+            basePriceReference: 0,
+            discount: 0,
+          },
+          color: '',
+          pictures: null,
+          published: false,
+          categories: [],
+          details: {},
+          stockBySizeS: 0,
+          stockBySizeM: 0,
+          stockBySizeL: 0,
+          stockBySizeXL: 0,
+          stockBySizeXXL: 0,
+          skuBySizeS: '',
+          skuBySizeM: '',
+          skuBySizeL: '',
+          skuBySizeXL: '',
+          skuBySizeXXL: '',
+        }
+      : getProductMappedFromProps(productData)
+
+  if (loading) {
+    return (
+      <>
+        <div>
+          <Loader type="Puff" color="#04d39f" height="100" width="100" />
+        </div>
+      </>
+    )
+  }
 
   return (
     <div>
@@ -85,57 +132,109 @@ const ProductForm = (props) => {
                       <Formik
                         initialValues={product}
                         validate={(values) => {
-                          console.log('validate values: ', values)
                           const errors = {}
+                          if (!values.itemNumber) {
+                            errors.itemNumber = 'itemNumber requerido'
+                          }
                           if (!values.name) {
                             errors.name = 'nombre requerido'
                           }
                           if (!values.description) {
-                            errors.description = 'descripcion requerida'
+                            errors.description = 'descripción requerida'
                           }
-                          if (!values.price) {
-                            errors.price = 'precio requerido'
+                          if (!values.price.basePriceSales) {
+                            errors.price = 'precio venta requerido'
+                          }
+                          if (!values.price.basePriceReference) {
+                            errors.price = 'precio costo requerido'
                           }
                           if (!values.color) {
                             errors.color = 'selecciona un color'
                           }
                           if (values.pictures != null && values.pictures.length > 3) {
-                            errors.pictures = 'cargar no mas de 3 imagenes'
+                            errors.pictures = 'cargar no más de 3 imagenes'
                           }
-                          if (values.category.length < 1) {
-                            errors.categories = 'debes elegir almenos una categoria'
+                          if (values.categories && values.categories.length < 1) {
+                            errors.categories = 'debes elegir almenos una categoría'
                           }
                           return errors
                         }}
-                        onSubmit={async (values, { setSubmitting }) => {
-                          let formData = new FormData()
-                          formData.append('name', values.name)
-                          formData.append('description', values.description)
+                        onSubmit={async (values) => {
                           const price = {
-                            basePriceReference: 0,
-                            basePriceSales: values.price,
+                            basePriceReference: values.price.basePriceReference,
+                            basePriceSales: values.price.basePriceSales,
+                            discount: 0,
                           }
-                          formData.append('price', JSON.stringify(price))
+                          let formData = new FormData()
+
+                          formData.append('itemNumber', values.itemNumber)
+                          formData.append('name', values.name)
+                          formData.append(
+                            'category',
+                            values.categories.map((cat) => cat.toLowerCase())
+                          )
+                          formData.append('description', values.description)
                           formData.append('color', values.color)
+                          formData.append('price', JSON.stringify(price))
                           formData.append('published', values.published)
-                          formData.append('category', JSON.stringify(values.category))
 
-                          const subProducts = []
-                          subProducts.push({ size: 'S', stock: values.stockBySizeS, sku: 1 })
-                          subProducts.push({ size: 'M', stock: values.stockBySizeM, sku: 2 })
-                          subProducts.push({ size: 'L', stock: values.stockBySizeL, sku: 3 })
-                          subProducts.push({ size: 'XL', stock: values.stockBySizeXL, sku: 4 })
-                          subProducts.push({ size: 'XXL', stock: values.stockBySizeXxL, sku: 5 })
+                          let sizes = []
 
-                          formData.append('details', JSON.stringify(subProducts))
-                          for (const key of Object.keys(values.pictures)) {
-                            formData.append('pictures', values.pictures[key])
+                          const details = {}
+                          if (values.skuBySizeS) {
+                            details[values.skuBySizeS] = {
+                              stock: values.stockBySizeS,
+                              size: 'S',
+                            }
+                            sizes.push('S')
                           }
-                          const productCreatedResponse = await createProduct(formData)
+                          if (values.skuBySizeM) {
+                            details[values.skuBySizeM] = {
+                              stock: values.stockBySizeM,
+                              size: 'M',
+                            }
+                            sizes.push('M')
+                          }
+                          if (values.skuBySizeL) {
+                            details[values.skuBySizeL] = {
+                              stock: values.stockBySizeL,
+                              size: 'L',
+                            }
+                            sizes.push('L')
+                          }
+                          if (values.skuBySizeXL) {
+                            details[values.skuBySizeXL] = {
+                              stock: values.stockBySizeXL,
+                              size: 'XL',
+                            }
+                            sizes.push('XL')
+                          }
+                          if (values.skuBySizeXXL) {
+                            details[values.skuBySizeXXL] = {
+                              stock: values.stockBySizeXXL,
+                              size: 'XXL',
+                            }
+                            sizes.push('XXL')
+                          }
 
-                          if (productCreatedResponse.status === 201)
-                            return toast.success('Producto creado exitosamente')
-                          setSubmitting(false)
+                          formData.append('details', JSON.stringify(details))
+                          if (values.pictures) {
+                            for (const key of Object.keys(values.pictures)) {
+                              formData.append('pictures', values.pictures[key])
+                            }
+                          }
+                          formData.append('sizes', sizes)
+
+                          const productProcessResponse = await processProduct(formData)
+
+                          if (productProcessResponse.status === 201)
+                            toast.success('Producto procesado exitosamente')
+                          else {
+                            toast.error('No se pudo procesar el producto')
+                          }
+
+                          setLoading(false)
+                          props.fetchProductData(values.itemNumber)
                         }}
                       >
                         {({
@@ -146,17 +245,32 @@ const ProductForm = (props) => {
                           handleBlur,
                           handleSubmit,
                           setFieldValue,
-                          isSubmitting,
                         }) => {
                           return (
                             <form onSubmit={handleSubmit}>
                               <Row>
                                 <FormGroup className="edit-icon col-md-12">
+                                  <Label className="title pl-0">Item number</Label>
+                                  <Input
+                                    type="text"
+                                    name="itemNumber"
+                                    className="form-control product_title"
+                                    placeholder="Ingresa el n° del producto"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.itemNumber}
+                                  />
+                                  {errors.itemNumber && touched.itemNumber && errors.itemNumber}
+                                </FormGroup>
+                              </Row>
+                              <Row>
+                                <FormGroup className="edit-icon col-md-12">
+                                  <Label className="title pl-0">Nombre</Label>
                                   <Input
                                     type="text"
                                     name="name"
                                     className="form-control product_title"
-                                    placeholder="nombre"
+                                    placeholder="Ingresa el nombre del producto"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.name}
@@ -166,6 +280,7 @@ const ProductForm = (props) => {
                               </Row>
                               <Row>
                                 <FormGroup className="edit-icon col-md-6">
+                                  <Label className="title pl-0">Color</Label>
                                   <Input
                                     type="select"
                                     name="color"
@@ -185,27 +300,48 @@ const ProductForm = (props) => {
                                   </Input>
                                   {errors.color && touched.color && errors.color}
                                 </FormGroup>
+                              </Row>
+                              <Row>
                                 <FormGroup className="edit-icon col-md-6">
+                                  <Label className="title pl-0">Precio venta</Label>
                                   <Input
                                     type="number"
                                     className="form-control price"
-                                    placeholder="precio"
-                                    name="price"
+                                    placeholder="Precio Venta"
+                                    name="price.basePriceSales"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.price.basePriceSales}
+                                    value={values.price ? values.price.basePriceSales : 0}
                                   />
-                                  {errors.price && touched.price && errors.price}
+                                  {errors.basePriceSales &&
+                                    touched.basePriceSales &&
+                                    errors.basePriceSales}
+                                </FormGroup>
+                                <FormGroup className="edit-icon col-md-6">
+                                  <Label className="title pl-0">Precio costo</Label>
+                                  <Input
+                                    type="number"
+                                    className="form-control price"
+                                    placeholder="Precio Compra"
+                                    name="price.basePriceReference"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.price ? values.price.basePriceReference : 0}
+                                  />
+                                  {errors.basePriceReference &&
+                                    touched.basePriceReference &&
+                                    errors.basePriceReference}
                                 </FormGroup>
                               </Row>
                               <Row>
                                 <FormGroup className="edit-icon col-md-12">
+                                  <Label className="title pl-0">Descripción</Label>
                                   <Input
                                     type="textarea"
                                     className="form-control"
                                     name="description"
                                     rows="3"
-                                    placeholder="descripción"
+                                    placeholder="Ingresa la descripción de tu producto"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.description}
@@ -237,6 +373,11 @@ const ProductForm = (props) => {
                                         name="categories"
                                         value={category}
                                         type="checkbox"
+                                        defaultChecked={
+                                          values.categories
+                                            ? values.categories.includes(category)
+                                            : false
+                                        }
                                       />{' '}
                                       {category}
                                     </Label>
@@ -271,6 +412,15 @@ const ProductForm = (props) => {
                                     onBlur={handleBlur}
                                     value={values.stockBySizeS}
                                   />
+                                  <Label className="title pl-0">SKU talla S</Label>
+                                  <Input
+                                    type="text"
+                                    name="skuBySizeS"
+                                    className="form-control product_title"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.skuBySizeS}
+                                  />
                                   {errors.stockBySizeS &&
                                     touched.stockBySizeS &&
                                     errors.stockBySizeS}
@@ -284,6 +434,15 @@ const ProductForm = (props) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.stockBySizeM}
+                                  />
+                                  <Label className="title pl-0">SKU talla M</Label>
+                                  <Input
+                                    type="text"
+                                    name="skuBySizeM"
+                                    className="form-control product_title"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.skuBySizeM}
                                   />
                                   {errors.stockBySizeM &&
                                     touched.stockBySizeM &&
@@ -301,6 +460,15 @@ const ProductForm = (props) => {
                                     onBlur={handleBlur}
                                     value={values.stockBySizeL}
                                   />
+                                  <Label className="title pl-0">SKU talla L</Label>
+                                  <Input
+                                    type="text"
+                                    name="skuBySizeL"
+                                    className="form-control product_title"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.skuBySizeL}
+                                  />
                                   {errors.stockBySizeL &&
                                     touched.stockBySizeL &&
                                     errors.stockBySizeL}
@@ -314,6 +482,15 @@ const ProductForm = (props) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.stockBySizeXL}
+                                  />
+                                  <Label className="title pl-0">SKU talla XL</Label>
+                                  <Input
+                                    type="text"
+                                    name="skuBySizeXL"
+                                    className="form-control product_title"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.skuBySizeXL}
                                   />
                                   {errors.stockBySizeXL &&
                                     touched.stockBySizeXL &&
@@ -331,6 +508,15 @@ const ProductForm = (props) => {
                                     onBlur={handleBlur}
                                     value={values.stockBySizeXXL}
                                   />
+                                  <Label className="title pl-0">SKU talla XXL</Label>
+                                  <Input
+                                    type="text"
+                                    name="skuBySizeXXL"
+                                    className="form-control product_title"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.skuBySizeXXL}
+                                  />
                                   {errors.stockBySizeXXL &&
                                     touched.stockBySizeXXL &&
                                     errors.stockBySizeXXL}
@@ -338,11 +524,12 @@ const ProductForm = (props) => {
                               </Row>
                               <Row>
                                 <button
+                                  type="submit"
                                   className="btn btn-primary mb-2 mr-2"
-                                  disabled={isSubmitting}
+                                  disabled={false}
                                 >
                                   {' '}
-                                  Crear Producto{' '}
+                                  Procesar Producto{' '}
                                 </button>
                                 <Link to="/admin-panel/Product" class="btn btn-danger mb-2">
                                   {' '}
@@ -372,4 +559,5 @@ ProductForm.defaultProps = {
 
 ProductForm.propTypes = {
   product: PropTypes.object,
+  fetchProductData: PropTypes.func,
 }
