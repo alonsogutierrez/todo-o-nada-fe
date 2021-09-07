@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Container } from 'reactstrap'
 import PropTypes from 'prop-types'
 import Loader from 'react-loader-spinner'
@@ -8,18 +8,24 @@ import ProductForm from './ProductForm'
 import ClientAPI from '../../../common/ClientAPI'
 
 const EditProduct = (props) => {
-  const [productData, setProductData] = useState({})
   const [clientAPI] = useState(new ClientAPI())
-  const [loading, setLoading] = useState(true)
-
+  const [productRequest, setProductRequest] = useState({
+    loading: false,
+    data: {},
+  })
   useEffect(async () => {
     const itemNumber = props.match.params.itemNumber
-    const productByItemNumberResponse = await clientAPI.getProductByItemNumber(itemNumber)
-    setProductData(productByItemNumberResponse)
-    setLoading(false)
-  }, [loading])
+    setProductRequest({ loading: true })
+    await fetchProductData(itemNumber)
+  }, [])
 
-  if (loading) {
+  const fetchProductData = useCallback(async (itemNumber) => {
+    const productByItemNumberResponse = await clientAPI.getProductByItemNumber(itemNumber)
+    setProductRequest({ loading: false, data: productByItemNumberResponse })
+    return
+  }, [])
+
+  if (productRequest.loading) {
     return (
       <>
         <div>
@@ -34,7 +40,7 @@ const EditProduct = (props) => {
       <div className="site-content">
         <div className="content-wrapper section-ptb">
           <Container>
-            <ProductForm product={productData} />
+            <ProductForm product={productRequest.data} fetchProductData={fetchProductData} />
           </Container>
         </div>
       </div>
