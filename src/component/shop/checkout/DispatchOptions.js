@@ -11,7 +11,7 @@ const dispatchData = {
     total: 0,
   },
   localPickUp: {
-    name: 'Retiro en tienda (Av. Portugal #123)', // TODO: Cambiar por dirección de la tienda
+    name: 'Catedral 2116, Santiago, Chile',
     code: 'PICKUP',
     total: 0,
   },
