@@ -44,7 +44,7 @@ const interestingDataRight = [
   {
     number: 6,
     title: 'Nuestra insignia',
-    description: 'Nuestros productos y trabajo son libre de explotación y facismo!',
+    description: 'Nuestros productos y trabajo son libre de explotación y fascismo!',
     symbol: 'fa-gift',
   },
 ]

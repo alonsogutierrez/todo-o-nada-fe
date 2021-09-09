@@ -123,10 +123,6 @@ class Footer extends React.Component {
                               <i className="fa fa-envelope-o" />
                               <span>todoonadatattooart2017@gmail.com</span>
                             </li>
-                            <li>
-                              <i className="fa fa-phone" />
-                              <span>+569 9999 9999</span>
-                            </li>
                           </ul>
                         </div>
                       </div>

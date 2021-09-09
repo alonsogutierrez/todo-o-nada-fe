@@ -5,9 +5,6 @@ import ContactDetail from './ContactDetail'
 import PageTitle from '../../widgets/PageTitle'
 
 class Contactus extends Component {
-  componentDidMount() {
-    window.scrollTo(0, 0)
-  }
   render() {
     return (
       <div className="site-content">

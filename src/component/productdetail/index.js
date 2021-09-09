@@ -35,6 +35,13 @@ const ProductDetail = (props) => {
   let productDescription = ''
   let productCategory = ''
   let productName = ''
+  const sizesImgStyle = {
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: '60%',
+    borderRadius: '5px',
+  }
 
   if (actualProduct) {
     let { description, category, name } = actualProduct
@@ -100,7 +107,10 @@ const ProductDetail = (props) => {
                               <h2>Descripción del producto</h2>
                               <p>{productDescription}</p>
                               <br />
-                              <img src={require('./../../assets/images/sizes.jpg').default} />
+                              <img
+                                style={sizesImgStyle}
+                                src={require('./../../assets/images/sizes.jpg').default}
+                              />
                               <SupportInfo />
                             </div>
                           </div>
