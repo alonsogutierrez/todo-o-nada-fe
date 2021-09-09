@@ -398,6 +398,8 @@ const ProductForm = (props) => {
                                     }}
                                   />
                                   {errors.pictures && touched.pictures && errors.pictures}
+                                  <Label className="title pl-0">Imagen Cargada</Label>
+                                  <span>{values.pictures}</span>
                                 </FormGroup>
                               </Row>
                               Stock por Talla

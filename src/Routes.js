@@ -21,31 +21,43 @@ import Login from './component/admin/Login'
 
 import Header from './layouts/header/Header'
 import Footer from './layouts/footer/Footer'
+import Maintenance from './component/pages/Maintenance'
+
+const isSiteInMaintenance = false // TODO: Change by BFF response
 
 const Routes = () => {
   return (
     <>
       <Router>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomeRoutePage} />
-          <Route path="/aboutus" component={AboutUsPage} />
-          <Route path="/checkout" component={CheckOut} />
-          <Route path="/contactus" component={ContactUsPage} />
-          <Route path="/search" component={SearchPage} />
-          <Route path={`/product/:itemNumber`} component={ProductDetail} />
-          <Route exact path="/category/:categoryName" component={CategoryPage} />
-          <Route path="/shopping-cart" component={ShoppingCart} />
-          <Route path="/successpayment" component={SuccessScreen} />
-          <Route exact path="/admin/login" component={Login} />
+        {!isSiteInMaintenance ? (
+          <>
+            <Header />
+            <Switch>
+              <Route exact path="/" component={HomeRoutePage} />
+              <Route path="/aboutus" component={AboutUsPage} />
+              <Route path="/checkout" component={CheckOut} />
+              <Route path="/contactus" component={ContactUsPage} />
+              <Route path="/search" component={SearchPage} />
+              <Route path={`/product/:itemNumber`} component={ProductDetail} />
+              <Route exact path="/category/:categoryName" component={CategoryPage} />
+              <Route path="/shopping-cart" component={ShoppingCart} />
+              <Route path="/successpayment" component={SuccessScreen} />
+              <Route exact path="/admin/login" component={Login} />
+              <Route path="/maintenance" component={Maintenance} />
 
-          <PrivateRoute path="/admin-dashboard">
-            <AdminDashboard />
-          </PrivateRoute>
+              <PrivateRoute path="/admin-dashboard">
+                <AdminDashboard />
+              </PrivateRoute>
 
-          <Route component={PageNotFound} />
-        </Switch>
-        <Footer />
+              <Route component={PageNotFound} />
+            </Switch>
+            <Footer />
+          </>
+        ) : (
+          <>
+            <Maintenance />
+          </>
+        )}
       </Router>
     </>
   )

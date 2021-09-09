@@ -35,7 +35,6 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
   }
   const userData = user
   const isHomeDelivery = dispatchData !== 'PICKUP'
-  const contactPhone = '989370610' // TODO: Change to env variable
 
   return (
     <div className="success-screen">
@@ -51,10 +50,12 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
         <span className="h5">
           {isHomeDelivery
             ? 'Fecha estimada de llegada'
-            : `Ponte en contacto a nuestro n°${contactPhone}, para coordinar el retiro en la tienda de forma segura`}
+            : `Ponte en contacto a nuestro instagram indicando tu nombre y n° de orden para coordinar el retiro en la tienda de forma segura`}
         </span>
         <h2 className="mb-0 mt-2">
-          {isHomeDelivery ? 'Entre 3 a 5 días hábiles' : 'WhatsApp \n+569 8937 1212'}
+          {isHomeDelivery
+            ? 'Entre 3 a 5 días hábiles'
+            : 'https://www.instagram.com/todoonadatattooart'}
         </h2>
       </div>
       <div className="pt-4 px-4 pt-md-5 px-md-5 pb-3">
@@ -65,8 +66,8 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
               <li>
                 {userData.firstName} {userData.lastName}
               </li>
-              <li>{isHomeDelivery ? userData.address.address : 'Dirección tienda, Santiago'}</li>
-              <li>{isHomeDelivery ? userData.address.num_address : '#123'}</li>
+              <li>{isHomeDelivery ? userData.address.address : 'Catedral 2116, Santiago'}</li>
+              <li>{isHomeDelivery ? userData.address.num_address : '#2116'}</li>
               <li>{userData.address.country}</li>
             </ul>
           </Col>

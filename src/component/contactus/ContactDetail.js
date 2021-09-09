@@ -21,26 +21,22 @@ const contactDataList = [
     symbol: 'fa-map-marker',
   },
   {
-    title: 'Correo, Instagram',
+    title: 'Correo',
     data: (
       <>
-        <p>
-          todoonadatattooart2017@gmail.com
-          <br />
-          <Link onClick={(e) => handleInstagramClick(e)}>@todoonadatattooart</Link>
-        </p>
+        <p>todoonadatattooart2017@gmail.com</p>
       </>
     ),
     symbol: 'fa-envelope-o',
   },
   {
-    title: 'Teléfono, Whatsapp',
+    title: 'Instagram',
     data: (
       <>
-        <p>+569 9999 9999</p>
+        <Link onClick={(e) => handleInstagramClick(e)}>@todoonadatattooart</Link>
       </>
     ),
-    symbol: 'fa-phone',
+    symbol: 'fa fa-instagram',
   },
 ]
 

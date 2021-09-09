@@ -7,35 +7,11 @@ class Footer extends React.Component {
     super(props)
   }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.Checkscroll)
+  handleInstagramClick(e) {
+    e.preventDefault()
+    window.open('https://www.instagram.com/todoonadatattooart', '_blank')
   }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.Checkscroll)
-  }
-
-  Checkscroll() {
-    var scrollTop =
-      (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop
-
-    if (scrollTop > 350) {
-      if (document.getElementById('back-to-top') != null) {
-        document.getElementById('back-to-top').setAttribute('style', 'display:block')
-      }
-    } else {
-      if (document.getElementById('back-to-top') != null) {
-        document.getElementById('back-to-top').setAttribute('style', 'display:none')
-      }
-    }
-  }
-
-  ClicktoTop() {
-    window.scroll({ top: 0, left: 0, behavior: 'smooth' })
-  }
-
   render() {
-    let backtotop = { display: 'none' }
     return (
       <div>
         <footer className="site-footer">
@@ -123,6 +99,14 @@ class Footer extends React.Component {
                               <i className="fa fa-envelope-o" />
                               <span>todoonadatattooart2017@gmail.com</span>
                             </li>
+                            <li>
+                              <i className="fa fa-instagram" />
+                              <span>
+                                <Link onClick={(e) => this.handleInstagramClick(e)}>
+                                  @todoonadatattooart
+                                </Link>
+                              </span>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -149,11 +133,6 @@ class Footer extends React.Component {
             </div>
           </div>
         </footer>
-        <div id="back-to-top" style={backtotop} onClick={this.ClicktoTop}>
-          <Link className="top arrow">
-            <i className="fa fa-angle-up"></i>
-          </Link>
-        </div>
       </div>
     )
   }

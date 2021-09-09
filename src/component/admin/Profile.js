@@ -18,7 +18,6 @@ class Profile extends Component {
         name: '',
         createdAt: new Date(),
         position: '',
-        phone: '',
         email: '',
         address: '',
       },
@@ -49,16 +48,14 @@ class Profile extends Component {
 
   render() {
     const { userProfileData } = this.state
-    let { name, createdAt, position, phone, email, address } = userProfileData
+    let { name, createdAt, position, email, address } = userProfileData
     //TODO: Change this logic when an user has this attributes
     position = !position ? 'Administrador' : ''
-    phone = !phone ? '999999999' : ''
     address = !address ? 'Santiago, Chile' : ''
 
     const userData = {
       name,
       email,
-      phone,
     }
     return (
       <div className="section-ptb">
@@ -89,10 +86,6 @@ class Profile extends Component {
                         <li>
                           <span>Cargo:</span>
                           <strong>{position}</strong>
-                        </li>
-                        <li>
-                          <span>Telefono:</span>
-                          <strong>{phone}</strong>
                         </li>
                         <li>
                           <span>Email:</span>
