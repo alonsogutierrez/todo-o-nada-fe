@@ -367,7 +367,10 @@ const GeneralInfo = (props) => {
                           Agregar al carro
                         </button>
                       ) : (
-                        <button className="button disabled" rel="nofollow">
+                        <button
+                          className="btn btn-secondary"
+                          disabled={!IsSkuWithAvailableStock(sku, 1)}
+                        >
                           No hay stock
                         </button>
                       )
