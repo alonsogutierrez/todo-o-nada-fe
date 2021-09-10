@@ -4,6 +4,8 @@ import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { toast, ToastContainer } from 'react-toastify'
 import { Row } from 'reactstrap'
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
+
 import 'react-toastify/dist/ReactToastify.min.css'
 import 'react-image-lightbox/style.css'
 import './style.css'
@@ -40,7 +42,11 @@ const GeneralInfo = (props) => {
   const IsSkuWithAvailableStock = (skuSelected, desiredQuantity) => {
     const { product } = props
     const skuDetails = product.details
-    const isStockAvailable = desiredQuantity <= skuDetails[skuSelected].stock
+    const availableStock =
+      skuDetails[skuSelected] && Object.keys(skuDetails[skuSelected]).length > 0
+        ? skuDetails[skuSelected].stock
+        : 0
+    const isStockAvailable = desiredQuantity <= availableStock
     return isStockAvailable
   }
 
@@ -248,23 +254,40 @@ const GeneralInfo = (props) => {
     </span>
   )
 
-  const renderSKUProduct = (sku) => (
-    <span className="sku_wrapper normalSize">
-      <label className="normalSize">SKU:</label>
-      <span className="sku normalSize">{sku ? sku : ''}</span>
-    </span>
-  )
-
   const handleGoToShoppingCart = (e) => {
     e.preventDefault()
     props.history.push(`/shopping-cart`)
   }
 
-  const renderImageProduct = () => {
-    return (
-      <img src={props.product.pictures} className="img-fluid" name={props.product.itemNumber} />
-    )
-  }
+  const renderImageProduct = () => (
+    <TransformWrapper initialScale={1} initialPositionX={1} initialPositionY={1}>
+      {({ zoomIn, zoomOut, resetTransform }) => (
+        <>
+          <div className="tools">
+            <button className="btn btn-solid" onClick={() => zoomIn()}>
+              Zoom +
+            </button>
+            <button className="btn btn-solid" onClick={() => zoomOut()}>
+              Zoom -
+            </button>
+            <button className="btn btn-solid" onClick={() => resetTransform()}>
+              Reset
+            </button>
+          </div>
+          <TransformComponent>
+            <img
+              src={props.product.pictures}
+              className="img-fluid"
+              name={props.product.itemNumber}
+              style={{
+                borderRadius: '5px',
+              }}
+            />
+          </TransformComponent>
+        </>
+      )}
+    </TransformWrapper>
+  )
 
   const setActualQuantity = (sku) => {
     const cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
@@ -335,13 +358,19 @@ const GeneralInfo = (props) => {
                       </div>
                     </div>
                     {!IsSkuInCard(sku) ? (
-                      <button
-                        onClick={(e) => AddToCart(e, product, sku, qty)}
-                        className="button single_add_to_cart_button"
-                        rel="nofollow"
-                      >
-                        Agregar al carro
-                      </button>
+                      IsSkuWithAvailableStock(sku, 1) ? (
+                        <button
+                          onClick={(e) => AddToCart(e, product, sku, qty)}
+                          className="button single_add_to_cart_button"
+                          rel="nofollow"
+                        >
+                          Agregar al carro
+                        </button>
+                      ) : (
+                        <button className="button disabled" rel="nofollow">
+                          No hay stock
+                        </button>
+                      )
                     ) : (
                       <button
                         className="button single_add_to_cart_button"
@@ -359,7 +388,6 @@ const GeneralInfo = (props) => {
                     </span>
                     {renderSizesProduct(subProducts)}
                     {renderColorsProduct(color)}
-                    {renderSKUProduct(sku)}
                   </div>
                 </div>
               </div>
