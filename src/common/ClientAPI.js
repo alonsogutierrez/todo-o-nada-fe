@@ -263,7 +263,7 @@ export default class ClientAPI {
             'Content-Type': 'multipart/form-data',
           },
           method: 'post',
-          timeout: 10 * 1000,
+          timeout: 30 * 1000,
           data: productData,
         })
         .then((response) => {

@@ -308,8 +308,6 @@ const GeneralInfo = (props) => {
   const { itemNumber } = product
   const subProducts = configSubProduct(product)
 
-  console.log('product.category: ', product.category)
-
   return (
     <>
       <ToastContainer autoClose={1000} draggable={false} />

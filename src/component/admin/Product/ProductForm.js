@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, FormGroup, Input, Label, Row } from 'reactstrap'
-import { Formik } from 'formik'
+import { Formik, Form } from 'formik'
 import PropTypes from 'prop-types'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -26,9 +26,17 @@ const ProductForm = (props) => {
   useEffect(() => {}, [props.product])
 
   const processProduct = async (productFormData) => {
-    const clientAPI = new ClientAPI()
-    setLoading(true)
-    return await clientAPI.processProduct(productFormData)
+    try {
+      const clientAPI = new ClientAPI()
+      setLoading(true)
+      await clientAPI.processProduct(productFormData)
+      setLoading(false)
+      toast.success('Producto procesado exitosamente')
+      return
+    } catch (err) {
+      setLoading(false)
+      toast.error('No se pudo procesar el producto, intentar nuevamente porfavor')
+    }
   }
 
   const getProductMappedFromProps = (productData) => {
@@ -237,17 +245,9 @@ const ProductForm = (props) => {
                           props.fetchProductData(values.itemNumber)
                         }}
                       >
-                        {({
-                          values,
-                          errors,
-                          touched,
-                          handleChange,
-                          handleBlur,
-                          handleSubmit,
-                          setFieldValue,
-                        }) => {
+                        {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => {
                           return (
-                            <form onSubmit={handleSubmit}>
+                            <Form>
                               <Row>
                                 <FormGroup className="edit-icon col-md-12">
                                   <Label className="title pl-0">Item number</Label>
@@ -394,12 +394,20 @@ const ProductForm = (props) => {
                                     className="form-control"
                                     multiple
                                     onChange={(event) => {
-                                      setFieldValue('pictures', event.currentTarget.files)
+                                      const fileToUpload = event.currentTarget.files
+                                      event.preventDefault()
+                                      setFieldValue('pictures', fileToUpload)
                                     }}
                                   />
                                   {errors.pictures && touched.pictures && errors.pictures}
                                   <Label className="title pl-0">Imagen Cargada</Label>
-                                  <span>{values.pictures}</span>
+                                  <span>
+                                    {values.pictures && typeof values.pictures[0] === 'string' ? (
+                                      <img src={values.pictures[0]} style={{ width: '50%' }} />
+                                    ) : (
+                                      'Nueva imagen a cargar'
+                                    )}
+                                  </span>
                                 </FormGroup>
                               </Row>
                               Stock por Talla
@@ -538,7 +546,7 @@ const ProductForm = (props) => {
                                   Cancelar{' '}
                                 </Link>
                               </Row>
-                            </form>
+                            </Form>
                           )
                         }}
                       </Formik>
