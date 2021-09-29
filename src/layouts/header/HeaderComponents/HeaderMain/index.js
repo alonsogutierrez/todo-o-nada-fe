@@ -4,8 +4,7 @@ import { Col, Row, Navbar, NavbarToggler, Collapse, Container, Nav, NavItem } fr
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-//TODO: Get navLinks from BFF
-import navLinks from './../../../../NavLinks'
+import ClientAPI from './../../../../common/ClientAPI'
 import HeaderNavLinks from './HeaderNavLinks'
 import LogoWrapper from './../LogoWrapper'
 import ShoppingCart from './ShoppingCart'
@@ -19,6 +18,7 @@ const HeaderMain = ({ changeCart }) => {
   const [isOpenSearchBar, setIsOpenSearchBar] = useState(false)
   const [width, setWidth] = useState(window.innerWidth)
   const [classset] = useState('')
+  const [navLinks, setNavLinks] = useState([])
 
   const toggle = () => {
     setIsOpenMenu(!isOpenMenu)
@@ -43,6 +43,11 @@ const HeaderMain = ({ changeCart }) => {
   }
 
   useEffect(() => {
+    const getCategoriesNavLinks = async () => {
+      const categoriesResponse = await new ClientAPI().getCategories()
+      setNavLinks(categoriesResponse)
+    }
+    getCategoriesNavLinks()
     setProductsCartItems(JSON.parse(localStorage.getItem('LocalCartItems')))
     window.addEventListener('resize', updateDimensions)
     return () => window.removeEventListener('resize', updateDimensions)

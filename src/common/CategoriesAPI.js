@@ -1,0 +1,24 @@
+const getCategories = (client) => {
+  const userToken = localStorage.getItem('userToken')
+  return new Promise((resolve, reject) => {
+    client
+      .request({
+        url: '/categories',
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+        method: 'get',
+        timeout: 10 * 1000,
+      })
+      .then((response) => {
+        resolve(response.data)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+  })
+}
+
+module.exports = {
+  getCategories,
+}

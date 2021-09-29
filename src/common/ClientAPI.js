@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+import CategoriesAPI from './CategoriesAPI'
+
 export default class ClientAPI {
   bffInstance() {
     const bffInstance = axios.create({
@@ -339,5 +341,14 @@ export default class ClientAPI {
           reject(error)
         })
     })
+  }
+
+  async getCategories() {
+    try {
+      const client = this.bffInstance()
+      return await CategoriesAPI.getCategories(client)
+    } catch (err) {
+      throw new Error('Cant get categories from api')
+    }
   }
 }
