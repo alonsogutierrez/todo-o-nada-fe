@@ -13,9 +13,7 @@ const Categories = () => {
   const geCategoriesAPI = async () => {
     const clientAPI = new ClientAPI()
     try {
-      console.log('trying to post create categories')
-      const categoriesResponse = await clientAPI.createCategories()
-      console.log('categoriesResponse: ', categoriesResponse)
+      const categoriesResponse = await clientAPI.getCategories()
       setCategories(categoriesResponse)
     } catch (err) {
       console.error('Error trying to get categories: ', err.message)
@@ -26,8 +24,6 @@ const Categories = () => {
     window.scrollTo(0, 0)
     geCategoriesAPI()
   }, [categories.length])
-
-  console.log('categories: ', categories)
 
   return (
     <div className="section-ptb">
@@ -51,7 +47,7 @@ const Categories = () => {
                 <h1>Links de navegación</h1>
               </TabPanel>
               <TabPanel>
-                <EditCategories></EditCategories>
+                <EditCategories categories={categories}></EditCategories>
               </TabPanel>
             </Tabs>
           </div>
