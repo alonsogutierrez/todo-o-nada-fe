@@ -59,15 +59,18 @@ class TopFilter extends Component {
 
   render() {
     const totalProducts = this.props.totalProducts
+    const actualProducts = this.props.actualProducts
+
     return (
       <Row>
         <Col>
           {totalProducts > 0 ? (
             <p className="result-count">
-              Mostrando 1–{totalProducts} resultados de {totalProducts}
+              Mostrando {actualProducts.length <= 1 ? 'la' : 'las'} {actualProducts.length}{' '}
+              {actualProducts.length <= 1 ? 'coincidencia' : 'coincidencias'}
             </p>
           ) : (
-            <p className="result-count">Mostrando 0 resultados de {totalProducts}</p>
+            <p className="result-count">No hay coincidencias</p>
           )}
           <div className="gridlist-toggle-wrap">
             <div className="gridlist-button-wrap">
@@ -113,12 +116,14 @@ export default connect(null, mapDispatchToProps)(TopFilter)
 
 TopFilter.defaultProps = {
   totalProducts: 0,
+  actualProducts: [],
   ratingValue: () => {},
   sortValue: () => {},
 }
 
 TopFilter.propTypes = {
   totalProducts: PropTypes.number,
+  actualProducts: PropTypes.array,
   ratingValue: PropTypes.func,
   sortValue: PropTypes.func,
 }

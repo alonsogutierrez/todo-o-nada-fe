@@ -93,7 +93,7 @@ const SearchPage = ({
     } else {
       searchByText()
     }
-  }, [isEnabledLoadMoreButton, categorySelectedData])
+  }, [isEnabledLoadMoreButton, categorySelectedData, products.length])
 
   let actualProducts = []
   if (products) {
@@ -107,6 +107,7 @@ const SearchPage = ({
   if (layoutstyle == null) {
     layoutstyle = localStorage.setItem('setLayoutStyle', 'col-sm-6 col-md-4')
   }
+  console.log('actualProducts: ', actualProducts)
   return (
     <>
       <div className="site-content">
@@ -114,14 +115,70 @@ const SearchPage = ({
         <div className="content-wrapper section-pt mb-3 mb-md-5">
           <Container>
             <Row>
-              <div className="sidebar col-xl-3 col-lg-4 desktop">
-                <div className="shop-sidebar-widgets">
-                  {!loading ? (
-                    <>
-                      <SideFilter />
-                      <SocialFilter />
-                    </>
-                  ) : (
+              <>
+                <div className="sidebar col-xl-3 col-lg-4 desktop">
+                  <div className="shop-sidebar-widgets">
+                    {!loading ? (
+                      <>
+                        <SideFilter />
+                        <SocialFilter />
+                      </>
+                    ) : (
+                      <>
+                        <div>
+                          <Loader type="Puff" color="#04d39f" height="100" width="100" />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+                <div className="content col-xl-9 col-lg-8">
+                  <div className="products-header">
+                    <div className="loop-header">
+                      <div className="loop-header-tools">
+                        <div className="loop-header-tools-wrapper">
+                          <TopFilter
+                            totalProducts={productsPerPage}
+                            actualProducts={actualProducts}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {!loading && actualProducts && actualProducts.length > 0 && (
+                    <div>
+                      <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
+                        {actualProducts.slice(0, productsPerPage).map((product, index) => (
+                          <ProductCard product={product} key={index} layoutstyle={layoutstyle} />
+                        ))}
+                      </Row>
+                      {isEnabledLoadMoreButton && (
+                        <div className="text-center">
+                          <a onClick={onLoadMore} className="loadmore-btn">
+                            Cargar más
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  )}{' '}
+                  {!loading && !actualProducts && actualProducts.length <= 0 && (
+                    <div>
+                      <Row className="products products-loop grid ciyashop-products-shortcode">
+                        <div className="col-sm-12 text-center  mt-5">
+                          <img
+                            src={require(`../../assets/images/empty-search.jpg`)}
+                            className="img-fluid mb-4"
+                          />
+                          <h3>Lo sentimos! No hay productos encontrados paara tu búsqueda! </h3>
+                          <p>Intenta con otras palabras.</p>
+                          <button onClick={refreshPage} className="btn btn-solid">
+                            Continua comprando
+                          </button>
+                        </div>
+                      </Row>
+                    </div>
+                  )}
+                  {loading && (
                     <>
                       <div>
                         <Loader type="Puff" color="#04d39f" height="100" width="100" />
@@ -129,58 +186,7 @@ const SearchPage = ({
                     </>
                   )}
                 </div>
-              </div>
-              <div className="content col-xl-9 col-lg-8">
-                <div className="products-header">
-                  <div className="loop-header">
-                    <div className="loop-header-tools">
-                      <div className="loop-header-tools-wrapper">
-                        <TopFilter totalProducts={productsPerPage} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {!loading && actualProducts && actualProducts.length > 0 && (
-                  <div>
-                    <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
-                      {actualProducts.slice(0, productsPerPage).map((product, index) => (
-                        <ProductCard product={product} key={index} layoutstyle={layoutstyle} />
-                      ))}
-                    </Row>
-                    {isEnabledLoadMoreButton && (
-                      <div className="text-center">
-                        <a onClick={onLoadMore} className="loadmore-btn">
-                          Cargar más
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                )}{' '}
-                {!loading && !actualProducts && actualProducts.length <= 0 && (
-                  <div>
-                    <Row className="products products-loop grid ciyashop-products-shortcode">
-                      <div className="col-sm-12 text-center  mt-5">
-                        <img
-                          src={require(`../../assets/images/empty-search.jpg`)}
-                          className="img-fluid mb-4"
-                        />
-                        <h3>Lo sentimos! No hay productos encontrados paara tu búsqueda! </h3>
-                        <p>Intenta con otras palabras.</p>
-                        <button onClick={refreshPage} className="btn btn-solid">
-                          Continua comprando
-                        </button>
-                      </div>
-                    </Row>
-                  </div>
-                )}
-                {loading && (
-                  <>
-                    <div>
-                      <Loader type="Puff" color="#04d39f" height="100" width="100" />
-                    </div>
-                  </>
-                )}
-              </div>
+              </>
             </Row>
           </Container>
         </div>

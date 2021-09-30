@@ -90,13 +90,13 @@ export const getFilterProductsdata = (data, { category, size, color, sortOrder }
             if (category.length === 0 && size.length === 0 && color.length === 0) return true
             let categoryMatchValue = false
             if (category.length > 0 && categories) {
-              categoryMatchValue = categories.some((cat) => category.includes(cat))
+              categoryMatchValue = category.every((cat) => categories.includes(cat))
             }
 
             let sizeMatchValue = false
             if (size.length > 0 && sizes) {
-              sizes.forEach((productSize) => {
-                if (size.some((filterSize) => filterSize === productSize)) {
+              size.forEach((filterSize) => {
+                if (sizes.some((productSize) => productSize === filterSize)) {
                   sizeMatchValue = true
                 }
               })
