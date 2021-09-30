@@ -24,6 +24,7 @@ import profileImg from '../../assets/images/testimonials/img-02.jpg'
 const AdminHeader = (props) => {
   const [dropdownOpen, setDropDownOpen] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [isCategoriesFeatureFlagOn] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -140,6 +141,31 @@ const AdminHeader = (props) => {
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
+                  {isCategoriesFeatureFlagOn && (
+                    <UncontrolledDropdown nav inNavbar>
+                      <DropdownToggle nav caret>
+                        Categorias
+                      </DropdownToggle>
+                      <DropdownMenu left>
+                        <DropdownItem
+                          onClick={() => changeClass('product')}
+                          className="nav-link"
+                          tag={Link}
+                          to="/admin-dashboard/categories"
+                        >
+                          Categorias
+                        </DropdownItem>
+                        <DropdownItem
+                          onClick={() => changeClass('product')}
+                          className="nav-link"
+                          tag={Link}
+                          to="/admin-dashboard/edit-categories"
+                        >
+                          Editar Categorias
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
+                  )}
                   <NavItem className="profile">
                     <Link
                       to="/admin-dashboard/profile"

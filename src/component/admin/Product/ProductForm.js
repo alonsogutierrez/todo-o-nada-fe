@@ -9,21 +9,23 @@ import Loader from 'react-loader-spinner'
 
 import ClientAPI from '../../../common/ClientAPI'
 
-const categories = [
-  'hombre',
-  'mujer',
-  'niño',
-  'niña',
-  'irezumi',
-  'traditional',
-  'tattoo-collection',
-] // Get from Categories API
-
 const ProductForm = (props) => {
+  const [categories, setCategories] = useState([])
   const [productData] = useState(props.product)
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {}, [props.product])
+  useEffect(() => {
+    const getCategories = async () => {
+      const clientAPI = new ClientAPI()
+      try {
+        const categoriesResponse = await clientAPI.getCategories()
+        setCategories(categoriesResponse)
+      } catch (err) {
+        throw new Error(`Cant get categories: ${err.message}`)
+      }
+    }
+    getCategories()
+  }, [props.product])
 
   const processProduct = async (productFormData) => {
     try {

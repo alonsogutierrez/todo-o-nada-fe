@@ -13,14 +13,14 @@ const collections = [
   {
     id: 2,
     imageSrc: require(`../../assets/images/print_banner-01.jpg`).default,
-    name: 'print',
-    link: '/category/print',
+    name: 'print-art',
+    link: '/category/print-art',
   },
   {
     id: 3,
     imageSrc: require(`../../assets/images/japonesa_collection_banner-01.jpg`).default,
-    name: 'japon',
-    link: '/category/japon',
+    name: 'irezumi',
+    link: '/category/irezumi',
   },
   {
     id: 4,
