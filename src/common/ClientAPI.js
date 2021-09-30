@@ -343,6 +343,24 @@ export default class ClientAPI {
     })
   }
 
+  async getCategoriesNavLinks() {
+    try {
+      const client = this.bffInstance()
+      return await CategoriesAPI.getCategoriesNavLinks(client)
+    } catch (err) {
+      throw new Error('Cant get categories navlinks from api')
+    }
+  }
+
+  async createCategories() {
+    try {
+      const client = this.bffInstance()
+      return await CategoriesAPI.createCategories(client)
+    } catch (err) {
+      throw new Error('Cant create categories from api')
+    }
+  }
+
   async getCategories() {
     try {
       const client = this.bffInstance()

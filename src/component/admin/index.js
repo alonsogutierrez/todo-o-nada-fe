@@ -8,6 +8,7 @@ import SearchOrders from './SearchOrders'
 import AdminProductList from './Product/AdminProductList'
 import ProductForm from './Product/ProductForm'
 import EditProduct from './Product/EditProduct'
+import Categories from './Categories/Categories'
 import Collaboration from './Collaboration'
 import Profile from './Profile'
 import Settings from './Settings'
@@ -23,6 +24,7 @@ class AdminDashboard extends Component {
           <Route path={`/admin-dashboard/product`} component={AdminProductList} />
           <Route path={`/admin-dashboard/product-add`} component={ProductForm} />
           <Route path={`/admin-dashboard/product-edit/:itemNumber`} component={EditProduct} />
+          <Route path={`/admin-dashboard/categories`} component={Categories} />
           <Route path={`/admin-dashboard/profile`} component={Profile} />
           <Route path={`/admin-dashboard/collaboration`} component={Collaboration} />
           <Route path={`/admin-dashboard/settings`} component={Settings} />

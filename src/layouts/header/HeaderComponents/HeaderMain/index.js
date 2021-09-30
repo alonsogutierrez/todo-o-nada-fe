@@ -44,8 +44,8 @@ const HeaderMain = ({ changeCart }) => {
 
   useEffect(() => {
     const getCategoriesNavLinks = async () => {
-      const categoriesResponse = await new ClientAPI().getCategories()
-      setNavLinks(categoriesResponse)
+      const categoriesNavLinksResponse = await new ClientAPI().getCategoriesNavLinks()
+      setNavLinks(categoriesNavLinksResponse)
     }
     getCategoriesNavLinks()
     setProductsCartItems(JSON.parse(localStorage.getItem('LocalCartItems')))

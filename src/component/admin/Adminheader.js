@@ -140,6 +140,29 @@ const AdminHeader = (props) => {
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
+                  <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle nav caret>
+                      Categorias
+                    </DropdownToggle>
+                    <DropdownMenu left>
+                      <DropdownItem
+                        onClick={() => changeClass('product')}
+                        className="nav-link"
+                        tag={Link}
+                        to="/admin-dashboard/categories"
+                      >
+                        Categorias
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={() => changeClass('product')}
+                        className="nav-link"
+                        tag={Link}
+                        to="/admin-dashboard/edit-categories"
+                      >
+                        Editar Categorias
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
                   <NavItem className="profile">
                     <Link
                       to="/admin-dashboard/profile"
