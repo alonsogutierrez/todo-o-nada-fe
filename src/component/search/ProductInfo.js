@@ -18,7 +18,7 @@ const ProductInfo = ({ product }) => {
             <div className="product-thumbnail-inner">
               <Link to={`/product/${itemNumber}`}>
                 <div className="product-thumbnail-main">
-                  <img src={picture} className="img-fluid" />
+                  <img src={picture} className="img-fluid img-slider" />
                 </div>
               </Link>
             </div>

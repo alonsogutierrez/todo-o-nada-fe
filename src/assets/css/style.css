@@ -12437,6 +12437,12 @@ footer.site-footer.footer-style-2 .footer-widgets-wrapper {
   text-align: center;
 }
 
+.img-slider {
+  width: 250px !important;
+  height: 250px !important;
+  object-fit: cover !important;
+}
+
 .products .product-inner:hover .product-thumbnail .product-thumbnail-main img {
   -webkit-transform: scale(1.1);
   -moz-transform: scale(1.1);
