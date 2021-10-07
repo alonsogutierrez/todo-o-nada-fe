@@ -12441,6 +12441,8 @@ footer.site-footer.footer-style-2 .footer-widgets-wrapper {
   width: 250px !important;
   height: 250px !important;
   object-fit: cover !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .products .product-inner:hover .product-thumbnail .product-thumbnail-main img {
