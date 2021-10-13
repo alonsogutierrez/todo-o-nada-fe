@@ -40,7 +40,7 @@ const AdminproductList = (props) => {
                 <Link to="#">
                   {picture ? (
                     <div className="product-thumbnail-main">
-                      <img src={picture} className="img-fluid" />
+                      <img src={picture} className="img-fluid img-slider" />
                     </div>
                   ) : (
                     <>Img not found</>
