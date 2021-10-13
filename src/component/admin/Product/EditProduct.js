@@ -3,7 +3,7 @@ import { Container } from 'reactstrap'
 import PropTypes from 'prop-types'
 import Loader from 'react-loader-spinner'
 
-import ProductForm from './ProductForm'
+import ProductForm from './ProductForm/ProductForm'
 
 import ClientAPI from '../../../common/ClientAPI'
 
