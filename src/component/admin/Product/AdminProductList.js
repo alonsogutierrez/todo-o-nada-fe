@@ -39,12 +39,11 @@ const AdminProductList = () => {
     if (allProducts) {
       actualProducts = allProducts
     }
-    if (inputProductTextSearch === '') {
-      curr_products = actualProducts.slice((currentPage - 1) * 12, (currentPage - 1) * 12 + 12)
+    if (inputProductTextSearch === '' || !inputProductTextSearch) {
       setProductSearch(inputProductTextSearch)
-      setProductList(actualProducts)
-      setAllProducts(curr_products)
-      setIsDeleteProcess(true)
+      setProductList([])
+      setAllProducts([])
+      //setIsDeleteProcess(true)
     } else {
       let searchData = actualProducts.filter((productData) => {
         const { _source } = productData

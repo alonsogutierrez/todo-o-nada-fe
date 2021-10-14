@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Container, FormGroup, Input, Label, Row } from 'reactstrap'
+import { Container, Row } from 'reactstrap'
 import { Formik, Form } from 'formik'
 import PropTypes from 'prop-types'
 import { ToastContainer, toast } from 'react-toastify'
@@ -9,13 +9,12 @@ import Loader from 'react-loader-spinner'
 
 import ClientAPI from '../../../../common/ClientAPI'
 import SizesForm from './SizesForm'
-import LabelConfigData from './LabelConfigData'
+import GeneralLabelForm from './GeneralLabelForm'
 
 const ProductForm = (props) => {
   const [categories, setCategories] = useState([])
   const [productData] = useState(props.product)
   const [loading, setLoading] = useState(false)
-  const [formLabelConfigs] = useState(LabelConfigData)
   const [totalSizes] = useState(['10', '12', '14', '16', 'S', 'M', 'L', 'XL', 'XXL'])
   const [uniqueMeasuresIdentifiers] = useState([1, 2, 3, 4])
 
@@ -49,11 +48,10 @@ const ProductForm = (props) => {
   const getFormErrors = (formValues) => {
     const errors = {}
     if (!formValues.itemNumber) {
-      const itemNumber = formValues.itemNumber
       errors.itemNumber = 'itemNumber requerido'
-      if (!isNaN(itemNumber)) {
-        errors.itemNumber = 'itemNumber debe ser numerico'
-      }
+    }
+    if (isNaN(formValues.itemNumber)) {
+      errors.itemNumber = 'itemNumber debe ser numerico'
     }
     if (!formValues.name) {
       errors.name = 'nombre requerido'
@@ -201,10 +199,8 @@ const ProductForm = (props) => {
     productMappedFromProps.pictures = pictures
     productMappedFromProps.published = published
     productMappedFromProps.details = details
-    console.log('details: ', details)
     let pos = 1
     for (let sku in details) {
-      console.log('productSizeType: ', productSizeType)
       if (productSizeType === 'uniqueMeasures') {
         productMappedFromProps[`measureBySize${pos}`] = details[sku].size
         productMappedFromProps[`stockBySize${pos}`] = details[sku].stock
@@ -257,92 +253,15 @@ const ProductForm = (props) => {
                         {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => {
                           return (
                             <Form>
-                              {formLabelConfigs.map((formLabel) => {
-                                const { rows } = formLabel
-                                if (rows && rows.length > 0) {
-                                  return (
-                                    <Row>
-                                      {rows.map((row, index) => (
-                                        <FormGroup
-                                          className={row.formClassName}
-                                          key={row.labelName + index}
-                                        >
-                                          <Label className="title pl-0">{row.labelTitle}</Label>
-                                          {row.labelName === 'categories' && categories ? (
-                                            categories.map((category, catIndex) => (
-                                              <Label key={catIndex}>
-                                                <Input
-                                                  type={row.type}
-                                                  name={row.labelName}
-                                                  className={row.inputClassName}
-                                                  placeholder={row.placeHolder}
-                                                  onChange={handleChange}
-                                                  onBlur={handleBlur}
-                                                  value={category}
-                                                  defaultChecked={row.defaultChecked(
-                                                    values,
-                                                    category
-                                                  )}
-                                                  key={category + catIndex}
-                                                />{' '}
-                                                {category}
-                                              </Label>
-                                            ))
-                                          ) : row.labelName === 'pictures' ? (
-                                            <>
-                                              <input
-                                                type="file"
-                                                name="pictures"
-                                                className="form-control"
-                                                multiple
-                                                onChange={(event) => {
-                                                  const fileToUpload = event.currentTarget.files
-                                                  event.preventDefault()
-                                                  setFieldValue('pictures', fileToUpload)
-                                                }}
-                                              />
-                                              {errors.pictures && touched.pictures}
-                                              <Label className="title pl-0">Imagen Cargada</Label>
-                                              <span>
-                                                {values.pictures &&
-                                                typeof values.pictures[0] === 'string' ? (
-                                                  <img
-                                                    src={values.pictures[0]}
-                                                    style={{ width: '50%' }}
-                                                  />
-                                                ) : (
-                                                  'Nueva imagen a cargar'
-                                                )}
-                                              </span>
-                                            </>
-                                          ) : (
-                                            <Input
-                                              type={row.type}
-                                              name={row.labelName}
-                                              className={row.inputClassName}
-                                              placeholder={row.placeHolder}
-                                              onChange={handleChange}
-                                              onBlur={handleBlur}
-                                              value={row.getValue(values)}
-                                            >
-                                              {row.options && row.options.length > 0
-                                                ? row.options.map((option) => (
-                                                    <option key={option.value} value={option.value}>
-                                                      {option.text}
-                                                    </option>
-                                                  ))
-                                                : undefined}
-                                            </Input>
-                                          )}
-                                          {errors[`${row.labelName}`] &&
-                                            touched[`${row.labelName}`]}
-                                        </FormGroup>
-                                      ))}
-                                    </Row>
-                                  )
-                                }
-                                return <></>
-                              })}
+                              <GeneralLabelForm
+                                categories={categories}
+                                handleBlur={handleBlur}
+                                handleChange={handleChange}
+                                setFieldValue={setFieldValue}
+                                values={values}
+                                errors={errors}
+                                touched={touched}
+                              />
                               <SizesForm
                                 productSizeType={values.productSizeType}
                                 handleBlur={handleBlur}

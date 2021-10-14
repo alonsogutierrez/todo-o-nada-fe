@@ -10,6 +10,10 @@ const SizesForm = (props) => {
     productSizeType === 'clothesSizes'
       ? SizeLabelSpecificationConfig.getClothesSizes
       : SizeLabelSpecificationConfig.getUniqueMeasures
+
+  if (!productSizeType) {
+    return <></>
+  }
   return (
     <>
       {productSizeType === 'clothesSizes' ? 'Stock por Tallas de ropa' : 'Stock por Medidas únicas'}
