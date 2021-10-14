@@ -16,6 +16,7 @@ const ProductForm = (props) => {
   const [productData] = useState(props.product)
   const [loading, setLoading] = useState(false)
   const [formLabelConfigs] = useState(LabelConfigData)
+  const [totalSizes] = useState(['10', '12', '14', '16', 'S', 'M', 'L', 'XL', 'XXL'])
 
   useEffect(() => {
     const getCategories = async () => {
@@ -56,7 +57,7 @@ const ProductForm = (props) => {
       errors.description = 'descripción requerida'
     }
     if (!formValues.productSizeType) {
-      errors.productSizeType = 'tipo de tañao de producto requerida'
+      errors.productSizeType = 'tipo de tamaño de producto requerida'
     }
     if (!formValues.price.basePriceSales) {
       errors.price = 'precio venta requerido'
@@ -99,41 +100,15 @@ const ProductForm = (props) => {
     let sizes = []
 
     const details = {}
-    if (values.skuBySizeS) {
-      details[values.skuBySizeS] = {
-        stock: values.stockBySizeS,
-        size: 'S',
+    totalSizes.forEach((actualSize) => {
+      if (values[`skuBySize${actualSize}`]) {
+        details[values[`skuBySize${actualSize}`]] = {
+          stock: values[`stockBySize${actualSize}`],
+          size: actualSize,
+        }
+        sizes.push(actualSize)
       }
-      sizes.push('S')
-    }
-    if (values.skuBySizeM) {
-      details[values.skuBySizeM] = {
-        stock: values.stockBySizeM,
-        size: 'M',
-      }
-      sizes.push('M')
-    }
-    if (values.skuBySizeL) {
-      details[values.skuBySizeL] = {
-        stock: values.stockBySizeL,
-        size: 'L',
-      }
-      sizes.push('L')
-    }
-    if (values.skuBySizeXL) {
-      details[values.skuBySizeXL] = {
-        stock: values.stockBySizeXL,
-        size: 'XL',
-      }
-      sizes.push('XL')
-    }
-    if (values.skuBySizeXXL) {
-      details[values.skuBySizeXXL] = {
-        stock: values.stockBySizeXXL,
-        size: 'XXL',
-      }
-      sizes.push('XXL')
-    }
+    })
 
     formData.append('details', JSON.stringify(details))
     if (values.pictures) {
@@ -154,49 +129,63 @@ const ProductForm = (props) => {
     props.fetchProductData(values.itemNumber)
   }
 
+  const getInitialProductMapped = () => {
+    const productMapped = {
+      itemNumber: '',
+      name: '',
+      categories: [],
+      productSizeType: '',
+      description: '',
+      price: {
+        basePriceSales: 0,
+        basePriceReference: 0,
+        discount: 0,
+      },
+      color: '',
+      pictures: null,
+      published: false,
+      details: {},
+    }
+
+    totalSizes.forEach((actualSize) => {
+      productMapped[`stockBySize${actualSize}`] = 0
+      productMapped[`skuBySize${actualSize}`] = ''
+    })
+
+    return productMapped
+  }
+
   const getProductMappedFromProps = (productData) => {
     const productMappedFromProps = {}
     const {
       itemNumber,
       name,
+      category,
+      productSizeType,
       description,
       price,
       color,
       pictures,
       published,
-      category,
       details,
     } = productData
     productMappedFromProps.itemNumber = itemNumber
     productMappedFromProps.name = name
+    productMappedFromProps.categories = category
+    productMappedFromProps.productSizeType = productSizeType
     productMappedFromProps.description = description
     productMappedFromProps.price = price
     productMappedFromProps.color = color
     productMappedFromProps.pictures = pictures
     productMappedFromProps.published = published
-    productMappedFromProps.categories = category
     productMappedFromProps.details = details
     for (let sku in details) {
-      if (details[sku].size === 'S') {
-        productMappedFromProps.stockBySizeS = details[sku].stock
-        productMappedFromProps.skuBySizeS = sku
-      }
-      if (details[sku].size === 'M') {
-        productMappedFromProps.stockBySizeM = details[sku].stock
-        productMappedFromProps.skuBySizeM = sku
-      }
-      if (details[sku].size === 'L') {
-        productMappedFromProps.stockBySizeL = details[sku].stock
-        productMappedFromProps.skuBySizeL = sku
-      }
-      if (details[sku].size === 'XL') {
-        productMappedFromProps.stockBySizeXL = details[sku].stock
-        productMappedFromProps.skuBySizeXL = sku
-      }
-      if (details[sku].size === 'XXL') {
-        productMappedFromProps.stockBySizeXXL = details[sku].stock
-        productMappedFromProps.skuBySizeXXL = sku
-      }
+      totalSizes.forEach((actualSize) => {
+        if (details[sku].size === actualSize) {
+          productMappedFromProps[`stockBySize${actualSize}`] = details[sku].stock
+          productMappedFromProps[`skuBySize${actualSize}`] = sku
+        }
+      })
     }
 
     return productMappedFromProps
@@ -204,31 +193,7 @@ const ProductForm = (props) => {
 
   const product =
     !Object.keys(productData).length > 0
-      ? {
-          itemNumber: '',
-          name: '',
-          description: '',
-          price: {
-            basePriceSales: 0,
-            basePriceReference: 0,
-            discount: 0,
-          },
-          color: '',
-          pictures: null,
-          published: false,
-          categories: [],
-          details: {},
-          stockBySizeS: 0,
-          stockBySizeM: 0,
-          stockBySizeL: 0,
-          stockBySizeXL: 0,
-          stockBySizeXXL: 0,
-          skuBySizeS: '',
-          skuBySizeM: '',
-          skuBySizeL: '',
-          skuBySizeXL: '',
-          skuBySizeXXL: '',
-        }
+      ? getInitialProductMapped()
       : getProductMappedFromProps(productData)
 
   if (loading) {
