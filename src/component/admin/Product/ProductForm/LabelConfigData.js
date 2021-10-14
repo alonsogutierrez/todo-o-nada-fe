@@ -175,7 +175,7 @@ export default [
         placeHolder: '',
         getValue: (value) => (value ? value : ''),
         defaultChecked: (values, value) => {
-          values['categories'] ? values['categories'].includes(value) : false
+          return values['categories'] ? values['categories'].includes(value) : false
         },
       },
     ],
@@ -192,7 +192,7 @@ export default [
         placeHolder: '',
         getValue: (value) => (value ? value : ''),
         defaultChecked: (values, value) => {
-          values['categories'] ? values['categories'].includes(value) : false
+          return values['categories'] ? values['categories'].includes(value) : false
         },
       },
     ],

@@ -1,4 +1,4 @@
-export default [
+const getClothesSizes = [
   {
     rows: [
       {
@@ -211,3 +211,131 @@ export default [
     ],
   },
 ]
+
+const getUniqueMeasures = [
+  {
+    rows: [
+      {
+        formGroupList: [
+          {
+            labelList: [
+              {
+                labelTitle: 'Medida única 1',
+                inputType: 'text',
+                inputName: 'measureBySize1',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['measureBySize1'] : 0),
+              },
+              {
+                labelTitle: 'Stock Medida única 1',
+                inputType: 'number',
+                inputName: 'stockBySize1',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['stockBySize1'] : 0),
+              },
+              {
+                labelTitle: 'SKU medida 1',
+                inputType: 'text',
+                inputName: 'skuBySize1',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['skuBySize1'] : ''),
+              },
+            ],
+            formClassName: 'edit-icon col-md-6',
+          },
+          {
+            labelList: [
+              {
+                labelTitle: 'Medida única 2',
+                inputType: 'text',
+                inputName: 'measureBySize2',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['measureBySize2'] : 0),
+              },
+              {
+                labelTitle: 'Stock Medida única 2',
+                inputType: 'number',
+                inputName: 'stockBySize2',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['stockBySize2'] : 0),
+              },
+              {
+                labelTitle: 'SKU medida 2',
+                inputType: 'text',
+                inputName: 'skuBySize2',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['skuBySize2'] : ''),
+              },
+            ],
+            formClassName: 'edit-icon col-md-6',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    rows: [
+      {
+        formGroupList: [
+          {
+            labelList: [
+              {
+                labelTitle: 'Medida única 3',
+                inputType: 'text',
+                inputName: 'measureBySize3',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['measureBySize3'] : 0),
+              },
+              {
+                labelTitle: 'Stock Medida única 3',
+                inputType: 'number',
+                inputName: 'stockBySize3',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['stockBySize3'] : 0),
+              },
+              {
+                labelTitle: 'SKU medida 3',
+                inputType: 'text',
+                inputName: 'skuBySize3',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['skuBySize3'] : ''),
+              },
+            ],
+            formClassName: 'edit-icon col-md-6',
+          },
+          {
+            labelList: [
+              {
+                labelTitle: 'Medida única 4',
+                inputType: 'text',
+                inputName: 'measureBySize4',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['measureBySize4'] : 0),
+              },
+              {
+                labelTitle: 'Medida única 4',
+                inputType: 'number',
+                inputName: 'stockBySize4',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['stockBySize4'] : 0),
+              },
+              {
+                labelTitle: 'SKU medida 4',
+                inputType: 'text',
+                inputName: 'skuBySize4',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['skuBySize4'] : ''),
+              },
+            ],
+            formClassName: 'edit-icon col-md-6',
+          },
+        ],
+      },
+    ],
+  },
+]
+
+export default {
+  getClothesSizes,
+  getUniqueMeasures,
+}

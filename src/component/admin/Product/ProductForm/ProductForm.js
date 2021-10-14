@@ -8,8 +8,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import Loader from 'react-loader-spinner'
 
 import ClientAPI from '../../../../common/ClientAPI'
+import SizesForm from './SizesForm'
 import LabelConfigData from './LabelConfigData'
-import SizeLabelSpecificationConfig from './SizeLabelSpecificationConfig'
 
 const ProductForm = (props) => {
   const [categories, setCategories] = useState([])
@@ -17,6 +17,7 @@ const ProductForm = (props) => {
   const [loading, setLoading] = useState(false)
   const [formLabelConfigs] = useState(LabelConfigData)
   const [totalSizes] = useState(['10', '12', '14', '16', 'S', 'M', 'L', 'XL', 'XXL'])
+  const [uniqueMeasuresIdentifiers] = useState([1, 2, 3, 4])
 
   useEffect(() => {
     const getCategories = async () => {
@@ -48,7 +49,11 @@ const ProductForm = (props) => {
   const getFormErrors = (formValues) => {
     const errors = {}
     if (!formValues.itemNumber) {
+      const itemNumber = formValues.itemNumber
       errors.itemNumber = 'itemNumber requerido'
+      if (!isNaN(itemNumber)) {
+        errors.itemNumber = 'itemNumber debe ser numerico'
+      }
     }
     if (!formValues.name) {
       errors.name = 'nombre requerido'
@@ -100,15 +105,27 @@ const ProductForm = (props) => {
     let sizes = []
 
     const details = {}
-    totalSizes.forEach((actualSize) => {
-      if (values[`skuBySize${actualSize}`]) {
-        details[values[`skuBySize${actualSize}`]] = {
-          stock: values[`stockBySize${actualSize}`],
-          size: actualSize,
+    if (values.productSizeType === 'uniqueMeasures') {
+      uniqueMeasuresIdentifiers.forEach((actualUniqueMeasure) => {
+        if (values[`skuBySize${actualUniqueMeasure}`]) {
+          details[values[`skuBySize${actualUniqueMeasure}`]] = {
+            stock: values[`stockBySize${actualUniqueMeasure}`],
+            size: values[`measureBySize${actualUniqueMeasure}`],
+          }
+          sizes.push(values[`measureBySize${actualUniqueMeasure}`])
         }
-        sizes.push(actualSize)
-      }
-    })
+      })
+    } else {
+      totalSizes.forEach((actualSize) => {
+        if (values[`skuBySize${actualSize}`]) {
+          details[values[`skuBySize${actualSize}`]] = {
+            stock: values[`stockBySize${actualSize}`],
+            size: actualSize,
+          }
+          sizes.push(actualSize)
+        }
+      })
+    }
 
     formData.append('details', JSON.stringify(details))
     if (values.pictures) {
@@ -151,6 +168,11 @@ const ProductForm = (props) => {
       productMapped[`stockBySize${actualSize}`] = 0
       productMapped[`skuBySize${actualSize}`] = ''
     })
+    uniqueMeasuresIdentifiers.forEach((actualMeasure) => {
+      productMapped[`measureBySize${actualMeasure}`] = ''
+      productMapped[`stockBySize${actualMeasure}`] = 0
+      productMapped[`skuBySize${actualMeasure}`] = ''
+    })
 
     return productMapped
   }
@@ -179,13 +201,23 @@ const ProductForm = (props) => {
     productMappedFromProps.pictures = pictures
     productMappedFromProps.published = published
     productMappedFromProps.details = details
+    console.log('details: ', details)
+    let pos = 1
     for (let sku in details) {
-      totalSizes.forEach((actualSize) => {
-        if (details[sku].size === actualSize) {
-          productMappedFromProps[`stockBySize${actualSize}`] = details[sku].stock
-          productMappedFromProps[`skuBySize${actualSize}`] = sku
-        }
-      })
+      console.log('productSizeType: ', productSizeType)
+      if (productSizeType === 'uniqueMeasures') {
+        productMappedFromProps[`measureBySize${pos}`] = details[sku].size
+        productMappedFromProps[`stockBySize${pos}`] = details[sku].stock
+        productMappedFromProps[`skuBySize${pos}`] = sku
+        pos++
+      } else {
+        totalSizes.forEach((actualSize) => {
+          if (details[sku].size === actualSize) {
+            productMappedFromProps[`stockBySize${actualSize}`] = details[sku].stock
+            productMappedFromProps[`skuBySize${actualSize}`] = sku
+          }
+        })
+      }
     }
 
     return productMappedFromProps
@@ -311,53 +343,12 @@ const ProductForm = (props) => {
                                 }
                                 return <></>
                               })}
-                              Stock por Tallas
-                              {SizeLabelSpecificationConfig.map((sizeLabelData) => {
-                                const { rows } = sizeLabelData
-                                if (rows && rows.length > 0) {
-                                  return rows.map((row, idxRow) => {
-                                    const { formGroupList } = row
-                                    return (
-                                      <Row key={idxRow}>
-                                        {formGroupList && formGroupList.length > 0 ? (
-                                          <>
-                                            {formGroupList.map((formGroup, idxFormGroup) => {
-                                              const { labelList, formClassName } = formGroup
-                                              return (
-                                                <FormGroup
-                                                  key={idxFormGroup}
-                                                  className={formClassName}
-                                                >
-                                                  {labelList.map((actualLabel) => {
-                                                    return (
-                                                      <>
-                                                        <Label className="title pl-0">
-                                                          {actualLabel.labelTitle}
-                                                        </Label>
-                                                        <Input
-                                                          type={actualLabel.inputType}
-                                                          name={actualLabel.inputName}
-                                                          className={actualLabel.inputClassName}
-                                                          onChange={handleChange}
-                                                          onBlur={handleBlur}
-                                                          value={actualLabel.getInputValue(values)}
-                                                        />
-                                                      </>
-                                                    )
-                                                  })}
-                                                </FormGroup>
-                                              )
-                                            })}
-                                          </>
-                                        ) : (
-                                          <></>
-                                        )}
-                                      </Row>
-                                    )
-                                  })
-                                }
-                                return <></>
-                              })}
+                              <SizesForm
+                                productSizeType={values.productSizeType}
+                                handleBlur={handleBlur}
+                                handleChange={handleChange}
+                                values={values}
+                              />
                               <Row>
                                 <button
                                   type="submit"
