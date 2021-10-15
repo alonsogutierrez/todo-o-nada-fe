@@ -36,9 +36,8 @@ class Footer extends React.Component {
                       </div>
                       <div className="text-content">
                         <p className="mb-3 mt-4">
-                          Todo o nada tatto art enfocados en nuestra marca propia, diseños
-                          exclusivos de tatuadores, y una técnica serigrafica con mucho amor y
-                          dedicación.
+                          Handmade premium brand. Reproducción de obras de arte de los/as mejores
+                          artistas del tatuaje de America del Sur y el mundo.
                         </p>
                       </div>
                       <div className="pgs-social-profiles mt-4">
@@ -54,6 +53,16 @@ class Footer extends React.Component {
                                     rel="noopener noreferrer"
                                   >
                                     <i className="fa fa-instagram" />
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    href="https://www.facebook.com/todoonadatattooart/"
+                                    title="Facebook"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <i className="fa fa-facebook" />
                                   </a>
                                 </li>
                               </ul>
