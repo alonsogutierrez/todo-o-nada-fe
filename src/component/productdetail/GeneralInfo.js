@@ -190,17 +190,25 @@ const GeneralInfo = (props) => {
   }
 
   const configSubProduct = (product) => {
-    return sizes.map((size) => {
-      const newProductDetails = product.details
-      let detailsUpdated = {}
-      for (let sku in newProductDetails) {
-        if (newProductDetails[sku].size === size) {
-          detailsUpdated = { ...newProductDetails[sku], sku }
+    const newProductDetails = product.details
+    let detailsUpdated = {}
+    if (product.productSizeType === 'clothesSizes') {
+      return sizes.map((size) => {
+        for (let sku in newProductDetails) {
+          if (newProductDetails[sku].size === size) {
+            detailsUpdated = { ...newProductDetails[sku], sku }
+          }
         }
-      }
+        return { size, details: detailsUpdated }
+      })
+    }
+    let result = []
+    for (let sku in newProductDetails) {
+      detailsUpdated = { ...newProductDetails[sku], sku }
+      result.push({ size: newProductDetails[sku].size, details: detailsUpdated })
+    }
 
-      return { size, details: detailsUpdated }
-    })
+    return result
   }
 
   const handleSetSize = (size) => {
