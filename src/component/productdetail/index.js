@@ -107,10 +107,14 @@ const ProductDetail = (props) => {
                               <h2>Descripción del producto</h2>
                               <p>{productDescription}</p>
                               <br />
-                              <img
-                                style={sizesImgStyle}
-                                src={require('./../../assets/images/sizes.jpg').default}
-                              />
+                              {(actualProduct.category.includes('hombre') ||
+                                actualProduct.category.includes('mujer') ||
+                                actualProduct.category.includes('unisex')) && (
+                                <img
+                                  style={sizesImgStyle}
+                                  src={require('./../../assets/images/sizes.jpg').default}
+                                />
+                              )}
                               <SupportInfo />
                             </div>
                           </div>
