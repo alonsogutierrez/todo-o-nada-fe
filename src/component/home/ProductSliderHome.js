@@ -7,7 +7,7 @@ const sliderConfig = {
   dots: false,
   infinite: true,
   speed: 500,
-  slidesToShow: 5,
+  slidesToShow: 4,
   slidesToScroll: 1,
   responsive: [
     {
@@ -36,11 +36,7 @@ const ProductSliderHome = () => (
     <Row className="margin-top-12">
       <Col sm={12} className="text-center">
         <div className="section-title">
-          <h1>Lo más interesante</h1>
-          <p>
-            Encuentra nuestros mejores diseños, hechos por los tatuadores y diseñadores buscando
-            expresar el arte y energía que hay en nuestras prendas.
-          </p>
+          <h1>Nuevos lanzamientos</h1>
         </div>
         <Row className="margin-top-4">
           <Col sm={12}>
