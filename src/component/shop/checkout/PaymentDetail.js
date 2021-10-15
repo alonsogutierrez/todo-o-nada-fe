@@ -50,12 +50,10 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
         <span className="h5">
           {isHomeDelivery
             ? 'Fecha estimada de llegada'
-            : `Ponte en contacto a nuestro instagram indicando tu nombre y n° de orden para coordinar el retiro en la tienda de forma segura`}
+            : `Ponte en contacto con nosotros vía WhatsApp (n° +569 6277 5906) indicando tu nombre y n° de orden para coordinar el retiro en la tienda de forma segura`}
         </span>
         <h2 className="mb-0 mt-2">
-          {isHomeDelivery
-            ? 'Entre 3 a 5 días hábiles'
-            : 'https://www.instagram.com/todoonadatattooart'}
+          {isHomeDelivery ? 'Entre 3 a 5 días hábiles' : 'WhatsApp (n° +569 6277 5906)'}
         </h2>
       </div>
       <div className="pt-4 px-4 pt-md-5 px-md-5 pb-3">
