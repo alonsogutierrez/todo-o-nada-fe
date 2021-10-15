@@ -61,7 +61,10 @@ function OurHistory() {
                               borderStyle: 'solid',
                             }}
                           >
-                            <i className="fa fa-archive" style={{ color: '#dbdbdb' }} />{' '}
+                            <img
+                              src={require('./../../assets/images/logo_icon_history.png').default}
+                              alt="icon"
+                            />
                           </div>
                         </div>
                       </div>
@@ -98,7 +101,10 @@ function OurHistory() {
                               borderStyle: 'solid',
                             }}
                           >
-                            <i className="fa fa-align-center" style={{ color: '#dbdbdb' }} />
+                            <img
+                              src={require('./../../assets/images/logo_icon_history.png').default}
+                              alt="icon"
+                            />
                           </div>
                         </div>
                       </div>

@@ -6,6 +6,98 @@ const getClothesSizes = [
           {
             labelList: [
               {
+                labelTitle: 'Talla 2',
+                inputType: 'number',
+                inputName: 'stockBySize2',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['stockBySize2'] : 0),
+              },
+              {
+                labelTitle: 'SKU talla 2',
+                inputType: 'text',
+                inputName: 'skuBySize2',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['skuBySize2'] : ''),
+              },
+            ],
+            formClassName: 'edit-icon col-md-6',
+          },
+          {
+            labelList: [
+              {
+                labelTitle: 'Talla 4',
+                inputType: 'number',
+                inputName: 'stockBySize4',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['stockBySize4'] : 0),
+              },
+              {
+                labelTitle: 'SKU talla 4',
+                inputType: 'text',
+                inputName: 'skuBySize4',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['skuBySize4'] : ''),
+              },
+            ],
+            formClassName: 'edit-icon col-md-6',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    rows: [
+      {
+        formGroupList: [
+          {
+            labelList: [
+              {
+                labelTitle: 'Talla 6',
+                inputType: 'number',
+                inputName: 'stockBySize6',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['stockBySize6'] : 0),
+              },
+              {
+                labelTitle: 'SKU talla 6',
+                inputType: 'text',
+                inputName: 'skuBySize6',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['skuBySize6'] : ''),
+              },
+            ],
+            formClassName: 'edit-icon col-md-6',
+          },
+          {
+            labelList: [
+              {
+                labelTitle: 'Talla 8',
+                inputType: 'number',
+                inputName: 'stockBySize8',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['stockBySize8'] : 0),
+              },
+              {
+                labelTitle: 'SKU talla 8',
+                inputType: 'text',
+                inputName: 'skuBySize8',
+                inputClassName: 'form-control product_title',
+                getInputValue: (values) => (values ? values['skuBySize8'] : ''),
+              },
+            ],
+            formClassName: 'edit-icon col-md-6',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    rows: [
+      {
+        formGroupList: [
+          {
+            labelList: [
+              {
                 labelTitle: 'Talla 10',
                 inputType: 'number',
                 inputName: 'stockBySize10',
