@@ -108,7 +108,7 @@ const ProductDetail = (props) => {
                               <p>{productDescription}</p>
                               <br />
                               {(actualProduct.category.includes('hombre') ||
-                                actualProduct.category.includes('mujer') && (
+                                actualProduct.category.includes('mujer')) && (
                                 <img
                                   style={sizesImgStyle}
                                   src={require('./../../assets/images/sizes.jpg').default}
