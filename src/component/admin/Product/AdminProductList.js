@@ -9,7 +9,7 @@ import UploadProducts from './UploadProducts'
 import ClientAPI from '../../../common/ClientAPI'
 
 const AdminProductList = () => {
-  const [productsearch, setProductSearch] = useState('')
+  const [productTextSearch, setProductSearch] = useState('')
   const [productList, setProductList] = useState([])
   const [currentPage, setCurrentPage] = useState(null)
   const [IsDeleteProcess, setIsDeleteProcess] = useState(false)
@@ -18,7 +18,7 @@ const AdminProductList = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(async () => {
-    if (productsearch === '') {
+    if (productTextSearch === '') {
       const adminProductResponse = await clientAPI.getAdminAllProducts()
       if (adminProductResponse.total > 0) {
         setAllProducts(adminProductResponse.hits)
@@ -30,30 +30,31 @@ const AdminProductList = () => {
     }
 
     window.scrollTo(0, 0)
-  }, [productsearch])
+  }, [productTextSearch])
 
-  const onProductSearch = (searchproduct) => {
+  const onProductSearch = (event) => {
+    const inputProductTextSearch = event.target.value
     let curr_products
     let actualProducts = []
     if (allProducts) {
       actualProducts = allProducts
     }
-    if (searchproduct === '') {
-      curr_products = actualProducts.slice((currentPage - 1) * 12, (currentPage - 1) * 12 + 12)
-      setProductSearch(searchproduct)
-      setProductList(actualProducts)
-      setAllProducts(curr_products)
-      setIsDeleteProcess(true)
+    if (inputProductTextSearch === '' || !inputProductTextSearch) {
+      setProductSearch(inputProductTextSearch)
+      setProductList([])
+      setAllProducts([])
+      //setIsDeleteProcess(true)
     } else {
       let searchData = actualProducts.filter((productData) => {
         const { _source } = productData
         if (_source && Object.keys(_source).length > 0) {
           const { name } = _source
-          if (searchproduct === searchproduct.toLowerCase()) {
-            let product = name.toLowerCase().indexOf(searchproduct.toLowerCase()) > -1
+          if (!name) return false
+          if (inputProductTextSearch === inputProductTextSearch.toLowerCase()) {
+            let product = name.toLowerCase().indexOf(inputProductTextSearch.toLowerCase()) > -1
             return product
           } else {
-            let product = name.toUpperCase().indexOf(searchproduct.toUpperCase()) > -1
+            let product = name.toUpperCase().indexOf(inputProductTextSearch.toUpperCase()) > -1
             return product
           }
         }
@@ -65,7 +66,7 @@ const AdminProductList = () => {
         curr_products = searchData
       }
 
-      setProductSearch(searchproduct)
+      setProductSearch(inputProductTextSearch)
       setProductList(searchData)
       setAllProducts(curr_products)
       setIsDeleteProcess(false)
@@ -74,7 +75,6 @@ const AdminProductList = () => {
 
   const onPageChanged = (data) => {
     const { currentPage, pageLimit } = data
-
     const offset = (currentPage - 1) * pageLimit
     const currentProduct = allProducts.slice(offset, offset + pageLimit)
     setCurrentPage(currentPage)
@@ -132,12 +132,12 @@ const AdminProductList = () => {
                           <form>
                             <div className="form-group mb-0">
                               <input
-                                type="text"
+                                type="search"
                                 className="form-control"
                                 placeholder="Search product"
-                                value={productsearch}
+                                value={productTextSearch}
                                 onChange={(e) => {
-                                  onProductSearch(e.target.value)
+                                  onProductSearch(e)
                                 }}
                               ></input>
                             </div>
@@ -176,7 +176,7 @@ const AdminProductList = () => {
                               <div>
                                 <Pagination
                                   totalRecords={actualProducts.length}
-                                  pageLimit={12}
+                                  pageLimit={100}
                                   onPageChanged={onPageChanged}
                                   IsDeleteProcess={IsDeleteProcess}
                                 />

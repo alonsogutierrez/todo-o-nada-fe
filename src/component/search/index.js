@@ -107,7 +107,7 @@ const SearchPage = ({
   if (layoutstyle == null) {
     layoutstyle = localStorage.setItem('setLayoutStyle', 'col-sm-6 col-md-4')
   }
-  console.log('actualProducts: ', actualProducts)
+
   return (
     <>
       <div className="site-content">
