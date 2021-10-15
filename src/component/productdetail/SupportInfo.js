@@ -20,10 +20,10 @@ const SupportInfo = () => (
               <div className="ciyashop_info_box_2-content-wrap">
                 <div className="ciyashop_info_box_2-content-inner">
                   <h6 className="ciyashop_info_box_2-title inline_hover">
-                    Despachos a todo Chile{' '}
+                    Despachos a todo Chile y al mundo{' '}
                   </h6>
                   <div className="ciyashop_info_box_2-content">
-                    <p>Retiro en tienda gratis</p>
+                    <p>Envios por pagar por compañías tradicionales de envío y retiro en tienda</p>
                   </div>
                 </div>
               </div>
@@ -38,7 +38,7 @@ const SupportInfo = () => (
               <div className="ciyashop_info_box_2-icon-wrap">
                 <div className="ciyashop_info_box_2-icon-outer">
                   <div className="ciyashop_info_box_2-icon-inner">
-                    <i className="glyph-icon pgsicon-ecommerce-headphones-1" />{' '}
+                    <i className="glyph-icon pgsicon-ecommerce-check" />{' '}
                   </div>
                 </div>
               </div>
@@ -46,9 +46,11 @@ const SupportInfo = () => (
             <div className="ciyashop_info_box_2-content">
               <div className="ciyashop_info_box_2-content-wrap">
                 <div className="ciyashop_info_box_2-content-inner">
-                  <h6 className="ciyashop_info_box_2-title inline_hover">Soporte 24/7: </h6>
+                  <h6 className="ciyashop_info_box_2-title inline_hover">
+                    Confecciones de alta gamma:{' '}
+                  </h6>
                   <div className="ciyashop_info_box_2-content">
-                    <p>Soporte por instagram @todoonadatattooart</p>
+                    <p>Trabajamos con las mejores telas del mercado nacional</p>
                   </div>
                 </div>
               </div>
@@ -63,7 +65,7 @@ const SupportInfo = () => (
               <div className="ciyashop_info_box_2-icon-wrap">
                 <div className="ciyashop_info_box_2-icon-outer">
                   <div className="ciyashop_info_box_2-icon-inner">
-                    <i className="glyph-icon pgsicon-ecommerce-reload" />{' '}
+                    <i className="glyph-icon pgsicon-ecommerce-heart-2" />{' '}
                   </div>
                 </div>
               </div>
@@ -72,8 +74,11 @@ const SupportInfo = () => (
               <div className="ciyashop_info_box_2-content-wrap">
                 <div className="ciyashop_info_box_2-content-inner">
                   <h6 className="ciyashop_info_box_2-title inline_hover">
-                    Devoluciones hasta 30 días{' '}
+                    Productos libres de explotación{' '}
                   </h6>
+                  <div className="ciyashop_info_box_2-content">
+                    <p>Nuestros productos son resultado de la colaboración de diferentes oficios</p>
+                  </div>
                 </div>
               </div>
             </div>
