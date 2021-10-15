@@ -33,7 +33,8 @@ const getDefaultSku = (product) => {
 }
 
 const GeneralInfo = (props) => {
-  const [sizes] = useState(['S', 'M', 'L', 'XL', 'XXL'])
+  const [adultSizes] = useState(['S', 'M', 'L', 'XL', 'XXL'])
+  const [childSizes] = useState(['2', '4', '6', '8', '10', '12', '14', '16'])
   const [qty, setQuantity] = useState(1)
   const [size, setSize] = useState(getDefaultSize(props.product))
   const [color] = useState(getDefaultColor(props.product))
@@ -193,7 +194,8 @@ const GeneralInfo = (props) => {
     const newProductDetails = product.details
     let detailsUpdated = {}
     if (product.productSizeType === 'clothesSizes') {
-      return sizes.map((size) => {
+      let productSizeResult = []
+      productSizeResult = adultSizes.map((size) => {
         for (let sku in newProductDetails) {
           if (newProductDetails[sku].size === size) {
             detailsUpdated = { ...newProductDetails[sku], sku }
@@ -201,6 +203,18 @@ const GeneralInfo = (props) => {
         }
         return { size, details: detailsUpdated }
       })
+      productSizeResult = productSizeResult.concat(
+        childSizes.map((size) => {
+          for (let sku in newProductDetails) {
+            if (newProductDetails[sku].size === size) {
+              detailsUpdated = { ...newProductDetails[sku], sku }
+            }
+          }
+          return { size, details: detailsUpdated }
+        })
+      )
+      console.log('productSizeResult: ', productSizeResult)
+      return productSizeResult
     }
     let result = []
     for (let sku in newProductDetails) {
@@ -222,34 +236,72 @@ const GeneralInfo = (props) => {
   }
 
   const renderSizesProduct = (subProducts) => {
+    console.log('subProducts: ', subProducts)
     return (
-      <span className="size normalSize">
-        <label className="normalSize">Tamaño:</label>
-        {subProducts.map((product, index) => {
-          if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
-            return (
-              <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
-                <a
-                  href="javascript:void(0)"
-                  rel="tag"
-                  onClick={(event) => handleSetSize(event.target.name)}
-                  name={product.details.size}
-                  className={size === product.details.size ? 'selectedSize' : ''}
-                >
-                  {product.details.size}
-                </a>
-              </span>
-            )
-          }
-          return (
-            <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
-              <a href="javascript:void(0)" rel="tag" className="isDisabled">
-                {product.size}
-              </a>
-            </span>
-          )
-        })}
-      </span>
+      <>
+        <span className="size normalSize">
+          <label className="normalSize">Tamaño niño:</label>
+          {subProducts
+            .filter((product) => {
+              return childSizes.includes(product.size)
+            })
+            .map((product, index) => {
+              if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
+                return (
+                  <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
+                    <a
+                      href="javascript:void(0)"
+                      rel="tag"
+                      onClick={(event) => handleSetSize(event.target.name)}
+                      name={product.details.size}
+                      className={size === product.details.size ? 'selectedSize' : ''}
+                    >
+                      {product.details.size}
+                    </a>
+                  </span>
+                )
+              }
+              return (
+                <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
+                  <a href="javascript:void(0)" rel="tag" className="isDisabled">
+                    {product.size}
+                  </a>
+                </span>
+              )
+            })}
+        </span>
+        <span className="size normalSize">
+          <label className="normalSize">Tamaño adulto:</label>
+          {subProducts
+            .filter((product) => {
+              return adultSizes.includes(product.size)
+            })
+            .map((product, index) => {
+              if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
+                return (
+                  <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
+                    <a
+                      href="javascript:void(0)"
+                      rel="tag"
+                      onClick={(event) => handleSetSize(event.target.name)}
+                      name={product.details.size}
+                      className={size === product.details.size ? 'selectedSize' : ''}
+                    >
+                      {product.details.size}
+                    </a>
+                  </span>
+                )
+              }
+              return (
+                <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
+                  <a href="javascript:void(0)" rel="tag" className="isDisabled">
+                    {product.size}
+                  </a>
+                </span>
+              )
+            })}
+        </span>
+      </>
     )
   }
 

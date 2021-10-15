@@ -95,6 +95,26 @@ export default [
             value: 'Blanco',
             text: 'Blanco',
           },
+          {
+            value: 'Gris',
+            text: 'Gris',
+          },
+          {
+            value: 'Turquesa',
+            text: 'Turquesa',
+          },
+          {
+            value: 'Gris carbón',
+            text: 'Gris carbón',
+          },
+          {
+            value: 'Rosado',
+            text: 'Rosado',
+          },
+          {
+            value: 'Sin color',
+            text: 'Sin color',
+          },
         ],
       },
     ],
