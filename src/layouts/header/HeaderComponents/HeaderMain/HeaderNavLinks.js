@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Nav, UncontrolledDropdown, DropdownMenu, DropdownItem } from 'reactstrap'
-import { Link, NavLink, withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 import setCategorySelected from './../../../../actions/setCategorySelected'
 import setSubCategorySelected from './../../../../actions/setSubCategorySelected'
@@ -12,7 +12,7 @@ import { categoryValue } from './../../../../actions/filter'
 const HeaderNavLinks = ({
   navLinks,
   pageName,
-  toggle,
+  toggleNavLinks,
   setCategorySelected,
   setSubCategorySelected,
   history,
@@ -50,8 +50,14 @@ const HeaderNavLinks = ({
     setSubCategorySelected(subCategoryName.toLowerCase().split(' ').join('-'))
     categoryValue([categoryName.toLowerCase(), subCategoryName.toLowerCase().split(' ').join('-')])
     setChangeProducts(!changeProducts)
-    toggle()
+    toggleNavLinks()
     history.push(`/category/${categoryName.toLowerCase()}`)
+  }
+
+  const handleOnClickNormalLink = (e, navLink) => {
+    e.preventDefault()
+    toggleNavLinks()
+    history.push(navLink)
   }
 
   return navLinks.map((navLink, index) => (
@@ -94,9 +100,13 @@ const HeaderNavLinks = ({
         </>
       ) : (
         <>
-          <NavLink className="nav-link" to={`${navLink.path}`}>
+          <Link
+            to={`${navLink.path}`}
+            className="nav-link"
+            onClick={(e) => handleOnClickNormalLink(e, navLink.path)}
+          >
             {navLink.menu_title}
-          </NavLink>
+          </Link>
         </>
       )}
     </Nav>
@@ -123,7 +133,7 @@ HeaderNavLinks.defaultProps = {
   history: {},
   categoryValue: () => {},
   setChangeProducts: () => {},
-  toggle: () => {},
+  toggleNavLinks: () => {},
 }
 
 HeaderNavLinks.propTypes = {
@@ -134,5 +144,5 @@ HeaderNavLinks.propTypes = {
   history: PropTypes.object,
   categoryValue: PropTypes.func,
   setChangeProducts: PropTypes.func,
-  toggle: PropTypes.func,
+  toggleNavLinks: PropTypes.func,
 }
