@@ -16,6 +16,9 @@ class SideFilter extends Component {
     super(props)
     this.state = {
       sidebarmenu: false,
+      openColorFilter: false,
+      openCategoryFilter: false,
+      openSizeFilter: false,
     }
     this.showfilter = this.showfilter.bind(this)
   }
@@ -82,16 +85,58 @@ class SideFilter extends Component {
     setChangeProducts(!changeProducts)
   }
 
+  setOpenColorFilter(e, isOpen) {
+    e.preventDefault()
+    this.setState({
+      openColorFilter: isOpen,
+    })
+  }
+
+  setOpenCategoryFilter(e, isOpen) {
+    e.preventDefault()
+    this.setState({
+      openCategoryFilter: isOpen,
+    })
+  }
+
+  setOpenSizeFilter(e, isOpen) {
+    e.preventDefault()
+    this.setState({
+      openSizeFilter: isOpen,
+    })
+  }
+
   render() {
     const { filters, colors, categorys, sizes } = this.props
     const sizeFilterValues = filters.size
     const categoryFilterValues = filters.category
     const colorsFilterValues = filters.color
+
+    const colorFilterMessageToggle = this.state.openColorFilter ? 'Ocultar' : 'Mostrar'
+    const colorFilterIsOpenStyle = this.state.openColorFilter
+      ? { height: '210px' }
+      : { height: '210px', display: 'none' }
+
+    const categoryFilterMessageToggle = this.state.openCategoryFilter ? 'Ocultar' : 'Mostrar'
+    const categoryFilterIsOpenStyle = this.state.openCategoryFilter
+      ? { height: '215px' }
+      : { height: '215px', display: 'none' }
+
+    const sizeFilterMessageToggle = this.state.openSizeFilter ? 'Ocultar' : 'Mostrar'
+    const sizeFilterIsOpenStyle = this.state.openSizeFilter
+      ? { height: '215px' }
+      : { height: '215px', display: 'none' }
     return (
       <div>
         <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
           <div className="d-flex align-items-center justify-content-between">
             <h4 className="widget-title">Filtrar por color</h4>
+            <p
+              className="btn btn-solid"
+              onClick={(e) => this.setOpenColorFilter(e, !this.state.openColorFilter)}
+            >
+              {colorFilterMessageToggle}
+            </p>
             <p>
               <a className="price-clear-filter" onClick={() => this.clearColor()}>
                 Limpiar
@@ -101,7 +146,7 @@ class SideFilter extends Component {
 
           <div
             className="pgs-widget-layered-nav-list-container has-scrollbar"
-            style={{ height: '210px' }}
+            style={colorFilterIsOpenStyle}
           >
             <Scrollbars>
               <ul className="pgs-widget-layered-nav-list" tabIndex={0} style={{ right: '-17px' }}>
@@ -129,6 +174,12 @@ class SideFilter extends Component {
         <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
           <div className="d-flex align-items-center justify-content-between">
             <h4 className="widget-title">Filtrar por categoria</h4>
+            <p
+              className="btn btn-solid"
+              onClick={(e) => this.setOpenCategoryFilter(e, !this.state.openCategoryFilter)}
+            >
+              {categoryFilterMessageToggle}
+            </p>
             <p>
               <a className="price-clear-filter" onClick={() => this.clearCategory()}>
                 Limpiar
@@ -137,7 +188,7 @@ class SideFilter extends Component {
           </div>
           <div
             className="pgs-widget-layered-nav-list-container has-scrollbar"
-            style={{ height: '215px' }}
+            style={categoryFilterIsOpenStyle}
           >
             <Scrollbars>
               {categorys.map((category, index) => {
@@ -163,6 +214,12 @@ class SideFilter extends Component {
         <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
           <div className="d-flex align-items-center justify-content-between">
             <h4 className="widget-title">Filtrar por tamaño</h4>
+            <p
+              className="btn btn-solid"
+              onClick={(e) => this.setOpenSizeFilter(e, !this.state.openSizeFilter)}
+            >
+              {sizeFilterMessageToggle}
+            </p>
             <p>
               <a className="price-clear-filter" onClick={() => this.clearSize()}>
                 Limpiar
@@ -171,7 +228,7 @@ class SideFilter extends Component {
           </div>
           <div
             className="pgs-widget-layered-nav-list-container has-scrollbar"
-            style={{ height: '215px' }}
+            style={sizeFilterIsOpenStyle}
           >
             <Scrollbars>
               {sizes.map((size, index) => {
