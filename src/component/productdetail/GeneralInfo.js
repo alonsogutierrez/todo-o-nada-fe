@@ -199,9 +199,9 @@ const GeneralInfo = (props) => {
         if (newProductDetails[sku].size === size) {
           detailsUpdated = { ...newProductDetails[sku], sku }
         }
+        const productUpdated = { size, details: detailsUpdated }
+        return productUpdated
       }
-      const productUpdated = { size, details: detailsUpdated }
-      return productUpdated
     })
 
     productSizeResult = productSizeResult.concat(
@@ -211,10 +211,11 @@ const GeneralInfo = (props) => {
           if (newProductDetails[sku].size === size) {
             detailsUpdated = { ...newProductDetails[sku], sku }
           }
+          return { size, details: detailsUpdated }
         }
-        return { size, details: detailsUpdated }
       })
     )
+
     return productSizeResult
   }
 
