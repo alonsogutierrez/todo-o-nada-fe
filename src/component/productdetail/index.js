@@ -25,6 +25,10 @@ const ProductDetail = (props) => {
     return itemCategories.join('-')
   }
 
+  const isProductWithGeneralSizes = (categories) => {
+    return categories.includes('hombre') || categories.includes('mujer')
+  }
+
   useEffect(async () => {
     const productResponseData = await clientAPI.getProductByItemNumber(itemNumber)
     setActualProduct(productResponseData)
@@ -107,8 +111,7 @@ const ProductDetail = (props) => {
                               <h2>Descripción del producto</h2>
                               <p>{productDescription}</p>
                               <br />
-                              {(actualProduct.category.includes('hombre') ||
-                                actualProduct.category.includes('mujer')) && (
+                              {isProductWithGeneralSizes(actualProduct.category) && (
                                 <img
                                   style={sizesImgStyle}
                                   src={require('./../../assets/images/sizes.jpg').default}

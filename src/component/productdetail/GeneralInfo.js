@@ -190,41 +190,50 @@ const GeneralInfo = (props) => {
     }).format(num)
   }
 
-  const configSubProduct = (product) => {
-    const newProductDetails = product.details
+  const getConfigClothesSizes = (childSizes, newProductDetails) => {
     let detailsUpdated = {}
-    if (product.productSizeType === 'clothesSizes') {
-      let productSizeResult = []
-      productSizeResult = childSizes.map((size) => {
+    let productSizeResult = []
+    productSizeResult = childSizes.map((size) => {
+      for (let sku in newProductDetails) {
+        detailsUpdated = {}
+        if (newProductDetails[sku].size === size) {
+          detailsUpdated = { ...newProductDetails[sku], sku }
+        }
+      }
+      const productUpdated = { size, details: detailsUpdated }
+      return productUpdated
+    })
+
+    productSizeResult = productSizeResult.concat(
+      adultSizes.map((size) => {
         for (let sku in newProductDetails) {
+          detailsUpdated = {}
           if (newProductDetails[sku].size === size) {
             detailsUpdated = { ...newProductDetails[sku], sku }
           }
         }
         return { size, details: detailsUpdated }
       })
+    )
+    return productSizeResult
+  }
 
-      productSizeResult = productSizeResult.concat(
-        adultSizes.map((size) => {
-          for (let sku in newProductDetails) {
-            if (newProductDetails[sku].size === size) {
-              detailsUpdated = { ...newProductDetails[sku], sku }
-            } else {
-              detailsUpdated = {}
-            }
-          }
-          return { size, details: detailsUpdated }
-        })
-      )
-      return productSizeResult
-    }
+  const getConfigUniqueMeasuresSizes = (newProductDetails) => {
     let result = []
+    let detailsUpdated = {}
     for (let sku in newProductDetails) {
       detailsUpdated = { ...newProductDetails[sku], sku }
       result.push({ size: newProductDetails[sku].size, details: detailsUpdated })
     }
-
     return result
+  }
+
+  const configSubProduct = (product) => {
+    const newProductDetails = product.details
+    if (product.productSizeType === 'clothesSizes') {
+      return getConfigClothesSizes(childSizes, newProductDetails)
+    }
+    return getConfigUniqueMeasuresSizes(newProductDetails)
   }
 
   const handleSetSize = (size) => {
