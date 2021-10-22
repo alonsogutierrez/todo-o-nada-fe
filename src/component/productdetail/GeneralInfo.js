@@ -282,7 +282,7 @@ const GeneralInfo = (props) => {
               subProducts.length > 0 &&
               subProducts
                 .filter((product) => {
-                  return childSizes.includes(product.size)
+                  return product.size ? childSizes.includes(product.size) : false
                 })
                 .map((product, index) => {
                   if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
@@ -315,7 +315,7 @@ const GeneralInfo = (props) => {
               subProducts.length > 0 &&
               subProducts
                 .filter((product) => {
-                  return adultSizes.includes(product.size)
+                  return product.size ? adultSizes.includes(product.size) : false
                 })
                 .map((product, index) => {
                   if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
