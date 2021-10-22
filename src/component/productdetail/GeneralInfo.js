@@ -442,14 +442,16 @@ const GeneralInfo = (props) => {
                                 className="ciyashop-product-gallery__wrapper popup-gallery"
                               >
                                 <div className="ciyashop-product-gallery__image">
-                                  <img
-                                    src={pictureSelected}
-                                    className="img-fluid"
-                                    name={props.product.itemNumber}
-                                    style={{
-                                      borderRadius: '5px',
-                                    }}
-                                  />
+                                  {pictureSelected && (
+                                    <img
+                                      src={pictureSelected}
+                                      className="img-fluid"
+                                      name={props.product.itemNumber}
+                                      style={{
+                                        borderRadius: '5px',
+                                      }}
+                                    />
+                                  )}
                                 </div>
                               </Slider>
                             </TransformComponent>
