@@ -212,24 +212,28 @@ const GeneralInfo = (props) => {
     let detailsUpdated = {}
     let productSizeResult = []
     productSizeResult = childSizes.map((size) => {
-      for (let sku in newProductDetails) {
-        detailsUpdated = {}
-        if (newProductDetails[sku].size === size) {
-          detailsUpdated = { ...newProductDetails[sku], sku }
-        }
-        const productUpdated = { size, details: detailsUpdated }
-        return productUpdated
-      }
-    })
-
-    productSizeResult = productSizeResult.concat(
-      adultSizes.map((size) => {
+      if (Object.keys(newProductDetails).length > 0) {
         for (let sku in newProductDetails) {
           detailsUpdated = {}
           if (newProductDetails[sku].size === size) {
             detailsUpdated = { ...newProductDetails[sku], sku }
           }
-          return { size, details: detailsUpdated }
+          const productUpdated = { size, details: detailsUpdated }
+          return productUpdated
+        }
+      }
+    })
+
+    productSizeResult = productSizeResult.concat(
+      adultSizes.map((size) => {
+        if (Object.keys(newProductDetails).length > 0) {
+          for (let sku in newProductDetails) {
+            detailsUpdated = {}
+            if (newProductDetails[sku].size === size) {
+              detailsUpdated = { ...newProductDetails[sku], sku }
+            }
+            return { size, details: detailsUpdated }
+          }
         }
       })
     )
@@ -240,10 +244,13 @@ const GeneralInfo = (props) => {
   const getConfigUniqueMeasuresSizes = (newProductDetails) => {
     let result = []
     let detailsUpdated = {}
-    for (let sku in newProductDetails) {
-      detailsUpdated = { ...newProductDetails[sku], sku }
-      result.push({ size: newProductDetails[sku].size, details: detailsUpdated })
+    if (Object.keys(newProductDetails).length > 0) {
+      for (let sku in newProductDetails) {
+        detailsUpdated = { ...newProductDetails[sku], sku }
+        result.push({ size: newProductDetails[sku].size, details: detailsUpdated })
+      }
     }
+
     return result
   }
 
@@ -271,65 +278,69 @@ const GeneralInfo = (props) => {
         <>
           <span className="size normalSize">
             <label className="normalSize">Tamaño niño:</label>
-            {subProducts
-              .filter((product) => {
-                return childSizes.includes(product.size)
-              })
-              .map((product, index) => {
-                if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
+            {subProducts &&
+              subProducts.length > 0 &&
+              subProducts
+                .filter((product) => {
+                  return childSizes.includes(product.size)
+                })
+                .map((product, index) => {
+                  if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
+                    return (
+                      <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
+                        <a
+                          href="javascript:void(0)"
+                          rel="tag"
+                          onClick={(event) => handleSetSize(event.target.name)}
+                          name={product.details.size}
+                          className={size === product.details.size ? 'selectedSize' : ''}
+                        >
+                          {product.details.size}
+                        </a>
+                      </span>
+                    )
+                  }
                   return (
                     <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
-                      <a
-                        href="javascript:void(0)"
-                        rel="tag"
-                        onClick={(event) => handleSetSize(event.target.name)}
-                        name={product.details.size}
-                        className={size === product.details.size ? 'selectedSize' : ''}
-                      >
-                        {product.details.size}
+                      <a href="javascript:void(0)" rel="tag" className="isDisabled">
+                        {product.size}
                       </a>
                     </span>
                   )
-                }
-                return (
-                  <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
-                    <a href="javascript:void(0)" rel="tag" className="isDisabled">
-                      {product.size}
-                    </a>
-                  </span>
-                )
-              })}
+                })}
           </span>
           <span className="size normalSize">
             <label className="normalSize">Tamaño adulto:</label>
-            {subProducts
-              .filter((product) => {
-                return adultSizes.includes(product.size)
-              })
-              .map((product, index) => {
-                if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
+            {subProducts &&
+              subProducts.length > 0 &&
+              subProducts
+                .filter((product) => {
+                  return adultSizes.includes(product.size)
+                })
+                .map((product, index) => {
+                  if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
+                    return (
+                      <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
+                        <a
+                          href="javascript:void(0)"
+                          rel="tag"
+                          onClick={(event) => handleSetSize(event.target.name)}
+                          name={product.details.size}
+                          className={size === product.details.size ? 'selectedSize' : ''}
+                        >
+                          {product.details.size}
+                        </a>
+                      </span>
+                    )
+                  }
                   return (
                     <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
-                      <a
-                        href="javascript:void(0)"
-                        rel="tag"
-                        onClick={(event) => handleSetSize(event.target.name)}
-                        name={product.details.size}
-                        className={size === product.details.size ? 'selectedSize' : ''}
-                      >
-                        {product.details.size}
+                      <a href="javascript:void(0)" rel="tag" className="isDisabled">
+                        {product.size}
                       </a>
                     </span>
                   )
-                }
-                return (
-                  <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
-                    <a href="javascript:void(0)" rel="tag" className="isDisabled">
-                      {product.size}
-                    </a>
-                  </span>
-                )
-              })}
+                })}
           </span>
         </>
       )
@@ -337,30 +348,32 @@ const GeneralInfo = (props) => {
     return (
       <span className="size normalSize">
         <label className="normalSize">Medidas:</label>
-        {subProducts.map((product, index) => {
-          if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
+        {subProducts &&
+          subProducts.length > 0 &&
+          subProducts.map((product, index) => {
+            if (Object.keys(product.details).length > 0 && product.details.stock > 0) {
+              return (
+                <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
+                  <a
+                    href="javascript:void(0)"
+                    rel="tag"
+                    onClick={(event) => handleSetSize(event.target.name)}
+                    name={product.details.size}
+                    className={size === product.details.size ? 'selectedSize' : ''}
+                  >
+                    {product.details.size}
+                  </a>
+                </span>
+              )
+            }
             return (
               <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
-                <a
-                  href="javascript:void(0)"
-                  rel="tag"
-                  onClick={(event) => handleSetSize(event.target.name)}
-                  name={product.details.size}
-                  className={size === product.details.size ? 'selectedSize' : ''}
-                >
-                  {product.details.size}
+                <a href="javascript:void(0)" rel="tag" className="isDisabled">
+                  {product.size}
                 </a>
               </span>
             )
-          }
-          return (
-            <span key={index} itemProp="size" style={{ paddingRight: '4px' }}>
-              <a href="javascript:void(0)" rel="tag" className="isDisabled">
-                {product.size}
-              </a>
-            </span>
-          )
-        })}
+          })}
       </span>
     )
   }
