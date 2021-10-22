@@ -445,7 +445,7 @@ const GeneralInfo = (props) => {
                       </TransformWrapper>
                     </div>
                     <div className="ciyashop-product-thumbnails">
-                      {
+                      {product.pictures.length > 1 && (
                         <Slider
                           {...PRODUCTS_SETTINGS_SLIDER}
                           className="ciyashop-product-thumbnails__wrapper"
@@ -463,7 +463,7 @@ const GeneralInfo = (props) => {
                             </div>
                           ))}
                         </Slider>
-                      }
+                      )}
                     </div>
                     <div className="clearfix" />
                   </div>
