@@ -71,8 +71,8 @@ const ProductForm = (props) => {
     if (!formValues.color) {
       errors.color = 'selecciona un color'
     }
-    if (formValues.pictures != null && formValues.pictures.length > 3) {
-      errors.pictures = 'cargar no más de 3 imagenes'
+    if (formValues.pictures != null && formValues.pictures.length > 4) {
+      errors.pictures = 'máximo 4 imagenes'
     }
     if (formValues.categories && formValues.categories.length < 1) {
       errors.categories = 'debes elegir almenos una categoría'

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { toast, ToastContainer } from 'react-toastify'
 import { Row } from 'reactstrap'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
+import Slider from 'react-slick'
 
 import 'react-toastify/dist/ReactToastify.min.css'
 import 'react-image-lightbox/style.css'
@@ -32,6 +33,22 @@ const getDefaultSku = (product) => {
   }
 }
 
+const PRODUCTS_SETTINGS_SLIDER = {
+  dots: false,
+  infinite: false,
+  speed: 500,
+  slidesToShow: 5,
+  slidesToScroll: 1,
+}
+
+const SETTINGS = {
+  dots: false,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+}
+
 const GeneralInfo = (props) => {
   const [adultSizes] = useState(['S', 'M', 'L', 'XL', 'XXL'])
   const [childSizes] = useState(['2', '4', '6', '8', '10', '12', '14', '16'])
@@ -39,6 +56,7 @@ const GeneralInfo = (props) => {
   const [size, setSize] = useState(getDefaultSize(props.product))
   const [color] = useState(getDefaultColor(props.product))
   const [sku, setSku] = useState(getDefaultSku(props.product))
+  const [pictureSelected, setPictureSelected] = useState(props.product.pictures[0])
 
   const IsSkuWithAvailableStock = (skuSelected, desiredQuantity) => {
     const { product } = props
@@ -361,36 +379,6 @@ const GeneralInfo = (props) => {
     props.history.push(`/shopping-cart`)
   }
 
-  const renderImageProduct = () => (
-    <TransformWrapper initialScale={1} initialPositionX={1} initialPositionY={1}>
-      {({ zoomIn, zoomOut, resetTransform }) => (
-        <>
-          <div className="tools">
-            <button className="btn btn-solid" onClick={() => zoomIn()}>
-              Zoom +
-            </button>
-            <button className="btn btn-solid" onClick={() => zoomOut()}>
-              Zoom -
-            </button>
-            <button className="btn btn-solid" onClick={() => resetTransform()}>
-              Reset
-            </button>
-          </div>
-          <TransformComponent>
-            <img
-              src={props.product.pictures}
-              className="img-fluid"
-              name={props.product.itemNumber}
-              style={{
-                borderRadius: '5px',
-              }}
-            />
-          </TransformComponent>
-        </>
-      )}
-    </TransformWrapper>
-  )
-
   const setActualQuantity = (sku) => {
     const cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
     let cartItem = {}
@@ -420,7 +408,63 @@ const GeneralInfo = (props) => {
               <div className="product-top-left-inner">
                 <div className="ciyashop-product-images">
                   <div className="ciyashop-product-images-wrapper ciyashop-gallery-style-default ciyashop-gallery-thumb_position-bottom ciyashop-gallery-thumb_vh-horizontal">
-                    <div className="ciyashop-product-thumbnails">{renderImageProduct()}</div>
+                    <div className="ciyashop-product-gallery ciyashop-product-gallery--with-images slick-carousel">
+                      <TransformWrapper initialScale={1} initialPositionX={1} initialPositionY={1}>
+                        {({ zoomIn, zoomOut, resetTransform }) => (
+                          <>
+                            <div className="tools">
+                              <button className="btn btn-solid" onClick={() => zoomIn()}>
+                                Zoom +
+                              </button>
+                              <button className="btn btn-solid" onClick={() => zoomOut()}>
+                                Zoom -
+                              </button>
+                              <button className="btn btn-solid" onClick={() => resetTransform()}>
+                                Reset
+                              </button>
+                            </div>
+                            <TransformComponent>
+                              <Slider
+                                {...SETTINGS}
+                                className="ciyashop-product-gallery__wrapper popup-gallery"
+                              >
+                                <div className="ciyashop-product-gallery__image">
+                                  <img
+                                    src={pictureSelected}
+                                    className="img-fluid"
+                                    name={props.product.itemNumber}
+                                    style={{
+                                      borderRadius: '5px',
+                                    }}
+                                  />
+                                </div>
+                              </Slider>
+                            </TransformComponent>
+                          </>
+                        )}
+                      </TransformWrapper>
+                    </div>
+                    <div className="ciyashop-product-thumbnails">
+                      {
+                        <Slider
+                          {...PRODUCTS_SETTINGS_SLIDER}
+                          className="ciyashop-product-thumbnails__wrapper"
+                        >
+                          {product.pictures.map((picture, index) => (
+                            <div className="ciyashop-product-thumbnail__image" key={index}>
+                              <Link
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  setPictureSelected(picture)
+                                }}
+                              >
+                                <img src={picture} className="img-fluid" />
+                              </Link>
+                            </div>
+                          ))}
+                        </Slider>
+                      }
+                    </div>
                     <div className="clearfix" />
                   </div>
                 </div>

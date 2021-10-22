@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FormGroup, Input, Label, Row } from 'reactstrap'
+import { FormGroup, Input, Label, Row, Col } from 'reactstrap'
 
 import LabelConfigData from './LabelConfigData'
 
@@ -37,24 +37,30 @@ const GeneralLabelForm = (props) => {
                     <>
                       <input
                         type="file"
-                        name="pictures"
+                        name={row.labelName}
                         className="form-control"
                         multiple
                         onChange={(event) => {
-                          const fileToUpload = event.currentTarget.files
+                          const filesToUpload = event.currentTarget.files
                           event.preventDefault()
-                          setFieldValue('pictures', fileToUpload)
+                          setFieldValue(row.labelName, filesToUpload)
                         }}
                       />
                       {errors.pictures && touched.pictures}
                       <Label className="title pl-0">Imagen Cargada</Label>
-                      <span>
-                        {values.pictures && typeof values.pictures[0] === 'string' ? (
-                          <img src={values.pictures[0]} style={{ width: '50%' }} />
-                        ) : (
-                          'Nueva imagen a cargar'
-                        )}
-                      </span>
+                      <Row>
+                        {values.pictures &&
+                          values.pictures.map((picture) => {
+                            if (picture) {
+                              return (
+                                <Col>
+                                  <img src={picture} style={{ width: '50%' }} />
+                                </Col>
+                              )
+                            }
+                            return 'Nueva imagen a cargar'
+                          })}
+                      </Row>
                     </>
                   ) : (
                     <Input

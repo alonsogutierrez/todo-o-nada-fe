@@ -212,7 +212,7 @@ export default [
         placeHolder: '',
         getValue: (value) => (value ? value : ''),
         defaultChecked: (values, value) => {
-          return values['categories'] ? values['categories'].includes(value) : false
+          return values['pictures'] ? values['pictures'].includes(value) : false
         },
       },
     ],
