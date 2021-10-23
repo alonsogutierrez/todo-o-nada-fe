@@ -204,29 +204,30 @@ const GeneralInfo = (props) => {
     let detailsUpdated = {}
     let productSizeResult = []
     productSizeResult = childSizes.map((size) => {
+      detailsUpdated = {}
       if (Object.keys(newProductDetails).length > 0) {
         for (let sku in newProductDetails) {
-          detailsUpdated = {}
           if (newProductDetails[sku].size === size) {
             detailsUpdated = { ...newProductDetails[sku], sku }
+            return { size, details: detailsUpdated }
           }
-          const productUpdated = { size, details: detailsUpdated }
-          return productUpdated
         }
       }
+      return { size, details: detailsUpdated }
     })
 
     productSizeResult = productSizeResult.concat(
       adultSizes.map((size) => {
+        detailsUpdated = {}
         if (Object.keys(newProductDetails).length > 0) {
           for (let sku in newProductDetails) {
-            detailsUpdated = {}
             if (newProductDetails[sku].size === size) {
               detailsUpdated = { ...newProductDetails[sku], sku }
+              return { size, details: detailsUpdated }
             }
-            return { size, details: detailsUpdated }
           }
         }
+        return { size, details: detailsUpdated }
       })
     )
 
