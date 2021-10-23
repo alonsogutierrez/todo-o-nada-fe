@@ -41,14 +41,6 @@ const PRODUCTS_SETTINGS_SLIDER = {
   slidesToScroll: 1,
 }
 
-const SETTINGS = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-}
-
 const GeneralInfo = (props) => {
   const [adultSizes] = useState(['S', 'M', 'L', 'XL', 'XXL'])
   const [childSizes] = useState(['2', '4', '6', '8', '10', '12', '14', '16'])
@@ -437,23 +429,18 @@ const GeneralInfo = (props) => {
                               </button>
                             </div>
                             <TransformComponent>
-                              <Slider
-                                {...SETTINGS}
-                                className="ciyashop-product-gallery__wrapper popup-gallery"
-                              >
-                                <div className="ciyashop-product-gallery__image">
-                                  {pictureSelected && (
-                                    <img
-                                      src={pictureSelected}
-                                      className="img-fluid"
-                                      name={props.product.itemNumber}
-                                      style={{
-                                        borderRadius: '5px',
-                                      }}
-                                    />
-                                  )}
-                                </div>
-                              </Slider>
+                              <div className="ciyashop-product-gallery__image">
+                                {pictureSelected && (
+                                  <img
+                                    src={pictureSelected}
+                                    className="img-fluid"
+                                    name={props.product.itemNumber}
+                                    style={{
+                                      borderRadius: '5px',
+                                    }}
+                                  />
+                                )}
+                              </div>
                             </TransformComponent>
                           </>
                         )}
