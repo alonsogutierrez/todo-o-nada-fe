@@ -15,11 +15,11 @@ const EditProduct = (props) => {
   })
   useEffect(async () => {
     const itemNumber = props.match.params.itemNumber
-    setProductRequest({ loading: true })
     await fetchProductData(itemNumber)
   }, [])
 
   const fetchProductData = useCallback(async (itemNumber) => {
+    setProductRequest({ loading: true, data: productRequest.data })
     const productByItemNumberResponse = await clientAPI.getProductByItemNumber(itemNumber)
     setProductRequest({ loading: false, data: productByItemNumberResponse })
     return

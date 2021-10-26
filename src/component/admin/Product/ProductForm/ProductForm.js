@@ -31,13 +31,14 @@ const ProductForm = (props) => {
     getCategories()
   }, [props.product])
 
-  const processProduct = async (productFormData) => {
+  const processProduct = async (productFormData, itemNumber) => {
     try {
       const clientAPI = new ClientAPI()
       setLoading(true)
       await clientAPI.processProduct(productFormData)
       setLoading(false)
       toast.success('Producto procesado exitosamente')
+      await props.fetchProductData(itemNumber)
       return
     } catch (err) {
       setLoading(false)
@@ -133,7 +134,7 @@ const ProductForm = (props) => {
     }
     formData.append('sizes', sizes)
 
-    const productProcessResponse = await processProduct(formData)
+    const productProcessResponse = await processProduct(formData, values.itemNumber)
 
     if (productProcessResponse.status === 201) toast.success('Producto procesado exitosamente')
     else {
@@ -141,7 +142,6 @@ const ProductForm = (props) => {
     }
 
     setLoading(false)
-    props.fetchProductData(values.itemNumber)
   }
 
   const getInitialProductMapped = () => {
