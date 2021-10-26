@@ -434,7 +434,7 @@ const GeneralInfo = (props) => {
                                 {pictureSelected && (
                                   <img
                                     src={pictureSelected}
-                                    className="img-fluid"
+                                    className="img-principal-pdp"
                                     name={props.product.itemNumber}
                                     style={{
                                       borderRadius: '5px',
@@ -461,7 +461,7 @@ const GeneralInfo = (props) => {
                                   setPictureSelected(picture)
                                 }}
                               >
-                                <img src={picture} className="img-fluid" />
+                                <img src={picture} className="img-mini-pdp" />
                               </Link>
                             </div>
                           ))}

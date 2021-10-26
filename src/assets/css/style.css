@@ -12445,6 +12445,19 @@ footer.site-footer.footer-style-2 .footer-widgets-wrapper {
   margin-right: auto;
 }
 
+.img-principal-pdp {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.img-mini-pdp {
+  height: 100%;
+  width: 100%;
+}
+
 .products .product-inner:hover .product-thumbnail .product-thumbnail-main img {
   -webkit-transform: scale(1.1);
   -moz-transform: scale(1.1);
@@ -19850,6 +19863,12 @@ ul.products .product-inner .product-info .stock {
   left: 50%;
   margin-left: -6px;
   margin-top: -7px;
+}
+
+.ciyashop-product-thumbnail__image {
+  position: relative;
+  width: 100% !important;
+  height: 7em !important;
 }
 
 .single-product-edit .ciyashop-product-thumbnail__image {

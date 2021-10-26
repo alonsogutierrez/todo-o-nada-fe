@@ -15,6 +15,11 @@ const ProductDetail = (props) => {
   const [clientAPI] = useState(new ClientAPI())
   const [actualProduct, setActualProduct] = useState()
   const [loading, setLoading] = useState(true)
+  const [width, setWidth] = useState(window.innerWidth)
+
+  const updateDimensions = () => {
+    setWidth(window.innerWidth)
+  }
 
   const getProductCategory = (categories) => {
     if (!categories) {
@@ -30,22 +35,34 @@ const ProductDetail = (props) => {
   }
 
   useEffect(async () => {
-    const productResponseData = await clientAPI.getProductByItemNumber(itemNumber)
-    setActualProduct(productResponseData)
-    setLoading(false)
+    window.addEventListener('resize', updateDimensions)
+    if (loading) {
+      const productResponseData = await clientAPI.getProductByItemNumber(itemNumber)
+      setActualProduct(productResponseData)
+      setLoading(false)
+    }
     window.scrollTo(0, 0)
-  }, [])
+  }, [width])
 
   let productDescription = ''
   let productCategory = ''
   let productName = ''
-  const sizesImgStyle = {
-    display: 'block',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    width: '60%',
-    borderRadius: '5px',
-  }
+  const sizesImgStyle =
+    width < 992
+      ? {
+          display: 'block',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          width: '90%',
+          borderRadius: '5px',
+        }
+      : {
+          display: 'block',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          width: '50%',
+          borderRadius: '5px',
+        }
 
   if (actualProduct) {
     let { description, category, name } = actualProduct
