@@ -50,6 +50,7 @@ const GeneralLabelForm = (props) => {
                       <Label className="title pl-0">Imagen Cargada</Label>
                       <Row>
                         {values.pictures &&
+                          Array.isArray(values.pictures) &&
                           values.pictures.map((picture) => {
                             if (picture) {
                               return (
