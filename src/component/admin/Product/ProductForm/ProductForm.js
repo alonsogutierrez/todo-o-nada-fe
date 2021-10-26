@@ -108,9 +108,9 @@ const ProductForm = (props) => {
         if (values[`skuBySize${actualUniqueMeasure}`]) {
           details[values[`skuBySize${actualUniqueMeasure}`]] = {
             stock: values[`stockBySize${actualUniqueMeasure}`],
-            size: values[`measureBySize${actualUniqueMeasure}`],
+            size: values[`measureBySize${actualUniqueMeasure}`].trim().toUpperCase(),
           }
-          sizes.push(values[`measureBySize${actualUniqueMeasure}`])
+          sizes.push(values[`measureBySize${actualUniqueMeasure}`].trim().toUpperCase())
         }
       })
     } else {
@@ -118,9 +118,9 @@ const ProductForm = (props) => {
         if (values[`skuBySize${actualSize}`]) {
           details[values[`skuBySize${actualSize}`]] = {
             stock: values[`stockBySize${actualSize}`],
-            size: actualSize,
+            size: actualSize.trim().toUpperCase(),
           }
-          sizes.push(actualSize)
+          sizes.push(actualSize.trim().toUpperCase())
         }
       })
     }

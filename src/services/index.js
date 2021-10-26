@@ -145,8 +145,6 @@ export const getFilterProductsdata = (data, { category, size, color, sortOrder }
               return product2Price > product1Price ? -1 : 1
           }
         })
-    } else {
-      console.log('hits not exist')
     }
   }
   const responseFiltered = {

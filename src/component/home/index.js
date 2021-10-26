@@ -4,7 +4,6 @@
 import React, { Fragment } from 'react'
 
 import HomSlider from './HomSlider'
-import Instagram from './Instafeed'
 
 import ProductSliderHome from './ProductSliderHome'
 import Collections from './Collections'
@@ -19,17 +18,6 @@ const HomePage = () => {
         </div>
         <div className="content-wrapper">
           <Collections />
-        </div>
-        <div className="content-wrapper overflow-hidden">
-          <div className="container-fluid p-0">
-            <div className="row">
-              <div className="col-sm-12">
-                <div className="instafeed insta-feeds">
-                  <Instagram />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </>
