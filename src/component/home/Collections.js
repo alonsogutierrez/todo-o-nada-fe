@@ -47,6 +47,7 @@ const Collections = (props) => {
                   key={collection.id}
                   to={`/category/${collection.name}`}
                   style={{ cursor: 'pointer' }}
+                  onClick={(e) => handleCollectionClick(e, collection.name)}
                 >
                   <div className="ciyashop_banner_wrapper">
                     <div className="ciyashop_banner ciyashop_banner-style-style-1 ciyashop_banner-effect-border banner-2">
@@ -54,7 +55,6 @@ const Collections = (props) => {
                         className="ciyashop_banner-image img-fluid inline"
                         alt="Banner"
                         src={collection.imageSrc}
-                        onClick={(e) => handleCollectionClick(e, collection.name)}
                       />
                     </div>
                   </div>
