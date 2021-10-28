@@ -7,23 +7,21 @@ import { Row, Col } from 'reactstrap'
 const interestingDataLeft = [
   {
     number: 1,
-    title: 'Nuestro comienzo',
-    description:
-      'Partimos a mediados del año 2017, desde ese entonces hemos crecido bastante y queremos seguir haciendolo, entregando nuestro arte.',
+    title: 'PINTURA',
+    description: '',
     symbol: 'fa-birthday-cake',
+    img: 'PINTURA_RANA.jpg',
   },
   {
     number: 2,
-    title: 'Hacemos devoluciones',
-    description:
-      'Si dentro de 30 días tu producto presenta algún desperfecto ocasionado por problemas de confección te devolveremos el dinero',
+    title: 'SELECCIÓN DE TELAS',
+    description: '',
     symbol: 'fa-times-circle-o',
   },
   {
     number: 3,
-    title: 'Canales oficiales',
-    description:
-      'Siguenos en instagram en @todoonadatattooart, tenemos muchas promociones y novedades, no te las pierdas',
+    title: 'CONFECCIÓN TEXTIL',
+    description: '',
     symbol: 'fa-share-square-o',
   },
 ]
@@ -31,20 +29,20 @@ const interestingDataLeft = [
 const interestingDataRight = [
   {
     number: 4,
-    title: 'Diseños',
-    description: 'Nuestros diseños son únicos y hechos por los mejores tatuadores',
+    title: 'EL ARTE DE LA SERIGRAFÍA',
+    description: '',
     symbol: 'fa-magic',
   },
   {
     number: 5,
-    title: 'Tienda oficial',
-    description: 'Casa Brasil (Catedral 2116, metro Cumming), Santiago, Chile.',
+    title: 'PRODUCTO FINAL',
+    description: '',
     symbol: 'fa-street-view',
   },
   {
     number: 6,
-    title: 'Nuestra insignia',
-    description: 'Nuestros productos y trabajo son libre de explotación y fascismo!',
+    title: 'EXPERIENCIA TODO O NADA',
+    description: '',
     symbol: 'fa-gift',
   },
 ]
@@ -56,10 +54,9 @@ function InterestingFacts() {
         <Row>
           <Col sm={12}>
             <div className="section-title text-center">
-              <h2 className="font-bold title">Hitos interesantes</h2>
+              <h2 className="font-bold title">COMO NACEN NUESTRAS CREACIONES</h2>
               <p className="text-center">
-                Descubre las mejores colecciones del arte tattoo en prendas únicas, ven a conocer
-                parte de lo que somos y como trabajamos
+                El proceso de creación de los productos de nuestra marca
               </p>
             </div>
           </Col>
@@ -70,22 +67,6 @@ function InterestingFacts() {
               <>
                 <div className="mb-4 mb-md-6 mt-4 mt-md-6 ciyashop_info_box ciyashop_info_box-layout-style_2 ciyashop_info_box-content_alignment-right ciyashop_info_box-with-icon ciyashop_info_box-icon-source-font ciyashop_info_box-icon-style-border ciyashop_info_box-icon-size-md ciyashop_info_box-icon-shape-round ciyashop_info_box-icon_position-right info_box-step_position-above_title">
                   <div className="ciyashop_info_box-inner clearfix">
-                    <div className="ciyashop_info_box-icon">
-                      <div className="ciyashop_info_box-icon-wrap">
-                        <div className="ciyashop_info_box-icon-outer">
-                          <div
-                            className="ciyashop_info_box-icon-inner"
-                            style={{
-                              borderColor: '#04d39f',
-                              borderWidth: '2px',
-                              borderStyle: 'solid',
-                            }}
-                          >
-                            <i className={`fa ${leftData.symbol}`} style={{ color: '#04d39f' }} />{' '}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                     <div className="ciyashop_info_box-content">
                       <div className="ciyashop_info_box-content-wrap">
                         <div className="ciyashop_info_box-content-inner">
@@ -106,34 +87,19 @@ function InterestingFacts() {
               </>
             ))}{' '}
           </Col>
-          <Col sm={4} className="d-none d-lg-block">
+          <Col sm={4} className="">
             <img
-              src={require(`../../assets/images/interesting-image-1.jpg`).default}
+              src={require(`../../assets/images/proceso_produccion.jpg`).default}
               className="img-fluid"
               style={{ borderRadius: '4px' }}
             />
+            <br />
           </Col>
           <Col lg={4} md={6}>
             {interestingDataRight.map((dataRight) => (
               <>
                 <div className="mb-4 mb-md-6 mt-0 ciyashop_info_box ciyashop_info_box-layout-style_2 ciyashop_info_box-content_alignment-left ciyashop_info_box-with-icon ciyashop_info_box-icon-source-font ciyashop_info_box-icon-style-border ciyashop_info_box-icon-size-md ciyashop_info_box-icon-shape-round ciyashop_info_box-icon_position-left info_box-step_position-above_title">
                   <div className="ciyashop_info_box-inner clearfix left-info-icon-bottom">
-                    <div className="ciyashop_info_box-icon">
-                      <div className="ciyashop_info_box-icon-wrap">
-                        <div className="ciyashop_info_box-icon-outer">
-                          <div
-                            className="ciyashop_info_box-icon-inner"
-                            style={{
-                              borderColor: '#04d39f',
-                              borderWidth: '2px',
-                              borderStyle: 'solid',
-                            }}
-                          >
-                            <i className={`fa ${dataRight.symbol}`} style={{ color: '#04d39f' }} />{' '}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                     <div className="ciyashop_info_box-content">
                       <div className="ciyashop_info_box-content-wrap">
                         <div className="ciyashop_info_box-content-inner">

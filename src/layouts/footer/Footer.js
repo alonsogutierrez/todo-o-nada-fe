@@ -36,8 +36,8 @@ class Footer extends React.Component {
                       </div>
                       <div className="text-content">
                         <p className="mb-3 mt-4">
-                          Handmade premium brand. Reproducción de obras de arte de los/as mejores
-                          artistas del tatuaje de America del Sur y el mundo.
+                          Reproducción de obras de arte de los/as mejores artistas del tatuaje de
+                          America del Sur y el mundo.
                         </p>
                       </div>
                       <div className="pgs-social-profiles mt-4">
