@@ -10,6 +10,7 @@ import ClientAPI from '../../../common/ClientAPI'
 const SuccessPayment = (props) => {
   const [shippingAmount, setShippingAmount] = useState(0.0)
   const [clientAPI] = useState(new ClientAPI())
+  const [isPaymentValid, setIsPaymentValid] = useState(false)
   const [response, setResponse] = useState({
     data: null,
     loading: true,
@@ -26,6 +27,11 @@ const SuccessPayment = (props) => {
   const getOrderData = async (orderNumber, id) => {
     const order = await clientAPI.getOrderByOrderNumber(orderNumber, id)
     return order
+  }
+
+  const getOrderPaymentStatus = async (orderNumber) => {
+    const orderPaymentStatus = await clientAPI.getOrderPaymentStatus(orderNumber)
+    return orderPaymentStatus
   }
 
   const readCartItems = () => {
@@ -45,11 +51,22 @@ const SuccessPayment = (props) => {
       const orderNumber = new URLSearchParams(props.location.search).get('orderNumber')
       const id = new URLSearchParams(props.location.search).get('id')
 
-      const orderData = await getOrderData(orderNumber, id)
-      setResponse({
-        data: orderData,
-        loading: false,
-      })
+      // TODO: Call to Payments API and check if order is with valid payment
+      const orderPaymentState = await getOrderPaymentStatus(orderNumber)
+      if (orderPaymentState.isValid) {
+        const orderData = await getOrderData(orderNumber, id)
+        setResponse({
+          data: orderData,
+          loading: false,
+        })
+        setIsPaymentValid(true)
+      } else {
+        setResponse({
+          data: {},
+          loading: false,
+        })
+        setIsPaymentValid(false)
+      }
     }
     fetchOrderData()
     let evt = document.createEvent('Event')
@@ -92,11 +109,17 @@ const SuccessPayment = (props) => {
           <Container>
             <Row className="justify-content-center">
               <Col lg={7}>
-                <PaymentDetail
-                  orderData={orderData}
-                  totalShippingCarge={shippingAmount}
-                  loading={response.loading}
-                ></PaymentDetail>
+                {isPaymentValid ? (
+                  <>
+                    <h1>Pago inválido</h1>
+                  </>
+                ) : (
+                  <PaymentDetail
+                    orderData={orderData}
+                    totalShippingCarge={shippingAmount}
+                    loading={response.loading}
+                  ></PaymentDetail>
+                )}
               </Col>
             </Row>
           </Container>
