@@ -110,15 +110,15 @@ const SuccessPayment = (props) => {
             <Row className="justify-content-center">
               <Col lg={7}>
                 {isPaymentValid ? (
-                  <>
-                    <h1>Pago inválido</h1>
-                  </>
-                ) : (
                   <PaymentDetail
                     orderData={orderData}
                     totalShippingCarge={shippingAmount}
                     loading={response.loading}
                   ></PaymentDetail>
+                ) : (
+                  <>
+                    <h1>Pago inválido</h1>
+                  </>
                 )}
               </Col>
             </Row>
