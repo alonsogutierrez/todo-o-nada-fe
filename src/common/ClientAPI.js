@@ -71,6 +71,27 @@ export default class ClientAPI {
     })
   }
 
+  getOrderPaymentStatus(orderNumber) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: '/payments',
+          method: 'get',
+          params: {
+            orderNumber,
+          },
+          timeout: 20 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
   downloadSales(startDate, endDate) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()

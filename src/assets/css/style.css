@@ -11110,14 +11110,9 @@ footer.site-footer.footer-style-2 .footer-widgets-wrapper {
 
 .sidebar .widget {
   border-bottom: 1px solid #f1f1f1;
-  padding-bottom: 30px;
-  margin-bottom: 30px;
 }
 
 .sidebar .widget:last-child {
-  padding-bottom: 0;
-  margin-bottom: 0;
-  border-bottom: 0;
 }
 
 .sidebar
@@ -17808,7 +17803,7 @@ ul.products .product-inner .product-info .stock {
 }
 
 .sidebar .widget {
-  margin-bottom: 30px;
+  margin-top: 5px;
 }
 
 .sidebar .widget.widget_search #searchform {
