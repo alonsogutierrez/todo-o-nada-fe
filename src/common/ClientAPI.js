@@ -74,13 +74,9 @@ export default class ClientAPI {
   getOrderPaymentStatus(orderNumber) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
-      const userToken = localStorage.getItem('userToken')
       client
         .request({
           url: '/payments',
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
           method: 'get',
           params: {
             orderNumber,
