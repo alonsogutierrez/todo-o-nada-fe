@@ -84,7 +84,7 @@ export const getFilterProductsdata = (data, { category, size, color, sortOrder }
       filteredProducts = hits
         .filter((product) => {
           const { _source } = product
-          if (_source) {
+          if (_source && Object.keys(_source).length > 0) {
             const { categories, sizes, color: productColor } = _source
 
             if (category.length === 0 && size.length === 0 && color.length === 0) return true
@@ -92,7 +92,6 @@ export const getFilterProductsdata = (data, { category, size, color, sortOrder }
             if (category.length > 0 && categories) {
               categoryMatchValue = category.every((cat) => categories.includes(cat))
             }
-
             let sizeMatchValue = false
             if (size.length > 0 && sizes) {
               size.forEach((filterSize) => {
@@ -149,7 +148,7 @@ export const getFilterProductsdata = (data, { category, size, color, sortOrder }
   }
   const responseFiltered = {
     ...data,
-    total: { value: filteredProducts.length },
+    total: filteredProducts.length,
     hits: filteredProducts,
   }
 

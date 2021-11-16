@@ -1,7 +1,12 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { Col, Container, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
+
+import { categoryValue } from './../../actions/filter'
+
+import setCategorySelectedData from './../../actions/setCategorySelected'
 
 const collections = [
   {
@@ -33,6 +38,8 @@ const collections = [
 const Collections = (props) => {
   const handleCollectionClick = (e, categoryName) => {
     e.preventDefault()
+    props.setCategorySelectedData(categoryName)
+    props.categoryValue([categoryName])
     props.history.push(`/category/${categoryName}`)
   }
 
@@ -68,12 +75,22 @@ const Collections = (props) => {
   )
 }
 
-export default withRouter(Collections)
+const mapDistpachToProps = (dispatch) => ({
+  setCategorySelectedData: (categorySelectedData) =>
+    dispatch(setCategorySelectedData(categorySelectedData)),
+  categoryValue: (categorySelectedData) => dispatch(categoryValue(categorySelectedData)),
+})
+
+export default connect(null, mapDistpachToProps)(withRouter(Collections))
 
 Collections.defaultProps = {
   history: {},
+  setCategorySelectedData: () => {},
+  categoryValue: () => {},
 }
 
 Collections.propTypes = {
   history: PropTypes.object,
+  setCategorySelectedData: PropTypes.func,
+  categoryValue: PropTypes.func,
 }

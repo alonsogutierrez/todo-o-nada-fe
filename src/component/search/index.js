@@ -60,11 +60,12 @@ const SearchPage = ({
   }
 
   const searchByCategory = async () => {
-    let categoryName = categorySelectedData
+    let categoryName =
+      match.params.categoryName == categorySelectedData
+        ? categorySelectedData
+        : match.params.categoryName
+
     try {
-      if (!categoryName) {
-        categoryName = match.params.categoryName
-      }
       const productsByCategory = await clientAPI.getProductsByCategory(categoryName)
       setActualProductsData(productsByCategory)
       setChangeProducts(!changeProducts)
@@ -88,15 +89,18 @@ const SearchPage = ({
   }
 
   useEffect(() => {
-    if (isCategoryQuery()) {
-      searchByCategory()
-    } else {
-      searchByText()
+    const fetchData = async () => {
+      if (isCategoryQuery()) {
+        searchByCategory()
+      } else {
+        searchByText()
+      }
     }
-  }, [isEnabledLoadMoreButton, categorySelectedData, products.length])
+    fetchData()
+  }, [isEnabledLoadMoreButton, categorySelectedData])
 
   let actualProducts = []
-  if (products) {
+  if (products && Object.keys(products).length > 0 && products.hits.length > 0) {
     const { hits = [] } = products
     if (hits) {
       actualProducts = hits
