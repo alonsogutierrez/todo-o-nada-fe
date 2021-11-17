@@ -19,7 +19,7 @@ class HomSlider extends Component {
           <div className="slide-inner">
             <div className="slide-image">
               <img
-                src={require(`../../assets/images/home-slider/banner_shuten_doji-01.jpg`).default}
+                src={require(`../../assets/images/home-slider/banner_shuter_doji-05.jpg`).default}
                 alt="slide-1"
               />
             </div>
