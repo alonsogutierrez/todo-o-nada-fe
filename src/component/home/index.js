@@ -1,7 +1,7 @@
 /**
  *  Home Classic Page
  */
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import HomSlider from './HomSlider'
 
