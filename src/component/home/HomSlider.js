@@ -19,9 +19,7 @@ class HomSlider extends Component {
           <div className="slide-inner">
             <div className="slide-image">
               <img
-                src={
-                  require(`../../assets/images/home-slider/soul_of_dragon_banner-01.jpg`).default
-                }
+                src={require(`../../assets/images/home-slider/banner_shuten_doji-01.jpg`).default}
                 alt="slide-1"
               />
             </div>
@@ -32,7 +30,19 @@ class HomSlider extends Component {
             <div className="slide-image">
               <img
                 src={require(`../../assets/images/home-slider/irezumi_banner-01.jpg`).default}
-                alt="slide-1"
+                alt="slide-2"
+              />
+            </div>
+          </div>
+        </div>
+        <div key={3} className="slide-04-item">
+          <div className="slide-inner">
+            <div className="slide-image">
+              <img
+                src={
+                  require(`../../assets/images/home-slider/soul_of_dragon_banner-01.jpg`).default
+                }
+                alt="slide-3"
               />
             </div>
           </div>
