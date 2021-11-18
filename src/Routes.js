@@ -22,8 +22,10 @@ import Login from './component/admin/Login'
 import Header from './layouts/header/Header'
 import Footer from './layouts/footer/Footer'
 import Maintenance from './component/pages/Maintenance'
+import GlobalHistory from './component/analytics/GASpy'
 
 const isSiteInMaintenance = false // TODO: Change by BFF response
+const ENVIRONMENT = process.env.ENVIRONMENT
 
 const Routes = () => {
   return (
@@ -31,6 +33,7 @@ const Routes = () => {
       <Router>
         {!isSiteInMaintenance ? (
           <>
+            {ENVIRONMENT === 'production' ? <GlobalHistory /> : null}
             <Header />
             <Switch>
               <Route exact path="/" component={HomeRoutePage} />
