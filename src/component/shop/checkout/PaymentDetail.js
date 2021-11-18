@@ -34,7 +34,9 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
     user = paymentData.user
   }
   const userData = user
+  console.log(dispatchData)
   const isHomeDelivery = dispatchData && dispatchData === 'HOME_DELIVERY'
+  console.log('isHomeDelivery: ', isHomeDelivery)
 
   return (
     <div className="success-screen">
