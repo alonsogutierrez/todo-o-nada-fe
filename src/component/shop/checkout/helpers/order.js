@@ -15,7 +15,7 @@ const getProductsInfo = (items) => {
   })
 }
 
-const getUserInfo = (data) => {
+const getUserInfo = (data, dispatchType) => {
   const {
     first_name,
     last_name,
@@ -29,26 +29,37 @@ const getUserInfo = (data) => {
     address,
     num_address,
   } = data
+  let addressData =
+    dispatchType === 'HOME_DELIVERY'
+      ? {
+          country: country_selected.name,
+          city: region_selected.region,
+          commune: commune_selected,
+          zip_code: zip_code,
+          address: address,
+          num_address: num_address,
+        }
+      : {
+          country: 'Chile',
+          city: 'Región Metropolitana',
+          commune: 'Santiago',
+          zip_code: '',
+          address: 'Catedral',
+          num_address: '#2116',
+        }
   return {
     firstName: first_name,
     lastName: last_name,
     email: email,
     dni: dni,
     phone: phone,
-    address: {
-      country: country_selected.name,
-      city: region_selected.region,
-      commune: commune_selected,
-      zip_code: zip_code,
-      address: address,
-      num_address: num_address,
-    },
+    address: addressData,
   }
 }
 
 const orderCreator = (cartItems, formValues, dispatchType) => {
   const productsInfo = getProductsInfo(cartItems)
-  const userInfo = getUserInfo(formValues)
+  const userInfo = getUserInfo(formValues, dispatchType)
   const orderDataToSave = {
     products: productsInfo,
     paymentData: {
