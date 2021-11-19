@@ -20,6 +20,7 @@ const getUserInfo = (data) => {
     first_name,
     last_name,
     email,
+    dni,
     phone,
     country_selected,
     region_selected,
@@ -32,6 +33,7 @@ const getUserInfo = (data) => {
     firstName: first_name,
     lastName: last_name,
     email: email,
+    dni: dni,
     phone: phone,
     address: {
       country: country_selected.name,

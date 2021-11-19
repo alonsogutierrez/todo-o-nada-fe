@@ -36,6 +36,7 @@ class SearchOrders extends Component {
       orderNumber,
       clientNames,
       email: userData.email,
+      dni: userData.dni ? userData.dni : '',
       phone: userData.phone,
       createdAt: format(new Date(createdDate), 'yyyy-MM-dd'),
       orderStatus: paymentData.state,
