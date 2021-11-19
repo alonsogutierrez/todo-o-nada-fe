@@ -40,7 +40,12 @@ class SearchOrders extends Component {
       phone: userData.phone,
       createdAt: format(new Date(createdDate), 'yyyy-MM-dd'),
       orderStatus: paymentData.state,
-      paymentType: 'Webpay', //TODO: Change by real payment channel
+      paymentType:
+        paymentData.transaction &&
+        paymentData.transaction.media &&
+        paymentData.transaction.media.length > 0
+          ? paymentData.transaction.media
+          : 'FlowPay',
       totalPrice: paymentData.transaction.subTotal + paymentData.transaction.shipping,
     }
     return orderDataTableResponse
