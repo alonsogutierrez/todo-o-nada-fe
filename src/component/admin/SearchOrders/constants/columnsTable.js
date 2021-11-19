@@ -13,6 +13,9 @@ const COLUMNS_TABLE = {
   email: {
     Header: 'Email',
   },
+  dni: {
+    Header: 'Rut',
+  },
   phone: {
     Header: 'Telefono',
   },

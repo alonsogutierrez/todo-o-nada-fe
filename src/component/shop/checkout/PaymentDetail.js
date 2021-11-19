@@ -64,9 +64,20 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
               <li>
                 {userData.firstName} {userData.lastName}
               </li>
-              <li>{isHomeDelivery ? userData.address.address : 'Catedral 2116, Santiago'}</li>
-              <li>{isHomeDelivery ? userData.address.num_address : '#2116'}</li>
-              <li>{userData.address.country}</li>
+              {isHomeDelivery ? (
+                <>
+                  <li>{userData.address.address}</li>
+                  <li>{userData.address.num_address}</li>
+                  <li>{userData.address.commune}</li>
+                  <li>{userData.address.city}</li>
+                  <li>{userData.address.country}</li>
+                </>
+              ) : (
+                <>
+                  <li>Catedral 2116, Santiago, Chile</li>
+                  <li>#2116</li>
+                </>
+              )}
             </ul>
           </Col>
           {products ? (
