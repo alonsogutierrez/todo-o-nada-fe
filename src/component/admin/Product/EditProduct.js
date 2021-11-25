@@ -40,7 +40,11 @@ const EditProduct = (props) => {
       <div className="site-content">
         <div className="content-wrapper section-ptb">
           <Container>
-            <ProductForm product={productRequest.data} fetchProductData={fetchProductData} />
+            <ProductForm
+              product={productRequest.data}
+              fetchProductData={fetchProductData}
+              isEditForm={true}
+            />
           </Container>
         </div>
       </div>
