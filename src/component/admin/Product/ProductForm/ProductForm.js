@@ -38,7 +38,9 @@ const ProductForm = (props) => {
       await clientAPI.processProduct(productFormData)
       setLoading(false)
       toast.success('Producto procesado exitosamente')
-      await props.fetchProductData(itemNumber)
+      if (props.isEditForm) {
+        await props.fetchProductData(itemNumber)
+      }
       return
     } catch (err) {
       setLoading(false)
@@ -134,12 +136,7 @@ const ProductForm = (props) => {
     }
     formData.append('sizes', sizes)
 
-    const productProcessResponse = await processProduct(formData, values.itemNumber)
-
-    if (productProcessResponse.status === 201) toast.success('Producto procesado exitosamente')
-    else {
-      toast.error('No se pudo procesar el producto')
-    }
+    await processProduct(formData, values.itemNumber)
 
     setLoading(false)
   }
@@ -301,9 +298,11 @@ export default ProductForm
 
 ProductForm.defaultProps = {
   product: {},
+  isEditForm: false,
 }
 
 ProductForm.propTypes = {
   product: PropTypes.object,
   fetchProductData: PropTypes.func,
+  isEditForm: PropTypes.bool,
 }
