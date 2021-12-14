@@ -51,6 +51,8 @@ function getClientEnvironment(publicUrl) {
         PUBLIC_URL: publicUrl,
         API_BFF_URL: process.env.API_BFF_URL,
         TIMEOUT: process.env.TIMEOUT,
+        ENVIRONMENT: process.env.ENVIRONMENT,
+        GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
       }
     )
 
