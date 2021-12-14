@@ -5,14 +5,12 @@ import { hot } from 'react-hot-loader'
 import Routes from './Routes'
 import store from './store'
 
-const App = () => {
-  return (
-    <Router>
-      <Provider store={store}>
-        <Routes />
-      </Provider>
-    </Router>
-  )
-}
+const App = () => (
+  <Router>
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+  </Router>
+)
 
 export default hot(module)(App)
