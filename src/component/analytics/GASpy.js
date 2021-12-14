@@ -9,7 +9,7 @@ class Spy extends React.Component {
   constructor(props) {
     super(props)
     ReactGA.initialize(GOOGLE_ANALYTICS_ID)
-    this.props.history.listen((location) => ReactGA.pageview(location.pathname))
+    this.props.history.listen((location) => ReactGA.pageview(location.pathname + location.search))
   }
 
   render() {
