@@ -74,8 +74,8 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
                 </>
               ) : (
                 <>
-                  <li>Catedral 2116, Santiago, Chile</li>
-                  <li>#2116</li>
+                  <li>Calle del Arzobispo, Providencia, Chile</li>
+                  <li>#0607</li>
                 </>
               )}
             </ul>
@@ -158,7 +158,13 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
                 </tr>
                 <tr>
                   <td>Despacho</td>
-                  <td className="text-right">${parseFloat(totalShippingCarge)}</td>
+                  {isHomeDelivery ? (
+                    <td className="text-right">Despacho por pagar</td>
+                  ) : (
+                    <td className="text-right">
+                      ${parseFloat(totalShippingCarge)} (Retiro en tienda)
+                    </td>
+                  )}
                 </tr>
                 <tr className="border-top">
                   <td>
