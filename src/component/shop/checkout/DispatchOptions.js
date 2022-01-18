@@ -11,7 +11,7 @@ const dispatchData = {
     total: 0,
   },
   localPickUp: {
-    name: 'Catedral 2116, Santiago, Chile (Retiro en tienda)',
+    name: 'Calle del Arzobispo #0607, Providencia, Chile (Retiro en tienda)',
     code: 'PICKUP',
     total: 0,
   },

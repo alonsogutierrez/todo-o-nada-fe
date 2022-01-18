@@ -15,7 +15,7 @@ const contactDataList = [
     title: 'Ubicación',
     data: (
       <>
-        <p>Casa Brasil (Catedral 2116, metro Cumming), Santiago, Chile</p>
+        <p>Calle del Arzobispo #0607, Providencia, Chile</p>
       </>
     ),
     symbol: 'fa-map-marker',

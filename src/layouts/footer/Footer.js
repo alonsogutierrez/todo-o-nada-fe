@@ -102,7 +102,7 @@ class Footer extends React.Component {
                           <ul>
                             <li>
                               <i className="fa fa-map-marker" />
-                              <span>Catedral 2116, Santiago, Chile</span>
+                              <span>Calle del Arzobispo #0607, Providencia, Chile</span>
                             </li>
                             <li className="pgs-contact-email">
                               <i className="fa fa-envelope-o" />
