@@ -6,6 +6,7 @@ import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 import Pagination from '../../../services/Pagination'
 import AdminProduct from './AdminProduct'
 import UploadProducts from './UploadProducts'
+import DownloadProducts from './DownloadProducts'
 import ClientAPI from '../../../common/ClientAPI'
 
 const AdminProductList = () => {
@@ -203,6 +204,7 @@ const AdminProductList = () => {
                     </TabPanel>
                     <TabPanel>
                       <h3>Descargas de productos</h3>
+                      <DownloadProducts />
                     </TabPanel>
                   </Tabs>
                 </Col>
