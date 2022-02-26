@@ -119,6 +119,30 @@ export default class ClientAPI {
     })
   }
 
+  downloadProducts() {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
+      client
+        .request({
+          url: '/reports/products',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+          method: 'get',
+          params: {},
+          timeout: 40 * 1000,
+          responseType: 'blob',
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
   getOrders(paymentType) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
