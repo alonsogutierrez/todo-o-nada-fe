@@ -131,7 +131,7 @@ export default class ClientAPI {
           },
           method: 'get',
           params: {},
-          timeout: 40 * 1000,
+          timeout: 120 * 1000,
           responseType: 'blob',
         })
         .then((response) => {
