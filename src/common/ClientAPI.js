@@ -329,7 +329,7 @@ export default class ClientAPI {
         .request({
           url: `/search/interesting-products`,
           method: 'get',
-          timeout: 10 * 1000,
+          timeout: 15 * 1000,
         })
         .then((response) => {
           resolve(response.data)
@@ -351,7 +351,7 @@ export default class ClientAPI {
             Authorization: `Bearer ${userToken}`,
           },
           method: 'get',
-          timeout: 10 * 1000,
+          timeout: 20 * 1000,
         })
         .then((response) => {
           resolve(response.data)
