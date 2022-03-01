@@ -24,7 +24,7 @@ import Footer from './layouts/footer/Footer'
 import Maintenance from './component/pages/Maintenance'
 import GlobalHistory from './component/analytics/GASpy'
 
-const isSiteInMaintenance = false // TODO: Change by BFF response
+const isSiteInMaintenance = true // TODO: Change by BFF response
 const ENVIRONMENT = process.env.ENVIRONMENT
 
 const Routes = () => {
