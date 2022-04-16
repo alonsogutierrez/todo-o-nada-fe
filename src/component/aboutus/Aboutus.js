@@ -4,6 +4,7 @@ import { Container } from 'reactstrap'
 import OurHistory from './OurHistory'
 import InterestingFacts from './InterestingFacts'
 import PageTitle from '../../widgets/PageTitle'
+import Youtube from '../home/Youtube'
 
 class Aboutus extends Component {
   componentDidMount() {
@@ -21,6 +22,7 @@ class Aboutus extends Component {
         </div>
         <div className="content-wrapper">
           <OurHistory />
+          <Youtube />
           <InterestingFacts />
         </div>
       </div>

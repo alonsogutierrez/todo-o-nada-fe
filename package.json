@@ -42,8 +42,8 @@
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
-    "@babel/polyfill": "^7.10.1",
     "@babel/core": "^7.11.0",
+    "@babel/polyfill": "^7.10.1",
     "@babel/preset-env": "^7.11.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -64,12 +64,12 @@
     "prettier": "2.0.5",
     "redux-devtools-extension": "^2.13.8",
     "sass-loader": "^7.1.0",
+    "sw-precache-webpack-plugin": "^0.11.5",
+    "webpack": "^4.44.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.11.0",
-    "webpack-hot-middleware": "^2.25.0",
-    "sw-precache-webpack-plugin": "^0.11.5",
-    "webpack": "^4.44.1"
+    "webpack-hot-middleware": "^2.25.0"
   },
   "scripts": {
     "start": "node scripts/start.js",

@@ -46,7 +46,10 @@ const Collections = (props) => {
   return (
     <Container>
       <Row className="margin-top-8 mb-7 pb-3 pb-sm-0">
-        <Col sm={12}>
+        <Col sm={12} className="text-center">
+          <div className="section-title">
+            <h1>Colecciones</h1>
+          </div>
           <Row>
             {collections.map((collection) => (
               <div className="col-lg-3" key={collection.id}>
