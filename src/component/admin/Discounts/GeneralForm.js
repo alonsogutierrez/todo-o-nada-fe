@@ -21,7 +21,13 @@ const GeneralForm = (props) => {
 
   const fetchDiscountData = useCallback(async (discountCode) => {
     setDiscountRequest({ loading: true, data: discountRequest.data })
-    const discountByCodeResponse = await discountAPI.getDiscountByCode(discountCode)
+    let discountByCodeResponse = ''
+    if (discountCode) {
+      discountByCodeResponse = await discountAPI.getDiscountByCode(discountCode)
+    } else {
+      discountByCodeResponse = {}
+    }
+
     console.log('discountByCodeResponse: ', discountByCodeResponse)
     setDiscountRequest({ loading: false, data: discountByCodeResponse })
     return

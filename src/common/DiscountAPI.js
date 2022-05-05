@@ -13,6 +13,27 @@ export default class DiscountAPI {
     return bffInstance
   }
 
+  getAllAdminDiscounts() {
+    const userToken = localStorage.getItem('userToken')
+    return new Promise((resolve, reject) => {
+      this.client
+        .request({
+          url: '/discount-coupon',
+          method: 'get',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
   getDiscountByCode(code) {
     return new Promise((resolve, reject) => {
       this.client
