@@ -37,10 +37,19 @@ const ProductForm = (props) => {
   const getFormErrors = (formValues) => {
     const errors = {}
     if (!formValues.code) {
-      errors.itemNumber = 'code requerido'
+      errors.code = 'Codigo requerido'
     }
-    if (isNaN(formValues.code)) {
-      errors.itemNumber = 'code debe ser numerico'
+    if (!formValues.isPercentual) {
+      errors.isPercentual = 'Es porcentual requerido'
+    }
+    if (!formValues.amount) {
+      errors.amount = 'Cantidad requerido'
+    }
+    if (!formValues.expireDate) {
+      errors.expireDate = 'Fecha de vencimiento requerido'
+    }
+    if (!formValues.isActive) {
+      errors.isActive = 'Esta activo requerido'
     }
     return errors
   }
@@ -48,7 +57,15 @@ const ProductForm = (props) => {
   const onSubmitHandler = async (values) => {
     let formData = new FormData()
 
+    console.log('values: ', values)
+
     formData.append('code', values.code)
+    formData.append('isPercentual', values.isPercentual)
+    formData.append('amount', values.amount)
+    formData.append('expireDate', values.expireDate)
+    formData.append('isActive', values.isActive)
+
+    console.log('formData: ', formData)
 
     await processDiscount(formData, values.code)
 
@@ -58,6 +75,10 @@ const ProductForm = (props) => {
   const getInitialDiscountMapped = () => {
     const discountMapped = {
       code: '',
+      isPercentual: '',
+      amount: '',
+      expireDate: '',
+      isActive: '',
     }
 
     return discountMapped
@@ -65,8 +86,12 @@ const ProductForm = (props) => {
 
   const getDiscountMappedFromProps = (discountData) => {
     const discountMappedFromProps = {}
-    const { code } = discountData
+    const { code, isPercentual, amount, expireDate, isActive } = discountData
     discountMappedFromProps.code = code
+    discountMappedFromProps.isPercentual = isPercentual
+    discountMappedFromProps.amount = amount
+    discountMappedFromProps.expireDate = expireDate
+    discountMappedFromProps.isActive = isActive
 
     return discountMappedFromProps
   }
@@ -85,8 +110,6 @@ const ProductForm = (props) => {
       </>
     )
   }
-
-  console.log('discount: ', discount)
 
   return (
     <div>

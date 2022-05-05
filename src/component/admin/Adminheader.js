@@ -175,7 +175,7 @@ const AdminHeader = (props) => {
                         onClick={() => changeClass('discount')}
                         className="nav-link"
                         tag={Link}
-                        to="/admin-dashboard/discount"
+                        to="/admin-dashboard/discounts"
                       >
                         <i className="fa fa-cart-plus"></i>Descuentos
                       </DropdownItem>

@@ -30,7 +30,7 @@ export default class DiscountAPI {
     })
   }
 
-  createDiscount(data) {
+  createDiscount(discountData) {
     const userToken = localStorage.getItem('userToken')
     return new Promise((resolve, reject) => {
       this.client
@@ -38,10 +38,11 @@ export default class DiscountAPI {
           url: '/discount-coupon',
           headers: {
             Authorization: `Bearer ${userToken}`,
+            'Content-Type': 'multipart/form-data',
           },
           method: 'post',
-          data,
           timeout: 10 * 1000,
+          data: discountData,
         })
         .then((response) => {
           resolve(response.data)

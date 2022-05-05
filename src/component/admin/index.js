@@ -13,6 +13,7 @@ import Collaboration from './Collaboration'
 import Profile from './Profile'
 import Settings from './Settings'
 import DiscountForm from './Discounts/GeneralForm'
+import DiscountList from './Discounts/DiscountList'
 
 class AdminDashboard extends Component {
   render() {
@@ -30,6 +31,7 @@ class AdminDashboard extends Component {
           <Route path={`/admin-dashboard/collaboration`} component={Collaboration} />
           <Route path={`/admin-dashboard/settings`} component={Settings} />
           <Route path={`/admin-dashboard/discount-add`} component={DiscountForm} />
+          <Route path={`/admin-dashboard/discounts`} component={DiscountList} />
         </div>
       </>
     )

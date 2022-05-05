@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { FormGroup, Input, Label, Row } from 'reactstrap'
 import DiscountLabelConfigData from './DiscountLabelConfigData'
@@ -6,27 +6,43 @@ import DiscountLabelConfigData from './DiscountLabelConfigData'
 const FormLabel = (props) => {
   const [objectReferences] = useState({
     code: useRef(null),
+    isPercentual: useRef(null),
+    amount: useRef(null),
     expireDate: useRef(null),
+    isActive: useRef(null),
   })
-  const { handleBlur, handleChange, setFieldValue, values, errors, touched } = props
+  const { handleBlur, handleChange, values, errors } = props
 
-  console.log('setFieldValue: ', setFieldValue)
-  console.log('touched: ', touched)
-
-  /*const scrollIntoViewBehavior = {
+  const scrollIntoViewBehavior = {
     inline: 'end',
     block: 'center',
     behavior: 'smooth',
-  }*/
+  }
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (errors) {
       if (errors['code']) {
         objectReferences['code'].current.scrollIntoView(scrollIntoViewBehavior)
         return
       }
+      if (errors['isPercentual']) {
+        objectReferences['isPercentual'].current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+      if (errors['amount']) {
+        objectReferences['amount'].current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+      if (errors['expireDate']) {
+        objectReferences['expireDate'].current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
+      if (errors['isActive']) {
+        objectReferences['isActive'].current.scrollIntoView(scrollIntoViewBehavior)
+        return
+      }
     }
-  })*/
+  })
 
   return (
     <>
