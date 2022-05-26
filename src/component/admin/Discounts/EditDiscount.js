@@ -7,7 +7,7 @@ import DiscountForm from './Form/DiscountForm'
 
 import DiscountAPI from '../../../common/DiscountAPI'
 
-const GeneralForm = (props) => {
+const EditDiscount = (props) => {
   const [discountAPI] = useState(new DiscountAPI())
   const [discountRequest, setDiscountRequest] = useState({
     loading: false,
@@ -27,7 +27,6 @@ const GeneralForm = (props) => {
       discountByCodeResponse = {}
     }
 
-    console.log('discountByCodeResponse: ', discountByCodeResponse)
     setDiscountRequest({ loading: false, data: discountByCodeResponse })
     return
   }, [])
@@ -50,7 +49,7 @@ const GeneralForm = (props) => {
             <DiscountForm
               discount={discountRequest.data}
               fetchDiscountData={fetchDiscountData}
-              isEditDiscount={false}
+              isEditDiscount={true}
             />
           </Container>
         </div>
@@ -58,12 +57,12 @@ const GeneralForm = (props) => {
     </div>
   )
 }
-export default GeneralForm
+export default EditDiscount
 
-GeneralForm.defaultProps = {
+EditDiscount.defaultProps = {
   match: {},
 }
 
-GeneralForm.propTypes = {
+EditDiscount.propTypes = {
   match: PropTypes.object,
 }

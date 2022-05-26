@@ -59,7 +59,6 @@ export default class DiscountAPI {
           url: '/discount-coupon',
           headers: {
             Authorization: `Bearer ${userToken}`,
-            'Content-Type': 'multipart/form-data',
           },
           method: 'post',
           timeout: 10 * 1000,

@@ -24,6 +24,9 @@ export default [
         className: '',
         placeHolder: '',
         getValue: (values) => (values['isPercentual'] ? values['isPercentual'] : ''),
+        defaultChecked: (values) => {
+          return values['isPercentual'] ? values['isPercentual'] : false
+        },
       },
     ],
   },
@@ -66,6 +69,9 @@ export default [
         className: '',
         placeHolder: 'Activo',
         getValue: (values) => (values['isActive'] ? values['isActive'] : ''),
+        defaultChecked: (values) => {
+          return values['isActive'] ? values['isActive'] : false
+        },
       },
     ],
   },

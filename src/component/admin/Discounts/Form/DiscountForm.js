@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Row } from 'reactstrap'
 import { Formik, Form } from 'formik'
@@ -10,11 +10,11 @@ import Loader from 'react-loader-spinner'
 import DiscountAPI from '../../../../common/DiscountAPI'
 import FormLabel from './FormLabels'
 
-const ProductForm = (props) => {
+const DiscountForm = (props) => {
   const [discountData] = useState(props.discount)
   const [loading, setLoading] = useState(false)
 
-  //useEffect(() => {}, [])
+  useEffect(() => {}, [props.discount])
 
   const processDiscount = async (discountFormData, code) => {
     try {
@@ -23,8 +23,7 @@ const ProductForm = (props) => {
       await discountAPI.createDiscount(discountFormData)
       setLoading(false)
       toast.success('Descuento procesado exitosamente')
-      if (props.isEditForm) {
-        console.log('is edit form')
+      if (props.isEditDiscount) {
         await props.fetchDiscountData(code)
       }
       return
@@ -39,33 +38,22 @@ const ProductForm = (props) => {
     if (!formValues.code) {
       errors.code = 'Codigo requerido'
     }
-    if (!formValues.isPercentual) {
-      errors.isPercentual = 'Es porcentual requerido'
-    }
     if (!formValues.amount) {
       errors.amount = 'Cantidad requerido'
     }
     if (!formValues.expireDate) {
       errors.expireDate = 'Fecha de vencimiento requerido'
     }
-    if (!formValues.isActive) {
-      errors.isActive = 'Esta activo requerido'
-    }
     return errors
   }
 
   const onSubmitHandler = async (values) => {
-    let formData = new FormData()
-
-    console.log('values: ', values)
-
-    formData.append('code', values.code)
-    formData.append('isPercentual', values.isPercentual)
-    formData.append('amount', values.amount)
-    formData.append('expireDate', values.expireDate)
-    formData.append('isActive', values.isActive)
-
-    console.log('formData: ', formData)
+    let formData = {}
+    formData.code = values.code
+    formData.isPercentual = values.isPercentual
+    formData.amount = values.amount
+    formData.expireDate = values.expireDate
+    formData.isActive = values.isActive
 
     await processDiscount(formData, values.code)
 
@@ -75,18 +63,22 @@ const ProductForm = (props) => {
   const getInitialDiscountMapped = () => {
     const discountMapped = {
       code: '',
-      isPercentual: '',
+      isPercentual: false,
       amount: '',
       expireDate: '',
-      isActive: '',
+      isActive: false,
     }
 
     return discountMapped
   }
 
   const getDiscountMappedFromProps = (discountData) => {
+    const { discountCouponResult } = discountData
+    if (!discountCouponResult) {
+      return {}
+    }
     const discountMappedFromProps = {}
-    const { code, isPercentual, amount, expireDate, isActive } = discountData
+    const { code, isPercentual, amount, expireDate, isActive } = discountCouponResult
     discountMappedFromProps.code = code
     discountMappedFromProps.isPercentual = isPercentual
     discountMappedFromProps.amount = amount
@@ -124,6 +116,8 @@ const ProductForm = (props) => {
                     <div className="summary entry-summary">
                       <Formik
                         initialValues={discount}
+                        validateOnChange={false}
+                        validateOnBlur={false}
                         validate={(values) => getFormErrors(values)}
                         onSubmit={async (values) => await onSubmitHandler(values)}
                       >
@@ -167,15 +161,15 @@ const ProductForm = (props) => {
     </div>
   )
 }
-export default ProductForm
+export default DiscountForm
 
-ProductForm.defaultProps = {
+DiscountForm.defaultProps = {
   discount: {},
-  isEditForm: false,
+  isEditDiscount: false,
 }
 
-ProductForm.propTypes = {
+DiscountForm.propTypes = {
   discount: PropTypes.object,
   fetchDiscountData: PropTypes.func,
-  isEditForm: PropTypes.bool,
+  isEditDiscount: PropTypes.bool,
 }

@@ -64,23 +64,44 @@ const FormLabel = (props) => {
                   <FormGroup className={row.formClassName} key={row.labelName + index}>
                     <Label className="title pl-0">{row.labelTitle}</Label>
                     <div ref={actualInputRef}>
-                      <Input
-                        type={row.type}
-                        name={row.labelName}
-                        className={row.inputClassName}
-                        placeholder={row.placeHolder}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={row.getValue(values)}
-                      >
-                        {row.options && row.options.length > 0
-                          ? row.options.map((option) => (
-                              <option key={option.value} value={option.value}>
-                                {option.text}
-                              </option>
-                            ))
-                          : undefined}
-                      </Input>
+                      {row.type == 'checkbox' ? (
+                        <Input
+                          type={row.type}
+                          name={row.labelName}
+                          className={row.inputClassName}
+                          placeholder={row.placeHolder}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={row.getValue(values)}
+                          defaultChecked={row.defaultChecked(values)}
+                        >
+                          {row.options && row.options.length > 0
+                            ? row.options.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                  {option.text}
+                                </option>
+                              ))
+                            : undefined}
+                        </Input>
+                      ) : (
+                        <Input
+                          type={row.type}
+                          name={row.labelName}
+                          className={row.inputClassName}
+                          placeholder={row.placeHolder}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={row.getValue(values)}
+                        >
+                          {row.options && row.options.length > 0
+                            ? row.options.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                  {option.text}
+                                </option>
+                              ))
+                            : undefined}
+                        </Input>
+                      )}
                     </div>
                     {<span style={errorStyle}>{errors[`${row.labelName}`]}</span>}
                   </FormGroup>

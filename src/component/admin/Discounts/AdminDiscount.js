@@ -23,45 +23,59 @@ const AdminDiscountList = (props) => {
   const { discount, deletediscount } = props
 
   if (discount && Object.keys(discount).length > 0) {
-    const { code, isPercentual, amount, expireDate, isActive } = discount
+    const { code, isPercentual, amount, expireDate, isActive, createdAt } = discount
 
     return (
       <Col key={1} sm={6} lg={3}>
         <ToastContainer autoClose={1000} />
-        <div className="discount discount_tag-black discount-hover-style-default discount-hover-button-style-light discount_title_type-single_line discount_icon_type-line-icon">
-          <div className="discount-inner element-hovered">
-            <div className="discount-info">
+        <div className="product product_tag-black product-hover-style-default product-hover-button-style-light product_title_type-single_line product_icon_type-line-icon">
+          <div className="product-inner element-hovered">
+            <div className="product-info">
+              <img
+                className="img-fluid"
+                src={require(`./../../../assets/images/Discount-Coupons.jpg`).default}
+              />
               {code ? (
-                <h3 className="discount-name">
-                  <Link to={`/admin-dashboard/discount-edit/${code}`}>{name}</Link>
+                <h3 className="product-name">
+                  <Link to={`/admin-dashboard/discount-edit/${code}`}>{code}</Link>
                 </h3>
               ) : null}
               <span className="price">
                 <ins>
-                  <span className="price-amount amount">
-                    <span className="currency-symbol">$</span>
-                    {isPercentual}
-                  </span>
+                  <span className="">{isPercentual ? 'Descuento en %' : 'Descuento en $'}</span>
                 </ins>
               </span>
               {amount ? (
-                <span className="text">
+                <span className="price">
                   <ins>
-                    <span className="text">{amount}</span>
+                    <span className="">{isPercentual ? '%' + amount : '$' + amount}</span>
+                  </ins>
+                </span>
+              ) : null}
+              {createdAt ? (
+                <span className="price">
+                  <ins>
+                    <span className="">
+                      {createdAt
+                        ? `Fecha de inicio: ${new Date(createdAt).toLocaleDateString()}`
+                        : ''}
+                    </span>
                   </ins>
                 </span>
               ) : null}
               {expireDate ? (
-                <span className="text">
+                <span className="price">
                   <ins>
-                    <span className="text">{expireDate}</span>
+                    <span className="">{expireDate ? `Fecha de término: ${expireDate}` : ''}</span>
                   </ins>
                 </span>
               ) : null}
               {isActive ? (
-                <span className="text">
+                <span className="price">
                   <ins>
-                    <span className="text">{isActive ? 'Activo' : 'Desactivado'}</span>
+                    <span className="price-amount amount">
+                      {isActive ? 'Activo' : 'Desactivado'}
+                    </span>
                   </ins>
                 </span>
               ) : null}

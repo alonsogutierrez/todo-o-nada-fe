@@ -60,6 +60,7 @@ const DiscountList = () => {
           }
         }
       })
+
       curr_discounts = null
       if (searchData.length > 12) {
         curr_discounts = searchData.slice(0, 12)
@@ -127,7 +128,7 @@ const DiscountList = () => {
                     <TabPanel>
                       <>
                         <div className="mb-0">
-                          <h4>Lista de productos</h4>
+                          <h4>Lista de descuentos</h4>
                         </div>
                         <div className="mb-4">
                           <form>
