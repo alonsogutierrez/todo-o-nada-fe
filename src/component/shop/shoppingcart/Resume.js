@@ -1,12 +1,56 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Table } from 'reactstrap'
 
-const Resume = () => {
+const Resume = ({ changeCartData, changeDiscountData, discountData }) => {
+  const [isCartChanged] = useState(changeCartData)
+
   const cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
+  const subTotal = cartItems.reduce(
+    (fr, cartItem) => fr + Number(cartItem.quantity) * Number(cartItem.price),
+    0
+  )
+  const discount =
+    discountData && Object.keys(discountData).length > 0 && discountData.isValid
+      ? discountData.isPercentual
+        ? parseInt(Math.floor(subTotal * discountData.amount))
+        : discountData.amount
+      : 0
+  const total = subTotal - discount
+
+  const renderDiscountData = (discount, subTotal) => {
+    if (discount && Object.keys(discount).length > 0 && discount.isValid && subTotal) {
+      let totalDiscount = 0
+      if (discount.isPercentual) {
+        totalDiscount = parseInt(Math.ceil(subTotal * discountData.amount))
+      } else {
+        totalDiscount = discount.amount
+      }
+
+      return (
+        <tr className="cart-subtotal">
+          <th>Descuento</th>
+          <td data-title="Subtotal">
+            <span className="woocs_special_price_code">
+              <span className="Price-amount amount">
+                <span className="Price-currencySymbol">$</span> {totalDiscount}{' '}
+              </span>
+            </span>
+          </td>
+        </tr>
+      )
+    }
+    return null
+  }
+  const discountDataLabel = renderDiscountData(discountData, subTotal)
+
+  console.log('Resume changeDiscountData: ', changeDiscountData)
+
+  useEffect(() => {}, [isCartChanged])
+
   return (
     <div className="cart-collaterals col-xl-4">
       <div className="cart_totals ">
@@ -20,18 +64,16 @@ const Resume = () => {
                   <span className="woocs_special_price_code">
                     <span className="Price-amount amount">
                       <span className="Price-currencySymbol">$</span>{' '}
-                      {cartItems
-                        .reduce(
-                          (fr, cartItem) => fr + Number(cartItem.quantity) * Number(cartItem.price),
-                          0
-                        )
-                        .toLocaleString(navigator.language, {
-                          minimumFractionDigits: 0,
-                        })}{' '}
+                      {subTotal.toLocaleString(navigator.language, {
+                        minimumFractionDigits: 0,
+                      })}{' '}
                     </span>
                   </span>
                 </td>
               </tr>
+              {discountData && Object.keys(discountData).length > 0 && discountData.isValid
+                ? discountDataLabel
+                : null}
               <tr className="order-total">
                 <th>Total</th>
                 <td data-title="Total">
@@ -39,15 +81,7 @@ const Resume = () => {
                     <span className="special_price_code">
                       <span className="Price-amount amount">
                         <span className="Price-currencySymbol">$</span>{' '}
-                        {parseFloat(
-                          parseFloat(
-                            cartItems.reduce(
-                              (fr, cartItem) =>
-                                fr + Number(cartItem.quantity) * Number(cartItem.price),
-                              0
-                            )
-                          )
-                        ).toLocaleString(navigator.language, {
+                        {total.toLocaleString(navigator.language, {
                           minimumFractionDigits: 0,
                         })}{' '}
                       </span>
@@ -69,21 +103,21 @@ const Resume = () => {
 }
 
 const mapStateToProps = (state) => ({
-  changeCart: state.changeCartDataReducer.changeCartData,
+  discountData: state.discountDataReducer.discountData,
+  changeDiscountData: state.changeDiscountsDataReducer.changeDiscountsData,
+  changeCartData: state.changeCartDataReducer.changeCartData,
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  setDiscountData: (change) => dispatch(setDiscountData(change)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Resume))
+export default connect(mapStateToProps, null)(Resume)
 
 Resume.defaultProps = {
   discountData: {},
-  setDiscountData: () => {},
+  changeDiscountData: false,
+  changeCartData: false,
 }
 
 Resume.propTypes = {
   discountData: PropTypes.object,
-  setDiscountData: PropTypes.func,
+  changeDiscountData: PropTypes.bool,
+  changeCartData: PropTypes.bool,
 }

@@ -5,22 +5,18 @@ import { Container, Row, Col, Input } from 'reactstrap'
 import PropTypes from 'prop-types'
 import { toast, ToastContainer } from 'react-toastify'
 
-//import PropTypes from 'prop-types'
-
 import DiscountAPI from '../../../common/DiscountAPI'
 import setDiscounts from './../../../actions/setDiscounts'
 import setChangeDiscounts from '../../../actions/setChangeDiscounts'
 
-const DiscountCoupon = (props) => {
+const DiscountCoupon = ({ discountData, setDiscounts, setChangeDiscounts, changeDiscounts }) => {
   const [coupon, setCoupon] = useState('')
-  const [isValidCouponIngressed, setIsValidCouponIngressed] = useState(false)
   const [discountAPI] = useState(new DiscountAPI())
   const [errors] = useState({})
   const [loading, setLoading] = useState(false)
-
   const handleSearchInput = (e) => {
     const couponInputLetter = e.target.value
-    const couponFormatted = couponInputLetter //.replace(/[^a-zA-ZáéíñóúüÁÉÍÑÓÚÜ´'\s]/g, '')
+    const couponFormatted = couponInputLetter
     setCoupon(couponFormatted)
   }
 
@@ -35,19 +31,15 @@ const DiscountCoupon = (props) => {
     const searchValidation = handleSearchValidation()
     if (searchValidation) {
       try {
-        console.log('coupon: ', coupon)
-
         const discountResult = await discountAPI.getDiscountByCode(coupon)
-        props.setDiscounts(discountResult)
-        props.setChangeDiscounts(!props.changeDiscounts)
-        const isValidCoupon = discountResult.isActive && discountResult.code === coupon
+        setDiscounts(discountResult)
+        setChangeDiscounts(!changeDiscounts)
+        const isValidCoupon = discountResult.isValid
         if (isValidCoupon) {
-          setIsValidCouponIngressed(isValidCoupon)
           toast.success('Cupón cargado correctamente!')
         } else {
           toast.error('Cupón invalido!')
         }
-
         setLoading(false)
       } catch (err) {
         setLoading(false)
@@ -64,7 +56,10 @@ const DiscountCoupon = (props) => {
     evt.initEvent('load', false, false)
     window.dispatchEvent(evt)
     window.scrollTo(0, 0)
-  }, [])
+    if (discountData.isValid) {
+      setCoupon(discountData.code)
+    }
+  }, [changeDiscounts])
 
   const rowStyle = {
     paddingTop: '15px',
@@ -73,6 +68,14 @@ const DiscountCoupon = (props) => {
   const colStyle = {
     marginLeft: '-15px',
   }
+
+  let newCouponData = discountData
+  if (newCouponData) {
+    newCouponData = newCouponData.code
+  }
+
+  const isValidCoupon = discountData && Object.keys(discountData).length > 0 && discountData.isValid
+  const isAllowAcceptCoupons = !loading && !isValidCoupon
 
   return (
     <>
@@ -90,14 +93,14 @@ const DiscountCoupon = (props) => {
                 placeholder="Ingresa tu cupón de descuento"
                 value={coupon}
                 onChange={(e) => handleSearchInput(e)}
-                disabled={isValidCouponIngressed}
+                disabled={!isAllowAcceptCoupons}
               />
               <span className="error">{errors['search-error']}</span>
             </Col>
             <Col xs="2" style={colStyle}>
               <button
                 type="submit"
-                disabled={loading}
+                disabled={!isAllowAcceptCoupons}
                 className="btn btn-solid glyph-icon pgsicon-ecommerce-gift"
                 onClick={(e) => onSearchSubmit(e)}
               ></button>
@@ -109,15 +112,21 @@ const DiscountCoupon = (props) => {
   )
 }
 
+const mapStateToProps = (state) => ({
+  discountData: state.discountDataReducer.discountData,
+  changeDiscounts: state.changeDiscountsDataReducer.changeDiscountsData,
+})
+
 const mapDispatchToProps = (dispatch) => ({
   setDiscounts: (products) => dispatch(setDiscounts(products)),
   setChangeDiscounts: (changeProducts) => dispatch(setChangeDiscounts(changeProducts)),
 })
 
-export default connect(null, mapDispatchToProps)(withRouter(DiscountCoupon))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DiscountCoupon))
 
 DiscountCoupon.defaultProps = {
   history: {},
+  discountData: {},
   setDiscounts: () => {},
   changeDiscounts: false,
   setChangeDiscounts: () => {},
@@ -125,15 +134,8 @@ DiscountCoupon.defaultProps = {
 
 DiscountCoupon.propTypes = {
   history: PropTypes.object,
+  discountData: PropTypes.object,
   setDiscounts: PropTypes.func,
   changeDiscounts: PropTypes.bool,
   setChangeDiscounts: PropTypes.func,
 }
-
-// Resume.defaultProps = {
-//   cartItems: [],
-// }
-
-// Resume.propTypes = {
-//   cartItems: PropTypes.array,
-// }
