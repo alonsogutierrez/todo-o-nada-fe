@@ -18,6 +18,8 @@ import viewOrderToggleData from './viewOrderToggleData'
 import dispatchTypeData from './dispatchTypeData'
 import categorySelectedData from './categorySelectedData'
 import subCategorySelectedData from './subCategorySelectedData'
+import discountData from './discounts'
+import changeDiscountsData from './changeDiscounts'
 
 export const rootReducer = combineReducers({
   data: products,
@@ -33,5 +35,7 @@ export const rootReducer = combineReducers({
   dispatchTypeDataReducer: dispatchTypeData,
   categorySelectedDataReducer: categorySelectedData,
   subCategorySelectedDataReducer: subCategorySelectedData,
+  discountDataReducer: discountData,
+  changeDiscountsDataReducer: changeDiscountsData,
   ReducersIntl,
 })
