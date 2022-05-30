@@ -16,7 +16,7 @@ const Resume = ({ changeCartData, changeDiscountData, discountData }) => {
   const discount =
     discountData && Object.keys(discountData).length > 0 && discountData.isValid
       ? discountData.isPercentual
-        ? parseInt(Math.floor(subTotal * discountData.amount))
+        ? parseInt(Math.floor(subTotal * (discountData.amount / 100)))
         : discountData.amount
       : 0
   const total = subTotal - discount
@@ -25,7 +25,7 @@ const Resume = ({ changeCartData, changeDiscountData, discountData }) => {
     if (discount && Object.keys(discount).length > 0 && discount.isValid && subTotal) {
       let totalDiscount = 0
       if (discount.isPercentual) {
-        totalDiscount = parseInt(Math.ceil(subTotal * discountData.amount))
+        totalDiscount = parseInt(Math.ceil(subTotal * (discountData.amount / 100)))
       } else {
         totalDiscount = discount.amount
       }

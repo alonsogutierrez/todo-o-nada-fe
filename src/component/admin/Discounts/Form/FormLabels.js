@@ -1,9 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react'
+import DatePicker from 'react-datepicker'
 import PropTypes from 'prop-types'
 import { FormGroup, Input, Label, Row } from 'reactstrap'
 import DiscountLabelConfigData from './DiscountLabelConfigData'
 
 const FormLabel = (props) => {
+  const [expireDateForm, setExpireDateForm] = useState(
+    props && Object.keys(props).length > 0 && props.values && Object.keys(props.values).length > 0
+      ? new Date(props.values.expireDate ? props.values.expireDate : new Date())
+      : new Date()
+  )
   const [objectReferences] = useState({
     code: useRef(null),
     isPercentual: useRef(null),
@@ -11,7 +17,7 @@ const FormLabel = (props) => {
     expireDate: useRef(null),
     isActive: useRef(null),
   })
-  const { handleBlur, handleChange, values, errors } = props
+  const { handleBlur, handleChange, values, errors, setFieldValue } = props
 
   const scrollIntoViewBehavior = {
     inline: 'end',
@@ -83,6 +89,16 @@ const FormLabel = (props) => {
                               ))
                             : undefined}
                         </Input>
+                      ) : row.type == 'datepicker' ? (
+                        <DatePicker
+                          name="expireDate"
+                          selected={expireDateForm}
+                          onBlur={handleBlur}
+                          onChange={(val) => {
+                            setExpireDateForm(val)
+                            setFieldValue('expireDate', val)
+                          }}
+                        ></DatePicker>
                       ) : (
                         <Input
                           type={row.type}

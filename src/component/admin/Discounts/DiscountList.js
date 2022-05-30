@@ -21,8 +21,8 @@ const DiscountList = () => {
   useEffect(async () => {
     if (discountTextSearch === '') {
       const adminDiscountResponse = await clientAPI.getAllAdminDiscounts()
-      if (adminDiscountResponse.discounts.length > 0) {
-        setAllDiscounts(adminDiscountResponse.discounts)
+      if (adminDiscountResponse.length > 0) {
+        setAllDiscounts(adminDiscountResponse)
         setLoading(false)
       } else {
         setAllDiscounts([])
@@ -47,15 +47,14 @@ const DiscountList = () => {
       //setIsDeleteProcess(true)
     } else {
       let searchData = actualDiscounts.filter((discountData) => {
-        const { _source } = discountData
-        if (_source && Object.keys(_source).length > 0) {
-          const { name } = _source
-          if (!name) return false
+        if (discountData && Object.keys(discountData).length > 0) {
+          const { code } = discountData
+          if (!code) return false
           if (inputDiscountTextSearch === inputDiscountTextSearch.toLowerCase()) {
-            let discount = name.toLowerCase().indexOf(inputDiscountTextSearch.toLowerCase()) > -1
+            let discount = code.toLowerCase().indexOf(inputDiscountTextSearch.toLowerCase()) > -1
             return discount
           } else {
-            let discount = name.toUpperCase().indexOf(inputDiscountTextSearch.toUpperCase()) > -1
+            let discount = code.toUpperCase().indexOf(inputDiscountTextSearch.toUpperCase()) > -1
             return discount
           }
         }
@@ -78,9 +77,11 @@ const DiscountList = () => {
   const onPageChanged = (data) => {
     const { currentPage, pageLimit } = data
     const offset = (currentPage - 1) * pageLimit
-    const currentProduct = allDiscounts.slice(offset, offset + pageLimit)
-    setCurrentPage(currentPage)
-    setAllDiscounts(currentProduct)
+    if (allDiscounts && allDiscounts.lenght > 0) {
+      const currentProduct = allDiscounts.slice(offset, offset + pageLimit)
+      setCurrentPage(currentPage)
+      setAllDiscounts(currentProduct)
+    }
   }
 
   const onDeleteDiscount = (discountData) => {
@@ -99,6 +100,7 @@ const DiscountList = () => {
       setIsDeleteProcess(true)
     }
   }
+
   let actualDiscounts = []
   if (allDiscounts) {
     actualDiscounts = allDiscounts

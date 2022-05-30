@@ -49,7 +49,7 @@ export default [
       {
         labelTitle: 'Fecha de vencimiento',
         labelName: 'expireDate',
-        type: 'text',
+        type: 'datepicker',
         formClassName: 'edit-icon col-md-12',
         inputClassName: 'form-control product_title',
         className: 'form-control product_title',

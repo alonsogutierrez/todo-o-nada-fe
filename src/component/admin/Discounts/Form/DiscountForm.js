@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Row } from 'reactstrap'
+import { format } from 'date-fns'
 import { Formik, Form } from 'formik'
 import PropTypes from 'prop-types'
 import { ToastContainer, toast } from 'react-toastify'
@@ -14,7 +15,7 @@ const DiscountForm = (props) => {
   const [discountData] = useState(props.discount)
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {}, [props.discount])
+  useEffect(() => {}, [])
 
   const processDiscount = async (discountFormData, code) => {
     try {
@@ -52,7 +53,8 @@ const DiscountForm = (props) => {
     formData.code = values.code
     formData.isPercentual = values.isPercentual
     formData.amount = values.amount
-    formData.expireDate = values.expireDate
+    const expireDate = format(values.expireDate, 'yyyy/MM/dd')
+    formData.expireDate = expireDate
     formData.isActive = values.isActive
 
     await processDiscount(formData, values.code)
@@ -65,7 +67,7 @@ const DiscountForm = (props) => {
       code: '',
       isPercentual: false,
       amount: '',
-      expireDate: '',
+      expireDate: new Date(),
       isActive: false,
     }
 
@@ -73,12 +75,11 @@ const DiscountForm = (props) => {
   }
 
   const getDiscountMappedFromProps = (discountData) => {
-    const { discountCouponResult } = discountData
-    if (!discountCouponResult) {
+    if (!discountData) {
       return {}
     }
     const discountMappedFromProps = {}
-    const { code, isPercentual, amount, expireDate, isActive } = discountCouponResult
+    const { code, isPercentual, amount, expireDate, isActive } = discountData
     discountMappedFromProps.code = code
     discountMappedFromProps.isPercentual = isPercentual
     discountMappedFromProps.amount = amount
@@ -165,6 +166,7 @@ export default DiscountForm
 
 DiscountForm.defaultProps = {
   discount: {},
+  fetchDiscountData: () => {},
   isEditDiscount: false,
 }
 
