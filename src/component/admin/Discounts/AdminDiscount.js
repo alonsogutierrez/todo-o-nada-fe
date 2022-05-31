@@ -66,7 +66,11 @@ const AdminDiscountList = (props) => {
               {expireDate ? (
                 <span className="price">
                   <ins>
-                    <span className="">{expireDate ? `Fecha de término: ${expireDate}` : ''}</span>
+                    <span className="">
+                      {expireDate
+                        ? `Fecha de término: ${new Date(expireDate).toLocaleDateString()}`
+                        : ''}
+                    </span>
                   </ins>
                 </span>
               ) : null}
