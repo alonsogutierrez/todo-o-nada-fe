@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const EditCategories = ({ categories }) => {
-  console.log('categories EditCategories: ', categories)
   if (categories && categories.length > 0) {
     return (
       <>

@@ -26,8 +26,6 @@ const GeneralForm = (props) => {
     } else {
       discountByCodeResponse = {}
     }
-
-    console.log('discountByCodeResponse: ', discountByCodeResponse)
     setDiscountRequest({ loading: false, data: discountByCodeResponse })
     return
   }, [])

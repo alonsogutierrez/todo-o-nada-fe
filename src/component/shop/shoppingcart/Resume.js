@@ -50,8 +50,6 @@ const Resume = ({ changeCartData, changeDiscountData, discountData }) => {
   }
   const discountDataLabel = renderDiscountData(discountData, subTotal)
 
-  console.log('Resume changeDiscountData: ', changeDiscountData)
-
   useEffect(() => {}, [isCartChanged])
 
   return (

@@ -70,7 +70,7 @@ const SearchPage = ({
       setActualProductsData(productsByCategory)
       setChangeProducts(!changeProducts)
     } catch (err) {
-      console.log('Error trying to get products by category')
+      console.error('Error trying to get products by category')
     }
     setLoading(false)
   }
@@ -83,7 +83,7 @@ const SearchPage = ({
       setActualProductsData(productsBySearch)
       setChangeProducts(!changeProducts)
     } catch (err) {
-      console.log('Error trying to get products by search')
+      console.error('Error trying to get products by search')
     }
     setLoading(false)
   }
