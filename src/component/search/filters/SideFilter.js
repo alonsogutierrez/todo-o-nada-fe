@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Scrollbars } from 'react-custom-scrollbars'
@@ -11,28 +11,28 @@ import { uniqueCategory, uniqueColors, uniqueSizes, getFilterProductsdata } from
 
 import './styles.css'
 
-class SideFilter extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      sidebarmenu: false,
-      openColorFilter: false,
-      openCategoryFilter: false,
-      openSizeFilter: false,
-    }
-    this.showfilter = this.showfilter.bind(this)
+const SideFilter = (props) => {
+  const [width, setWidth] = useState(window.innerWidth)
+  const [openAllFilters, setOpenAllFilters] = useState(width < 992 ? false : true)
+  const [openColorFilter, setOpenColorFilter] = useState(width < 992 ? false : true)
+  const [openCategoryFilter, setOpenCategoryFilter] = useState(width < 992 ? false : true)
+  const [openSizeFilter, setOpenSizeFilter] = useState(width < 992 ? false : true)
+
+  const updateDimensions = () => {
+    setWidth(window.innerWidth)
   }
 
-  componentDidMount() {}
+  useEffect(async () => {
+    window.addEventListener('resize', updateDimensions)
+    setOpenAllFilters(width < 992 ? false : true)
+    setOpenColorFilter(width < 992 ? false : true)
+    setOpenCategoryFilter(width < 992 ? false : true)
+    setOpenSizeFilter(width < 992 ? false : true)
+    window.scrollTo(0, 0)
+  }, [width])
 
-  showfilter() {
-    this.setState((prevState) => ({
-      sidebarmenu: !prevState.sidebarmenu,
-    }))
-  }
-
-  onClickColorFilter(event, colors) {
-    const { colorValue, setChangeProducts, changeProducts } = this.props
+  const onClickColorFilter = (event, colors) => {
+    const { colorValue, setChangeProducts, changeProducts } = props
     const index = colors.indexOf(event.target.value)
     if (event.target.checked) {
       colors.push(event.target.value)
@@ -43,8 +43,8 @@ class SideFilter extends Component {
     setChangeProducts(!changeProducts)
   }
 
-  onClickCategoryFilter(event, categorys) {
-    const { categoryValue, setChangeProducts, changeProducts } = this.props
+  const onClickCategoryFilter = (event, categorys) => {
+    const { categoryValue, setChangeProducts, changeProducts } = props
     const index = categorys.indexOf(event.target.value)
     if (event.target.checked) {
       categorys.push(event.target.value)
@@ -55,8 +55,8 @@ class SideFilter extends Component {
     setChangeProducts(!changeProducts)
   }
 
-  onClickSizeFilter(event, sizes) {
-    const { sizeValue, setChangeProducts, changeProducts } = this.props
+  const onClickSizeFilter = (event, sizes) => {
+    const { sizeValue, setChangeProducts, changeProducts } = props
     const index = sizes.indexOf(event.target.value)
     if (event.target.checked) {
       sizes.push(event.target.value)
@@ -67,193 +67,217 @@ class SideFilter extends Component {
     setChangeProducts(!changeProducts)
   }
 
-  clearColor() {
-    const { colorValue, setChangeProducts, changeProducts } = this.props
+  const clearColor = () => {
+    const { colorValue, setChangeProducts, changeProducts } = props
     colorValue([])
     setChangeProducts(!changeProducts)
   }
 
-  clearCategory() {
-    const { categoryValue, setChangeProducts, changeProducts } = this.props
+  const clearCategory = () => {
+    const { categoryValue, setChangeProducts, changeProducts } = props
     categoryValue([])
     setChangeProducts(!changeProducts)
   }
 
-  clearSize() {
-    const { sizeValue, setChangeProducts, changeProducts } = this.props
+  const clearSize = () => {
+    const { sizeValue, setChangeProducts, changeProducts } = props
     sizeValue([])
     setChangeProducts(!changeProducts)
   }
 
-  setOpenColorFilter(e, isOpen) {
+  const setOpenAllFiltersHandler = (e, isOpen) => {
     e.preventDefault()
-    this.setState({
-      openColorFilter: isOpen,
-    })
+    setOpenAllFilters(isOpen)
   }
 
-  setOpenCategoryFilter(e, isOpen) {
+  const setOpenColorFilterHandler = (e, isOpen) => {
     e.preventDefault()
-    this.setState({
-      openCategoryFilter: isOpen,
-    })
+    setOpenColorFilter(isOpen)
   }
 
-  setOpenSizeFilter(e, isOpen) {
+  const setOpenCategoryFilterHandler = (e, isOpen) => {
     e.preventDefault()
-    this.setState({
-      openSizeFilter: isOpen,
-    })
+    setOpenCategoryFilter(isOpen)
   }
 
-  render() {
-    const { filters, colors, categorys, sizes } = this.props
-    const sizeFilterValues = filters.size
-    const categoryFilterValues = filters.category
-    const colorsFilterValues = filters.color
+  const setOpenSizeFilterHandler = (e, isOpen) => {
+    e.preventDefault()
+    setOpenSizeFilter(isOpen)
+  }
 
-    const colorFilterMessageToggle = this.state.openColorFilter ? 'Ocultar' : 'Mostrar'
-    const colorFilterIsOpenStyle = this.state.openColorFilter
-      ? { height: '210px' }
-      : { height: '210px', display: 'none' }
+  const { filters, colors, categorys, sizes } = props
+  const sizeFilterValues = filters.size
+  const categoryFilterValues = filters.category
+  const colorsFilterValues = filters.color
 
-    const categoryFilterMessageToggle = this.state.openCategoryFilter ? 'Ocultar' : 'Mostrar'
-    const categoryFilterIsOpenStyle = this.state.openCategoryFilter
-      ? { height: '215px' }
-      : { height: '215px', display: 'none' }
+  const colorFilterMessageToggle = openColorFilter ? 'Ocultar' : 'Mostrar'
+  const colorFilterIsOpenStyle = openColorFilter
+    ? { height: '210px' }
+    : { height: '210px', display: 'none' }
 
-    const sizeFilterMessageToggle = this.state.openSizeFilter ? 'Ocultar' : 'Mostrar'
-    const sizeFilterIsOpenStyle = this.state.openSizeFilter
-      ? { height: '215px' }
-      : { height: '215px', display: 'none' }
-    return (
-      <div>
-        <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
-          <div className="d-flex align-items-center justify-content-between">
-            <h4 className="widget-title">Filtrar por color</h4>
-            <p
-              className="btn btn-solid"
-              onClick={(e) => this.setOpenColorFilter(e, !this.state.openColorFilter)}
-            >
-              {colorFilterMessageToggle}
-            </p>
-            <p>
-              <a className="price-clear-filter" onClick={() => this.clearColor()}>
-                Limpiar
-              </a>
-            </p>
+  const categoryFilterMessageToggle = openCategoryFilter ? 'Ocultar' : 'Mostrar'
+  const categoryFilterIsOpenStyle = openCategoryFilter
+    ? { height: '215px' }
+    : { height: '215px', display: 'none' }
+
+  const sizeFilterMessageToggle = openSizeFilter ? 'Ocultar' : 'Mostrar'
+  const sizeFilterIsOpenStyle = openSizeFilter
+    ? { height: '215px' }
+    : { height: '215px', display: 'none' }
+  return (
+    <div>
+      {openAllFilters ? (
+        <>
+          <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
+            <div className="d-flex align-items-center justify-content-between">
+              <h4 className="widget-title">Ocultar los filtros</h4>
+              <p
+                className="btn btn-solid"
+                onClick={(e) => setOpenAllFiltersHandler(e, !openAllFilters)}
+              >
+                {' - '}
+              </p>
+            </div>
           </div>
+          <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
+            <div className="d-flex align-items-center justify-content-between">
+              <h4 className="widget-title">Filtrar por color</h4>
+              <p
+                className="btn btn-solid"
+                onClick={(e) => setOpenColorFilterHandler(e, !openColorFilter)}
+              >
+                {colorFilterMessageToggle}
+              </p>
+              <p>
+                <a className="price-clear-filter" onClick={() => clearColor()}>
+                  Limpiar
+                </a>
+              </p>
+            </div>
 
-          <div
-            className="pgs-widget-layered-nav-list-container has-scrollbar"
-            style={colorFilterIsOpenStyle}
-          >
-            <Scrollbars>
-              <ul className="pgs-widget-layered-nav-list" tabIndex={0} style={{ right: '-17px' }}>
-                {colors.map((color, index) => {
+            <div
+              className="pgs-widget-layered-nav-list-container has-scrollbar"
+              style={colorFilterIsOpenStyle}
+            >
+              <Scrollbars>
+                <ul className="pgs-widget-layered-nav-list" tabIndex={0} style={{ right: '-17px' }}>
+                  {colors.map((color, index) => {
+                    return (
+                      <div className="form-check pgs-filter-checkbox" key={index}>
+                        <input
+                          type="checkbox"
+                          onClick={(e) => onClickColorFilter(e, colorsFilterValues)}
+                          value={color}
+                          checked={colorsFilterValues.includes(color)}
+                          className="form-check-input"
+                          id={color}
+                        />
+                        <label className="form-check-label" htmlFor={color}>
+                          {color}
+                        </label>
+                      </div>
+                    )
+                  })}
+                </ul>
+              </Scrollbars>
+            </div>
+          </div>
+          <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
+            <div className="d-flex align-items-center justify-content-between">
+              <h4 className="widget-title">Filtrar por categoria</h4>
+              <p
+                className="btn btn-solid"
+                onClick={(e) => setOpenCategoryFilterHandler(e, !openCategoryFilter)}
+              >
+                {categoryFilterMessageToggle}
+              </p>
+              <p>
+                <a className="price-clear-filter" onClick={() => clearCategory()}>
+                  Limpiar
+                </a>
+              </p>
+            </div>
+            <div
+              className="pgs-widget-layered-nav-list-container has-scrollbar"
+              style={categoryFilterIsOpenStyle}
+            >
+              <Scrollbars>
+                {categorys.map((category, index) => {
                   return (
                     <div className="form-check pgs-filter-checkbox" key={index}>
                       <input
                         type="checkbox"
-                        onClick={(e) => this.onClickColorFilter(e, colorsFilterValues)}
-                        value={color}
-                        checked={colorsFilterValues.includes(color)}
+                        onClick={(e) => onClickCategoryFilter(e, categoryFilterValues)}
+                        value={category}
+                        checked={categoryFilterValues.includes(category)}
                         className="form-check-input"
-                        id={color}
+                        id={category}
                       />
-                      <label className="form-check-label" htmlFor={color}>
-                        {color}
+                      <label className="form-check-label" htmlFor={category}>
+                        {category}
                       </label>
                     </div>
                   )
                 })}
-              </ul>
-            </Scrollbars>
+              </Scrollbars>
+            </div>
           </div>
-        </div>
+          <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
+            <div className="d-flex align-items-center justify-content-between">
+              <h4 className="widget-title">Filtrar por tamaño</h4>
+              <p
+                className="btn btn-solid"
+                onClick={(e) => setOpenSizeFilterHandler(e, !openSizeFilter)}
+              >
+                {sizeFilterMessageToggle}
+              </p>
+              <p>
+                <a className="price-clear-filter" onClick={() => clearSize()}>
+                  Limpiar
+                </a>
+              </p>
+            </div>
+            <div
+              className="pgs-widget-layered-nav-list-container has-scrollbar"
+              style={sizeFilterIsOpenStyle}
+            >
+              <Scrollbars>
+                {sizes.map((size, index) => {
+                  return (
+                    <div key={index} className="form-check pgs-filter-checkbox">
+                      <input
+                        type="checkbox"
+                        onClick={(e) => onClickSizeFilter(e, sizeFilterValues)}
+                        value={size}
+                        checked={sizeFilterValues.includes(size)}
+                        className="form-check-input"
+                        id={size}
+                      />
+                      <label className="form-check-label" htmlFor={size}>
+                        {size}
+                      </label>
+                    </div>
+                  )
+                })}
+              </Scrollbars>
+            </div>
+          </div>
+        </>
+      ) : (
         <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
           <div className="d-flex align-items-center justify-content-between">
-            <h4 className="widget-title">Filtrar por categoria</h4>
+            <h4 className="widget-title">Mostrar los filtros</h4>
             <p
               className="btn btn-solid"
-              onClick={(e) => this.setOpenCategoryFilter(e, !this.state.openCategoryFilter)}
+              onClick={(e) => setOpenAllFiltersHandler(e, !openAllFilters)}
             >
-              {categoryFilterMessageToggle}
+              {' + '}
             </p>
-            <p>
-              <a className="price-clear-filter" onClick={() => this.clearCategory()}>
-                Limpiar
-              </a>
-            </p>
-          </div>
-          <div
-            className="pgs-widget-layered-nav-list-container has-scrollbar"
-            style={categoryFilterIsOpenStyle}
-          >
-            <Scrollbars>
-              {categorys.map((category, index) => {
-                return (
-                  <div className="form-check pgs-filter-checkbox" key={index}>
-                    <input
-                      type="checkbox"
-                      onClick={(e) => this.onClickCategoryFilter(e, categoryFilterValues)}
-                      value={category}
-                      checked={categoryFilterValues.includes(category)}
-                      className="form-check-input"
-                      id={category}
-                    />
-                    <label className="form-check-label" htmlFor={category}>
-                      {category}
-                    </label>
-                  </div>
-                )
-              })}
-            </Scrollbars>
           </div>
         </div>
-        <div className="widget widget_layered_nav widget-layered-nav pgs_widget-layered-nav">
-          <div className="d-flex align-items-center justify-content-between">
-            <h4 className="widget-title">Filtrar por tamaño</h4>
-            <p
-              className="btn btn-solid"
-              onClick={(e) => this.setOpenSizeFilter(e, !this.state.openSizeFilter)}
-            >
-              {sizeFilterMessageToggle}
-            </p>
-            <p>
-              <a className="price-clear-filter" onClick={() => this.clearSize()}>
-                Limpiar
-              </a>
-            </p>
-          </div>
-          <div
-            className="pgs-widget-layered-nav-list-container has-scrollbar"
-            style={sizeFilterIsOpenStyle}
-          >
-            <Scrollbars>
-              {sizes.map((size, index) => {
-                return (
-                  <div key={index} className="form-check pgs-filter-checkbox">
-                    <input
-                      type="checkbox"
-                      onClick={(e) => this.onClickSizeFilter(e, sizeFilterValues)}
-                      value={size}
-                      checked={sizeFilterValues.includes(size)}
-                      className="form-check-input"
-                      id={size}
-                    />
-                    <label className="form-check-label" htmlFor={size}>
-                      {size}
-                    </label>
-                  </div>
-                )
-              })}
-            </Scrollbars>
-          </div>
-        </div>
-      </div>
-    )
-  }
+      )}
+    </div>
+  )
 }
 
 const mapStateToProps = (state) => ({
