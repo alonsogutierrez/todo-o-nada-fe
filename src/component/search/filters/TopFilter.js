@@ -29,7 +29,6 @@ class TopFilter extends Component {
       }
     } else {
       const querySelector = document.querySelector('.grid-3-column')
-      console.log('querySelector: ', querySelector)
       if (querySelector) {
         querySelector.classList.add('active')
       }

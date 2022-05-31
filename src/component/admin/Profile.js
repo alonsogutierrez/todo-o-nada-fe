@@ -32,7 +32,7 @@ class Profile extends Component {
         userProfileData: profileInfoResponse.user[0],
       })
     } catch (err) {
-      console.log('Error trying to get profile info')
+      console.error('Error trying to get profile info')
       this.setState({
         userProfileData: {},
       })
