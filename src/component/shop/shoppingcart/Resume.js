@@ -7,6 +7,7 @@ import { Table } from 'reactstrap'
 
 const Resume = ({ changeCartData, changeDiscountData, discountData }) => {
   const [isCartChanged] = useState(changeCartData)
+  const [isDiscountChanged] = useState(changeDiscountData)
 
   const cartItems = JSON.parse(localStorage.getItem('LocalCartItems'))
   const subTotal = cartItems.reduce(
@@ -50,7 +51,7 @@ const Resume = ({ changeCartData, changeDiscountData, discountData }) => {
   }
   const discountDataLabel = renderDiscountData(discountData, subTotal)
 
-  useEffect(() => {}, [isCartChanged])
+  useEffect(() => {}, [isCartChanged, isDiscountChanged])
 
   return (
     <div className="cart-collaterals col-xl-4">
