@@ -64,6 +64,7 @@ const AddressForm = ({ setFormValues, errorsForm, flagScrollErrorsView, dispatch
   }
 
   const handleInputDNI = (dniInput) => {
+    //TODO: add rut validation
     setDni(dniInput)
     setUserFormData({
       ...userFormData,

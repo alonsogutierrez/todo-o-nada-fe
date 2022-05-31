@@ -59,22 +59,25 @@ class CheckOut extends Component {
       const formValidation = this.handleValidation(dispatchType)
       if (formValidation) {
         const { clientAPI, formValues } = this.state
-        const { setOrderData, setChangeCart, changeCart, dispatchType } = this.props
+        const { setOrderData, setChangeCart, changeCart, dispatchType, discountData } = this.props
         const cartItems = localStorage.getItem('LocalCartItems')
         localStorage.setItem('finalCheckoutCartItems', cartItems)
         const cartItemsParsed = JSON.parse(cartItems)
         try {
-          const orderDataToSave = orderCreator(cartItemsParsed, formValues, dispatchType)
-          console.log('orderDataToSave: ', orderDataToSave)
+          const orderDataToSave = orderCreator(
+            cartItemsParsed,
+            formValues,
+            dispatchType,
+            discountData
+          )
           const orderDataSaved = await clientAPI.createOrder(orderDataToSave)
           setOrderData(orderDataSaved)
           localStorage.removeItem('LocalCartItems')
-          console.log('Order well saved: ', orderDataSaved)
           setChangeCart(!changeCart)
           window.location.replace(orderDataSaved.redirect_to)
         } catch (e) {
           this.setState({ loading: false })
-          console.log('Can`t createOrder: ', e)
+          console.error('Can`t createOrder: ', e)
         }
       } else {
         this.setState({ loading: false })
@@ -157,6 +160,7 @@ class CheckOut extends Component {
 const mapStateToProps = (state) => ({
   changeCart: state.changeCartDataReducer.changeCartData,
   dispatchType: state.dispatchTypeDataReducer.dispatchTypeData,
+  discountData: state.discountDataReducer.discountData,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -172,6 +176,7 @@ CheckOut.defaultProps = {
   history: {},
   changeCart: false,
   dispatchType: '',
+  discountData: {},
   setChangeCart: () => {},
   setErrorsForm: () => {},
   setUserData: () => {},
@@ -182,6 +187,7 @@ CheckOut.propTypes = {
   history: PropTypes.object,
   changeCart: PropTypes.bool,
   dispatchType: PropTypes.string,
+  discountData: PropTypes.object,
   setChangeCart: PropTypes.func,
   setErrorsForm: PropTypes.func,
   setUserData: PropTypes.func,

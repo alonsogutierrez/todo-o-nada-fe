@@ -9,6 +9,8 @@ import { toast, ToastContainer } from 'react-toastify'
 
 import ClientAPI from '../../../common/ClientAPI'
 import setChangeCartData from '../../../actions/setChangeCartData'
+import Resume from './Resume'
+import DiscountCouponForm from './DiscountCouponForm'
 
 const ShopingCart = (props) => {
   const readCartItems = () => {
@@ -107,147 +109,100 @@ const ShopingCart = (props) => {
         <div className="content-wrapper section-ptb">
           <Container>
             {cartItems ? (
-              <Row>
-                <Col xl={8}>
-                  <div className="table-responsive">
-                    <Table className="cart-table">
-                      <thead>
-                        <tr>
-                          <th clas="product-remove"></th>
-                          <th className="product-thumbnail"></th>
-                          <th className="product-name">
-                            <span className="nobr">Producto</span>
-                          </th>
-                          <th className="product-price">
-                            <span className="nobr">Precio</span>
-                          </th>
-                          <th className="product-stock-status">Cantidad</th>
-                          <th className="product-subtotal">Total</th>
-                        </tr>
-
-                        {cartItems.map((cartItem, index) => (
-                          <tr key={index}>
-                            <td className="product-remove">
-                              <Link onClick={() => removeFromCart(index)} className="remove"></Link>
-                            </td>
-                            <td className="product-thumbnail">
-                              <Link to="#">
-                                <img src={cartItem.picture} alt="product" />
-                              </Link>
-                            </td>
-                            <td className="product-name">
-                              {cartItem.productName} - {cartItem.size}
-                            </td>
-                            <td className="product-price">
-                              $
-                              {cartItem.price.toLocaleString(navigator.language, {
-                                minimumFractionDigits: 0,
-                              })}
-                            </td>
-                            <td className="product-quantity">
-                              <div className="quantity">
-                                <label
-                                  className="screen-reader-text"
-                                  htmlFor="quantity_5cd96a418e8ad"
-                                >
-                                  Cantidad
-                                </label>
-                                <input
-                                  type="text"
-                                  className="input-text qty text"
-                                  value={cartItem.quantity}
-                                  title="Qty"
-                                />
-                                <div className="quantity-nav">
-                                  <Link
-                                    className="quantity-button quantity-up"
-                                    onClick={() => plusQty(index)}
-                                  >
-                                    +
-                                  </Link>
-                                  <Link
-                                    className="quantity-button quantity-down"
-                                    onClick={() => minusQty(index)}
-                                  >
-                                    -
-                                  </Link>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="product-subtotal">
-                              $
-                              {(Number(cartItem.price) * Number(cartItem.quantity)).toLocaleString(
-                                navigator.language,
-                                {
-                                  minimumFractionDigits: 0,
-                                }
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </thead>
-                    </Table>
-                  </div>
-                </Col>
-                <div className="cart-collaterals col-xl-4">
-                  <div className="cart_totals ">
-                    <h2>Resumen</h2>
+              <>
+                <Row>
+                  <Col xl={8}>
                     <div className="table-responsive">
-                      <Table cellspacing="0" className="shop_table shop_table_responsive">
-                        <tbody>
-                          <tr className="cart-subtotal">
-                            <th>Subtotal</th>
-                            <td data-title="Subtotal">
-                              <span className="woocs_special_price_code">
-                                <span className="Price-amount amount">
-                                  <span className="Price-currencySymbol">$</span>{' '}
-                                  {cartItems
-                                    .reduce(
-                                      (fr, cartItem) =>
-                                        fr + Number(cartItem.quantity) * Number(cartItem.price),
-                                      0
-                                    )
-                                    .toLocaleString(navigator.language, {
-                                      minimumFractionDigits: 0,
-                                    })}{' '}
-                                </span>
-                              </span>
-                            </td>
+                      <Table className="cart-table">
+                        <thead>
+                          <tr>
+                            <th clas="product-remove"></th>
+                            <th className="product-thumbnail"></th>
+                            <th className="product-name">
+                              <span className="nobr">Producto</span>
+                            </th>
+                            <th className="product-price">
+                              <span className="nobr">Precio</span>
+                            </th>
+                            <th className="product-stock-status">Cantidad</th>
+                            <th className="product-subtotal">Total</th>
                           </tr>
-                          <tr className="order-total">
-                            <th>Total</th>
-                            <td data-title="Total">
-                              <strong>
-                                <span className="special_price_code">
-                                  <span className="Price-amount amount">
-                                    <span className="Price-currencySymbol">$</span>{' '}
-                                    {parseFloat(
-                                      parseFloat(
-                                        cartItems.reduce(
-                                          (fr, cartItem) =>
-                                            fr + Number(cartItem.quantity) * Number(cartItem.price),
-                                          0
-                                        )
-                                      )
-                                    ).toLocaleString(navigator.language, {
-                                      minimumFractionDigits: 0,
-                                    })}{' '}
-                                  </span>
-                                </span>
-                              </strong>
-                            </td>
-                          </tr>
-                        </tbody>
+
+                          {cartItems.map((cartItem, index) => (
+                            <tr key={index}>
+                              <td className="product-remove">
+                                <Link
+                                  onClick={() => removeFromCart(index)}
+                                  className="remove"
+                                ></Link>
+                              </td>
+                              <td className="product-thumbnail">
+                                <Link to="#">
+                                  <img src={cartItem.picture} alt="product" />
+                                </Link>
+                              </td>
+                              <td className="product-name">
+                                {cartItem.productName} - {cartItem.size}
+                              </td>
+                              <td className="product-price">
+                                $
+                                {cartItem.price.toLocaleString(navigator.language, {
+                                  minimumFractionDigits: 0,
+                                })}
+                              </td>
+                              <td className="product-quantity">
+                                <div className="quantity">
+                                  <label
+                                    className="screen-reader-text"
+                                    htmlFor="quantity_5cd96a418e8ad"
+                                  >
+                                    Cantidad
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="input-text qty text"
+                                    value={cartItem.quantity}
+                                    title="Qty"
+                                  />
+                                  <div className="quantity-nav">
+                                    <Link
+                                      className="quantity-button quantity-up"
+                                      onClick={() => plusQty(index)}
+                                    >
+                                      +
+                                    </Link>
+                                    <Link
+                                      className="quantity-button quantity-down"
+                                      onClick={() => minusQty(index)}
+                                    >
+                                      -
+                                    </Link>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="product-subtotal">
+                                $
+                                {(
+                                  Number(cartItem.price) * Number(cartItem.quantity)
+                                ).toLocaleString(navigator.language, {
+                                  minimumFractionDigits: 0,
+                                })}
+                              </td>
+                            </tr>
+                          ))}
+                        </thead>
                       </Table>
                     </div>
-                    <div className="proceed-to-checkout">
-                      <Link to="/checkout" className="checkout-button button">
-                        Ir al checkout
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </Row>
+                  </Col>
+                  <Resume />
+                </Row>
+                <Row>
+                  <Col xl={8}></Col>
+                  <Col xl={4}>
+                    <DiscountCouponForm cartItems={cartItems} />
+                  </Col>
+                </Row>
+              </>
             ) : (
               <div className="wishlist-not-found">
                 <img

@@ -478,11 +478,6 @@ const GeneralInfo = (props) => {
                 <div className="summary entry-summary">
                   <h1 className="product_title entry-title">{product.name}</h1>
                   <p className="price">{`${formatNumberToView(product.price.basePriceSales)}`}</p>
-                  <div className="product-details__short-description">
-                    <div className="pdp-about-details-txt pdp-about-details-equit">
-                      {product.description}
-                    </div>
-                  </div>
                   <form className="cart">
                     <div className="quantity">
                       <label className="screen-reader-text" htmlFor="quantity_5cdab503cf26f">

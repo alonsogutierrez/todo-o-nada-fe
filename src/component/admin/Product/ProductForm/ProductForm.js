@@ -244,8 +244,13 @@ const ProductForm = (props) => {
                     <div className="summary entry-summary">
                       <Formik
                         initialValues={product}
+                        validateOnChange={false}
+                        validateOnBlur={false}
                         validate={(values) => getFormErrors(values)}
-                        onSubmit={async (values) => await onSubmitHandler(values)}
+                        onSubmit={async (values, { validate }) => {
+                          validate(values)
+                          await onSubmitHandler(values)
+                        }}
                       >
                         {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => {
                           return (

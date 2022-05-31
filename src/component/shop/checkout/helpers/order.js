@@ -57,15 +57,24 @@ const getUserInfo = (data, dispatchType) => {
   }
 }
 
-const orderCreator = (cartItems, formValues, dispatchType) => {
+const orderCreator = (cartItems, formValues, dispatchType, discountData) => {
   const productsInfo = getProductsInfo(cartItems)
   const userInfo = getUserInfo(formValues, dispatchType)
+
+  let discountCode = ''
+  if (discountData && Object.keys(discountData).length > 0 && discountData.isValid) {
+    discountCode = discountData.code
+  }
+
   const orderDataToSave = {
     products: productsInfo,
     paymentData: {
       user: userInfo,
     },
     dispatchData: dispatchType,
+    discounts: {
+      code: discountCode,
+    },
   }
   return orderDataToSave
 }

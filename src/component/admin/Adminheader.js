@@ -166,6 +166,30 @@ const AdminHeader = (props) => {
                       </DropdownMenu>
                     </UncontrolledDropdown>
                   )}
+                  <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle nav caret>
+                      <i className="fa fa-inbox"></i>Descuentos
+                    </DropdownToggle>
+                    <DropdownMenu left>
+                      <DropdownItem
+                        onClick={() => changeClass('discount')}
+                        className="nav-link"
+                        tag={Link}
+                        to="/admin-dashboard/discounts"
+                      >
+                        <i className="fa fa-cart-plus"></i>Descuentos
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={() => changeClass('discount')}
+                        className="nav-link"
+                        tag={Link}
+                        to="/admin-dashboard/discount-add"
+                      >
+                        <i className="fa fa-cart-arrow-down"></i>Crear Cupon
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+
                   <NavItem className="profile">
                     <Link
                       to="/admin-dashboard/profile"
