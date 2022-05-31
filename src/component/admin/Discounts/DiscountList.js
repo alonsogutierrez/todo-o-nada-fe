@@ -123,8 +123,8 @@ const DiscountList = () => {
                   <Tabs>
                     <TabList>
                       <Tab>Lista de descuentos</Tab>
-                      <Tab>Cargar descuentos</Tab>
-                      <Tab>Descargas</Tab>
+                      {/* <Tab>Cargar descuentos</Tab>
+                      <Tab>Descargas</Tab> */}
                     </TabList>
 
                     <TabPanel>
