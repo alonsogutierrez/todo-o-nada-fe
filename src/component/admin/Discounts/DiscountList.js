@@ -5,8 +5,8 @@ import Loader from 'react-loader-spinner'
 
 import Pagination from '../../../services/Pagination'
 import AdminDiscount from './AdminDiscount'
-import UploadProducts from './UploadDiscounts'
-import DownloadProducts from './DownloadDiscounts'
+// import UploadProducts from './UploadDiscounts'
+// import DownloadProducts from './DownloadDiscounts'
 import DiscountAPI from '../../../common/DiscountAPI'
 
 const DiscountList = () => {
@@ -199,7 +199,7 @@ const DiscountList = () => {
                         </div>
                       </>
                     </TabPanel>
-                    <TabPanel>
+                    {/* TODO: Add this sections:  <TabPanel>
                       <div className="row mt-mb-0">
                         <h4>Cargar descuentos desde planilla Excel</h4>
                         <UploadProducts />
@@ -208,7 +208,7 @@ const DiscountList = () => {
                     <TabPanel>
                       <h3>Descargas de descuentos</h3>
                       <DownloadProducts />
-                    </TabPanel>
+                    </TabPanel> */}
                   </Tabs>
                 </Col>
               </>
