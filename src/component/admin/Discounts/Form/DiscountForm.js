@@ -22,8 +22,8 @@ const DiscountForm = (props) => {
       const discountAPI = new DiscountAPI()
       setLoading(true)
       await discountAPI.createDiscount(discountFormData)
-      setLoading(false)
       toast.success('Descuento procesado exitosamente')
+      setLoading(false)
       if (props.isEditDiscount) {
         await props.fetchDiscountData(code)
       }
@@ -45,6 +45,13 @@ const DiscountForm = (props) => {
     if (!formValues.expireDate) {
       errors.expireDate = 'Fecha de vencimiento requerido'
     }
+    if (formValues.isPercentual) {
+      const isValidPercentualValue =
+        parseInt(formValues.amount) > 0 && parseInt(formValues.amount) <= 99
+      if (!isValidPercentualValue) {
+        errors.amount = 'El porcentaje de descuento debe ser en 1 y 99'
+      }
+    }
     return errors
   }
 
@@ -52,8 +59,8 @@ const DiscountForm = (props) => {
     let formData = {}
     formData.code = values.code
     formData.isPercentual = values.isPercentual
-    formData.amount = values.amount
-    const expireDate = format(values.expireDate, 'yyyy/MM/dd')
+    formData.amount = parseInt(values.amount)
+    const expireDate = format(new Date(values.expireDate), 'yyyy/MM/dd')
     formData.expireDate = expireDate
     formData.isActive = values.isActive
 
@@ -66,7 +73,7 @@ const DiscountForm = (props) => {
     const discountMapped = {
       code: '',
       isPercentual: false,
-      amount: '',
+      amount: 0,
       expireDate: new Date(),
       isActive: false,
     }
