@@ -44,7 +44,7 @@ const OrderResume = ({ changeCartData, discountData }) => {
     if (discount && Object.keys(discount).length > 0 && discount.isValid && subTotal) {
       let totalDiscount = 0
       if (discount.isPercentual) {
-        totalDiscount = parseInt(Math.ceil(subTotal * discountData.amount))
+        totalDiscount = parseInt(Math.ceil(subTotal * (discountData.amount / 100)))
       } else {
         totalDiscount = discount.amount
       }

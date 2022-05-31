@@ -8,8 +8,8 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
   const { orderNumber, paymentData, products, createdAt, dispatchData } = orderData
   const createdDate = new Date(createdAt).toLocaleDateString('es-CL')
 
-  const getOrderTotal = (products, totalShippingCarge) => {
-    return getOrderSubTotal(products) + parseInt(totalShippingCarge, 10)
+  const getOrderTotal = (products, totalShippingCarge, totalDiscount) => {
+    return getOrderSubTotal(products) + parseInt(totalShippingCarge, 10) - totalDiscount
   }
 
   const getOrderSubTotal = (products) => {
@@ -35,6 +35,15 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
   }
   const userData = user
   const isHomeDelivery = dispatchData && dispatchData === 'HOME_DELIVERY'
+  const totalDiscount =
+    paymentData &&
+    Object.keys(paymentData).length > 0 &&
+    paymentData.transaction &&
+    Object.keys(paymentData.transaction).length > 0 &&
+    paymentData.transaction.discount
+      ? paymentData.transaction.discount
+      : 0
+  const isDiscountValid = totalDiscount > 0
 
   return (
     <div className="success-screen">
@@ -96,7 +105,15 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
                 </li>
                 <li>
                   <span>Totales orden:</span>{' '}
-                  <strong>${getOrderTotal(products, totalShippingCarge)} </strong>
+                  <strong>
+                    $
+                    {getOrderTotal(products, totalShippingCarge, totalDiscount).toLocaleString(
+                      navigator.language,
+                      {
+                        minimumFractionDigits: 0,
+                      }
+                    )}{' '}
+                  </strong>
                 </li>
               </ul>
             </Col>
@@ -162,10 +179,25 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
                     <td className="text-right">Despacho por pagar</td>
                   ) : (
                     <td className="text-right">
-                      ${parseFloat(totalShippingCarge)} (Retiro en tienda)
+                      $
+                      {parseFloat(totalShippingCarge).toLocaleString(navigator.language, {
+                        minimumFractionDigits: 0,
+                      })}{' '}
+                      (Retiro en tienda)
                     </td>
                   )}
                 </tr>
+                {isDiscountValid ? (
+                  <tr>
+                    <td>Discount</td>
+                    <td className="text-right">
+                      $
+                      {parseFloat(totalDiscount).toLocaleString(navigator.language, {
+                        minimumFractionDigits: 0,
+                      })}
+                    </td>
+                  </tr>
+                ) : null}
                 <tr className="border-top">
                   <td>
                     <strong className="h5">Total</strong>
@@ -173,7 +205,7 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
                   <td className="text-right h5">
                     <strong>
                       $
-                      {getOrderTotal(products, totalShippingCarge).toLocaleString(
+                      {getOrderTotal(products, totalShippingCarge, totalDiscount).toLocaleString(
                         navigator.language,
                         {
                           minimumFractionDigits: 0,

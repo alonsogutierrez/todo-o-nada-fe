@@ -36,7 +36,10 @@ const Resume = ({ changeCartData, changeDiscountData, discountData }) => {
           <td data-title="Subtotal">
             <span className="woocs_special_price_code">
               <span className="Price-amount amount">
-                <span className="Price-currencySymbol">$</span> {totalDiscount}{' '}
+                <span className="Price-currencySymbol">$</span>{' '}
+                {totalDiscount.toLocaleString(navigator.language, {
+                  minimumFractionDigits: 0,
+                })}{' '}
               </span>
             </span>
           </td>
