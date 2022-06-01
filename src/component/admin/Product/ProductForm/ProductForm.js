@@ -247,8 +247,7 @@ const ProductForm = (props) => {
                         validateOnChange={false}
                         validateOnBlur={false}
                         validate={(values) => getFormErrors(values)}
-                        onSubmit={async (values, { validate }) => {
-                          validate(values)
+                        onSubmit={async (values) => {
                           await onSubmitHandler(values)
                         }}
                       >
