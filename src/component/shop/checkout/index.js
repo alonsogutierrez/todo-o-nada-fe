@@ -70,14 +70,27 @@ class CheckOut extends Component {
             dispatchType,
             discountData
           )
-          const orderDataSaved = await clientAPI.createOrder(orderDataToSave)
-          setOrderData(orderDataSaved)
-          localStorage.removeItem('LocalCartItems')
-          setChangeCart(!changeCart)
-          window.location.replace(orderDataSaved.redirect_to)
+          let orderDataSaved = {}
+          try {
+            orderDataSaved = await clientAPI.createOrder(orderDataToSave)
+            setOrderData(orderDataSaved)
+            localStorage.removeItem('LocalCartItems')
+            setChangeCart(!changeCart)
+            window.location.replace(orderDataSaved.redirect_to)
+          } catch (err) {
+            if (err.message == 'Request failed with status code 400') {
+              this.setState({ loading: false })
+              let errors = {}
+              errors['email'] = 'Ingresa un correo que exista por favor'
+              const { setErrorsForm } = this.props
+              setErrorsForm(errors)
+              this.setState({ flagScrollErrors: true })
+            } else {
+              throw new Error('Cant create order in payment api')
+            }
+          }
         } catch (e) {
           this.setState({ loading: false })
-          console.error('Can`t createOrder: ', e)
         }
       } else {
         this.setState({ loading: false })
