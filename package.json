@@ -5,7 +5,7 @@
   "homepage": "https://todoonadatattooart.cl/",
   "dependencies": {
     "antd": "^3.26.5",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "bootstrap": "^4.3.1",
     "date-fns": "^2.16.1",
     "fetch-instagram": "^1.0.0-alpha.3",
@@ -19,7 +19,7 @@
     "react-app-polyfill": "^1.0.6",
     "react-custom-scrollbars": "^4.2.1",
     "react-datepicker": "^3.4.1",
-    "react-dev-utils": "^9.0.1",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "17.0.2",
     "react-ga": "^3.3.0",
     "react-hot-loader": "^4.12.21",
