@@ -396,13 +396,28 @@ const GeneralInfo = (props) => {
     }
   }
 
+  const getDiscountPercentage = (priceSales, pricesReference) => {
+    return 100 - parseInt((100 * priceSales) / pricesReference)
+  }
+
   useEffect(() => {
     setActualQuantity(sku)
   }, [size, sku])
 
   const { product } = props
-  const { itemNumber } = product
+  const { itemNumber, price } = product
+  const { basePriceReference, basePriceSales } = price
+  const discountPercentage = getDiscountPercentage(basePriceSales, basePriceReference)
   const subProducts = configSubProduct(product)
+  const discountPriceStyle = {
+    color: 'gray',
+    textDecoration: 'line-through',
+  }
+
+  const titleDiscountStyle = {
+    color: '#fb7633',
+    fontWeight: 'bold',
+  }
 
   return (
     <>
@@ -476,8 +491,20 @@ const GeneralInfo = (props) => {
             <div className="product-top-right col-xl-7 col-md-6">
               <div className="product-top-right-inner">
                 <div className="summary entry-summary">
+                  {discountPercentage > 0 ? (
+                    <p style={titleDiscountStyle}>{`Oferta - ${discountPercentage}% descuento`}</p>
+                  ) : (
+                    <></>
+                  )}
                   <h1 className="product_title entry-title">{product.name}</h1>
-                  <p className="price">{`${formatNumberToView(product.price.basePriceSales)}`}</p>
+                  {basePriceReference > basePriceSales ? (
+                    <p className="price" style={discountPriceStyle}>{`${formatNumberToView(
+                      basePriceReference
+                    )}`}</p>
+                  ) : (
+                    <></>
+                  )}
+                  <p className="price">{`${formatNumberToView(basePriceSales)}`}</p>
                   <form className="cart">
                     <div className="quantity">
                       <label className="screen-reader-text" htmlFor="quantity_5cdab503cf26f">
