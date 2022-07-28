@@ -10,6 +10,22 @@ const ProductInfo = ({ product }) => {
   for (const sku in details) {
     if (parseInt(details[sku].quantity, 10) > 0) isProductWithStockAvailable = true
   }
+
+  const getDiscountPercentage = (priceSales, pricesReference) => {
+    return 100 - parseInt((100 * priceSales) / pricesReference)
+  }
+  const { basePriceReference, basePriceSales } = price
+  const discountPercentage = getDiscountPercentage(basePriceSales, basePriceReference)
+  const titleDiscountStyle = {
+    color: '#fb7633',
+    fontWeight: 'bold',
+  }
+
+  const discountPriceStyle = {
+    color: 'gray',
+    textDecoration: 'line-through',
+  }
+
   return (
     <>
       <div className="product product_tag-black product-hover-style-default product-hover-button-style-dark product_title_type-single_line product_icon_type-line-icon">
@@ -45,6 +61,24 @@ const ProductInfo = ({ product }) => {
                 <Link to={`/product/${itemNumber}`}>{name}</Link>
               </h3>
             )}
+            {discountPercentage > 0 && (
+              <p style={titleDiscountStyle}>{`Oferta - ${discountPercentage}% descuento`} </p>
+            )}
+
+            <div className="product-rating-price">
+              {basePriceReference > productPrice && (
+                <span className="price">
+                  <ins>
+                    <span className="price-amount amount" style={discountPriceStyle}>
+                      <span className="currency-symbol">$</span>
+                      {basePriceReference.toLocaleString(navigator.language, {
+                        minimumFractionDigits: 0,
+                      })}
+                    </span>
+                  </ins>
+                </span>
+              )}
+            </div>
             <div className="product-rating-price">
               {productPrice && (
                 <span className="price">
