@@ -17,8 +17,6 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap'
 import PropTypes from 'prop-types'
-
-import Common from '../../api/common'
 import profileImg from '../../assets/images/testimonials/img-02.jpg'
 
 const AdminHeader = (props) => {
@@ -62,7 +60,11 @@ const AdminHeader = (props) => {
     props.history.push('/')
   }
 
-  const Profile = Common['0']['profile']
+  const profileData = {
+    firstName: 'Name',
+    lastName: 'Lastname',
+    email: 'todo@ton.cl',
+  }
   return (
     <div className="admin-menu">
       <Container>
@@ -77,8 +79,8 @@ const AdminHeader = (props) => {
                     alt="profile"
                   />
                   <div className="d-none d-sm-block">
-                    <h6 className="mb-0">{Profile.firstname + ' ' + Profile.lastname}</h6>
-                    <span className="text-dark">{Profile.email}</span>
+                    <h6 className="mb-0">{profileData.firstName + ' ' + profileData.lastName}</h6>
+                    <span className="text-dark">{profileData.email}</span>
                   </div>
                 </DropdownToggle>
                 <DropdownMenu>

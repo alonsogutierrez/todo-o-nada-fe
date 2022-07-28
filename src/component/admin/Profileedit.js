@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react'
 import { Button, Col, Container, Row } from 'reactstrap'
-import Common from '../../api/common'
 import AdminProfileDetail from './AdminProfileDetail'
 import Adminsitebar from './Adminsitebar'
 
@@ -11,7 +10,14 @@ class Profileedit extends Component {
   constructor() {
     super()
     this.state = {
-      fieldvalue: Common['0']['profile'],
+      fieldvalue: {
+        firstName: 'Name',
+        lastName: 'Lastname',
+        email: 'todo@ton.cl',
+        dob: '',
+        address: '',
+        phoneno: '',
+      },
       errors: {},
     }
   }
@@ -110,6 +116,7 @@ class Profileedit extends Component {
   }
 
   render() {
+    const { firstName, lastName, email, gender, dob, phoneno, address } = this.state.fieldvalue
     return (
       <div className="section-ptb">
         <Container>
@@ -130,7 +137,7 @@ class Profileedit extends Component {
                           <input
                             type="text"
                             className="form-control"
-                            value={this.state.fieldvalue.firstname}
+                            value={firstName}
                             onChange={this.handleChange.bind(this, 'firstname')}
                             placeholder="First name"
                           />
@@ -141,7 +148,7 @@ class Profileedit extends Component {
                           <input
                             type="text"
                             className="form-control"
-                            value={this.state.fieldvalue.lastname}
+                            value={lastName}
                             onChange={this.handleChange.bind(this, 'lastname')}
                             placeholder="Last name"
                           ></input>
@@ -157,7 +164,7 @@ class Profileedit extends Component {
                               className="custom-control-input"
                               value="Male"
                               onChange={this.handleChange.bind(this, 'gender')}
-                              checked={this.state.fieldvalue.gender === 'Male'}
+                              checked={gender === 'Male'}
                             ></input>
                             <label className="custom-control-label" htmlFor="male">
                               Male
@@ -171,7 +178,7 @@ class Profileedit extends Component {
                               className="custom-control-input"
                               value="Female"
                               onChange={this.handleChange.bind(this, 'gender')}
-                              checked={this.state.fieldvalue.gender === 'Female'}
+                              checked={gender === 'Female'}
                             ></input>
                             <label className="custom-control-label" htmlFor="female">
                               Female
@@ -184,7 +191,7 @@ class Profileedit extends Component {
                             type="date"
                             className="form-control"
                             placeholder="Date of birth"
-                            value={this.state.fieldvalue.dob}
+                            value={dob}
                             onChange={this.handleChange.bind(this, 'dob')}
                           ></input>
                         </div>
@@ -194,7 +201,7 @@ class Profileedit extends Component {
                             type="text"
                             className="form-control"
                             placeholder="Phone no"
-                            value={this.state.fieldvalue.phoneno}
+                            value={phoneno}
                             onChange={this.handleChange.bind(this, 'phoneno')}
                           ></input>
                           <span className="error">{this.state.errors['phoneno']}</span>
@@ -205,7 +212,7 @@ class Profileedit extends Component {
                             type="Email"
                             className="form-control"
                             placeholder="Email"
-                            value={this.state.fieldvalue.email}
+                            value={email}
                             onChange={this.handleChange.bind(this, 'email')}
                           ></input>
                           <span className="error">{this.state.errors['email']}</span>
@@ -216,7 +223,7 @@ class Profileedit extends Component {
                             className="form-control"
                             rows="3"
                             placeholder="Address"
-                            value={this.state.fieldvalue.address}
+                            value={address}
                             onChange={this.handleChange.bind(this, 'address')}
                           ></textarea>
                           <span className="error">{this.state.errors['address']}</span>
