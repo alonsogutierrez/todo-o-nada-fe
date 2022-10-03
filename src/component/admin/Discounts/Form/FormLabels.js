@@ -52,11 +52,11 @@ const FormLabel = (props) => {
 
   return (
     <>
-      {DiscountLabelConfigData.map((formLabel) => {
+      {DiscountLabelConfigData.map((formLabel, indexLabel) => {
         const { rows } = formLabel
         if (rows && rows.length > 0) {
           return (
-            <Row>
+            <Row key={`form-${indexLabel}`}>
               {rows.map((row, index) => {
                 let errorStyle = {}
                 if (errors[`${row.labelName}`]) {

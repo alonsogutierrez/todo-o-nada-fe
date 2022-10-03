@@ -76,11 +76,11 @@ const GeneralLabelForm = (props) => {
 
   return (
     <>
-      {LabelConfigData.map((formLabel) => {
+      {LabelConfigData.map((formLabel, indexLabel) => {
         const { rows } = formLabel
         if (rows && rows.length > 0) {
           return (
-            <Row>
+            <Row key={`form-${indexLabel}`}>
               {rows.map((row, index) => {
                 let errorStyle = {}
                 if (errors[`${row.labelName}`]) {
@@ -136,10 +136,10 @@ const GeneralLabelForm = (props) => {
                             <Row>
                               {values.pictures &&
                                 Array.isArray(values.pictures) &&
-                                values.pictures.map((picture) => {
+                                values.pictures.map((picture, indexImage) => {
                                   if (picture) {
                                     return (
-                                      <Col>
+                                      <Col key={`picture-${indexImage}`}>
                                         <img src={picture} style={{ width: '50%' }} />
                                       </Col>
                                     )

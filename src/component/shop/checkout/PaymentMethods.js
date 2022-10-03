@@ -93,7 +93,6 @@ const PaymentMethods = () => {
                   id="payment_method_paypal"
                   type="radio"
                   checked
-                  enabled
                   className="input-radio"
                   name="payment_method"
                   value="paypal"

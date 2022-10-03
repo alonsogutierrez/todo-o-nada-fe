@@ -116,7 +116,7 @@ const ShopingCart = (props) => {
                       <Table className="cart-table">
                         <thead>
                           <tr>
-                            <th clas="product-remove"></th>
+                            <th className="product-remove"></th>
                             <th className="product-thumbnail"></th>
                             <th className="product-name">
                               <span className="nobr">Producto</span>
