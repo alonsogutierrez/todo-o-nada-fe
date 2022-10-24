@@ -2,7 +2,7 @@ import React from 'react'
 
 const EmptyShoppingCart = () => {
   const getEmptyCartImage = () => {
-    return require(`./../../../../assets/images/empty-cart.png`).default
+    return require(`./../../../../assets/images/empty-cart.png`)
   }
 
   return (

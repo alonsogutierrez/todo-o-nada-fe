@@ -12,7 +12,7 @@ function OurHistory() {
           <Col lg={5}>
             <img
               // eslint-disable-next-line no-undef
-              src={require(`./../../assets/images/quienes-somos-01.jpg`).default}
+              src={require(`./../../assets/images/quienes-somos-01.jpg`)}
               className="img-fluid"
               style={{ borderRadius: '4px' }}
             />
@@ -53,7 +53,7 @@ function OurHistory() {
                             }}
                           >
                             <img
-                              src={require('./../../assets/images/logo_icon_history.png').default}
+                              src={require('./../../assets/images/logo_icon_history.png')}
                               alt="icon"
                             />
                           </div>
@@ -86,7 +86,7 @@ function OurHistory() {
               <Col sm={6} className="pr-2">
                 <div className="ciyashop_info_box ciyashop_info_box-layout-style_2 ciyashop_info_box-content_alignment-left ciyashop_info_box-with-icon ciyashop_info_box-icon-source-font ciyashop_info_box-icon-style-border ciyashop_info_box-icon-size-sm ciyashop_info_box-icon-shape-round ciyashop_info_box-icon_position-left info_box-step_position-above_title">
                   <img
-                    src={require('./../../assets/images/autogestion.jpg').default}
+                    src={require('./../../assets/images/autogestion.jpg')}
                     style={{ borderRadius: '4px' }}
                     alt="icon"
                   />

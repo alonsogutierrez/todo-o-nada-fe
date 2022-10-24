@@ -78,7 +78,7 @@ const HomSlider = () => {
                   <div className="slide-image">
                     <img
                       style={bannerDesktopStyle}
-                      src={require(`../../assets/images/home-slider/${banner.image}`).default}
+                      src={require(`./../../assets/images/home-slider/${banner.image}`)}
                       alt={banner.alt}
                     />
                   </div>
@@ -106,7 +106,7 @@ const HomSlider = () => {
                 <div className="slide-image">
                   <img
                     style={imageStyle}
-                    src={require(`../../assets/images/home-slider/${banner.image}`).default}
+                    src={require(`../../assets/images/home-slider/${banner.image}`)}
                     alt={banner.alt}
                   />
                 </div>
