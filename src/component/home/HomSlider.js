@@ -12,7 +12,6 @@ const settings = {
 }
 
 const bannersNames = [
-  'CyberWeekBANNER',
   'BANNER_FENIX',
   'banner_shuter_doji-05',
   'irezumi_banner-01',
