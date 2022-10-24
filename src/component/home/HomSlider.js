@@ -11,33 +11,18 @@ const settings = {
   autoplaySpeed: 5000,
 }
 
-const banners = [
-  {
-    key: 'slide-1',
-    image: 'CyberWeekBANNER.jpg',
-    alt: 'slide-1',
-  },
-  {
-    key: 'slide-2',
-    image: 'BANNER_FENIX.jpg',
-    alt: 'slide-2',
-  },
-  {
-    key: 'slide-3',
-    image: 'banner_shuter_doji-05.jpg',
-    alt: 'slide-3',
-  },
-  {
-    key: 'slide-4',
-    image: 'irezumi_banner-01.jpg',
-    alt: 'slide-4',
-  },
-  {
-    key: 'slide-5',
-    image: 'soul_of_dragon_banner-01.jpg',
-    alt: 'slide-5',
-  },
+const bannersNames = [
+  'BANNER_FENIX',
+  'banner_shuter_doji-05',
+  'irezumi_banner-01',
+  'soul_of_dragon_banner-01',
 ]
+
+const banners = bannersNames.map((bannerName, index) => ({
+  key: 'slide-' + index,
+  image: bannerName + '.jpg',
+  alt: 'slide-' + index,
+}))
 
 const HomSlider = () => {
   const [dimensions, setDimensions] = useState({
