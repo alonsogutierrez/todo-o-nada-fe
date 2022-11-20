@@ -33,7 +33,7 @@ const AdminDiscountList = (props) => {
             <div className="product-info">
               <img
                 className="img-fluid"
-                src={require(`./../../../assets/images/Discount-Coupons.jpg`).default}
+                src={require(`./../../../assets/images/Discount-Coupons.jpg`)}
               />
               {code ? (
                 <h3 className="product-name">

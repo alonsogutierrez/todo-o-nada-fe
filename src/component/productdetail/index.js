@@ -131,7 +131,7 @@ const ProductDetail = (props) => {
                               {isProductWithGeneralSizes(actualProduct.category) && (
                                 <img
                                   style={sizesImgStyle}
-                                  src={require('./../../assets/images/sizes.jpg').default}
+                                  src={require('./../../assets/images/sizes.jpg')}
                                 />
                               )}
                               <SupportInfo />

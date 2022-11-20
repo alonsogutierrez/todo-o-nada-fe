@@ -11,25 +11,25 @@ import setCategorySelectedData from './../../actions/setCategorySelected'
 const collections = [
   {
     id: 1,
-    imageSrc: require(`../../assets/images/tradi_largo_banner-01.jpg`).default,
+    imageSrc: require(`../../assets/images/tradi_largo_banner-01.jpg`),
     name: 'traditional',
     link: '/category/traditional',
   },
   {
     id: 2,
-    imageSrc: require(`../../assets/images/print_banner-01.jpg`).default,
+    imageSrc: require(`../../assets/images/print_banner-01.jpg`),
     name: 'print-art',
     link: '/category/print-art',
   },
   {
     id: 3,
-    imageSrc: require(`../../assets/images/japonesa_collection_banner-01.jpg`).default,
+    imageSrc: require(`../../assets/images/japonesa_collection_banner-01.jpg`),
     name: 'irezumi',
     link: '/category/irezumi',
   },
   {
     id: 4,
-    imageSrc: require(`../../assets/images/dragons_collection_banner-01.jpg`).default,
+    imageSrc: require(`../../assets/images/dragons_collection_banner-01.jpg`),
     name: 'dragon',
     link: '/category/dragon',
   },
