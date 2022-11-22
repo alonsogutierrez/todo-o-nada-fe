@@ -89,7 +89,7 @@ function InterestingFacts() {
           </Col>
           <Col sm={4} className="">
             <img
-              src={require(`../../assets/images/proceso_produccion.jpg`).default}
+              src={require(`../../assets/images/proceso_produccion.jpg`)}
               className="img-fluid"
               style={{ borderRadius: '4px' }}
             />

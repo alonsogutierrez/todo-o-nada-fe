@@ -26,9 +26,7 @@ class Footer extends React.Component {
                           <Link to="/home">
                             <img
                               className="img-fluid"
-                              src={
-                                require(`../../assets/images/todo_o_nada_letras_logo.jpg`).default
-                              }
+                              src={require(`../../assets/images/todo_o_nada_letras_logo.jpg`)}
                               alt="logo"
                             />
                           </Link>

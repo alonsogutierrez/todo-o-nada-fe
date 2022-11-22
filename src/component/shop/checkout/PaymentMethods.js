@@ -15,25 +15,16 @@ const PaymentMethods = () => {
           <Col xs={10}>
             <Row>
               <Col>
-                <img
-                  src={require(`./../../../assets/images/logo_onepay.png`).default}
-                  alt="OnePay"
-                />
+                <img src={require(`./../../../assets/images/logo_onepay.png`)} alt="OnePay" />
               </Col>
               <Col>
-                <img src={require(`./../../../assets/images/logo_mach.png`).default} alt="MACH" />
+                <img src={require(`./../../../assets/images/logo_mach.png`)} alt="MACH" />
               </Col>
               <Col>
-                <img
-                  src={require(`./../../../assets/images/logo_webpay.png`).default}
-                  alt="WebPay"
-                />
+                <img src={require(`./../../../assets/images/logo_webpay.png`)} alt="WebPay" />
               </Col>
               <Col>
-                <img
-                  src={require(`./../../../assets/images/BP_Servipag_peq.png`).default}
-                  alt="WebPay"
-                />
+                <img src={require(`./../../../assets/images/BP_Servipag_peq.png`)} alt="WebPay" />
               </Col>
             </Row>
           </Col>
@@ -49,19 +40,16 @@ const PaymentMethods = () => {
           <Col xs={3}>Pagos</Col>
           <Col xs={9}>
             <Row>
-              <img src={require(`./../../../assets/images/logo_onepay.png`).default} alt="OnePay" />
+              <img src={require(`./../../../assets/images/logo_onepay.png`)} alt="OnePay" />
             </Row>
             <Row>
-              <img src={require(`./../../../assets/images/logo_mach.png`).default} alt="MACH" />
+              <img src={require(`./../../../assets/images/logo_mach.png`)} alt="MACH" />
             </Row>
             <Row>
-              <img src={require(`./../../../assets/images/logo_webpay.png`).default} alt="WebPay" />
+              <img src={require(`./../../../assets/images/logo_webpay.png`)} alt="WebPay" />
             </Row>
             <Row>
-              <img
-                src={require(`./../../../assets/images/BP_Servipag_peq.png`).default}
-                alt="WebPay"
-              />
+              <img src={require(`./../../../assets/images/BP_Servipag_peq.png`)} alt="WebPay" />
             </Row>
           </Col>
         </Row>
