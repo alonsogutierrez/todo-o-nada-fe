@@ -31,24 +31,44 @@ const sliderConfig = {
       },
     },
   ],
+  data: [
+    {
+      title: 'Nuevos lanzamientos',
+      type: 'principal',
+    },
+    {
+      title: 'Gorros and beanies',
+      type: 'second',
+    },
+    {
+      title: 'Polerones',
+      type: 'third',
+    },
+    {
+      title: 'Bandanas',
+      type: 'four',
+    },
+  ],
 }
 
 const ProductSliderHome = () => (
   <Container>
-    <Row className="margin-top-12">
-      <Col sm={12} className="text-center">
-        <div className="section-title">
-          <h1>Nuevos lanzamientos</h1>
-        </div>
-        <Row className="margin-top-4">
-          <Col sm={12}>
-            <div className="products products-loop grid ciyashop-products-shortcode row">
-              <ProductSlider settings={sliderConfig} />
-            </div>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
+    {sliderConfig.data.map((dat, key) => (
+      <Row className="margin-top-12" key={`index-${key}`}>
+        <Col sm={12} className="text-center">
+          <div className="section-title">
+            <h1>{dat.title}</h1>
+          </div>
+          <Row className="margin-top-4">
+            <Col sm={12}>
+              <div className="products products-loop grid ciyashop-products-shortcode row">
+                <ProductSlider settings={sliderConfig} type={dat.type} />
+              </div>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    ))}
   </Container>
 )
 

@@ -9,15 +9,15 @@ import ClientAPI from '../../common/ClientAPI'
 import setChangeCartData from '../../actions/setChangeCartData'
 import ProductInfo from './../search/ProductInfo'
 
-const ProductSlider = ({ settings }) => {
+const ProductSlider = ({ settings, type = 'principal' }) => {
   const [clientAPI] = useState(new ClientAPI())
   const [loading, setLoading] = useState(false)
   const [products, setProducts] = useState([])
 
   useEffect(() => {
-    const getMoreInterestingProducts = async () => {
+    const getMoreInterestingProducts = async (type) => {
       setLoading(true)
-      const productsResponse = await clientAPI.getMoreInterestingProducts()
+      const productsResponse = await clientAPI.getMoreInterestingProducts(type)
 
       if (productsResponse.hits.length > 0) {
         const hits = productsResponse.hits
@@ -52,7 +52,7 @@ const ProductSlider = ({ settings }) => {
       }
       setLoading(false)
     }
-    getMoreInterestingProducts()
+    getMoreInterestingProducts(type)
   }, [products.length])
 
   return (
@@ -106,10 +106,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(ProductSlider)
 
 ProductSlider.defaultProps = {
   settings: {},
+  type: 'principal',
   productSub: '',
 }
 
 ProductSlider.propTypes = {
   settings: PropTypes.object,
+  type: PropTypes.string,
   productSub: PropTypes.string,
 }

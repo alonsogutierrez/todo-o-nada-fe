@@ -322,12 +322,24 @@ export default class ClientAPI {
     })
   }
 
-  getMoreInterestingProducts() {
+  getMoreInterestingProducts(type = 'principal') {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
+      let url = 'interesting-products'
+      if (type !== 'principal') {
+        if (type === 'second') {
+          url = 'interesting-products-2'
+        }
+        if (type === 'third') {
+          url = 'interesting-products-3'
+        }
+        if (type === 'four') {
+          url = 'interesting-products-4'
+        }
+      }
       client
         .request({
-          url: `/search/interesting-products`,
+          url: `/search/${url}`,
           method: 'get',
           timeout: 15 * 1000,
         })
