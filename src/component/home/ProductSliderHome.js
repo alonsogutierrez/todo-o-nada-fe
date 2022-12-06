@@ -41,11 +41,11 @@ const sliderConfig = {
       type: 'second',
     },
     {
-      title: 'Polerones',
+      title: 'Poleras y polerones',
       type: 'third',
     },
     {
-      title: 'Bandanas',
+      title: 'Bandanas y Print Art',
       type: 'four',
     },
   ],
