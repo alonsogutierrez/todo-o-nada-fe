@@ -37,11 +37,11 @@ const sliderConfig = {
       type: 'principal',
     },
     {
-      title: 'Gorros and beanies',
+      title: 'Gorros y Snapbacks',
       type: 'second',
     },
     {
-      title: 'Poleras y polerones',
+      title: 'Irezumi Art Collection',
       type: 'third',
     },
     {
