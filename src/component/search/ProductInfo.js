@@ -25,7 +25,6 @@ const ProductInfo = ({ product }) => {
     color: 'gray',
     textDecoration: 'line-through',
   }
-
   return (
     <>
       <div className="product product_tag-black product-hover-style-default product-hover-button-style-dark product_title_type-single_line product_icon_type-line-icon">
@@ -60,6 +59,24 @@ const ProductInfo = ({ product }) => {
               <h3 className="product-name">
                 <Link to={`/product/${itemNumber}`}>{name}</Link>
               </h3>
+            )}
+            {!isProductWithStockAvailable && (
+              <div
+                style={{
+                  backgroundColor: 'orange',
+                  borderRadius: '2vh',
+                  width: '35%',
+                  height: '50%',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  marginTop: '1vh',
+                  marginBottom: '1vh',
+                  fontWeight: 'bold',
+                  color: 'black',
+                }}
+              >
+                <span>Sin stock</span>
+              </div>
             )}
             {discountPercentage > 0 && (
               <p style={titleDiscountStyle}>{`Oferta - ${discountPercentage}% descuento`} </p>

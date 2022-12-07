@@ -21,7 +21,7 @@ UI supported with React and Redux.
 
 ### Executing program
 
-- Must create a "dev.env" file into src/config folder, request the secrets to admin.
+- Must create a ".env" file into root folder, request the secrets to admin.
 
 - Run dev mode: npm run start
 
