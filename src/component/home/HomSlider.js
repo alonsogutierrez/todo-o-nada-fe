@@ -80,24 +80,27 @@ const HomSlider = () => {
     return (
       <Slider className="slider-04 slider-simple-arrow" {...settings}>
         {banners.map((banner) => {
+          const notRender = banner.image.includes('BANNER_FENIX') && dimensions.width < 992
           const imageStyle = banner.image.includes('FENIX')
             ? {
                 minHeight: '100%',
               }
             : {}
-          return (
-            <div key={banner.key} className="slide-04-item" onClick={() => handleOnClickBanner()}>
-              <div className="slide-inner">
-                <div className="slide-image">
-                  <img
-                    style={imageStyle}
-                    src={require(`../../assets/images/home-slider/${banner.image}`)}
-                    alt={banner.alt}
-                  />
+          if (!notRender) {
+            return (
+              <div key={banner.key} className="slide-04-item" onClick={() => handleOnClickBanner()}>
+                <div className="slide-inner">
+                  <div className="slide-image">
+                    <img
+                      style={imageStyle}
+                      src={require(`../../assets/images/home-slider/${banner.image}`)}
+                      alt={banner.alt}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          )
+            )
+          }
         })}
       </Slider>
     )
