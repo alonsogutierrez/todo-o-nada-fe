@@ -23,7 +23,7 @@ const AdminproductList = (props) => {
   const { product, deleteproduct } = props
 
   if (product && Object.keys(product).length > 0) {
-    const { picture, itemNumber, name, price, details } = product._source
+    const { picture, itemNumber, name, price, details, is_active } = product._source
     let hasInventory = false
     for (let sku in details) {
       if (details[sku].quantity > 0) {
@@ -83,6 +83,13 @@ const AdminproductList = (props) => {
                     </span>
                   </ins>
                 </span>
+              ) : null}
+              {is_active !== true ? (
+                <div>
+                  <span className="text" style={{ fontWeight: 'bold' }}>
+                    {'Producto oculto'}
+                  </span>
+                </div>
               ) : null}
             </div>
           </div>
