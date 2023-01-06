@@ -37,16 +37,8 @@ const sliderConfig = {
       type: 'principal',
     },
     {
-      title: 'Gorros y Snapbacks',
-      type: 'second',
-    },
-    {
       title: 'Irezumi Art Collection',
-      type: 'third',
-    },
-    {
-      title: 'Bandanas y Print Art',
-      type: 'four',
+      type: 'second',
     },
   ],
 }

@@ -173,13 +173,18 @@ export default [
     rows: [
       {
         labelTitle: 'Producto publicado',
-        labelName: 'published',
+        labelName: 'is_active',
         type: 'checkbox',
         formClassName: 'col-md',
         inputClassName: '',
         className: '',
         placeHolder: 'Visible',
-        getValue: (values) => (values['published'] ? values['published'] : ''),
+        getValue: (values) => {
+          return values['is_active']
+        },
+        defaultChecked: (values) => {
+          return values['is_active']
+        },
       },
     ],
   },
