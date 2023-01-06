@@ -15,9 +15,9 @@ const GeneralLabelForm = (props) => {
       basePriceReference: useRef(null),
     },
     description: useRef(null),
-    published: useRef(null),
     categories: useRef(null),
     pictures: useRef(null),
+    is_active: useRef(null),
   })
   const { categories, handleBlur, handleChange, setFieldValue, values, errors, touched } = props
 
@@ -59,10 +59,6 @@ const GeneralLabelForm = (props) => {
         objectReferences['description'].current.scrollIntoView(scrollIntoViewBehavior)
         return
       }
-      if (errors['published']) {
-        objectReferences['published'].current.scrollIntoView(scrollIntoViewBehavior)
-        return
-      }
       if (errors['categories']) {
         objectReferences['categories'].current.scrollIntoView(scrollIntoViewBehavior)
         return
@@ -96,6 +92,8 @@ const GeneralLabelForm = (props) => {
                 if (row.labelName === 'price.basePriceReference') {
                   actualInputRef = objectReferences['price']['basePriceReference']
                 }
+                const val = row.getValue(values)
+
                 return (
                   <FormGroup className={row.formClassName} key={row.labelName + index}>
                     <Label className="title pl-0">{row.labelTitle}</Label>
@@ -148,6 +146,27 @@ const GeneralLabelForm = (props) => {
                                 })}
                             </Row>
                           </>
+                        ) : row.labelName === 'is_active' ? (
+                          <>
+                            <Input
+                              type={row.type}
+                              name={row.labelName}
+                              className={row.inputClassName}
+                              placeholder={row.placeHolder}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={val}
+                              defaultChecked={row.defaultChecked(values)}
+                            >
+                              {row.options && row.options.length > 0
+                                ? row.options.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                      {option.text}
+                                    </option>
+                                  ))
+                                : undefined}
+                            </Input>
+                          </>
                         ) : (
                           <Input
                             type={row.type}
@@ -156,7 +175,7 @@ const GeneralLabelForm = (props) => {
                             placeholder={row.placeHolder}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={row.getValue(values)}
+                            value={val}
                           >
                             {row.options && row.options.length > 0
                               ? row.options.map((option) => (

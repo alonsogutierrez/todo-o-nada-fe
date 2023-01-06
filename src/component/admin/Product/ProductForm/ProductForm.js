@@ -101,7 +101,7 @@ const ProductForm = (props) => {
     formData.append('description', values.description)
     formData.append('color', values.color)
     formData.append('price', JSON.stringify(price))
-    formData.append('published', values.published)
+    formData.append('is_active', values.is_active)
 
     let sizes = []
 
@@ -155,8 +155,8 @@ const ProductForm = (props) => {
       },
       color: '',
       pictures: null,
-      published: false,
       details: {},
+      is_active: false,
     }
 
     totalSizes.forEach((actualSize) => {
@@ -183,8 +183,8 @@ const ProductForm = (props) => {
       price,
       color,
       pictures,
-      published,
       details,
+      is_active,
     } = productData
     productMappedFromProps.itemNumber = itemNumber
     productMappedFromProps.name = name
@@ -194,8 +194,8 @@ const ProductForm = (props) => {
     productMappedFromProps.price = price
     productMappedFromProps.color = color
     productMappedFromProps.pictures = pictures
-    productMappedFromProps.published = published
     productMappedFromProps.details = details
+    productMappedFromProps.is_active = is_active
     let pos = 1
     for (let sku in details) {
       if (productSizeType === 'uniqueMeasures') {
