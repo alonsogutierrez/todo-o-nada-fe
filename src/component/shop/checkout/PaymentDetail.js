@@ -176,7 +176,9 @@ const PaymentDetail = ({ orderData, totalShippingCarge, loading }) => {
                 <tr>
                   <td>Despacho</td>
                   {isHomeDelivery ? (
-                    <td className="text-right">Despacho por pagar</td>
+                    <td className="text-right">
+                      Despacho por pagar (costo varía dependiendo del destino)
+                    </td>
                   ) : (
                     <td className="text-right">
                       $
