@@ -48,6 +48,7 @@ const HomSlider = () => {
       margin: 'auto',
       width: '140vh',
       height: '60vh',
+      borderRadius: '1vh',
     }
     const sliderDesktopStyle = {
       width: '160vh',
@@ -84,8 +85,11 @@ const HomSlider = () => {
           const imageStyle = banner.image.includes('FENIX')
             ? {
                 minHeight: '100%',
+                borderRadius: '1vh',
               }
-            : {}
+            : {
+                borderRadius: '1vh',
+              }
           if (!notRender) {
             return (
               <div key={banner.key} className="slide-04-item" onClick={() => handleOnClickBanner()}>
