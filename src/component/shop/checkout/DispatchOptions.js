@@ -74,7 +74,7 @@ const DispatchOptions = ({ setTotalShippingChargeFunc, dispatchType, setDispatch
                   {dispatchData.localPickUp.name}:{' '}
                   <span className="Price-amount amount">
                     <span className="Price-currencySymbol">$</span>
-                    {dispatchData.localPickUp.total}{' '}
+                    {dispatchData.localPickUp.total}
                   </span>
                 </label>
               </li>
