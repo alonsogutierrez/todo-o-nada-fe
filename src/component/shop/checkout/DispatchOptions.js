@@ -6,7 +6,7 @@ import setDispatchType from './../../../actions/setDispatchType'
 
 const dispatchData = {
   homeDelivery: {
-    name: 'Despacho a domicilio (por pagar)',
+    name: 'Despacho a domicilio (Envío por pagar), costo varíable dependiendo del destino',
     code: 'HOME_DELIVERY',
     total: 0,
   },
@@ -54,11 +54,7 @@ const DispatchOptions = ({ setTotalShippingChargeFunc, dispatchType, setDispatch
                   defaultChecked={isHomeDelivery}
                 />
                 <label style={{ cursor: 'pointer' }} htmlFor="shipping_method_0_flat_rate3">
-                  {dispatchData.homeDelivery.name}:{' '}
-                  <span className="Price-amount amount">
-                    <span className="Price-currencySymbol">$</span>
-                    {dispatchData.homeDelivery.total}{' '}
-                  </span>
+                  {dispatchData.homeDelivery.name}
                 </label>
               </li>
             </a>
@@ -78,7 +74,7 @@ const DispatchOptions = ({ setTotalShippingChargeFunc, dispatchType, setDispatch
                   {dispatchData.localPickUp.name}:{' '}
                   <span className="Price-amount amount">
                     <span className="Price-currencySymbol">$</span>
-                    {dispatchData.localPickUp.total}
+                    {dispatchData.localPickUp.total}{' '}
                   </span>
                 </label>
               </li>
