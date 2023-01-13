@@ -38,6 +38,7 @@ const HomSlider = () => {
   }
 
   useEffect(() => {
+    // TODO: Call to BFF to get banners data and render it
     window.addEventListener('resize', handleResize, false)
   }, [])
 

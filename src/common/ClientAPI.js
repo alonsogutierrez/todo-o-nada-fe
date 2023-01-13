@@ -322,6 +322,30 @@ export default class ClientAPI {
     })
   }
 
+  processBanner(bannerData) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
+      client
+        .request({
+          url: '/banners',
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+            'Content-Type': 'multipart/form-data',
+          },
+          method: 'post',
+          timeout: 30 * 1000,
+          data: bannerData,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
   getMoreInterestingProducts(type = 'principal') {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
@@ -362,6 +386,24 @@ export default class ClientAPI {
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
+          method: 'get',
+          timeout: 20 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  getAdminAllBanners() {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      client
+        .request({
+          url: `/banners`,
           method: 'get',
           timeout: 20 * 1000,
         })

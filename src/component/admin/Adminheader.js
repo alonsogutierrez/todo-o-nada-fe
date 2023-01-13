@@ -192,6 +192,30 @@ const AdminHeader = (props) => {
                     </DropdownMenu>
                   </UncontrolledDropdown>
 
+                  <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle nav caret>
+                      <i className="fa fa-image"></i>Banners
+                    </DropdownToggle>
+                    <DropdownMenu left>
+                      <DropdownItem
+                        onClick={() => changeClass('product')}
+                        className="nav-link"
+                        tag={Link}
+                        to="/admin-dashboard/banners"
+                      >
+                        <i className="fa fa-photo"></i>Banners
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={() => changeClass('product')}
+                        className="nav-link"
+                        tag={Link}
+                        to="/admin-dashboard/banners-add"
+                      >
+                        <i className="fa fa-picture-o"></i>Agregar Banner
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+
                   <NavItem className="profile">
                     <Link
                       to="/admin-dashboard/profile"
