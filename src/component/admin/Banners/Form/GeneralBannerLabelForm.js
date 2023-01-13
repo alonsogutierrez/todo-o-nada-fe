@@ -77,21 +77,51 @@ const GeneralBannerLabelForm = (props) => {
                               }}
                             />
                             {errors.images && touched.images}
-                            <Label className="title pl-0">Imagen Cargada</Label>
+                            <Label className="title pl-0">Imagen Desktop Cargada</Label>
                             <Row>
                               {values.images &&
-                                Array.isArray(values.images) &&
-                                values.images.map((picture, indexImage) => {
-                                  if (picture) {
-                                    return (
-                                      <Col key={`picture-${indexImage}`}>
-                                        <img src={picture} style={{ width: '50%' }} />
-                                      </Col>
-                                    )
-                                  }
-                                  return 'Nueva imagen a cargar'
-                                })}
+                                Object.keys(values.images).length > 0 &&
+                                (values.images.desktop !== '' ? (
+                                  <Col key={`picture-banner-desktop`}>
+                                    <img src={values.images.desktop} style={{ width: '50%' }} />
+                                  </Col>
+                                ) : (
+                                  'Nueva imagen a cargar'
+                                ))}
                             </Row>
+                            <Label className="title pl-0">Imagen Mobile Cargada</Label>
+                            <Row>
+                              {values.images &&
+                                Object.keys(values.images).length > 0 &&
+                                (values.images.mobile !== '' ? (
+                                  <Col key={`picture-banner-desktop`}>
+                                    <img src={values.images.desktop} style={{ width: '50%' }} />
+                                  </Col>
+                                ) : (
+                                  'Nueva imagen a cargar'
+                                ))}
+                            </Row>
+                          </>
+                        ) : row.labelName === 'isActive' ? (
+                          <>
+                            <Input
+                              type={row.type}
+                              name={row.labelName}
+                              className={row.inputClassName}
+                              placeholder={row.placeHolder}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={val}
+                              defaultChecked={row.defaultChecked(values)}
+                            >
+                              {row.options && row.options.length > 0
+                                ? row.options.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                      {option.text}
+                                    </option>
+                                  ))
+                                : undefined}
+                            </Input>
                           </>
                         ) : (
                           <Input

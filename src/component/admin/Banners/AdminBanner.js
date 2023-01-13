@@ -42,7 +42,7 @@ const AdminBanner = (props) => {
               </div>
               <div className="banner-action banner-action-quick-view">
                 <Link
-                  to={`/admin-dashboard/banner-edit/${bannerNumber}`}
+                  to={`/admin-dashboard/banners-edit/${bannerNumber}`}
                   className="open-edit-view"
                 >
                   <i className="fa fa-pencil-square-o"></i>
@@ -57,7 +57,7 @@ const AdminBanner = (props) => {
               {bannerNumber ? (
                 <h3 className="banner-name">
                   Number:
-                  <Link to={`/admin-dashboard/banner-edit/${bannerNumber}`}>{bannerNumber}</Link>
+                  <Link to={`/admin-dashboard/banners-edit/${bannerNumber}`}>{bannerNumber}</Link>
                 </h3>
               ) : null}
             </div>
@@ -65,7 +65,7 @@ const AdminBanner = (props) => {
               {position ? (
                 <h3 className="banner-name">
                   Position:
-                  <Link to={`/admin-dashboard/banner-edit/${bannerNumber}`}>{position}</Link>
+                  <Link to={`/admin-dashboard/banners-edit/${bannerNumber}`}>{position}</Link>
                 </h3>
               ) : null}
             </div>

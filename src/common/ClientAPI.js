@@ -259,6 +259,28 @@ export default class ClientAPI {
     })
   }
 
+  getBannerByBannerNumber(bannerNumber) {
+    return new Promise((resolve, reject) => {
+      const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
+      client
+        .request({
+          url: `/banners/${bannerNumber}`,
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+          method: 'get',
+          timeout: 10 * 1000,
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
   getSearch(searchText) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
@@ -322,18 +344,21 @@ export default class ClientAPI {
     })
   }
 
-  processBanner(bannerData) {
+  processBanner(bannerData, isEdit, bannerNumber) {
     return new Promise((resolve, reject) => {
       const client = this.bffInstance()
       const userToken = localStorage.getItem('userToken')
+      const methodHttp = isEdit ? 'put' : 'post'
+      const url = isEdit ? '/banners/' + bannerNumber : '/banners'
+      console.log('bannerDta: ', bannerData)
       client
         .request({
-          url: '/banners',
+          url: url,
           headers: {
             Authorization: `Bearer ${userToken}`,
             'Content-Type': 'multipart/form-data',
           },
-          method: 'post',
+          method: methodHttp,
           timeout: 30 * 1000,
           data: bannerData,
         })

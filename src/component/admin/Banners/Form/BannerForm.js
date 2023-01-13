@@ -20,7 +20,7 @@ const BannerForm = (props) => {
     try {
       const clientAPI = new ClientAPI()
       setLoading(true)
-      await clientAPI.processBanner(bannerFormData)
+      await clientAPI.processBanner(bannerFormData, props.isEditForm, bannerNumber)
       setLoading(false)
       toast.success('Banner procesado exitosamente')
       if (props.isEditForm) {
@@ -53,8 +53,8 @@ const BannerForm = (props) => {
   const onSubmitHandler = async (values) => {
     let formData = new FormData()
 
-    formData.append('bannerNumber', values.bannerNumber)
-    formData.append('position', values.position)
+    formData.append('bannerNumber', parseInt(values.bannerNumber))
+    formData.append('position', parseInt(values.position))
     formData.append('isActive', values.isActive)
 
     if (values.images) {
