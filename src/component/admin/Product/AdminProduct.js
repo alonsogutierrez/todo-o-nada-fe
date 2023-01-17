@@ -84,7 +84,7 @@ const AdminProduct = (props) => {
                   </ins>
                 </span>
               ) : null}
-              {is_active !== true ? (
+              {(typeof is_active === 'string' && is_active == 'false') || is_active === false ? (
                 <div>
                   <span className="text" style={{ fontWeight: 'bold' }}>
                     {'Producto oculto'}
