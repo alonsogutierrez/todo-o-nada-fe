@@ -95,7 +95,7 @@ const GeneralBannerLabelForm = (props) => {
                                 Object.keys(values.images).length > 0 &&
                                 (values.images.mobile !== '' ? (
                                   <Col key={`picture-banner-desktop`}>
-                                    <img src={values.images.desktop} style={{ width: '50%' }} />
+                                    <img src={values.images.mobile} style={{ width: '50%' }} />
                                   </Col>
                                 ) : (
                                   'Nueva imagen a cargar'

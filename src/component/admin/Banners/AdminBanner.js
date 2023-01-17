@@ -21,7 +21,7 @@ const AdminBanner = (props) => {
   }, [])
 
   if (props.banner && Object.keys(props.banner).length > 0) {
-    const { bannerNumber, images, position } = props.banner
+    const { bannerNumber, images, position, isActive } = props.banner
 
     return (
       <Col key={1} sm={6} lg={3}>
@@ -55,19 +55,26 @@ const AdminBanner = (props) => {
             </div>
             <div className="banner-info">
               {bannerNumber ? (
-                <h3 className="banner-name">
-                  Number:
+                <span className="banner-name">
+                  Numero:
                   <Link to={`/admin-dashboard/banners-edit/${bannerNumber}`}>{bannerNumber}</Link>
-                </h3>
+                </span>
               ) : null}
             </div>
             <div className="banner-info">
               {position ? (
-                <h3 className="banner-name">
-                  Position:
+                <span className="banner-name">
+                  Posición:
                   <Link to={`/admin-dashboard/banners-edit/${bannerNumber}`}>{position}</Link>
-                </h3>
+                </span>
               ) : null}
+            </div>
+            <div className="banner-info">
+              {isActive ? (
+                <span className="banner-name">Visible</span>
+              ) : (
+                <h5 className="banner-name">Oculto</h5>
+              )}
             </div>
           </div>
         </div>
