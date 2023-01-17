@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { Col, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import Loader from 'react-loader-spinner'
 
-const AdminproductList = (props) => {
+const AdminProduct = (props) => {
   const [modal1, setModal1] = useState(false)
 
   const toggle1 = () => {
@@ -84,7 +84,7 @@ const AdminproductList = (props) => {
                   </ins>
                 </span>
               ) : null}
-              {is_active !== true ? (
+              {(typeof is_active === 'string' && is_active == 'false') || is_active === false ? (
                 <div>
                   <span className="text" style={{ fontWeight: 'bold' }}>
                     {'Producto oculto'}
@@ -124,14 +124,14 @@ const AdminproductList = (props) => {
   )
 }
 
-export default AdminproductList
+export default AdminProduct
 
-AdminproductList.defaultProps = {
+AdminProduct.defaultProps = {
   product: {},
   deleteproduct: () => {},
 }
 
-AdminproductList.propTypes = {
+AdminProduct.propTypes = {
   product: PropTypes.object,
   deleteproduct: PropTypes.func,
 }

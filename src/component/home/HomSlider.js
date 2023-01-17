@@ -38,6 +38,7 @@ const HomSlider = () => {
   }
 
   useEffect(() => {
+    // TODO: Call to BFF to get banners data and render it
     window.addEventListener('resize', handleResize, false)
   }, [])
 
@@ -48,6 +49,7 @@ const HomSlider = () => {
       margin: 'auto',
       width: '140vh',
       height: '60vh',
+      borderRadius: '1vh',
     }
     const sliderDesktopStyle = {
       width: '160vh',
@@ -84,8 +86,11 @@ const HomSlider = () => {
           const imageStyle = banner.image.includes('FENIX')
             ? {
                 minHeight: '100%',
+                borderRadius: '1vh',
               }
-            : {}
+            : {
+                borderRadius: '1vh',
+              }
           if (!notRender) {
             return (
               <div key={banner.key} className="slide-04-item" onClick={() => handleOnClickBanner()}>

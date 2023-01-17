@@ -23,6 +23,7 @@ const AdminHeader = (props) => {
   const [dropdownOpen, setDropDownOpen] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [isCategoriesFeatureFlagOn] = useState(false)
+  const [isBannersFeatureFlagOn] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -191,6 +192,32 @@ const AdminHeader = (props) => {
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
+
+                  {isBannersFeatureFlagOn && (
+                    <UncontrolledDropdown nav inNavbar>
+                      <DropdownToggle nav caret>
+                        <i className="fa fa-image"></i>Banners
+                      </DropdownToggle>
+                      <DropdownMenu left>
+                        <DropdownItem
+                          onClick={() => changeClass('product')}
+                          className="nav-link"
+                          tag={Link}
+                          to="/admin-dashboard/banners"
+                        >
+                          <i className="fa fa-photo"></i>Banners
+                        </DropdownItem>
+                        <DropdownItem
+                          onClick={() => changeClass('product')}
+                          className="nav-link"
+                          tag={Link}
+                          to="/admin-dashboard/banners-add"
+                        >
+                          <i className="fa fa-picture-o"></i>Agregar Banner
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
+                  )}
 
                   <NavItem className="profile">
                     <Link
