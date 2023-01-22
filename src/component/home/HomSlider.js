@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Slider from 'react-slick'
 
+import ClientAPI from './../../common/ClientAPI'
+
 const settings = {
   dots: false,
   infinite: true,
@@ -11,20 +13,12 @@ const settings = {
   autoplaySpeed: 5000,
 }
 
-const bannersNames = [
-  'BANNER_FENIX',
-  'banner_shuter_doji-05',
-  'irezumi_banner-01',
-  'soul_of_dragon_banner-01',
-]
-
-const banners = bannersNames.map((bannerName, index) => ({
-  key: 'slide-' + index,
-  image: bannerName + '.jpg',
-  alt: 'slide-' + index,
-}))
-
 const HomSlider = () => {
+  const [clientAPI] = useState(new ClientAPI())
+  const [bannersData, setBannersData] = useState({
+    loading: false,
+    data: [],
+  })
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -37,8 +31,17 @@ const HomSlider = () => {
     })
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     // TODO: Call to BFF to get banners data and render it
+    setBannersData({
+      loading: true,
+      data: bannersData.data,
+    })
+    const banners = await clientAPI.getAdminAllBanners()
+    setBannersData({
+      loading: false,
+      data: banners,
+    })
     window.addEventListener('resize', handleResize, false)
   }, [])
 
@@ -47,7 +50,7 @@ const HomSlider = () => {
   const renderDesktopScreen = () => {
     const bannerDesktopStyle = {
       margin: 'auto',
-      width: '140vh',
+      width: '250vh',
       height: '60vh',
       borderRadius: '1vh',
     }
@@ -58,15 +61,20 @@ const HomSlider = () => {
     return (
       <div style={sliderDesktopStyle}>
         <Slider className="slider-04 slider-simple-arrow" style={sliderDesktopStyle} {...settings}>
-          {banners.map((banner) => {
+          {bannersData.data.map((bannerData) => {
+            const { bannerNumber, images } = bannerData
             return (
-              <div key={banner.key} className="slide-04-item" onClick={() => handleOnClickBanner()}>
+              <div
+                key={`slide-${bannerNumber}`}
+                className="slide-04-item"
+                onClick={() => handleOnClickBanner()}
+              >
                 <div className="slide-inner">
                   <div className="slide-image">
                     <img
                       style={bannerDesktopStyle}
-                      src={require(`../../assets/images/home-slider/${banner.image}`)}
-                      alt={banner.alt}
+                      src={images.desktop}
+                      alt={`slide-${bannerNumber}`}
                     />
                   </div>
                 </div>
@@ -81,9 +89,10 @@ const HomSlider = () => {
   const renderMobileScreen = () => {
     return (
       <Slider className="slider-04 slider-simple-arrow" {...settings}>
-        {banners.map((banner) => {
-          const notRender = banner.image.includes('BANNER_FENIX') && dimensions.width < 992
-          const imageStyle = banner.image.includes('FENIX')
+        {bannersData.data.map((bannerData) => {
+          const { bannerNumber, images } = bannerData
+          const notRender = images.mobile.includes('BANNER_FENIX') && dimensions.width < 992
+          const imageStyle = images.mobile.includes('FENIX')
             ? {
                 minHeight: '100%',
                 borderRadius: '1vh',
@@ -93,14 +102,14 @@ const HomSlider = () => {
               }
           if (!notRender) {
             return (
-              <div key={banner.key} className="slide-04-item" onClick={() => handleOnClickBanner()}>
+              <div
+                key={`slide-${bannerNumber}`}
+                className="slide-04-item"
+                onClick={() => handleOnClickBanner()}
+              >
                 <div className="slide-inner">
                   <div className="slide-image">
-                    <img
-                      style={imageStyle}
-                      src={require(`../../assets/images/home-slider/${banner.image}`)}
-                      alt={banner.alt}
-                    />
+                    <img style={imageStyle} src={images.mobile} alt={`slide-${bannerNumber}`} />
                   </div>
                 </div>
               </div>
@@ -111,9 +120,7 @@ const HomSlider = () => {
     )
   }
   const isMobileScreen = dimensions.width < 500
-  return !isMobileScreen
-    ? renderDesktopScreen() //null
-    : renderMobileScreen()
+  return !isMobileScreen ? renderDesktopScreen() : renderMobileScreen()
 }
 
 export default HomSlider
