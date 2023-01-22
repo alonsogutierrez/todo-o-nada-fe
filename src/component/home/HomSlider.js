@@ -50,7 +50,7 @@ const HomSlider = () => {
   const renderDesktopScreen = () => {
     const bannerDesktopStyle = {
       margin: 'auto',
-      width: '140vh',
+      width: '250vh',
       height: '60vh',
       borderRadius: '1vh',
     }
