@@ -55,6 +55,17 @@ const ProductSlider = ({ settings, type = 'principal' }) => {
     getMoreInterestingProducts(type)
   }, [products.length])
 
+  let settingsUpdated = {}
+  if (products.length > 0) {
+    settingsUpdated = settings
+    let slidesToShow = 5
+    if (products.length < 5) {
+      slidesToShow = products.length
+    }
+    settingsUpdated.slidesToShow = slidesToShow
+    settings = settingsUpdated
+  }
+
   return (
     <>
       <Col sm={12}>
