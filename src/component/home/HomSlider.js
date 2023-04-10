@@ -92,14 +92,15 @@ const HomSlider = () => {
         {bannersData.data.map((bannerData) => {
           const { bannerNumber, images } = bannerData
           const notRender = images.mobile.includes('BANNER_FENIX') && dimensions.width < 992
-          const imageStyle = images.mobile.includes('FENIX')
-            ? {
-                minHeight: '100%',
-                borderRadius: '1vh',
-              }
-            : {
-                borderRadius: '1vh',
-              }
+          const imageStyle =
+            images.mobile.includes('FENIX') || images.mobile.includes('Festival')
+              ? {
+                  minHeight: '100%',
+                  borderRadius: '1vh',
+                }
+              : {
+                  borderRadius: '1vh',
+                }
           if (!notRender) {
             return (
               <div
