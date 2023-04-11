@@ -60,6 +60,16 @@ export default [
         defaultChecked: (values, value) => {
           return values['images'] ? values['images'].includes(value) : false
         },
+        labelMessages: {
+          desktop: {
+            imageSize: 'Optimo: 500 kb',
+            imageText: 'Desktop: 1800 x 900 px',
+          },
+          mobile: {
+            imageSize: 'Optimo: 500 kb',
+            imageText: 'Mobile: 800 x 400 px',
+          },
+        },
       },
     ],
   },

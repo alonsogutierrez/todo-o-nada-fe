@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { FormGroup, Input, Label, Row, Col } from 'reactstrap'
+import { FormGroup, Input, Label, Row, Col, Tooltip } from 'reactstrap'
 
 import LabelConfigData from './LabelConfigData'
 
 const GeneralBannerLabelForm = (props) => {
+  const [tooltipDesktopOpen, setTooltipDesktopOpen] = useState(false)
+  const [tooltipMobileOpen, setTooltipMobileOpen] = useState(false)
   const [objectReferences] = useState({
     bannerNumber: useRef(null),
     position: useRef(null),
@@ -65,6 +67,41 @@ const GeneralBannerLabelForm = (props) => {
                       <div ref={actualInputRef}>
                         {row.labelName === 'images' ? (
                           <>
+                            {
+                              <div>
+                                <div>
+                                  <i className="fa fa-question-circle-o" id={'TooltipExample'}></i>
+                                  Aviso Desktop
+                                  <Tooltip
+                                    isOpen={tooltipDesktopOpen}
+                                    placement="right"
+                                    target="TooltipExample"
+                                    toggle={() => {
+                                      setTooltipDesktopOpen(!tooltipDesktopOpen)
+                                    }}
+                                  >
+                                    <p>{row.labelMessages.desktop.imageText}</p>
+                                    <p>{row.labelMessages.mobile.imageSize}</p>
+                                  </Tooltip>
+                                </div>
+
+                                <div>
+                                  <i className="fa fa-question-circle-o" id={'TooltipExample2'}></i>
+                                  Aviso Mobile
+                                  <Tooltip
+                                    isOpen={tooltipMobileOpen}
+                                    placement="right"
+                                    target="TooltipExample2"
+                                    toggle={() => {
+                                      setTooltipMobileOpen(!tooltipMobileOpen)
+                                    }}
+                                  >
+                                    <p>{row.labelMessages.mobile.imageText}</p>
+                                    <p>{row.labelMessages.mobile.imageSize}</p>
+                                  </Tooltip>
+                                </div>
+                              </div>
+                            }
                             <input
                               type="file"
                               name={row.labelName}
