@@ -11,12 +11,11 @@ import DownloadBanners from './DownloadBanners'
 
 const BannersList = () => {
   const [bannerTextSearch, setBannerTextSearch] = useState('')
-  const [bannerList, setBannerList] = useState([])
-  const [currentPage, setCurrentPage] = useState(null)
   const [IsDeleteProcess, setIsDeleteProcess] = useState(false)
   const [allBanners, setAllBanners] = useState([])
   const [clientAPI] = useState(new ClientAPI())
   const [loading, setLoading] = useState(true)
+  const [refresh, setRefresh] = useState(false)
 
   useEffect(async () => {
     if (bannerTextSearch === '') {
@@ -31,20 +30,18 @@ const BannersList = () => {
     }
 
     window.scrollTo(0, 0)
-  }, [bannerTextSearch])
+  }, [bannerTextSearch, refresh])
 
   const onBannerSearch = (event) => {
-    let inputBannerTextSearch = event.target.value
+    let inputBannerTextSearch = event.target.value.trim()
     let curr_banners
     let actualBanners = []
     if (allBanners) {
       actualBanners = allBanners
     }
     if (inputBannerTextSearch === '' || !inputBannerTextSearch) {
-      setBannerTextSearch(inputBannerTextSearch)
-      setBannerList([])
-      setAllBanners([])
-      //setIsDeleteProcess(true)
+      setBannerTextSearch('')
+      setIsDeleteProcess(true)
     } else {
       let searchData = actualBanners.filter((bannerData) => {
         const { position, bannerNumber } = bannerData
@@ -63,7 +60,6 @@ const BannersList = () => {
       }
 
       setBannerTextSearch(inputBannerTextSearch)
-      setBannerList(searchData)
       setAllBanners(curr_banners)
       setIsDeleteProcess(false)
     }
@@ -73,22 +69,16 @@ const BannersList = () => {
     const { currentPage, pageLimit } = data
     const offset = (currentPage - 1) * pageLimit
     const currentProduct = allBanners.slice(offset, offset + pageLimit)
-    setCurrentPage(currentPage)
     setAllBanners(currentProduct)
   }
 
   const onDeleteBanner = (bannerData) => {
     if (bannerData) {
-      let deletedBanner = bannerData
-      let newBanner = bannerList.filter((currentBanner) => currentBanner.id !== deletedBanner.id)
-      let curr_banners = newBanner.filter((currentBanner) => currentBanner.id !== deletedBanner.id)
-      curr_banners = curr_banners.slice((currentPage - 1) * 12, (currentPage - 1) * 12 + 12)
-
-      setBannerList(newBanner)
-      setAllBanners(curr_banners)
-      setIsDeleteProcess(true)
+      setRefresh(!refresh)
+      setBannerTextSearch('')
     }
   }
+
   let actualBanners = []
   if (allBanners) {
     actualBanners = allBanners

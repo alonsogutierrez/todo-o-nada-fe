@@ -5,20 +5,32 @@ import PropTypes from 'prop-types'
 import { Col, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import Loader from 'react-loader-spinner'
 
-const AdminBanner = (props) => {
-  const [modal1, setModal1] = useState(false)
+import ClientAPI from './../../../common/ClientAPI'
 
-  const toggle1 = () => {
-    setModal1(!modal1)
+const AdminBanner = (props) => {
+  const [clientAPI] = useState(new ClientAPI())
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleDeleteBannerButton = async () => {
+    if (props.banner && Object.keys(props.banner).length > 0) {
+      const { bannerNumber } = props.banner
+      await clientAPI.deleteBanner({ bannerNumber })
+      handleShowDeletePopupToggle({})
+      props.deleteBanner()
+    }
+  }
+
+  const handleShowDeletePopupToggle = () => {
+    setIsModalOpen(!isModalOpen)
   }
 
   const onDeleteInvoicePopup = () => {
-    toggle1()
+    handleShowDeletePopupToggle()
   }
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
+  }, [isModalOpen])
 
   if (props.banner && Object.keys(props.banner).length > 0) {
     const { bannerNumber, images, position, isActive } = props.banner
@@ -81,17 +93,17 @@ const AdminBanner = (props) => {
 
         {/* modal-delete */}
         <Modal
-          isOpen={modal1}
-          toggle={toggle1}
+          isOpen={isModalOpen}
+          toggle={handleShowDeletePopupToggle}
           className="modal-delete modal-lg modal-dialog-centered"
         >
-          <ModalHeader toggle={toggle1}></ModalHeader>
+          <ModalHeader toggle={handleShowDeletePopupToggle}></ModalHeader>
           <ModalBody>Estas seguro que deseas eliminar este banner ?</ModalBody>
           <ModalFooter className="justify-content-center pt-4">
-            <Link className="action-button" onClick={(e) => toggle1(e)}>
+            <Link className="action-button" onClick={(e) => handleDeleteBannerButton(e)}>
               Si
             </Link>
-            <Link className="action-button no" onClick={toggle1}>
+            <Link className="action-button no" onClick={(e) => handleShowDeletePopupToggle(e)}>
               No
             </Link>
           </ModalFooter>
@@ -112,10 +124,10 @@ export default AdminBanner
 
 AdminBanner.defaultProps = {
   banner: {},
-  deletebanner: () => {},
+  deleteBanner: () => {},
 }
 
 AdminBanner.propTypes = {
   banner: PropTypes.object,
-  deletebanner: PropTypes.func,
+  deleteBanner: PropTypes.func,
 }

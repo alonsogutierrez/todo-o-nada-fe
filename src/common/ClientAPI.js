@@ -350,7 +350,6 @@ export default class ClientAPI {
       const userToken = localStorage.getItem('userToken')
       const methodHttp = isEdit ? 'put' : 'post'
       const url = isEdit ? '/banners/' + bannerNumber : '/banners'
-      console.log('bannerDta: ', bannerData)
       client
         .request({
           url: url,
@@ -491,6 +490,25 @@ export default class ClientAPI {
       return await CategoriesAPI.getCategories(client)
     } catch (err) {
       throw new Error('Cant get categories from api')
+    }
+  }
+
+  async deleteBanner(bannerData) {
+    try {
+      const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
+      const response = await client.request({
+        url: '/banners',
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+        method: 'delete',
+        timeout: 30 * 1000,
+        data: bannerData,
+      })
+      return response
+    } catch (err) {
+      throw new Error('Cant get categories navlinks from api')
     }
   }
 }
