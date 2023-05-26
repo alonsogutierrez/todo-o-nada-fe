@@ -1,0 +1,9 @@
+.carrouselsId {
+  display: flex;
+}
+
+.carrouselStyle {
+  border: '2px';
+  border-color: 'blue';
+  padding-right: '2px';
+}
