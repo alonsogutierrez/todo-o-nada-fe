@@ -17,6 +17,7 @@ import DiscountList from './Discounts/DiscountList'
 import Banners from './Banners/BannersList'
 import BannersForm from './Banners/Form/BannerForm'
 import EditBanner from './Banners/Form/EditBanner'
+import CarrouselsForm from './Carrousels/CarrouselsForm'
 
 class AdminDashboard extends Component {
   render() {
@@ -38,6 +39,7 @@ class AdminDashboard extends Component {
           <Route path={`/admin-dashboard/banners`} component={Banners} />
           <Route path={`/admin-dashboard/banners-add`} component={BannersForm} />
           <Route path={`/admin-dashboard/banners-edit/:bannerNumber`} component={EditBanner} />
+          <Route path={`/admin-dashboard/carrousels`} component={CarrouselsForm} />
         </div>
       </>
     )
