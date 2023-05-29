@@ -80,7 +80,11 @@ const CarrouselsForm = () => {
             }}
           >
             {carrousels.map((carrouselData, index) => (
-              <Draggable key={carrouselData.id} draggableId={carrouselData.id} index={index}>
+              <Draggable
+                key={carrouselData.id}
+                draggableId={`drag-${carrouselData.id}`}
+                index={index}
+              >
                 {(provided, snapshot) => (
                   <li
                     className="carrouselStyle"
