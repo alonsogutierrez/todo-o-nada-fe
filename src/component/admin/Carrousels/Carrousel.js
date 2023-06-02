@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 
+import ProductInfo from './../../search/ProductInfo'
+
 const Carrousel = ({ carrouselData }) => {
   return (
     <>
@@ -30,23 +32,32 @@ const Carrousel = ({ carrouselData }) => {
                 index={index}
               >
                 {(provided, snapshot) => (
-                  <li
-                    className="carrouselStyle"
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    ref={provided.innerRef}
-                    style={{
-                      ...provided.draggableProps.style,
-                      background: snapshot.isDragging ? 'lightgreen' : 'white',
-                      userSelect: 'none',
-                      padding: 8 * 2,
-                      margin: `0 ${8}px 0 0`,
-                    }}
-                  >
-                    <h2>{product.name}</h2>
-                    <h2>{product.salesPrice}</h2>
-                    <img src={product.imgUrl} />
-                  </li>
+                  <>
+                    <li
+                      className="carrouselStyle"
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      ref={provided.innerRef}
+                      style={{
+                        ...provided.draggableProps.style,
+                        background: snapshot.isDragging ? 'lightgreen' : 'white',
+                        userSelect: 'none',
+                        padding: 8 * 2,
+                        margin: `0 ${8}px 0 0`,
+                      }}
+                    >
+                      <ProductInfo
+                        product={product}
+                        style={{
+                          ...provided.draggableProps.style,
+                          background: snapshot.isDragging ? 'lightgreen' : 'white',
+                          userSelect: 'none',
+                          padding: 8 * 2,
+                          margin: `0 ${8}px 0 0`,
+                        }}
+                      />
+                    </li>
+                  </>
                 )}
               </Draggable>
             ))}

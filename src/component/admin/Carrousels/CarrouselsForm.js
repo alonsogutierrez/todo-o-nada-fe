@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Row } from 'reactstrap'
+import { Row, Container, Col } from 'reactstrap'
 import Loader from 'react-loader-spinner'
 import { DragDropContext } from 'react-beautiful-dnd'
 
@@ -23,19 +23,15 @@ const carrouselsListData = {
     products: [
       {
         name: 'Polera 1',
-        salesPrice: 1990,
-        defaultPrice: 2490,
-        imgUrl: [
+        price: 1990,
+        picture:
           'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/KANNONBLANCA1.jpg',
-        ],
       },
       {
         name: 'Polera 2',
-        salesPrice: 1990,
-        defaultPrice: 2490,
-        imgUrl: [
+        price: 1990,
+        picture:
           'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/KANNONBLANCA1.jpg',
-        ],
       },
     ],
   },
@@ -45,15 +41,13 @@ const carrouselsListData = {
     products: [
       {
         name: 'Polera Irezumi',
-        salesPrice: 1990,
-        defaultPrice: 2490,
-        imgUrl: ['https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg'],
+        price: 1990,
+        picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
       },
       {
         name: 'Polera Irezumi 2',
-        salesPrice: 1990,
-        defaultPrice: 2490,
-        imgUrl: ['https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg'],
+        price: 1990,
+        picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
       },
     ],
   },
@@ -63,9 +57,8 @@ const carrouselsListData = {
     products: [
       {
         name: 'Polera Irezumix v2',
-        salesPrice: 1990,
-        defaultPrice: 2490,
-        imgUrl: ['https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg'],
+        price: 1990,
+        picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
       },
     ],
   },
@@ -167,6 +160,7 @@ const CarrouselsForm = () => {
   }
 
   const handleDragEnd = (result) => {
+    console.log('result: ', result)
     const { source, destination } = result
     if (!destination) {
       // If the item is dragged outside the carousel, remove it from the list
@@ -239,61 +233,75 @@ const CarrouselsForm = () => {
 
   return (
     <>
-      <div className="section-ptb">Carrousels Config</div>
-
-      <div className="mb-4">
-        <form>
-          <div className="form-group mb-0">
-            <input
-              type="search"
-              className="form-control"
-              placeholder="Search product"
-              value={productTextSearch}
-              onChange={(e) => {
-                onProductSearch(e)
-              }}
-            ></input>
-          </div>
-        </form>
-      </div>
-      {loading ? (
-        <>
-          <div>
-            <Loader type="Puff" color="#04d39f" height="100" width="100" />
-          </div>
-        </>
-      ) : (
-        <div className="mb-0 mb-md-4">
-          {actualProducts.length > 0 && productTextSearch !== '' ? (
-            <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
-              {actualProducts.map((product, index) => (
-                <AdminProduct product={product} key={index} />
-              ))}
-            </Row>
-          ) : (
-            <Row className="products products-loop grid ciyashop-products-shortcode">
-              <div className="col-sm-12 text-center  mt-4 mt-md-5">
-                <img
-                  src={require(`../../../assets/images/empty-search.jpg`)}
-                  className="img-fluid mb-4"
-                />
-                <h3>Lo sentimos! No hay productos encontrados para tu selección! </h3>
-                <p>Intenta otras palabras por favor.</p>
+      <div className="section-ptb">
+        <Container>
+          <Row>
+            <Col lg={12}>
+              <div>
+                <h4>Configuración de Carrousels</h4>
+                <form>
+                  <input
+                    role="search"
+                    type="search"
+                    className="form-control"
+                    maxLength={50}
+                    placeholder="Search products"
+                    value={productTextSearch}
+                    onChange={(e) => {
+                      onProductSearch(e)
+                    }}
+                  ></input>
+                </form>
               </div>
-            </Row>
-          )}
-        </div>
-      )}
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12}>
+              {loading ? (
+                <>
+                  <div>
+                    <Loader type="Puff" color="#04d39f" height="100" width="100" />
+                  </div>
+                </>
+              ) : (
+                <div className="mb-0 mb-md-4">
+                  {actualProducts.length > 0 && productTextSearch !== '' ? (
+                    <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
+                      {actualProducts.map((product, index) => (
+                        <AdminProduct product={product} key={index} />
+                      ))}
+                    </Row>
+                  ) : (
+                    <Row className="products products-loop grid ciyashop-products-shortcode">
+                      <div className="col-sm-12 text-center  mt-4 mt-md-5">
+                        <img
+                          src={require(`../../../assets/images/empty-search.jpg`)}
+                          className="img-fluid mb-4"
+                        />
+                        <h3>Lo sentimos! No hay productos encontrados para tu selección! </h3>
+                        <p>Intenta otras palabras por favor.</p>
+                      </div>
+                    </Row>
+                  )}
+                </div>
+              )}
 
-      <div className="mb-0">
-        <h4>Lista de carrousels</h4>
+              <div className="mb-0">
+                <h4>Lista de carrousels</h4>
+              </div>
+              <DragDropContext onDragEnd={handleDragEnd}>
+                {Object.keys(carrouselsLists).map((key, index) => {
+                  const carrouselData = carrouselsLists[key]
+                  return (
+                    <Carrousel key={`${key}-${index}`} carrouselData={carrouselData}></Carrousel>
+                  )
+                })}
+              </DragDropContext>
+            </Col>
+          </Row>
+        </Container>
       </div>
-      <DragDropContext onDragEnd={handleDragEnd}>
-        {Object.keys(carrouselsLists).map((key, index) => {
-          const carrouselData = carrouselsLists[key]
-          return <Carrousel key={`${key}-${index}`} carrouselData={carrouselData}></Carrousel>
-        })}
-      </DragDropContext>
+      <div className="content-wrapper mb-7"></div>
     </>
   )
 }
