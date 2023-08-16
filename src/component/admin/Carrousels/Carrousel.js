@@ -4,68 +4,67 @@ import { Droppable, Draggable } from 'react-beautiful-dnd'
 
 import ProductInfo from './../../search/ProductInfo'
 
-const Carrousel = ({ carrouselData }) => {
+const Carrousel = ({ carrouselData, index }) => {
   return (
-    <>
-      <h1>{carrouselData.title}</h1>
-      <Droppable
-        key={`key-drop-${carrouselData.id}`}
-        droppableId={`${carrouselData.id}`}
-        direction="horizontal"
-      >
-        {(provided, snapshot) => (
-          <ul
-            ref={provided.innerRef}
-            className="carrouselsId"
-            {...provided.droppableProps}
-            style={{
-              background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
-              padding: 8,
-              overflow: 'auto',
-              display: 'flex',
-            }}
-          >
-            {carrouselData.products.map((product, index) => (
-              <Draggable
-                key={`drag-${product.name}-${index}`}
-                draggableId={`drag-${product.name}-${index}`}
-                index={index}
+    <Draggable draggableId={`titlex-drag-idx${index}`} index={index} key={`draggable-${index}`}>
+      {(provided) => (
+        <div {...provided.draggableProps} ref={provided.innerRef}>
+          <h4 {...provided.dragHandleProps}>{carrouselData.title}</h4>
+          <Droppable droppableId={`${carrouselData.id}`} type="carrousel" direction="horizontal">
+            {(provided, snapshot) => (
+              <ul
+                ref={provided.innerRef}
+                className="carrouselsId"
+                {...provided.droppableProps}
+                style={{
+                  background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
+                  padding: 8,
+                  overflow: 'auto',
+                  display: 'flex',
+                }}
               >
-                {(provided, snapshot) => (
-                  <>
-                    <li
-                      className="carrouselStyle"
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      ref={provided.innerRef}
-                      style={{
-                        ...provided.draggableProps.style,
-                        background: snapshot.isDragging ? 'lightgreen' : 'white',
-                        userSelect: 'none',
-                        padding: 8 * 2,
-                        margin: `0 ${8}px 0 0`,
-                      }}
+                {carrouselData.products &&
+                  carrouselData.products.map((product, indexProd) => (
+                    <Draggable
+                      key={indexProd}
+                      draggableId={`drag-${product.name}-${indexProd}`}
+                      index={indexProd}
                     >
-                      <ProductInfo
-                        product={product}
-                        style={{
-                          ...provided.draggableProps.style,
-                          background: snapshot.isDragging ? 'lightgreen' : 'white',
-                          userSelect: 'none',
-                          padding: 8 * 2,
-                          margin: `0 ${8}px 0 0`,
-                        }}
-                      />
-                    </li>
-                  </>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </ul>
-        )}
-      </Droppable>
-    </>
+                      {(provided, snapshot) => (
+                        <li
+                          className="carrouselStyle"
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                          style={{
+                            ...provided.draggableProps.style,
+                            background: snapshot.isDragging ? 'lightgreen' : 'white',
+                            userSelect: 'none',
+                            padding: 8 * 2,
+                            margin: `0 ${8}px 0 0`,
+                          }}
+                        >
+                          <ProductInfo
+                            product={product}
+                            style={{
+                              ...provided.draggableProps.style,
+                              background: snapshot.isDragging ? 'lightgreen' : 'white',
+                              userSelect: 'none',
+                              padding: 8 * 2,
+                              margin: `0 ${8}px 0 0`,
+                            }}
+                          />
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+        </div>
+      )}
+    </Draggable>
   )
 }
 
@@ -77,8 +76,14 @@ Carrousel.defaultProps = {
     title: '',
     products: [],
   },
+  carrouselsLists: [],
+  setCarrouselsList: () => {},
+  index: -1,
 }
 
 Carrousel.propTypes = {
   carrouselData: PropTypes.object,
+  carrouselsLists: PropTypes.object,
+  setCarrouselsList: PropTypes.func,
+  index: PropTypes.number,
 }

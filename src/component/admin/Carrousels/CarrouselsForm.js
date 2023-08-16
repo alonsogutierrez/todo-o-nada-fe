@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Container, Col } from 'reactstrap'
+import {
+  Row,
+  Container,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+} from 'reactstrap'
 import Loader from 'react-loader-spinner'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import Carrousel from './Carrousel'
 import AdminProduct from './../Product/AdminProduct'
@@ -11,65 +21,68 @@ import ClientAPI from '../../../common/ClientAPI'
 import './carrouselsStyle.css'
 
 // TODO: Call to BFF to get carrouself config data
-const carrouselsListData = {
-  'dropIdx-0': {
-    id: 'dropIdx-0',
-    title: 'Agregar items',
-    products: [],
+const carrouselData = {
+  products: {
+    'Polera 1': {
+      name: 'Polera 1',
+      price: 1990,
+      picture:
+        'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/KANNONBLANCA1.jpg',
+    },
+    'Polera 2': {
+      name: 'Polera 2',
+      price: 1990,
+      picture:
+        'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/KANNONBLANCA1.jpg',
+    },
+    'Polera Irezumi': {
+      name: 'Polera Irezumi',
+      price: 1990,
+      picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
+    },
+    'Polera Irezumi 2': {
+      name: 'Polera Irezumi 2',
+      price: 1990,
+      picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
+    },
+    'Polera Irezumix v2': {
+      name: 'Polera Irezumix v2',
+      price: 1990,
+      picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
+    },
   },
-  'dropIdx-1': {
-    id: 'dropIdx-1',
-    title: 'Nuevos Lanzamientos',
-    products: [
-      {
-        name: 'Polera 1',
-        price: 1990,
-        picture:
-          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/KANNONBLANCA1.jpg',
-      },
-      {
-        name: 'Polera 2',
-        price: 1990,
-        picture:
-          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/KANNONBLANCA1.jpg',
-      },
-    ],
+  carrousels: {
+    'dropIdx-0': {
+      id: 'dropIdx-0',
+      title: 'Agregar items',
+      products: [],
+    },
+    'dropIdx-1': {
+      id: 'dropIdx-1',
+      title: 'Nuevos Lanzamientos',
+      products: ['Polera 1', 'Polera 2'],
+    },
+    'dropIdx-2': {
+      id: 'dropIdx-2',
+      title: 'Irezumi Art Collection',
+      products: ['Polera Irezumi', 'Polera Irezumi 2'],
+    },
+    'dropIdx-3': {
+      id: 'dropIdx-3',
+      title: 'Todo o nada Art Collection',
+      products: ['Polera Irezumix v2'],
+    },
   },
-  'dropIdx-2': {
-    id: 'dropIdx-2',
-    title: 'Irezumi Art Collection',
-    products: [
-      {
-        name: 'Polera Irezumi',
-        price: 1990,
-        picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
-      },
-      {
-        name: 'Polera Irezumi 2',
-        price: 1990,
-        picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
-      },
-    ],
-  },
-  'dropIdx-3': {
-    id: 'dropIdx-3',
-    title: 'Todo o nada Art Collection',
-    products: [
-      {
-        name: 'Polera Irezumix v2',
-        price: 1990,
-        picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
-      },
-    ],
-  },
+  carrouselsOrder: ['dropIdx-0', 'dropIdx-1', 'dropIdx-2', 'dropIdx-3'],
 }
 
 const CarrouselsForm = () => {
-  const [carrouselsLists, setCarrouselsList] = useState(carrouselsListData)
+  const [carrouselsLists, setCarrouselsList] = useState(carrouselData)
   const [productTextSearch, setProductTextSearch] = useState('')
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [clientAPI] = useState(new ClientAPI())
+  const [showAddCarrouselModal, setShowCarrouselModal] = useState(false)
 
   useEffect(async () => {
     if (productTextSearch === '') {
@@ -159,71 +172,107 @@ const CarrouselsForm = () => {
     }
   }
 
+  const handlerShowAddCarrouselModal = (e) => {
+    e.preventDefault()
+    setShowCarrouselModal(!showAddCarrouselModal)
+  }
+
   const handleDragEnd = (result) => {
-    console.log('result: ', result)
-    const { source, destination } = result
-    if (!destination) {
-      // If the item is dragged outside the carousel, remove it from the list
-      const sourceListId = source.droppableId
-      const removedItemId = source.index
-      const newItems = carrouselsLists[sourceListId].products.filter(
-        (item, idx) => idx !== removedItemId
-      )
-      // setProducts(newItems)
-      setCarrouselsList({
-        ...carrouselsLists,
-        [sourceListId]: {
-          id: carrouselsLists[sourceListId].id,
-          title: carrouselsLists[sourceListId].title,
-          products: newItems,
-        },
-      })
+    const { source, destination, type } = result
+
+    // Case 2: Move columns
+    if (type === 'column') {
+      const newColumnOrder = Array.from(carrouselsLists.carrouselsOrder)
+      if (destination && destination.index) {
+        newColumnOrder.splice(source.index, 1)
+        newColumnOrder.splice(destination.index, 0, carrouselsLists.carrouselsOrder[source.index])
+        console.log('newColumnOrder after: ', newColumnOrder)
+        setCarrouselsList({ ...carrouselsLists, carrouselsOrder: newColumnOrder })
+      }
       return
     }
 
-    const sourceListId = source.droppableId
-    const destinationListId = destination.droppableId
-    const sourceIndex = source.index
-    const destinationIndex = destination.index
+    // Case 0: Item dropped outside any column
+    if (!destination) {
+      if (type === 'carrousel') {
+        const sourceColumn = carrouselsLists.carrousels[source.droppableId]
+        const productKey = sourceColumn.products[source.index]
+        const updatedProducts = sourceColumn.products.filter(
+          (product, index) => index !== source.index
+        )
+        delete carrouselsLists.products[productKey]
+        const newCarrouselsLists = {
+          ...carrouselsLists,
+          carrousels: {
+            ...carrouselsLists.carrousels,
+            [source.droppableId]: {
+              ...sourceColumn,
+              products: updatedProducts,
+            },
+          },
+          products: carrouselsLists.products,
+        }
+        setCarrouselsList(newCarrouselsLists)
+      }
+      return
+    }
 
-    // Dragging within the same list
-    if (sourceListId === destinationListId) {
-      const carrouselProducts = [...carrouselsLists[sourceListId]['products']]
-      const [draggedItem] = carrouselProducts.splice(sourceIndex, 1)
-      carrouselProducts.splice(destinationIndex, 0, draggedItem)
-      const newItems = carrouselProducts
-      const valueKey = {
-        id: carrouselsLists[sourceListId].id,
-        title: carrouselsLists[sourceListId].title,
-        products: newItems,
+    // Case 1: Item dropped to the same position
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      return
+    }
+
+    // Case 3: Dragging within the same column
+    const sourceColumn = carrouselsLists.carrousels[source.droppableId]
+    const destinationColumn = carrouselsLists.carrousels[destination.droppableId]
+
+    if (sourceColumn.id === destinationColumn.id) {
+      const newProductsKeys = Array.from(sourceColumn.products)
+      newProductsKeys.splice(source.index, 1)
+      newProductsKeys.splice(destination.index, 0, [sourceColumn.products[source.index]])
+
+      const newSourceColumn = {
+        ...sourceColumn,
+        products: newProductsKeys,
       }
 
-      setCarrouselsList({
+      const newCarrouselsLists = {
         ...carrouselsLists,
-        [sourceListId]: valueKey,
-      })
-    } else {
-      // Dragging between different lists
-      const sourceList = [...carrouselsLists[sourceListId]['products']]
-      const destinationList = [...carrouselsLists[destinationListId]['products']]
-      const [draggedItem] = sourceList.splice(sourceIndex, 1)
-      destinationList.splice(destinationIndex, 0, draggedItem)
-      const newItems = destinationList
+        carrousels: {
+          ...carrouselsLists.carrousels,
+          [newSourceColumn.id]: newSourceColumn,
+        },
+      }
 
-      setCarrouselsList({
-        ...carrouselsLists,
-        [sourceListId]: {
-          id: carrouselsLists[sourceListId].id,
-          title: carrouselsLists[sourceListId].title,
-          products: sourceList,
-        },
-        [destinationListId]: {
-          id: carrouselsLists[destinationListId].id,
-          title: carrouselsLists[destinationListId].title,
-          products: newItems,
-        },
-      })
+      setCarrouselsList(newCarrouselsLists)
+      return
     }
+
+    // Case 4: Move from one list to another
+    const newProductsKeys = Array.from(sourceColumn.products)
+    newProductsKeys.splice(source.index, 1)
+    const newSourceColumn = {
+      ...sourceColumn,
+      products: newProductsKeys,
+    }
+
+    const destProductsKeys = Array.from(destinationColumn.products)
+    destProductsKeys.splice(destination.index, 0, sourceColumn.products[source.index])
+    const newDestCarrousel = {
+      ...destinationColumn,
+      products: destProductsKeys,
+    }
+
+    const newCarrouselsLists = {
+      ...carrouselsLists,
+      carrousels: {
+        ...carrouselsLists.carrousels,
+        [newSourceColumn.id]: newSourceColumn,
+        [newDestCarrousel.id]: newDestCarrousel,
+      },
+    }
+    setCarrouselsList(newCarrouselsLists)
+    return
   }
 
   let actualProducts = []
@@ -286,16 +335,70 @@ const CarrouselsForm = () => {
                 </div>
               )}
 
-              <div className="mb-0">
-                <h4>Lista de carrousels</h4>
-              </div>
+              <Row>
+                <Col lg={12}>
+                  <Row>
+                    <h2>Lista de carrousels</h2>
+                    <div className="product-action product-action-quick-view">
+                      <Button
+                        color="success"
+                        className="open-edit-view"
+                        onClick={(e) => handlerShowAddCarrouselModal(e)}
+                      >
+                        <i className="fa fa-pencil-square-o"></i>
+                      </Button>
+                      <Modal isOpen={showAddCarrouselModal} toggle={handlerShowAddCarrouselModal}>
+                        <ModalHeader>Agregar carrousel</ModalHeader>
+                        <ModalBody>
+                          <Input></Input>
+                        </ModalBody>
+                        <ModalFooter>
+                          <Button color="primary" onClick={handlerShowAddCarrouselModal}>
+                            Guardar
+                          </Button>{' '}
+                          <Button color="secondary" onClick={handlerShowAddCarrouselModal}>
+                            Cancelar
+                          </Button>
+                        </ModalFooter>
+                      </Modal>
+                    </div>
+                  </Row>
+                </Col>
+              </Row>
+
               <DragDropContext onDragEnd={handleDragEnd}>
-                {Object.keys(carrouselsLists).map((key, index) => {
-                  const carrouselData = carrouselsLists[key]
-                  return (
-                    <Carrousel key={`${key}-${index}`} carrouselData={carrouselData}></Carrousel>
-                  )
-                })}
+                <Droppable
+                  droppableId="outerDroppable"
+                  key={`key-drop-outer`}
+                  direction="vertical"
+                  type="column"
+                >
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {/* Nested inner context component */}
+                      {carrouselsLists.carrouselsOrder.map((carrouselKey, index) => {
+                        const carrouselData = carrouselsLists.carrousels[carrouselKey]
+                        const carrouselDataProductsKey = carrouselData.products
+                        const newCarrouselData = {
+                          ...carrouselData,
+                          products: carrouselDataProductsKey.map(
+                            (productKey) => carrouselsLists.products[productKey]
+                          ),
+                        }
+                        return (
+                          <Carrousel
+                            key={carrouselKey}
+                            carrouselData={newCarrouselData}
+                            index={index}
+                          />
+                        )
+                      })}
+
+                      {/* Outer droppable area */}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
               </DragDropContext>
             </Col>
           </Row>
