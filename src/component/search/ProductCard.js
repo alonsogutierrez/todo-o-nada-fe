@@ -10,7 +10,7 @@ class ProductCard extends Component {
   }
 
   render() {
-    const { product } = this.props
+    const { product, isAdminView, key } = this.props
     const { _source, _id } = product
     let {
       picture,
@@ -36,8 +36,8 @@ class ProductCard extends Component {
       details,
     }
     return (
-      <div key={1} className={this.props.layoutstyle}>
-        <ProductInfo product={productMapped} />
+      <div key={key} className={this.props.layoutstyle}>
+        <ProductInfo product={productMapped} isAdminView={isAdminView} />
       </div>
     )
   }
@@ -47,10 +47,14 @@ export default ProductCard
 
 ProductCard.defaultProps = {
   product: {},
+  isAdminView: false,
   layoutstyle: '',
+  key: '',
 }
 
 ProductCard.propTypes = {
   product: PropTypes.object,
+  isAdminView: PropTypes.bool,
   layoutstyle: PropTypes.string,
+  key: PropTypes.string,
 }

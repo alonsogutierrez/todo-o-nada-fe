@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 
-import ProductInfo from './../../search/ProductInfo'
+// import ProductInfo from './../../search/ProductInfo'
+import ProductCard from './../../search/ProductCard'
 
 const Carrousel = ({ carrouselData, index }) => {
   return (
@@ -24,28 +25,20 @@ const Carrousel = ({ carrouselData, index }) => {
                 }}
               >
                 {carrouselData.products &&
-                  carrouselData.products.map((product, indexProd) => (
-                    <Draggable
-                      key={indexProd}
-                      draggableId={`drag-${product.name}-${indexProd}`}
-                      index={indexProd}
-                    >
-                      {(provided, snapshot) => (
-                        <li
-                          className="carrouselStyle"
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          ref={provided.innerRef}
-                          style={{
-                            ...provided.draggableProps.style,
-                            background: snapshot.isDragging ? 'lightgreen' : 'white',
-                            userSelect: 'none',
-                            padding: 8 * 2,
-                            margin: `0 ${8}px 0 0`,
-                          }}
-                        >
-                          <ProductInfo
-                            product={product}
+                  carrouselData.products.map((productData, indexProd) => {
+                    console.log('indexProd: ', indexProd)
+                    return (
+                      <Draggable
+                        key={`prod-${indexProd}`}
+                        draggableId={`dragIdCarrousel-${indexProd}`}
+                        index={indexProd}
+                      >
+                        {(provided, snapshot) => (
+                          <li
+                            className="carrouselStyle products products-loop grid ciyashop-products-shortcode pgs-product-list"
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
                             style={{
                               ...provided.draggableProps.style,
                               background: snapshot.isDragging ? 'lightgreen' : 'white',
@@ -53,11 +46,25 @@ const Carrousel = ({ carrouselData, index }) => {
                               padding: 8 * 2,
                               margin: `0 ${8}px 0 0`,
                             }}
-                          />
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
+                          >
+                            <ProductCard
+                              key={`productCardKey-${indexProd}`}
+                              product={productData}
+                              style={{
+                                ...provided.draggableProps.style,
+                                background: snapshot.isDragging ? 'lightgreen' : 'white',
+                                userSelect: 'none',
+                                padding: 8 * 2,
+                                margin: `0 ${8}px 0 0`,
+                              }}
+                              layout={'col-sm-6 col-md-4'}
+                              isAdminView={true}
+                            />
+                          </li>
+                        )}
+                      </Draggable>
+                    )
+                  })}
                 {provided.placeholder}
               </ul>
             )}

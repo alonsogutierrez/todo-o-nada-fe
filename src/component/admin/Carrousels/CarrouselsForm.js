@@ -23,32 +23,243 @@ import './carrouselsStyle.css'
 // TODO: Call to BFF to get carrouself config data
 const carrouselData = {
   products: {
-    'Polera 1': {
-      name: 'Polera 1',
-      price: 1990,
-      picture:
-        'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/KANNONBLANCA1.jpg',
+    'HO-Ō, LA LEYENDA DEL FÉNIX polera blanca': {
+      _index: 'products',
+      _type: '_doc',
+      _id: 'Wq2x4okBxo3iZx04rsQ6',
+      _version: 5,
+      _score: 1,
+      _source: {
+        itemNumber: '1039',
+        name: 'HO-Ō, LA LEYENDA DEL FÉNIX polera blanca',
+        categories: [
+          'hombre',
+          'irezumi',
+          'mujer',
+          'poleras',
+          'tattoo-collection',
+          'unisex',
+          'remate',
+        ],
+        description:
+          'HO-Ō, La Leyenda del Fénix es una pintura original de @diamantetattart basado en la Leyenda del Fénix de la cultura japonesa y oriental.\nPrenda de confección propia con tela jersey de la más alta calidad, estampada a mano en serigrafía. El pecho tiene 5 tintas (cuatricromía + tinta color azul metálico) y la espalda tiene 1 tinta color negro perla. Incluye un elegante packaging estampado a mano en serigrafía a dos tintas. Producto de calidad premium',
+        color: 'Blanco',
+        price: {
+          basePriceSales: 25000,
+          basePriceReference: 25000,
+          discount: 0,
+        },
+        picture:
+          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/FENIXP1.jpg',
+        details: {
+          '10391': {
+            quantity: 0,
+            size: 'S',
+          },
+          '10392': {
+            quantity: 0,
+            size: 'M',
+          },
+          '10393': {
+            quantity: 0,
+            size: 'L',
+          },
+          '10394': {
+            quantity: 0,
+            size: 'XL',
+          },
+          '10395': {
+            quantity: 0,
+            size: 'XXL',
+          },
+        },
+        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+        is_active: true,
+      },
     },
-    'Polera 2': {
-      name: 'Polera 2',
-      price: 1990,
-      picture:
-        'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/KANNONBLANCA1.jpg',
+    'HO-Ō, LA LEYENDA DEL FÉNIX HOODIE': {
+      _index: 'products',
+      _type: '_doc',
+      _id: 'bK2x4okBxo3iZx0478S-',
+      _version: 5,
+      _score: 1,
+      _source: {
+        itemNumber: '1052',
+        name: 'HO-Ō, LA LEYENDA DEL FÉNIX HOODIE',
+        categories: ['irezumi', 'hombre', 'mujer', 'polerones', 'tattoo-collection', 'unisex'],
+        description:
+          'HO-Ō de @diamantetattart basado en la Leyenda del Fénix de la cultura japonesa y oriental.\nHoodie de confección propia con franela de la más alta calidad, tinta plateada en el pecho + cuatricromía espalda completa estampada a mano en serigrafía.\nBolsillos con cierre para mayor comodidad y  seguridad de tus pertenencias.\nEdición limitada y coleccionable. Producto de calidad premium.',
+        color: 'Negro',
+        price: {
+          basePriceSales: 50000,
+          basePriceReference: 50000,
+          discount: 0,
+        },
+        picture:
+          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/FENIX3.jpg',
+        details: {
+          '10521': {
+            quantity: 0,
+            size: 'S',
+          },
+          '10522': {
+            quantity: 0,
+            size: 'M',
+          },
+          '10523': {
+            quantity: 0,
+            size: 'L',
+          },
+          '10524': {
+            quantity: 0,
+            size: 'XL',
+          },
+          '10525': {
+            quantity: 0,
+            size: 'XXL',
+          },
+        },
+        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+        is_active: true,
+      },
     },
-    'Polera Irezumi': {
-      name: 'Polera Irezumi',
-      price: 1990,
-      picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
+    'VIAJE – BLANCO': {
+      _index: 'products',
+      _type: '_doc',
+      _id: 'Da2z4okBxo3iZx04N8XO',
+      _version: 5,
+      _score: 1,
+      _source: {
+        itemNumber: '9',
+        name: 'VIAJE – BLANCO',
+        categories: [
+          'traditional',
+          'tattoo-collection',
+          'hombre',
+          'mujer',
+          'unisex',
+          'poleras',
+          'remate',
+        ],
+        description:
+          'EL VIAJE  es una colaboracion del artista Danilo Ahumada ( @Gatogordo_tattooing) Argentina , basada en la obra del mismo nombre  , pintada el año 2020 .\n\nPolera de algodon Jersey ( 80 % algodon / 20% polyester ) estampada en serigrafia por @todo_o_nada_serigrafia . Confeccionada y producida por manos libres de explotacion . Confeccion y estampado de la mas alta calidad del mercado . \n\nEste producto viene en un box pack coleccionable.',
+        color: 'Blanco',
+        price: {
+          basePriceSales: 25000,
+          basePriceReference: 25000,
+          discount: 0,
+        },
+        picture:
+          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/csc-112.jpg',
+        details: {
+          '1032': {
+            quantity: 0,
+            size: 'S',
+          },
+          '1033': {
+            quantity: 0,
+            size: 'M',
+          },
+          '1034': {
+            quantity: 0,
+            size: 'L',
+          },
+          '1035': {
+            quantity: 0,
+            size: 'XL',
+          },
+          '1036': {
+            quantity: 0,
+            size: 'XXL',
+          },
+        },
+        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+        is_active: false,
+      },
     },
-    'Polera Irezumi 2': {
-      name: 'Polera Irezumi 2',
-      price: 1990,
-      picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
+    AWARE: {
+      _index: 'products',
+      _type: '_doc',
+      _id: 'fa2y4okBxo3iZx04G8TC',
+      _version: 5,
+      _score: 1,
+      _source: {
+        itemNumber: '30',
+        name: 'AWARE',
+        categories: [
+          'hombre',
+          'mujer',
+          'unisex',
+          'poleras',
+          'remate',
+          'irezumi',
+          'tattoo-collection',
+        ],
+        description:
+          'AWARE es una colaboración de la artista TATTOOCATALINA ( @tattoocatalina) , basada en la obra AWARE , pintada el año 2021 . Polera de algodon Jersey ( 80 % algodón / 20% polyester ) estampada en serigrafia por @todo_o_nada_serigrafia . Confeccionada y producida por manos libres de explotación . Confección y estampado hechos a mano. Producto de calidad premium.\nEste producto contiene : AWARE + caja coleccionable estampada a mano + filtros de regalo',
+        color: 'Negro',
+        price: {
+          basePriceSales: 25000,
+          basePriceReference: 25000,
+          discount: 0,
+        },
+        picture:
+          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/AWARE1.jpg',
+        details: {
+          '3001': {
+            quantity: 0,
+            size: 'S',
+          },
+          '3002': {
+            quantity: 0,
+            size: 'M',
+          },
+          '3003': {
+            quantity: 0,
+            size: 'L',
+          },
+          '3004': {
+            quantity: 0,
+            size: 'XL',
+          },
+          '3005': {
+            quantity: 0,
+            size: 'XXL',
+          },
+        },
+        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+        is_active: false,
+      },
     },
-    'Polera Irezumix v2': {
-      name: 'Polera Irezumix v2',
-      price: 1990,
-      picture: 'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/4.jpg',
+    'RYU NOREN': {
+      _index: 'products',
+      _type: '_doc',
+      _id: '9a2w4okBxo3iZx043cOz',
+      _version: 1,
+      _score: 1,
+      _source: {
+        itemNumber: '404',
+        name: 'RYU NOREN',
+        categories: ['accesorios', 'tattoo-collection', 'traditional', 'irezumi', 'print-art'],
+        description:
+          'RYU NOREN es parte de una nueva línea de productos de TODO O NADA TATTOO ART\n\nEl diseño de Dragón pertenece a una nueva colección de Pablo Esquivel (pablo_esquivel_decorazon), y es una de sus pinturas más recientes del 2023.\nCortinas de confección textil propia con tela crea y estampada de forma manual en serigrafía\n\nArtículo decorativo hecho a mano, edición limitada y coleccionable.',
+        color: 'Blanco',
+        price: {
+          basePriceSales: 30000,
+          basePriceReference: 30000,
+          discount: 0,
+        },
+        picture:
+          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/ryunoren1.jpg',
+        details: {
+          '4041': {
+            quantity: 0,
+            size: '120X80',
+          },
+        },
+        sizes: ['120X80'],
+        is_active: true,
+      },
     },
   },
   carrousels: {
@@ -60,17 +271,17 @@ const carrouselData = {
     'dropIdx-1': {
       id: 'dropIdx-1',
       title: 'Nuevos Lanzamientos',
-      products: ['Polera 1', 'Polera 2'],
+      products: ['HO-Ō, LA LEYENDA DEL FÉNIX polera blanca', 'HO-Ō, LA LEYENDA DEL FÉNIX HOODIE'],
     },
     'dropIdx-2': {
       id: 'dropIdx-2',
       title: 'Irezumi Art Collection',
-      products: ['Polera Irezumi', 'Polera Irezumi 2'],
+      products: ['VIAJE – BLANCO', 'AWARE'],
     },
     'dropIdx-3': {
       id: 'dropIdx-3',
       title: 'Todo o nada Art Collection',
-      products: ['Polera Irezumix v2'],
+      products: ['RYU NOREN'],
     },
   },
   carrouselsOrder: ['dropIdx-0', 'dropIdx-1', 'dropIdx-2', 'dropIdx-3'],
@@ -133,42 +344,6 @@ const CarrouselsForm = () => {
 
       setProductTextSearch(inputProductTextSearch)
       setProducts(curr_products)
-
-      if (curr_products.length > 0) {
-        const length =
-          actualProducts.length > 0 && actualProducts.length < 5 ? actualProducts.length : 5
-        const newItems = []
-
-        for (let idx = 0; idx < length; idx++) {
-          const prodData = {
-            name: '',
-            salesPrice: 0,
-            defaultPrice: 0,
-            imgUrl: [''],
-          }
-          const { _source } = actualProducts[idx]
-          if (_source && Object.keys(_source).length > 0) {
-            const {
-              name,
-              price: { basePriceSales, basePriceReference },
-              picture,
-            } = _source
-            prodData.name = name
-            prodData.salesPrice = basePriceSales
-            prodData.defaultPrice = basePriceReference
-            prodData.imgUrl = [picture]
-            newItems.push(prodData)
-          }
-        }
-        setCarrouselsList({
-          ...carrouselsLists,
-          ['dropIdx-0']: {
-            id: 'dropIdx-0',
-            title: 'Agregar items',
-            products: newItems,
-          },
-        })
-      }
     }
   }
 
@@ -180,7 +355,7 @@ const CarrouselsForm = () => {
   const handleDragEnd = (result) => {
     const { source, destination, type } = result
 
-    // Case 2: Move columns
+    // Case 1: Move columns
     if (type === 'column') {
       const newColumnOrder = Array.from(carrouselsLists.carrouselsOrder)
       if (destination && destination.index) {
@@ -192,7 +367,7 @@ const CarrouselsForm = () => {
       return
     }
 
-    // Case 0: Item dropped outside any column
+    // Case 2: Item dropped outside any column
     if (!destination) {
       if (type === 'carrousel') {
         const sourceColumn = carrouselsLists.carrousels[source.droppableId]
@@ -217,12 +392,12 @@ const CarrouselsForm = () => {
       return
     }
 
-    // Case 1: Item dropped to the same position
+    // Case 3: Item dropped to the same position
     if (destination.droppableId === source.droppableId && destination.index === source.index) {
       return
     }
 
-    // Case 3: Dragging within the same column
+    // Case 4: Dragging within the same column
     const sourceColumn = carrouselsLists.carrousels[source.droppableId]
     const destinationColumn = carrouselsLists.carrousels[destination.droppableId]
 
@@ -248,7 +423,7 @@ const CarrouselsForm = () => {
       return
     }
 
-    // Case 4: Move from one list to another
+    // Case 5: Move from one list to another
     const newProductsKeys = Array.from(sourceColumn.products)
     newProductsKeys.splice(source.index, 1)
     const newSourceColumn = {
@@ -273,6 +448,24 @@ const CarrouselsForm = () => {
     }
     setCarrouselsList(newCarrouselsLists)
     return
+  }
+
+  const handleOnClickAddButton = (product) => {
+    const newProductData = carrouselsLists.products[product.name]
+    setCarrouselsList({
+      ...carrouselsLists,
+      products: {
+        ...carrouselsLists.products,
+        [product.name]: newProductData,
+      },
+      carrousels: {
+        ...carrouselsLists.carrousels,
+        ['dropIdx-0']: {
+          ...carrouselsLists.carrousels['dropIdx-0'],
+          [products]: carrouselsLists.carrousels['dropIdx-0']['products'].push(product.name),
+        },
+      },
+    })
   }
 
   let actualProducts = []
@@ -317,7 +510,12 @@ const CarrouselsForm = () => {
                   {actualProducts.length > 0 && productTextSearch !== '' ? (
                     <Row className="products products-loop grid ciyashop-products-shortcode pgs-product-list">
                       {actualProducts.map((product, index) => (
-                        <AdminProduct product={product} key={index} />
+                        <AdminProduct
+                          product={product}
+                          key={index}
+                          add={true}
+                          handleOnClickAddButton={handleOnClickAddButton}
+                        />
                       ))}
                     </Row>
                   ) : (
@@ -381,13 +579,16 @@ const CarrouselsForm = () => {
                         const carrouselDataProductsKey = carrouselData.products
                         const newCarrouselData = {
                           ...carrouselData,
-                          products: carrouselDataProductsKey.map(
-                            (productKey) => carrouselsLists.products[productKey]
-                          ),
+                          products:
+                            carrouselDataProductsKey.length > 0
+                              ? carrouselDataProductsKey.map(
+                                  (productKey) => carrouselsLists.products[productKey]
+                                )
+                              : [],
                         }
                         return (
                           <Carrousel
-                            key={carrouselKey}
+                            key={`carrousel-${carrouselKey}`}
                             carrouselData={newCarrouselData}
                             index={index}
                           />
