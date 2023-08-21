@@ -19,13 +19,7 @@ const AdminProduct = (props) => {
   const onClickAddProduct = (e, product) => {
     e.preventDefault()
     if (product && Object.keys(product).length > 0) {
-      const { picture, name, price } = product._source
-      const productDataToAdd = {
-        name: name,
-        price: price.basePriceSales,
-        picture: picture,
-      }
-      props.handleOnClickAddButton(productDataToAdd)
+      props.handleOnClickAddButton(product)
     }
   }
 

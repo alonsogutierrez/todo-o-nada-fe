@@ -2,12 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 
-// import ProductInfo from './../../search/ProductInfo'
 import ProductCard from './../../search/ProductCard'
 
 const Carrousel = ({ carrouselData, index }) => {
   return (
-    <Draggable draggableId={`titlex-drag-idx${index}`} index={index} key={`draggable-${index}`}>
+    <Draggable
+      draggableId={`titlex-drag-idx${index}-${carrouselData.title}`}
+      index={`index-${carrouselData.title}`}
+      key={`draggable-${index}-${carrouselData.title}`}
+    >
       {(provided) => (
         <div {...provided.draggableProps} ref={provided.innerRef}>
           <h4 {...provided.dragHandleProps}>{carrouselData.title}</h4>
@@ -26,11 +29,10 @@ const Carrousel = ({ carrouselData, index }) => {
               >
                 {carrouselData.products &&
                   carrouselData.products.map((productData, indexProd) => {
-                    console.log('indexProd: ', indexProd)
                     return (
                       <Draggable
-                        key={`prod-${indexProd}`}
-                        draggableId={`dragIdCarrousel-${indexProd}`}
+                        key={`prod-${productData._id}`}
+                        draggableId={`dragIdCarrousel-${productData._id}`}
                         index={indexProd}
                       >
                         {(provided, snapshot) => (
@@ -48,7 +50,7 @@ const Carrousel = ({ carrouselData, index }) => {
                             }}
                           >
                             <ProductCard
-                              key={`productCardKey-${indexProd}`}
+                              key={`productCardKey-${productData._id}`}
                               product={productData}
                               style={{
                                 ...provided.draggableProps.style,

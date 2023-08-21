@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 const ProductInfo = ({ product, isAdminView }) => {
   const { picture, name, price, itemNumber, details } = product
 
-  console.log('product: ', product)
-
   const productPrice = price.basePriceSales
   let isProductWithStockAvailable = false
   for (const sku in details) {

@@ -361,7 +361,6 @@ const CarrouselsForm = () => {
       if (destination && destination.index) {
         newColumnOrder.splice(source.index, 1)
         newColumnOrder.splice(destination.index, 0, carrouselsLists.carrouselsOrder[source.index])
-        console.log('newColumnOrder after: ', newColumnOrder)
         setCarrouselsList({ ...carrouselsLists, carrouselsOrder: newColumnOrder })
       }
       return
@@ -451,21 +450,23 @@ const CarrouselsForm = () => {
   }
 
   const handleOnClickAddButton = (product) => {
-    const newProductData = carrouselsLists.products[product.name]
-    setCarrouselsList({
-      ...carrouselsLists,
-      products: {
-        ...carrouselsLists.products,
-        [product.name]: newProductData,
-      },
-      carrousels: {
-        ...carrouselsLists.carrousels,
-        ['dropIdx-0']: {
-          ...carrouselsLists.carrousels['dropIdx-0'],
-          [products]: carrouselsLists.carrousels['dropIdx-0']['products'].push(product.name),
+    const { _source } = product
+    if (!(_source.name in carrouselsLists.products)) {
+      setCarrouselsList({
+        ...carrouselsLists,
+        products: {
+          ...carrouselsLists.products,
+          [_source.name]: product,
         },
-      },
-    })
+        carrousels: {
+          ...carrouselsLists.carrousels,
+          ['dropIdx-0']: {
+            ...carrouselsLists.carrousels['dropIdx-0'],
+            [products]: carrouselsLists.carrousels['dropIdx-0']['products'].push(_source.name),
+          },
+        },
+      })
+    }
   }
 
   let actualProducts = []
