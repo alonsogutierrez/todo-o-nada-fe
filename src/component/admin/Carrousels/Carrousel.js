@@ -8,7 +8,7 @@ const Carrousel = ({ carrouselData, index }) => {
   return (
     <Draggable
       draggableId={`titlex-drag-idx${index}-${carrouselData.title}`}
-      index={`index-${carrouselData.title}`}
+      index={index}
       key={`draggable-${index}-${carrouselData.title}`}
     >
       {(provided) => (
