@@ -37,7 +37,7 @@ const Carrousel = ({ carrouselData, index }) => {
                       >
                         {(provided, snapshot) => (
                           <li
-                            className="carrouselStyle products products-loop grid ciyashop-products-shortcode pgs-product-list"
+                            className="products products-loop grid ciyashop-products-shortcode pgs-product-list"
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
@@ -47,18 +47,15 @@ const Carrousel = ({ carrouselData, index }) => {
                               userSelect: 'none',
                               padding: 8 * 2,
                               margin: `0 ${8}px 0 0`,
+                              border: '2px',
+                              borderColor: 'blue',
+                              paddingRight: '2px',
+                              width: '32vh',
                             }}
                           >
                             <ProductCard
                               key={`productCardKey-${productData._id}`}
                               product={productData}
-                              style={{
-                                ...provided.draggableProps.style,
-                                background: snapshot.isDragging ? 'lightgreen' : 'white',
-                                userSelect: 'none',
-                                padding: 8 * 2,
-                                margin: `0 ${8}px 0 0`,
-                              }}
                               layout={'col-sm-6 col-md-4'}
                               isAdminView={true}
                             />

@@ -18,8 +18,6 @@ import AdminProduct from './../Product/AdminProduct'
 
 import ClientAPI from '../../../common/ClientAPI'
 
-import './carrouselsStyle.css'
-
 // TODO: Call to BFF to get carrouself config data
 const carrouselData = {
   products: {
@@ -564,44 +562,45 @@ const CarrouselsForm = () => {
                   </Row>
                 </Col>
               </Row>
+              <div style={{ width: '100%', overflowX: 'auto' }}>
+                <DragDropContext onDragEnd={handleDragEnd}>
+                  <Droppable
+                    droppableId="outerDroppable"
+                    key={`key-drop-outer`}
+                    direction="vertical"
+                    type="column"
+                  >
+                    {(provided) => (
+                      <div {...provided.droppableProps} ref={provided.innerRef}>
+                        {/* Nested inner context component */}
+                        {carrouselsLists.carrouselsOrder.map((carrouselKey, index) => {
+                          const carrouselData = carrouselsLists.carrousels[carrouselKey]
+                          const carrouselDataProductsKey = carrouselData.products
+                          const newCarrouselData = {
+                            ...carrouselData,
+                            products:
+                              carrouselDataProductsKey.length > 0
+                                ? carrouselDataProductsKey.map(
+                                    (productKey) => carrouselsLists.products[productKey]
+                                  )
+                                : [],
+                          }
+                          return (
+                            <Carrousel
+                              key={`carrousel-${carrouselKey}`}
+                              carrouselData={newCarrouselData}
+                              index={index}
+                            />
+                          )
+                        })}
 
-              <DragDropContext onDragEnd={handleDragEnd}>
-                <Droppable
-                  droppableId="outerDroppable"
-                  key={`key-drop-outer`}
-                  direction="vertical"
-                  type="column"
-                >
-                  {(provided) => (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                      {/* Nested inner context component */}
-                      {carrouselsLists.carrouselsOrder.map((carrouselKey, index) => {
-                        const carrouselData = carrouselsLists.carrousels[carrouselKey]
-                        const carrouselDataProductsKey = carrouselData.products
-                        const newCarrouselData = {
-                          ...carrouselData,
-                          products:
-                            carrouselDataProductsKey.length > 0
-                              ? carrouselDataProductsKey.map(
-                                  (productKey) => carrouselsLists.products[productKey]
-                                )
-                              : [],
-                        }
-                        return (
-                          <Carrousel
-                            key={`carrousel-${carrouselKey}`}
-                            carrouselData={newCarrouselData}
-                            index={index}
-                          />
-                        )
-                      })}
-
-                      {/* Outer droppable area */}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
+                        {/* Outer droppable area */}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+              </div>
             </Col>
           </Row>
         </Container>
