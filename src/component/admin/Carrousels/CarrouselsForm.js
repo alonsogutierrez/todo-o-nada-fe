@@ -10,6 +10,7 @@ import {
   ModalFooter,
   Input,
 } from 'reactstrap'
+import { ToastContainer, toast } from 'react-toastify'
 import Loader from 'react-loader-spinner'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
@@ -345,6 +346,20 @@ const CarrouselsForm = () => {
     }
   }
 
+  const onCarrouselDelete = (event, carrouselIdx) => {
+    event.preventDefault()
+    const newCarrousels = carrouselsLists.carrousels
+    delete newCarrousels[carrouselIdx]
+    let newCarrouselsOrder = carrouselsLists.carrouselsOrder
+    newCarrouselsOrder = newCarrouselsOrder.filter((key) => key !== carrouselIdx)
+    setCarrouselsList({
+      ...carrouselsLists,
+      carrousels: newCarrousels,
+      carrouselsOrder: newCarrouselsOrder,
+    })
+    return
+  }
+
   const handlerShowAddCarrouselModal = (e) => {
     e.preventDefault()
     setShowCarrouselModal(!showAddCarrouselModal)
@@ -464,7 +479,10 @@ const CarrouselsForm = () => {
           },
         },
       })
+      return
     }
+    // If product exists in carrousel
+    toast.error('Product ya existe dentro de los carrouseles')
   }
 
   let actualProducts = []
@@ -474,6 +492,7 @@ const CarrouselsForm = () => {
 
   return (
     <>
+      <ToastContainer autoClose={1000} />
       <div className="section-ptb">
         <Container>
           <Row>
@@ -590,6 +609,7 @@ const CarrouselsForm = () => {
                               key={`carrousel-${carrouselKey}`}
                               carrouselData={newCarrouselData}
                               index={index}
+                              onCarrouselDelete={onCarrouselDelete}
                             />
                           )
                         })}
