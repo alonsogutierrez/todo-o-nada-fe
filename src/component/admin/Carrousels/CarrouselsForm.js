@@ -293,6 +293,7 @@ const CarrouselsForm = () => {
   const [loading, setLoading] = useState(true)
   const [clientAPI] = useState(new ClientAPI())
   const [showAddCarrouselModal, setShowCarrouselModal] = useState(false)
+  const [newCarrouselName, setNewCarrouselName] = useState('')
 
   useEffect(async () => {
     if (productTextSearch === '') {
@@ -360,8 +361,26 @@ const CarrouselsForm = () => {
     return
   }
 
-  const handlerShowAddCarrouselModal = (e) => {
-    e.preventDefault()
+  const onCarrouselEdit = (carrouselIdx, carrouselTitle) => {
+    const actualCarrouselTitle = carrouselsLists.carrousels[carrouselIdx]['title']
+    const newCarrouselOrder = carrouselsLists.carrouselsOrder.map((carrousel) =>
+      carrousel === actualCarrouselTitle ? carrouselTitle : carrousel
+    )
+    setCarrouselsList({
+      ...carrouselsLists,
+      carrousels: {
+        ...carrouselsLists.carrousels,
+        [carrouselIdx]: {
+          ...carrouselsLists.carrousels[carrouselIdx],
+          title: carrouselTitle,
+        },
+      },
+      carrouselsOrder: newCarrouselOrder,
+    })
+    return
+  }
+
+  const handlerShowAddCarrouselModal = () => {
     setShowCarrouselModal(!showAddCarrouselModal)
   }
 
@@ -485,6 +504,42 @@ const CarrouselsForm = () => {
     toast.error('Product ya existe dentro de los carrouseles')
   }
 
+  const onAddCarrouselSubmit = () => {
+    if (newCarrouselName.length <= 0) {
+      toast.error('Debes ingresar un nombre para el carrousel')
+      return
+    }
+    const totalCarrousels = Object.keys(carrouselsLists.carrousels).length
+    const newCarrouselIdx = `dropIdx-${totalCarrousels + 1}`
+    const actualCarrouselOrder = carrouselsLists.carrouselsOrder
+    actualCarrouselOrder.push(newCarrouselIdx)
+    const newCarrouselOrder = actualCarrouselOrder
+    setCarrouselsList({
+      ...carrouselsLists,
+      carrousels: {
+        ...carrouselsLists.carrousels,
+        [newCarrouselIdx]: {
+          id: newCarrouselIdx,
+          title: newCarrouselName,
+          products: [],
+        },
+      },
+      carrouselsOrder: newCarrouselOrder,
+    })
+    handlerShowAddCarrouselModal()
+    toast.success('Carrousel agregado correctamente')
+    return
+  }
+
+  const handleAddNewCarrouselName = (e) => {
+    setNewCarrouselName(e.target.value)
+  }
+
+  const handlerUpdateCarrouselConfig = () => {
+    // TODO: Call to bff to save my new config
+    toast.success('Configuración de carrousels correctamente guardada')
+  }
+
   let actualProducts = []
   if (products) {
     actualProducts = products
@@ -492,7 +547,7 @@ const CarrouselsForm = () => {
 
   return (
     <>
-      <ToastContainer autoClose={1000} />
+      <ToastContainer autoClose={5000} />
       <div className="section-ptb">
         <Container>
           <Row>
@@ -557,19 +612,48 @@ const CarrouselsForm = () => {
                     <h2>Lista de carrousels</h2>
                     <div className="product-action product-action-quick-view">
                       <Button
-                        color="success"
+                        color="info"
+                        style={{ marginLeft: '10px' }}
                         className="open-edit-view"
-                        onClick={(e) => handlerShowAddCarrouselModal(e)}
+                        onClick={() => handlerShowAddCarrouselModal()}
                       >
-                        <i className="fa fa-pencil-square-o"></i>
+                        <i className="fa fa-plus"></i>
                       </Button>
-                      <Modal isOpen={showAddCarrouselModal} toggle={handlerShowAddCarrouselModal}>
+                      <Button
+                        color="success"
+                        style={{ marginLeft: '10px' }}
+                        className="open-edit-view"
+                        onClick={() => handlerUpdateCarrouselConfig()}
+                      >
+                        <i className="fa fa-save"></i>
+                      </Button>
+                      <Modal
+                        isOpen={showAddCarrouselModal}
+                        className="modal-delete modal-lg modal-dialog-centered"
+                        toggle={handlerShowAddCarrouselModal}
+                      >
                         <ModalHeader>Agregar carrousel</ModalHeader>
                         <ModalBody>
-                          <Input></Input>
+                          <div>
+                            <form onSubmit={onAddCarrouselSubmit}>
+                              <div className="form-group">
+                                <label>Titulo</label>
+                                <Input
+                                  type="title"
+                                  className="form-control"
+                                  maxLength={200}
+                                  name="title_carrousel"
+                                  id="title_carrousel"
+                                  placeholder="Ingresa nombre del carrousel"
+                                  value={newCarrouselName}
+                                  onChange={(e) => handleAddNewCarrouselName(e)}
+                                />
+                              </div>
+                            </form>
+                          </div>
                         </ModalBody>
                         <ModalFooter>
-                          <Button color="primary" onClick={handlerShowAddCarrouselModal}>
+                          <Button color="primary" onClick={onAddCarrouselSubmit}>
                             Guardar
                           </Button>{' '}
                           <Button color="secondary" onClick={handlerShowAddCarrouselModal}>
@@ -610,6 +694,7 @@ const CarrouselsForm = () => {
                               carrouselData={newCarrouselData}
                               index={index}
                               onCarrouselDelete={onCarrouselDelete}
+                              onCarrouselEdit={onCarrouselEdit}
                             />
                           )
                         })}
