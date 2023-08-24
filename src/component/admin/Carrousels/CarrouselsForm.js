@@ -159,7 +159,9 @@ const CarrouselsForm = () => {
             ...carrouselsLists.carrousels,
             [source.droppableId]: {
               ...sourceColumn,
-              products: updatedProducts,
+              products: updatedProducts.map((productsKey) =>
+                Array.isArray(productsKey) ? productsKey[0] : productsKey
+              ),
             },
           },
           products: carrouselsLists.products,
@@ -185,7 +187,9 @@ const CarrouselsForm = () => {
 
       const newSourceColumn = {
         ...sourceColumn,
-        products: newProductsKeys,
+        products: newProductsKeys.map((productsKey) =>
+          Array.isArray(productsKey) ? productsKey[0] : productsKey
+        ),
       }
 
       const newCarrouselsLists = {
@@ -203,16 +207,21 @@ const CarrouselsForm = () => {
     // Case 5: Move from one list to another
     const newProductsKeys = Array.from(sourceColumn.products)
     newProductsKeys.splice(source.index, 1)
+
     const newSourceColumn = {
       ...sourceColumn,
-      products: newProductsKeys,
+      products: newProductsKeys.map((productsKey) =>
+        Array.isArray(productsKey) ? productsKey[0] : productsKey
+      ),
     }
 
     const destProductsKeys = Array.from(destinationColumn.products)
     destProductsKeys.splice(destination.index, 0, sourceColumn.products[source.index])
     const newDestCarrousel = {
       ...destinationColumn,
-      products: destProductsKeys,
+      products: destProductsKeys.map((productsKey) =>
+        Array.isArray(productsKey) ? productsKey[0] : productsKey
+      ),
     }
 
     const newCarrouselsLists = {
