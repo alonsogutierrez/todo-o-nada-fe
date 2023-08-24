@@ -511,4 +511,41 @@ export default class ClientAPI {
       throw new Error('Cant get categories navlinks from api')
     }
   }
+
+  async saveCarrouselConfig(carrouselsData) {
+    try {
+      const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
+      const response = await client.request({
+        url: '/carrousels',
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+        method: 'post',
+        timeout: 30 * 1000,
+        data: carrouselsData,
+      })
+      return response
+    } catch (err) {
+      throw new Error('Cant save carrousels from api')
+    }
+  }
+
+  async getCarrouselConfig() {
+    try {
+      const client = this.bffInstance()
+      const userToken = localStorage.getItem('userToken')
+      const response = await client.request({
+        url: '/carrousels',
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+        method: 'get',
+        timeout: 30 * 1000,
+      })
+      return response
+    } catch (err) {
+      throw new Error('Cant get carrousels from api')
+    }
+  }
 }

@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Col, Container, Row } from 'reactstrap'
 
 import ProductSlider from './ProductSlider'
+import ClientAPI from '../../common/ClientAPI'
 
 const sliderConfig = {
   dots: false,
@@ -31,37 +32,57 @@ const sliderConfig = {
       },
     },
   ],
-  data: [
-    {
-      title: 'Nuevos lanzamientos',
-      type: 'principal',
-    },
-    {
-      title: 'Irezumi Art Collection',
-      type: 'second',
-    },
-  ],
 }
 
-const ProductSliderHome = () => (
-  <Container>
-    {sliderConfig.data.map((dat, key) => (
-      <Row className="margin-top-12" key={`index-${key}`}>
-        <Col sm={12} className="text-center">
-          <div className="section-title">
-            <h1 style={{ fontFamily: 'cursive', textShadow: 'gray 0 2px' }}>{dat.title}</h1>
-          </div>
-          <Row className="margin-top-4">
-            <Col sm={12}>
-              <div className="products products-loop grid ciyashop-products-shortcode row">
-                <ProductSlider settings={sliderConfig} type={dat.type} />
-              </div>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    ))}
-  </Container>
-)
+const ProductSliderHome = () => {
+  const [clientAPI] = useState(new ClientAPI())
+  const [carrouselData, setCarrouselData] = useState(null)
+
+  useEffect(async () => {
+    async function getConfigData() {
+      try {
+        const response = await clientAPI.getCarrouselConfig()
+        setCarrouselData(response.data)
+      } catch (err) {
+        console.error('error trying to get carrousel config')
+      }
+    }
+    if (!carrouselData) {
+      getConfigData()
+    }
+  }, [])
+
+  return (
+    <Container>
+      {carrouselData &&
+        carrouselData.carrouselsOrder.map((carrouselKey) => {
+          if (carrouselKey !== 'dropIdx-0') {
+            return (
+              <Row className="margin-top-12" key={`index-${carrouselKey}`}>
+                <Col sm={12} className="text-center">
+                  <div className="section-title">
+                    <h1 style={{ fontFamily: 'cursive', textShadow: 'gray 0 2px' }}>
+                      {carrouselData.carrousels[carrouselKey].title}
+                    </h1>
+                  </div>
+                  <Row className="margin-top-4">
+                    <Col sm={12}>
+                      <div className="products products-loop grid ciyashop-products-shortcode row">
+                        <ProductSlider
+                          settings={sliderConfig}
+                          carrouselData={carrouselData}
+                          carrouselKey={carrouselKey}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            )
+          }
+        })}
+    </Container>
+  )
+}
 
 export default ProductSliderHome

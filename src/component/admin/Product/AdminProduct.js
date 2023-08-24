@@ -6,14 +6,21 @@ import { Col, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import Loader from 'react-loader-spinner'
 
 const AdminProduct = (props) => {
-  const [modal1, setModal1] = useState(false)
+  const [modal, setModal] = useState(false)
 
-  const toggle1 = () => {
-    setModal1(!modal1)
+  const toggleDeletePopUp = () => {
+    setModal(!modal)
   }
 
   const onDeleteInvoicePopup = () => {
-    toggle1()
+    toggleDeletePopUp()
+  }
+
+  const onClickAddProduct = (e, product) => {
+    e.preventDefault()
+    if (product && Object.keys(product).length > 0) {
+      props.handleOnClickAddButton(product)
+    }
   }
 
   useEffect(() => {
@@ -48,12 +55,23 @@ const AdminProduct = (props) => {
                 </Link>
               </div>
               <div className="product-action product-action-quick-view">
-                <Link to={`/admin-dashboard/product-edit/${itemNumber}`} className="open-edit-view">
-                  <i className="fa fa-pencil-square-o"></i>
-                </Link>
-                <Link to="#" className="product-delete" onClick={() => onDeleteInvoicePopup()}>
-                  <i className="fa fa-trash-o"></i>
-                </Link>
+                {props.add ? (
+                  <Link className="open-edit-view" onClick={(e) => onClickAddProduct(e, product)}>
+                    <i className="fa fa-step-forward"></i>
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      to={`/admin-dashboard/product-edit/${itemNumber}`}
+                      className="open-edit-view"
+                    >
+                      <i className="fa fa-pencil-square-o"></i>
+                    </Link>
+                    <Link to="#" className="product-delete" onClick={() => onDeleteInvoicePopup()}>
+                      <i className="fa fa-trash-o"></i>
+                    </Link>
+                  </>
+                )}
               </div>
               <div className="product-actions"></div>
             </div>
@@ -97,17 +115,17 @@ const AdminProduct = (props) => {
 
         {/* modal-delete */}
         <Modal
-          isOpen={modal1}
-          toggle={toggle1}
+          isOpen={modal}
+          toggle={toggleDeletePopUp}
           className="modal-delete modal-lg modal-dialog-centered"
         >
-          <ModalHeader toggle={toggle1}></ModalHeader>
+          <ModalHeader toggle={toggleDeletePopUp}></ModalHeader>
           <ModalBody>Estas seguro que deseas eliminar este producto ?</ModalBody>
           <ModalFooter className="justify-content-center pt-4">
-            <Link className="action-button" onClick={(e) => deleteproduct(toggle1(e))}>
+            <Link className="action-button" onClick={(e) => deleteproduct(toggleDeletePopUp(e))}>
               Si
             </Link>
-            <Link className="action-button no" onClick={toggle1}>
+            <Link className="action-button no" onClick={toggleDeletePopUp}>
               No
             </Link>
           </ModalFooter>
@@ -127,11 +145,15 @@ const AdminProduct = (props) => {
 export default AdminProduct
 
 AdminProduct.defaultProps = {
+  add: false,
   product: {},
   deleteproduct: () => {},
+  handleOnClickAddButton: () => {},
 }
 
 AdminProduct.propTypes = {
+  add: PropTypes.bool,
   product: PropTypes.object,
   deleteproduct: PropTypes.func,
+  handleOnClickAddButton: PropTypes.func,
 }

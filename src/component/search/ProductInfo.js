@@ -2,8 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-const ProductInfo = ({ product }) => {
-  const { picture, name, price, description, itemNumber, details } = product
+const ProductInfo = ({ product, isAdminView }) => {
+  const { picture, name, price, itemNumber, details } = product
 
   const productPrice = price.basePriceSales
   let isProductWithStockAvailable = false
@@ -25,41 +25,49 @@ const ProductInfo = ({ product }) => {
     color: 'gray',
     textDecoration: 'line-through',
   }
+
+  const redirectToWhenClickName = isAdminView ? '#' : `/product/${itemNumber}`
   return (
     <>
       <div className="product product_tag-black product-hover-style-default product-hover-button-style-dark product_title_type-single_line product_icon_type-line-icon">
         <div className="product-inner element-hovered">
           <div className="product-thumbnail">
             <div className="product-thumbnail-inner">
-              <Link to={`/product/${itemNumber}`}>
+              {isAdminView ? (
                 <div className="product-thumbnail-main">
                   <img src={picture} className="img-fluid img-slider" />
                 </div>
-              </Link>
+              ) : (
+                <Link to={`/product/${itemNumber}`}>
+                  <div className="product-thumbnail-main">
+                    <img src={picture} className="img-fluid img-slider" />
+                  </div>
+                </Link>
+              )}
             </div>
-
-            <div className="product-actions">
-              <div className="product-actions-inner">
-                <div className="product-action product-action-add-to-cart">
-                  {
-                    <Link
-                      to={`/product/${itemNumber}`}
-                      className="button add_to_cart_button"
-                      rel="nofollow"
-                    >
-                      {isProductWithStockAvailable ? 'Ver producto' : 'No hay stock'}
-                    </Link>
-                  }
+            {!isAdminView && (
+              <div className="product-actions">
+                <div className="product-actions-inner">
+                  <div className="product-action product-action-add-to-cart">
+                    {
+                      <Link
+                        to={`/product/${itemNumber}`}
+                        className="button add_to_cart_button"
+                        rel="nofollow"
+                      >
+                        {isProductWithStockAvailable ? 'Ver producto' : 'No hay stock'}
+                      </Link>
+                    }
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="product-info">
-            {name && (
-              <h3 className="product-name">
-                <Link to={`/product/${itemNumber}`}>{name}</Link>
-              </h3>
             )}
+          </div>
+
+          <div className="product-info">
+            <h3 className="product-name">
+              <Link to={redirectToWhenClickName}>{name}</Link>
+            </h3>
             {!isProductWithStockAvailable && (
               <div
                 style={{
@@ -83,7 +91,7 @@ const ProductInfo = ({ product }) => {
             )}
 
             <div className="product-rating-price">
-              {basePriceReference > productPrice && (
+              {discountPercentage > 0 && (
                 <span className="price">
                   <ins>
                     <span className="price-amount amount" style={discountPriceStyle}>
@@ -110,22 +118,19 @@ const ProductInfo = ({ product }) => {
                 </span>
               )}
             </div>
-            <div className="product-actions product-actions-list">
-              <div className="product-actions-inner">
-                <div className="product-action product-action-add-to-cart">
-                  <Link
-                    to={`/product/${itemNumber}`}
-                    className="button add_to_cart_button"
-                    rel="nofollow"
-                  >
-                    {isProductWithStockAvailable ? 'Ver producto' : 'No hay stock'}
-                  </Link>
+            {!isAdminView && (
+              <div className="product-actions product-actions-list">
+                <div className="product-actions-inner">
+                  <div className="product-action product-action-add-to-cart">
+                    <Link
+                      to={`/product/${itemNumber}`}
+                      className="button add_to_cart_button"
+                      rel="nofollow"
+                    >
+                      {isProductWithStockAvailable ? 'Ver producto' : 'No hay stock'}
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </div>
-            {description && (
-              <div className="product-details__short-description">
-                <p>{description}</p>
               </div>
             )}
           </div>
@@ -139,8 +144,10 @@ export default ProductInfo
 
 ProductInfo.defaultProps = {
   product: {},
+  isAdminView: false,
 }
 
 ProductInfo.propTypes = {
   product: PropTypes.object,
+  isAdminView: PropTypes.bool,
 }

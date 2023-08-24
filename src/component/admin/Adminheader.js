@@ -24,7 +24,7 @@ const AdminHeader = (props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isCategoriesFeatureFlagOn] = useState(false)
   const [isBannersFeatureFlagOn] = useState(true)
-  const [isCarrouselsFeatureFlagOn] = useState(false)
+  const [isCarrouselsFeatureFlagOn] = useState(true)
 
   useEffect(() => {
     window.scrollTo(0, 0)
