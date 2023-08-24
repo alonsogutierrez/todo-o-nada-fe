@@ -19,283 +19,25 @@ import AdminProduct from './../Product/AdminProduct'
 
 import ClientAPI from '../../../common/ClientAPI'
 
-// TODO: Call to BFF to get carrouself config data
-const carrouselData = {
-  products: {
-    'HO-Ō, LA LEYENDA DEL FÉNIX polera blanca': {
-      _index: 'products',
-      _type: '_doc',
-      _id: 'Wq2x4okBxo3iZx04rsQ6',
-      _version: 5,
-      _score: 1,
-      _source: {
-        itemNumber: '1039',
-        name: 'HO-Ō, LA LEYENDA DEL FÉNIX polera blanca',
-        categories: [
-          'hombre',
-          'irezumi',
-          'mujer',
-          'poleras',
-          'tattoo-collection',
-          'unisex',
-          'remate',
-        ],
-        description:
-          'HO-Ō, La Leyenda del Fénix es una pintura original de @diamantetattart basado en la Leyenda del Fénix de la cultura japonesa y oriental.\nPrenda de confección propia con tela jersey de la más alta calidad, estampada a mano en serigrafía. El pecho tiene 5 tintas (cuatricromía + tinta color azul metálico) y la espalda tiene 1 tinta color negro perla. Incluye un elegante packaging estampado a mano en serigrafía a dos tintas. Producto de calidad premium',
-        color: 'Blanco',
-        price: {
-          basePriceSales: 25000,
-          basePriceReference: 25000,
-          discount: 0,
-        },
-        picture:
-          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/FENIXP1.jpg',
-        details: {
-          '10391': {
-            quantity: 0,
-            size: 'S',
-          },
-          '10392': {
-            quantity: 0,
-            size: 'M',
-          },
-          '10393': {
-            quantity: 0,
-            size: 'L',
-          },
-          '10394': {
-            quantity: 0,
-            size: 'XL',
-          },
-          '10395': {
-            quantity: 0,
-            size: 'XXL',
-          },
-        },
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-        is_active: true,
-      },
-    },
-    'HO-Ō, LA LEYENDA DEL FÉNIX HOODIE': {
-      _index: 'products',
-      _type: '_doc',
-      _id: 'bK2x4okBxo3iZx0478S-',
-      _version: 5,
-      _score: 1,
-      _source: {
-        itemNumber: '1052',
-        name: 'HO-Ō, LA LEYENDA DEL FÉNIX HOODIE',
-        categories: ['irezumi', 'hombre', 'mujer', 'polerones', 'tattoo-collection', 'unisex'],
-        description:
-          'HO-Ō de @diamantetattart basado en la Leyenda del Fénix de la cultura japonesa y oriental.\nHoodie de confección propia con franela de la más alta calidad, tinta plateada en el pecho + cuatricromía espalda completa estampada a mano en serigrafía.\nBolsillos con cierre para mayor comodidad y  seguridad de tus pertenencias.\nEdición limitada y coleccionable. Producto de calidad premium.',
-        color: 'Negro',
-        price: {
-          basePriceSales: 50000,
-          basePriceReference: 50000,
-          discount: 0,
-        },
-        picture:
-          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/FENIX3.jpg',
-        details: {
-          '10521': {
-            quantity: 0,
-            size: 'S',
-          },
-          '10522': {
-            quantity: 0,
-            size: 'M',
-          },
-          '10523': {
-            quantity: 0,
-            size: 'L',
-          },
-          '10524': {
-            quantity: 0,
-            size: 'XL',
-          },
-          '10525': {
-            quantity: 0,
-            size: 'XXL',
-          },
-        },
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-        is_active: true,
-      },
-    },
-    'VIAJE – BLANCO': {
-      _index: 'products',
-      _type: '_doc',
-      _id: 'Da2z4okBxo3iZx04N8XO',
-      _version: 5,
-      _score: 1,
-      _source: {
-        itemNumber: '9',
-        name: 'VIAJE – BLANCO',
-        categories: [
-          'traditional',
-          'tattoo-collection',
-          'hombre',
-          'mujer',
-          'unisex',
-          'poleras',
-          'remate',
-        ],
-        description:
-          'EL VIAJE  es una colaboracion del artista Danilo Ahumada ( @Gatogordo_tattooing) Argentina , basada en la obra del mismo nombre  , pintada el año 2020 .\n\nPolera de algodon Jersey ( 80 % algodon / 20% polyester ) estampada en serigrafia por @todo_o_nada_serigrafia . Confeccionada y producida por manos libres de explotacion . Confeccion y estampado de la mas alta calidad del mercado . \n\nEste producto viene en un box pack coleccionable.',
-        color: 'Blanco',
-        price: {
-          basePriceSales: 25000,
-          basePriceReference: 25000,
-          discount: 0,
-        },
-        picture:
-          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/csc-112.jpg',
-        details: {
-          '1032': {
-            quantity: 0,
-            size: 'S',
-          },
-          '1033': {
-            quantity: 0,
-            size: 'M',
-          },
-          '1034': {
-            quantity: 0,
-            size: 'L',
-          },
-          '1035': {
-            quantity: 0,
-            size: 'XL',
-          },
-          '1036': {
-            quantity: 0,
-            size: 'XXL',
-          },
-        },
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-        is_active: false,
-      },
-    },
-    AWARE: {
-      _index: 'products',
-      _type: '_doc',
-      _id: 'fa2y4okBxo3iZx04G8TC',
-      _version: 5,
-      _score: 1,
-      _source: {
-        itemNumber: '30',
-        name: 'AWARE',
-        categories: [
-          'hombre',
-          'mujer',
-          'unisex',
-          'poleras',
-          'remate',
-          'irezumi',
-          'tattoo-collection',
-        ],
-        description:
-          'AWARE es una colaboración de la artista TATTOOCATALINA ( @tattoocatalina) , basada en la obra AWARE , pintada el año 2021 . Polera de algodon Jersey ( 80 % algodón / 20% polyester ) estampada en serigrafia por @todo_o_nada_serigrafia . Confeccionada y producida por manos libres de explotación . Confección y estampado hechos a mano. Producto de calidad premium.\nEste producto contiene : AWARE + caja coleccionable estampada a mano + filtros de regalo',
-        color: 'Negro',
-        price: {
-          basePriceSales: 25000,
-          basePriceReference: 25000,
-          discount: 0,
-        },
-        picture:
-          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/AWARE1.jpg',
-        details: {
-          '3001': {
-            quantity: 0,
-            size: 'S',
-          },
-          '3002': {
-            quantity: 0,
-            size: 'M',
-          },
-          '3003': {
-            quantity: 0,
-            size: 'L',
-          },
-          '3004': {
-            quantity: 0,
-            size: 'XL',
-          },
-          '3005': {
-            quantity: 0,
-            size: 'XXL',
-          },
-        },
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-        is_active: false,
-      },
-    },
-    'RYU NOREN': {
-      _index: 'products',
-      _type: '_doc',
-      _id: '9a2w4okBxo3iZx043cOz',
-      _version: 1,
-      _score: 1,
-      _source: {
-        itemNumber: '404',
-        name: 'RYU NOREN',
-        categories: ['accesorios', 'tattoo-collection', 'traditional', 'irezumi', 'print-art'],
-        description:
-          'RYU NOREN es parte de una nueva línea de productos de TODO O NADA TATTOO ART\n\nEl diseño de Dragón pertenece a una nueva colección de Pablo Esquivel (pablo_esquivel_decorazon), y es una de sus pinturas más recientes del 2023.\nCortinas de confección textil propia con tela crea y estampada de forma manual en serigrafía\n\nArtículo decorativo hecho a mano, edición limitada y coleccionable.',
-        color: 'Blanco',
-        price: {
-          basePriceSales: 30000,
-          basePriceReference: 30000,
-          discount: 0,
-        },
-        picture:
-          'https://todo-o-nada-imagenes.s3.us-east-2.amazonaws.com/images/products/ryunoren1.jpg',
-        details: {
-          '4041': {
-            quantity: 0,
-            size: '120X80',
-          },
-        },
-        sizes: ['120X80'],
-        is_active: true,
-      },
-    },
-  },
-  carrousels: {
-    'dropIdx-0': {
-      id: 'dropIdx-0',
-      title: 'Agregar items',
-      products: [],
-    },
-    'dropIdx-1': {
-      id: 'dropIdx-1',
-      title: 'Nuevos Lanzamientos',
-      products: ['HO-Ō, LA LEYENDA DEL FÉNIX polera blanca', 'HO-Ō, LA LEYENDA DEL FÉNIX HOODIE'],
-    },
-    'dropIdx-2': {
-      id: 'dropIdx-2',
-      title: 'Irezumi Art Collection',
-      products: ['VIAJE – BLANCO', 'AWARE'],
-    },
-    'dropIdx-3': {
-      id: 'dropIdx-3',
-      title: 'Todo o nada Art Collection',
-      products: ['RYU NOREN'],
-    },
-  },
-  carrouselsOrder: ['dropIdx-0', 'dropIdx-1', 'dropIdx-2', 'dropIdx-3'],
-}
-
 const CarrouselsForm = () => {
-  const [carrouselsLists, setCarrouselsList] = useState(carrouselData)
+  const [clientAPI] = useState(new ClientAPI())
+  const [carrouselsLists, setCarrouselsList] = useState(null)
   const [productTextSearch, setProductTextSearch] = useState('')
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [clientAPI] = useState(new ClientAPI())
   const [showAddCarrouselModal, setShowCarrouselModal] = useState(false)
   const [newCarrouselName, setNewCarrouselName] = useState('')
 
   useEffect(async () => {
+    async function getConfigData() {
+      try {
+        const response = await clientAPI.getCarrouselConfig()
+        setCarrouselsList(response.data)
+      } catch (err) {
+        console.log('error trying to get carrousel config')
+      }
+    }
+
     if (productTextSearch === '') {
       const adminProductResponse = await clientAPI.getAdminAllProducts()
       if (adminProductResponse.total > 0) {
@@ -305,6 +47,10 @@ const CarrouselsForm = () => {
         setProducts([])
         setLoading(false)
       }
+    }
+
+    if (!carrouselsLists) {
+      getConfigData()
     }
 
     window.scrollTo(0, 0)
@@ -536,10 +282,20 @@ const CarrouselsForm = () => {
   }
 
   const handlerUpdateCarrouselConfig = async () => {
-    // TODO: Call to bff to save my new config
-    // TODO: Erase all unnused product from carrouselsLists
+    const allUsedProductsKeys = Object.keys(carrouselsLists.carrousels)
+      .map((keyCarrousel) =>
+        carrouselsLists.carrousels[keyCarrousel].products.map((productName) => productName)
+      )
+      .flat()
+    for (const actualProductKey of Object.keys(carrouselsLists.products)) {
+      if (!allUsedProductsKeys.includes(actualProductKey)) {
+        delete carrouselsLists.products[actualProductKey]
+      }
+    }
+    carrouselsLists.carrousels['dropIdx-0'].products = []
     await clientAPI.saveCarrouselConfig(carrouselsLists)
     toast.success('Configuración de carrousels correctamente guardada')
+    setProductTextSearch('')
   }
 
   let actualProducts = []
@@ -678,28 +434,29 @@ const CarrouselsForm = () => {
                     {(provided) => (
                       <div {...provided.droppableProps} ref={provided.innerRef}>
                         {/* Nested inner context component */}
-                        {carrouselsLists.carrouselsOrder.map((carrouselKey, index) => {
-                          const carrouselData = carrouselsLists.carrousels[carrouselKey]
-                          const carrouselDataProductsKey = carrouselData.products
-                          const newCarrouselData = {
-                            ...carrouselData,
-                            products:
-                              carrouselDataProductsKey.length > 0
-                                ? carrouselDataProductsKey.map(
-                                    (productKey) => carrouselsLists.products[productKey]
-                                  )
-                                : [],
-                          }
-                          return (
-                            <Carrousel
-                              key={`carrousel-${carrouselKey}`}
-                              carrouselData={newCarrouselData}
-                              index={index}
-                              onCarrouselDelete={onCarrouselDelete}
-                              onCarrouselEdit={onCarrouselEdit}
-                            />
-                          )
-                        })}
+                        {carrouselsLists &&
+                          carrouselsLists.carrouselsOrder.map((carrouselKey, index) => {
+                            const carrouselData = carrouselsLists.carrousels[carrouselKey]
+                            const carrouselDataProductsKey = carrouselData.products
+                            const newCarrouselData = {
+                              ...carrouselData,
+                              products:
+                                carrouselDataProductsKey.length > 0
+                                  ? carrouselDataProductsKey.map(
+                                      (productKey) => carrouselsLists.products[productKey]
+                                    )
+                                  : [],
+                            }
+                            return (
+                              <Carrousel
+                                key={`carrousel-${carrouselKey}`}
+                                carrouselData={newCarrouselData}
+                                index={index}
+                                onCarrouselDelete={onCarrouselDelete}
+                                onCarrouselEdit={onCarrouselEdit}
+                              />
+                            )
+                          })}
 
                         {/* Outer droppable area */}
                         {provided.placeholder}
