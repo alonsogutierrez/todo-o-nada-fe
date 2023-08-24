@@ -535,8 +535,10 @@ const CarrouselsForm = () => {
     setNewCarrouselName(e.target.value)
   }
 
-  const handlerUpdateCarrouselConfig = () => {
+  const handlerUpdateCarrouselConfig = async () => {
     // TODO: Call to bff to save my new config
+    // TODO: Erase all unnused product from carrouselsLists
+    await clientAPI.saveCarrouselConfig(carrouselsLists)
     toast.success('Configuración de carrousels correctamente guardada')
   }
 
