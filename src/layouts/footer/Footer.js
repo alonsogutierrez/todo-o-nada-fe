@@ -129,8 +129,15 @@ class Footer extends React.Component {
                     <Col md={6} className="float-left">
                       <p>
                         {' '}
-                        © Copyright 2021 <Link to="/home">Todo o Nada Tattoo Art</Link> Todos los
-                        derechos reservados.
+                        © Copyright {new Date().getFullYear()}{' '}
+                        <a
+                          href="https://prodevperspectives.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          ProDevPerspectives
+                        </a>{' '}
+                        Todos los derechos reservados.
                       </p>
                     </Col>
                   </div>
