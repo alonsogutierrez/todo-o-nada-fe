@@ -3,7 +3,7 @@ import 'react-app-polyfill/stable'
 import 'babel-polyfill'
 
 import React from 'react'
-import { createRoot } from 'react-dom/client'
+import ReactDOM from 'react-dom'
 
 import './index.css'
 import App from './App'
@@ -11,8 +11,6 @@ import App from './App'
 
 const Root = () => <App />
 
-const container = document.getElementById('root')
-const root = createRoot(container) // create a root
-root.render(<Root />)
+ReactDOM.render(<Root />, document.getElementById('root'))
 
 // registerServiceWorker()
