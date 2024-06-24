@@ -61,9 +61,7 @@ const ProductSliderHome = () => {
               <Row className="margin-top-12" key={`index-${carrouselKey}`}>
                 <Col sm={12} className="text-center">
                   <div className="section-title">
-                    <h1 style={{ fontFamily: 'cursive', textShadow: 'gray 0 2px' }}>
-                      {carrouselData.carrousels[carrouselKey].title}
-                    </h1>
+                    <h1>{carrouselData.carrousels[carrouselKey].title}</h1>
                   </div>
                   <Row className="margin-top-4">
                     <Col sm={12}>
