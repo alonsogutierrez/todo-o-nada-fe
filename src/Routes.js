@@ -18,6 +18,8 @@ import CheckOut from './component/shop/checkout'
 import SuccessScreen from './component/shop/checkout/SuccessScreen'
 import AdminDashboard from './component/admin'
 import Login from './component/admin/Login'
+import PrivacyPolicy from './component/pages/PrivacyPolicy'
+import TermsAndConditions from './component/pages/TermsAndConditions'
 
 import Header from './layouts/header/Header'
 import Footer from './layouts/footer/Footer'
@@ -47,6 +49,8 @@ const Routes = () => {
               <Route path="/successpayment" component={SuccessScreen} />
               <Route exact path="/admin/login" component={Login} />
               <Route path="/maintenance" component={Maintenance} />
+              <Route path="/privacy-policy" component={PrivacyPolicy} />
+              <Route path="/terms-and-conditions" component={TermsAndConditions} />
 
               <PrivateRoute path="/admin-dashboard">
                 <AdminDashboard />
