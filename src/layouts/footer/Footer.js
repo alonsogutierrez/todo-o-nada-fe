@@ -87,7 +87,7 @@ class Footer extends React.Component {
                               <Link to="/privacy-policy">Política de privacidad</Link>
                             </li>
                             <li className="menu-item">
-                              <Link to="/terms-condition">Términos y condiciones</Link>
+                              <Link to="/terms-and-conditions">Términos y condiciones</Link>
                             </li>
                           </ul>
                         </div>
